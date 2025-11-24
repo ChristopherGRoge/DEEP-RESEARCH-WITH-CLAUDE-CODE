@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Braintrust.dev Critical Assessment</title>
+    <style>
+        @font-face {
+            font-family: 'Graphik';
+            src: url('docs/branding/Font_Graphik_GT/Graphik/Graphik-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Graphik';
+            src: url('docs/branding/Font_Graphik_GT/Graphik/Graphik-Medium.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Graphik';
+            src: url('docs/branding/Font_Graphik_GT/Graphik/Graphik-Semibold.ttf') format('truetype');
+            font-weight: 600;
+            font-style: normal;
+        }
+        body {
+            font-family: 'Graphik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #000000;
+            font-weight: 700;
+            border-bottom: 3px solid #7500c0;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .overview-text {
+            font-size: 1.4em;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            color: #000000;
+            font-weight: 600;
+        }
+        .purple-highlight {
+            color: #7500c0;
+        }
+        .callout-container {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 20px;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        .callout-title {
+            font-weight: 700;
+            color: #000000;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 5px;
+        }
+        .callout-icon {
+            width: 1.5em;
+            height: 1.5em;
+            flex-shrink: 0;
+        }
+        .callout-content {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        .critical-finding {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border-left: 4px solid #F59E0B;
+        }
+        .recommendation {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border-left: 4px solid #F59E0B;
+        }
+        .bottom-line {
+            background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 100%);
+            border-left: 4px solid #7500c0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 15px 12px;
+            text-align: left;
+            border-bottom: 1px solid #E9D5FF;
+            vertical-align: top;
+        }
+        th {
+            background-color: #7500c0;
+            color: white;
+            font-weight: 600;
+            font-size: 1.4em;
+        }
+        td {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        tr:hover {
+            background-color: #F3E8FF;
+        }
+        .highlight {
+            font-weight: 600;
+            color: #a055f5;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #7f8c8d;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .footer-logo {
+            font-size: 48px;
+            font-weight: 700;
+            color: #7500c0;
+            line-height: 1;
+        }
+        .footer-info {
+            text-align: right;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Braintrust.dev Critical Assessment</h1>
+
+        <div class="overview-text">
+            <span class="purple-highlight">AI observability platform</span> for <span class="purple-highlight">LLM evaluation and monitoring</span>; <span class="purple-highlight">hybrid model</span> keeps app data local but metadata flows to cloud.
+        </div>
+
+        <div class="callout-container critical-finding">
+            <div class="callout-title">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="#D97706">
+                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                </svg>
+                Critical Finding
+            </div>
+            <div class="callout-content">
+                No FedRAMP with no stated roadmap. <strong>Operational metadata (project names, dataset names, hashed keys) flows to cloud</strong>—likely CUI transmission for federal workloads.
+            </div>
+        </div>
+
+        <div class="callout-container recommendation">
+            <div class="callout-title">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="#D97706">
+                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                </svg>
+                Recommendation
+            </div>
+            <div class="callout-content">
+                <strong>Wait and Watch</strong> for federal; <strong>Conditional Proceed</strong> for commercial | Metadata cloud dependency blocks federal.
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Alignment to Stack</th>
+                    <th>Differentiation</th>
+                    <th>Security & Compliance</th>
+                    <th>ROI Potential</th>
+                    <th>Industry Backing</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Fills AI observability gap; complements CI/CD and LLM infrastructure</td>
+                    <td>Workflow automation and infrastructure optimization; uses third-party LLMs behind unified interface</td>
+                    <td><span class="highlight">SOC 2 Type II, no FedRAMP</span>; app data local but <span class="highlight">metadata transmits to cloud</span>—likely CUI for federal</td>
+                    <td>~30%+ accuracy improvements, ~80x faster queries (vendor reports, systematic evaluation benefits)</td>
+                    <td>$150M valuation, $45M funding (a16z); Notion, Stripe, Zapier, Airtable, Instacart; client base doubled</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="callout-container bottom-line">
+            <div class="callout-title">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="#7500c0">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+                Bottom Line
+            </div>
+            <div class="callout-content">
+                Commercial pilots only where cloud metadata transmission permissible. Federal: evaluate open-source alternatives (Arize Phoenix) or await FedRAMP.
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-logo">&gt;</div>
+            <div class="footer-info">
+                Internal Use Only<br>
+                <strong>Contact:</strong> christopher.g.roge@afs.com
+            </div>
+        </div>
+    </div>
+</body>
+</html>

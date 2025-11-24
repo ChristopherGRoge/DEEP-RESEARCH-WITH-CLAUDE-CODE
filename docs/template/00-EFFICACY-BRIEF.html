@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[TOOL NAME] Efficacy Brief | Accenture Federal Services</title>
+    <style>
+        /* AFS Brand Colors - Minimal Use */
+        :root {
+            --core-purple: #7500C0;
+            --accent-purple: #A100FF;
+            --light-purple: #e6dcff;
+            --text-black: #1a1a1a;
+            --text-gray: #4a4a4a;
+            --bg-white: #ffffff;
+            --bg-subtle: #f8f8f8;
+            --border-light: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Graphik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: var(--bg-white);
+            color: var(--text-black);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        p {
+            font-size: 1.1em;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        /* Hero Section - Brand Colors */
+        header {
+            background: linear-gradient(135deg, var(--core-purple) 0%, var(--accent-purple) 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 8px;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 12px rgba(117, 0, 192, 0.15);
+        }
+
+        .wordmark {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .gt-symbol {
+            font-size: 64px;
+            font-weight: bold;
+            opacity: 0.9;
+        }
+
+        h1 {
+            font-family: 'Graphik', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 42px;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-family: 'GT Sectra Fine', Georgia, serif;
+            font-size: 28px;
+            opacity: 0.95;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+
+        .meta {
+            font-size: 18px;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        /* Body Content - Minimal Colors */
+        h2 {
+            font-family: 'Graphik', Arial, sans-serif;
+            font-weight: 600;
+            font-size: 2.2em;
+            color: var(--text-black);
+            margin: 50px 0 20px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        h3 {
+            font-family: 'GT Sectra Fine', Georgia, serif;
+            font-size: 1.7em;
+            color: var(--text-black);
+            margin: 35px 0 18px 0;
+            font-weight: 600;
+        }
+
+
+        strong {
+            color: var(--text-black);
+            font-weight: 600;
+        }
+
+        em {
+            font-style: italic;
+            color: var(--text-gray);
+        }
+
+        /* Callout Boxes - Strategic Brand Color Use */
+        .callout {
+            background: var(--bg-subtle);
+            border-left: 4px solid var(--core-purple);
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .callout.critical {
+            background: #fffaf0;
+            border-left-color: #ff6b35;
+        }
+
+        .callout.success {
+            background: #f0fff4;
+            border-left-color: #28a745;
+        }
+
+        .callout > strong {
+            color: var(--core-purple);
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .callout.critical > strong {
+            color: #cc5500;
+        }
+
+        .callout.success > strong {
+            color: #1e7d32;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 20px 0 20px 30px;
+            line-height: 1.8;
+            color: var(--text-gray);
+            font-size: 1.1em;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--core-purple) 0%, var(--accent-purple) 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-gray);
+            font-size: 1.0em;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Section Divider */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-light);
+            margin: 40px 0;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 2px solid var(--border-light);
+            padding-top: 30px;
+            margin-top: 60px;
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+
+        footer .gt-symbol {
+            font-size: 32px;
+            color: var(--core-purple);
+            margin-top: 15px;
+        }
+
+        /* Links */
+        a {
+            color: var(--core-purple);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Recommendation Table */
+        .recommendation-wrapper {
+            background: var(--bg-subtle);
+            border-left: 4px solid var(--core-purple);
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .recommendation-wrapper > strong {
+            color: var(--core-purple);
+            display: block;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        /* Decision Matrix Table */
+        .decision-matrix {
+            background: var(--bg-subtle);
+            border-left: 4px solid var(--core-purple);
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .decision-matrix > strong {
+            color: var(--core-purple);
+            display: block;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+            h1 {
+                font-size: 32px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            h3 {
+                font-size: 20px;
+            }
+            .wordmark {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            header {
+                padding: 35px 25px;
+            }
+            .assessment-table {
+                font-size: 0.9em;
+            }
+            .assessment-table th,
+            .assessment-table td {
+                padding: 10px 8px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            header {
+                background: white;
+                border: 2px solid var(--core-purple);
+                color: var(--text-black);
+            }
+            .gt-symbol {
+                color: var(--core-purple);
+            }
+            .callout {
+                border: 1px solid var(--border-light);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="wordmark">
+                <span class="gt-symbol">&gt;</span>
+                <div>
+                    <h1>[TOOL NAME] Efficacy Brief</h1>
+                    <div class="subtitle">Tool Evaluation</div>
+                    <div class="meta">GenAI COTS Team | Accenture Federal Services | [MONTH YEAR]</div>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <h2>Executive Summary</h2>
+
+            <p><strong>Instructions for Agent:</strong> Write 2-3 paragraphs providing high-level characterization of the tool (cloud-based vs local, SaaS vs on-premise, etc.). State any impressive quantitative claims from vendor marketing materials using ~X% format with clear attribution. Identify the single most critical finding regarding federal environment compatibility.</p>
+
+            <div class="recommendation-wrapper">
+                <strong>Recommendation Summary:</strong>
+                <table class="recommendation-table">
+                    <tr>
+                        <td>Recommendation:</td>
+                        <td rowspan="2" class="rec-instructions"><strong>Instructions for Agent:</strong> Provide concise one-liner justification summarizing the bottom-line assessment</td>
+                    </tr>
+                    <tr>
+                        <td class="rec-value">Choose from: Proceed to Demo, Wait and Watch, Halt, or Conditional Proceed</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="assessment-table-wrapper">
+                <strong>Decision Matrix:</strong>
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th>Alignment to Existing Stack</th>
+                            <th>Differentiation</th>
+                            <th>Security and Compliance</th>
+                            <th>ROI Potential</th>
+                            <th>Industry / Community Backing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Assess whether tool fills a gap, replaces an existing tool, or complements current stack</td>
+                            <td>Evaluate use of AI, position as emerging leader, industry chatter and momentum</td>
+                            <td>Document self-hosted capability, FedRAMP authorization status, or cloud-only constraints</td>
+                            <td>Assess nominal to significant impact on cost to deliver an app or operate it</td>
+                            <td>Evaluate open source community strength, capital backing, enterprise adoption evidence</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout critical">
+                <strong>Critical Finding:</strong>
+                <p><strong>Instructions for Agent:</strong> Highlight the most significant technical or architectural limitation for federal use. Address whether the tool can operate in air-gapped environments and identify fundamental blockers for classified workloads or zero-trust deployments.</p>
+            </div>
+
+            <div class="callout">
+                <strong>Assessment Context:</strong>
+                <p><strong>Instructions for Agent:</strong> Explain how the "local development" criterion relates to FedRAMP compliance requirements. Address whether tools that process data locally can potentially avoid full FedRAMP authorization. Document the tool's FedRAMP authorization status if publicly available.</p>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Bottom Line Recommendation</h2>
+
+            <p><strong>Instructions for Agent:</strong> Provide a clear, actionable recommendation. Choose from: <strong>Proceed</strong> (tool meets federal requirements), <strong>Wait and Watch</strong> (unresolved compliance/technical questions), or <strong>Halt</strong> (fundamental incompatibilities).</p>
+
+            <p>For "Wait and Watch" recommendations, enumerate specific due diligence items that must be resolved:</p>
+
+            <ol>
+                <li><strong>Data transit requirements</strong> - What application data flows to vendor infrastructure during processing</li>
+                <li><strong>FedRAMP roadmap viability</strong> - Whether vendor intends to pursue authorization and timeline</li>
+                <li><strong>On-premise feasibility</strong> - Whether local deployment is technically possible or requires fundamental architecture changes</li>
+            </ol>
+
+            <p>Clearly state the level of investigation required and acknowledge uncertainty of outcomes. Warn if this represents significant evaluation effort with no guarantee of favorable outcomes.</p>
+
+            <div class="callout success">
+                <strong>Proceed with pilots only if:</strong>
+                <p><strong>Instructions for Agent:</strong> If recommending limited pilots, provide specific conditions (e.g., "only for unclassified data where cloud processing is permissible," "organization accepts potential future migration," "vendor demonstrates concrete progress toward federal compliance capabilities").</p>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Technical Architecture: Marketing Claims vs. Documented Reality</h2>
+
+            <p><strong>Instructions for Agent:</strong> Provide critical analysis distinguishing between marketing positioning and technical reality. Assess whether the tool represents genuine technical innovation or primarily offers packaging/integration value.</p>
+
+            <h3>What's Actually Documented</h3>
+
+            <p><strong>Underlying Technology Stack:</strong> <em>Instructions for Agent: Identify actual frameworks, libraries, or platforms the tool is built upon by examining technical documentation, API references, and SDK docs.</em></p>
+
+            <p><strong>AI/ML Claims Validation:</strong> <em>Instructions for Agent: Assess whether proprietary AI claims are substantiated. Check for:</em></p>
+            <ul>
+                <li>Peer-reviewed research papers documenting novel architecture</li>
+                <li>SDK documentation exposing proprietary model specifications</li>
+                <li>Independent benchmarks isolating AI performance versus base LLMs</li>
+                <li>Model architecture details, training data, or ablation studies</li>
+            </ul>
+
+            <p><em>Explain whether thought leadership materials provide technical validation or just describe AI intent without substantiation.</em></p>
+
+            <h3>Differentiation Assessment</h3>
+
+            <p><strong>Verified Value:</strong> <em>Instructions for Agent: List documentable differentiators based on public information (packaging, platform integration, orchestration, workflow automation, infrastructure).</em></p>
+
+            <p><strong>Unverified Claims:</strong> <em>Instructions for Agent: Identify marketing claims that lack public technical substantiation. Distinguish between distribution/platform lock-in advantages versus genuine ML intellectual property.</em></p>
+
+            <p><strong>Competitive Moat:</strong> <em>Instructions for Agent: List sources of defensible position (infrastructure, customer relationships, partnerships, integrated toolchain). Assess whether moat comes from demonstrated AI/ML breakthroughs or other factors.</em></p>
+
+            <div class="callout critical">
+                <strong>Implications for Federal Evaluation:</strong>
+                <p><em>Instructions for Agent: Explain whether organizations are paying premium pricing based on AI differentiation claims that lack technical validation. Advise whether federal buyers should assess value based on workflow automation and platform integration rather than unsubstantiated AI breakthroughs.</em></p>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Local Development: What Works and What Doesn't</h2>
+
+            <p><strong>Instructions for Agent:</strong> This section is critical for FedRAMP compliance assessment. The core question is whether sensitive processing can occur entirely on-premise, potentially avoiding full FedRAMP authorization requirements for the cloud service.</p>
+
+            <h3>Features Supporting Local Testing</h3>
+
+            <p><em>Instructions for Agent: Document any capabilities that enable local/on-premise operation:</em></p>
+            <ul>
+                <li>Secure tunneling solutions for local application testing (VPN-based tunnels, proxy configurations)</li>
+                <li>On-premise device labs or infrastructure options (physical installations, scalability)</li>
+                <li>Private cloud deployment models (dedicated infrastructure, isolated subnets)</li>
+                <li>Data isolation guarantees between tenants</li>
+            </ul>
+
+            <h3>The Cloud Dependency Reality</h3>
+
+            <p><em>Instructions for Agent: Identify which capabilities absolutely require cloud connectivity. Address these critical questions:</em></p>
+            <ul>
+                <li>Where does AI inference occur (cloud vs. local)?</li>
+                <li>What data must transit to vendor infrastructure for processing (URLs, user stories, documentation, test data)?</li>
+                <li>Can core differentiating features operate offline?</li>
+                <li>Can test generation/self-healing occur without internet connectivity?</li>
+            </ul>
+
+            <p><em>Create clear statement of fundamental constraints: "Developers cannot [perform core function] without internet connectivity to [vendor] servers. Local code and test data may remain on-premise, but the AI inference that [performs key capability] flows through [vendor]'s cloud."</em></p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Enterprise Fit: Commercial vs. Federal</h2>
+
+            <p><strong>Instructions for Agent:</strong> Analyze market fit across different environments, distinguishing where the tool excels from where it faces barriers.</p>
+
+            <h3>Where [Tool] Excels</h3>
+
+            <p><em>Instructions for Agent: Document strong use cases in cloud-first organizations with modern CI/CD practices. Identify specific integration points (Jenkins, Azure DevOps, etc.). Reference case studies and deployment evidence (Fortune 100 companies, industry sectors, GSI partner network, migration capabilities with specific metrics like "X test cases in Y days").</em></p>
+
+            <h3>Federal Environment Challenges</h3>
+
+            <p><em>Instructions for Agent: Identify specific federal blockers and mark them as "insurmountable obstacles" or "configuration issues":</em></p>
+
+            <ul>
+                <li><strong>Air-gapped networks</strong> - Can the tool operate without internet connectivity?</li>
+                <li><strong>Zero-cloud-data-transit policies</strong> - What data leaves the enclave?</li>
+                <li><strong>Classified workloads</strong> - Are there insurmountable obstacles under current architecture?</li>
+                <li><strong>Intellectual property exposure</strong> - What business logic/application context is transmitted to vendor infrastructure?</li>
+                <li><strong>PHI/compliance isolation</strong> - Can the tool satisfy strict data isolation requirements?</li>
+                <li><strong>Zero-trust architectures</strong> - Does cloud-dependent model conflict with zero-trust principles?</li>
+            </ul>
+
+            <p><em>Distinguish between configuration issues that can be solved through deployment options versus architectural constraints requiring fundamental product changes.</em></p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Onboarding Assessment</h2>
+
+            <p><strong>Instructions for Agent:</strong> Rate onboarding complexity on 1-5 scale (1=Trivial, 2=Simple, 3=Moderate, 4=Complex, 5=Very Complex). Justify the rating.</p>
+
+            <p><em>Address multiple entry points (no-code, low-code, pro-code workflows). Explain how quickly organizations can complete POC validation for straightforward applications.</em></p>
+
+            <p><em>Describe production integration complexity: infrastructure setup (tunneling, VPN, proxy), CI/CD integration requirements (DevOps expertise, API calls, authentication), on-premise deployment investment (physical installation, network configuration, maintenance).</em></p>
+
+            <p><em>Note any upfront knowledge base training or documentation upload requirements. Explain initial investment needed before productivity gains materialize.</em></p>
+
+            <p><em>Describe typical deployment phases: POC validation → Production integration with CI/CD → Enterprise rollout. Advise organizations to anticipate phased approach and allocate appropriate resources.</em></p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Implementation Considerations</h2>
+
+            <p><strong>Instructions for Agent:</strong> Outline deployment approaches based on organizational readiness and technical maturity.</p>
+
+            <h3>Deployment Approaches</h3>
+
+            <p><strong>Direct Adoption:</strong> <em>For organizations with existing DevOps maturity - describe self-service model and rapid time-to-value through no-code interface and API integration.</em></p>
+
+            <p><strong>Implementation Services:</strong> <em>For organizations transitioning from legacy frameworks - describe professional services support for migration planning, team training, and technical integration.</em></p>
+
+            <p><strong>Federal-Specialized Deployment:</strong> <em>Only if tool has viable federal use cases - describe specialized expertise needs for security controls, compliance frameworks (FISMA, FedRAMP, IL-specific), and classified data handling.</em></p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Value Proposition and ROI</h2>
+
+            <p><strong>Instructions for Agent:</strong> Quantify benefits and create ROI framework based on vendor-reported metrics.</p>
+
+            <h3>Performance Improvements</h3>
+
+            <p><em>Document vendor claims with clear attribution: "Vendor reports customer feedback indicating <strong>~X% faster</strong> [core workflow] compared to traditional approaches. Vendor claims <strong>~Y% reduction</strong> in [time/cost metric] stems from [specific capability]. Marketing materials cite early adopter results showing <strong>~Z% cost savings</strong> on [operations] when factoring [specific factors] [citation]."</em></p>
+
+            <p><em>Always caveat: "under optimal deployment conditions" and note that results vary by organization, application complexity, and maturity.</em></p>
+
+            <p><em>If tool has self-healing/adaptive capabilities, explain the maintenance economics shift. Quantify vendor claims about maintenance burden reduction (~X-Y%).</em></p>
+
+            <p><em>Reference specific case studies with quantified outcomes (timeline, scale, customer circumstances).</em></p>
+
+            <h3>ROI Framework</h3>
+
+            <p><em>Instructions for Agent: Create hypothetical calculation: "For a typical [role] costing ~$X per day, annual ROI calculations become compelling under optimal conditions. If [tool capability] reduces [activity] by ~Y days annually, that translates to <strong>~$Z in time savings</strong> per [role]. Preventing just N [issues] per year at ~$A each adds <strong>~$B in avoided costs</strong>. [Other benefits] reduce overhead by variable but potentially substantial amounts. Conservative estimates based on vendor-cited performance metrics suggest <strong>~$TOTAL+ in annual benefit</strong> per [role], though actual results will vary significantly by organization, application complexity, and [domain] maturity."</em></p>
+
+            <p><em>Go beyond cost reduction to describe strategic capabilities the tool enables (e.g., "more resilient tests that survive refactoring," "enables more aggressive modernization by reducing the 'test tax' on design changes").</em></p>
+
+            <h3>Business Case Considerations</h3>
+
+            <p><em>Address total cost of ownership beyond licensing: migration effort, team training, CI/CD integration, potential infrastructure for on-premise options. Note that upfront investments typically pay back through reduced labor costs and faster cycles.</em></p>
+
+            <p><em>For service providers, note consulting opportunities around transformation. Mention how organizations with federal expertise can differentiate by addressing unique compliance and deployment constraints.</em></p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Key Benefits</h2>
+
+            <div class="callout">
+                <strong>Strategic Value (Vendor-Reported):</strong>
+                <p><em>Instructions for Agent: Consolidate vendor performance claims with clear attribution: quantified improvements (~X% faster, ~Y% reduction), key differentiating capabilities, evidence of enterprise credibility (Fortune 100 deployments, operational maturity indicators).</em></p>
+            </div>
+
+            <div class="callout">
+                <strong>Operational Advantages:</strong>
+                <p><em>Instructions for Agent: List practical workflow benefits: accessibility features (no-code interfaces), automation capabilities, deployment flexibility (cloud/hybrid/on-premise options), ecosystem support (GSI partnerships), operational maturity indicators (migration performance metrics).</em></p>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Critical Blockers</h2>
+
+            <div class="callout critical">
+                <strong>Technical Limitations:</strong>
+                <p><em>Instructions for Agent: Document where processing occurs (cloud-only vs. hybrid vs. local). State offline/air-gap capability or lack thereof. Identify required connectivity for core features. List what data must transit to cloud services.</em></p>
+            </div>
+
+            <div class="callout critical">
+                <strong>Federal and Enterprise Concerns:</strong>
+                <p><em>Instructions for Agent: State classified workload compatibility status. Identify intellectual property exposure risks. List compliance constraints that limit applicability. Assess vendor lock-in and migration challenges from proprietary dependencies.</em></p>
+            </div>
+
+            <div class="callout critical">
+                <strong>Roadmap and Federal Alignment:</strong>
+                <p><em>Instructions for Agent: Assess whether vendor prioritizes federal-specific features or focuses on larger commercial market. Check if on-premise/air-gap capabilities appear on public roadmap. Document FedRAMP certification status and address gaps in public documentation. Warn that organizations requiring federal-specific capabilities should assess vendor willingness before commitment. Acknowledge uncertainty: "Determining [X] viability and [Y] feasibility requires significant technical due diligence with no assurance of favorable outcomes."</em></p>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Competitive Analysis</h2>
+
+            <p><strong>Instructions for Agent:</strong> Position tool against competitors in different categories.</p>
+
+            <p><strong>vs. Traditional Tools:</strong> <em>Compare against established frameworks in the same domain. Highlight productivity gains from modern capabilities versus deployment constraints. Note whether traditional tools support true air-gapped deployment.</em></p>
+
+            <p><strong>vs. AI-Native Competitors:</strong> <em>Compare against similar modern tools. Identify differentiation through specific capabilities, training approaches, or deployment options that competitors lack.</em></p>
+
+            <p><strong>Fundamental Tradeoff:</strong> <em>Identify the core architectural decision that creates both advantages and limitations (e.g., "cloud-dependent AI architecture enables sophisticated capabilities unavailable in traditional tools but restricts deployment to environments permitting cloud data transit").</em></p>
+
+            <p><em>End with key insight: "For federal environments, traditional frameworks may actually prove superior despite lower productivity, because they satisfy fundamental deployment constraints that [tool] cannot meet. The 'better' tool becomes unusable if it violates security policies."</em></p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Recommended Actions</h2>
+
+            <p><strong>Initial Discovery (Effort Level):</strong> <em>Instructions for Agent: Specify whether this is lightweight, moderate, or significant effort. List technical deep-dive requirements (document exactly what data transits to cloud services for specific operations). Identify vendor engagement topics (FedRAMP roadmap, on-premise feasibility, federal market commitment). Note security reviews needed. Acknowledge effort and outcome uncertainty.</em></p>
+
+            <p><strong>Evaluation Phase:</strong> <em>List tactical next steps: POC scope and validation criteria, federal viability assessment for specific IL levels, organization-specific ROI calculation methodology, documentation requirements (infrastructure, training, integration effort).</em></p>
+
+            <p><strong>Strategic Development:</strong> <em>Outline long-term considerations: feature advocacy priorities (on-premise AI inference, air-gap support), certification monitoring (FedRAMP progress), capability building for federal implementations, skills development for assessing cloud-dependent tools against federal security requirements.</em></p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Decision Framework</h2>
+
+            <div class="callout success">
+                <strong>Proceed if:</strong>
+                <p><em>Instructions for Agent: List positive conditions for adoption - target market alignment with tool strengths, acceptable compliance requirements or clear resolution path, ability to leverage implementation expertise, vendor commitment to required capabilities.</em></p>
+            </div>
+
+            <div class="callout critical">
+                <strong>Halt if:</strong>
+                <p><em>Instructions for Agent: List deal-breakers - primary market has fundamental incompatibilities (e.g., classified workloads requiring air-gap), vendor shows no interest in resolving blockers, security review reveals unacceptable data residency risks, competitive analysis identifies superior alternatives meeting all requirements.</em></p>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Conclusion</h2>
+
+            <p><em>Instructions for Agent: Synthesize analysis into final recommendation. Paragraph 1: Acknowledge tool quality and capabilities. Paragraph 2: State the fundamental limitation or constraint. Paragraph 3: Provide clear recommendation with appropriate scope.</em></p>
+
+            <div class="callout">
+                <strong>Recommendation:</strong>
+                <p><em>Instructions for Agent: State where tool is appropriate (e.g., "commercial and low-side federal applications" or "unclassified workloads"). Explain how to focus adoption to establish operational experience while monitoring vendor progress on enabling capabilities.</em></p>
+            </div>
+
+            <p><em>If tool has long-term potential: Provide advocacy strategy explaining how to create optionality for future expansion without blocking current value realization (e.g., "Advocate for on-premise inference development as a future capability, not an immediate requirement. This gives vendor time to assess federal market opportunity while early adopters validate the platform on permissible workloads").</em></p>
+
+            <div class="callout success">
+                <strong>Next Step:</strong>
+                <p><em>Instructions for Agent: List immediate actions - initiate technical evaluation focused on architecture/security/compliance, engage vendor to assess federal commitment and roadmap, identify pilot use cases to validate performance claims and integration complexity.</em></p>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Sources and Methodology</h2>
+
+            <p><em>Instructions for Agent: Document that evaluation is based on publicly available information from vendor website, marketing materials, case studies, and technical documentation accessed in [MONTH YEAR]. Note that performance metrics reflect vendor-reported results under optimal conditions and may not represent all customer experiences.</em></p>
+
+            <p><strong>Key Sources:</strong></p>
+            <ul>
+                <li>Vendor website and product documentation</li>
+                <li>Vendor marketing materials and case studies</li>
+                <li>FedRAMP Marketplace public listings</li>
+                <li>Vendor public roadmap information</li>
+                <li>General FedRAMP compliance requirements documentation</li>
+            </ul>
+
+            <p><strong>Research Limitations:</strong></p>
+            <ul>
+                <li>Performance claims based on vendor marketing materials and selected case studies</li>
+                <li>FedRAMP status assessed from public information only; private compliance discussions may exist</li>
+                <li>Technical architecture details derived from public documentation; internal architecture may differ</li>
+                <li>ROI calculations use hypothetical scenarios; actual results vary by organization</li>
+            </ul>
+
+            <p><strong>Validation Recommendations:</strong></p>
+            <ul>
+                <li>Conduct independent proof-of-concept to validate performance claims</li>
+                <li>Request detailed technical architecture documentation under NDA</li>
+                <li>Obtain direct FedRAMP roadmap commitment from vendor executive leadership</li>
+                <li>Engage reference customers in similar federal/regulated environments</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p><em>Document Classification: Internal Use Only</em></p>
+            <p><em>Research Conducted: [MONTH YEAR]</em></p>
+            <p><em>Contact: christopher.g.roge@afs.com</em></p>
+            <div>
+                <span class="gt-symbol">&gt;</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

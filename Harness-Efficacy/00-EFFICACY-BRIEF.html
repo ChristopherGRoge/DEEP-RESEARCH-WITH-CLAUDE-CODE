@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harness Platform Efficacy Brief | Accenture Federal Services</title>
+    <style>
+        /* AFS Brand Colors - Minimal Use */
+        :root {
+            --core-purple: #7500C0;
+            --accent-purple: #A100FF;
+            --light-purple: #e6dcff;
+            --text-black: #1a1a1a;
+            --text-gray: #4a4a4a;
+            --bg-white: #ffffff;
+            --bg-subtle: #f8f8f8;
+            --border-light: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Graphik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: var(--bg-white);
+            color: var(--text-black);
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        p {
+            font-size: 1.1em;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        /* Hero Section - Brand Colors */
+        header {
+            background: linear-gradient(135deg, var(--core-purple) 0%, var(--accent-purple) 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 8px;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 12px rgba(117, 0, 192, 0.15);
+        }
+
+        .wordmark {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .gt-symbol {
+            font-size: 64px;
+            font-weight: bold;
+            opacity: 0.9;
+        }
+
+        h1 {
+            font-family: 'Graphik', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 42px;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-family: 'GT Sectra Fine', Georgia, serif;
+            font-size: 28px;
+            opacity: 0.95;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+
+        .meta {
+            font-size: 18px;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        /* Body Content - Minimal Colors */
+        h2 {
+            font-family: 'Graphik', Arial, sans-serif;
+            font-weight: 600;
+            font-size: 2.2em;
+            color: var(--text-black);
+            margin: 50px 0 20px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-light);
+        }
+
+        h3 {
+            font-family: 'GT Sectra Fine', Georgia, serif;
+            font-size: 1.7em;
+            color: var(--text-black);
+            margin: 35px 0 18px 0;
+            font-weight: 600;
+        }
+
+        strong {
+            color: var(--text-black);
+            font-weight: 600;
+        }
+
+        em {
+            font-style: italic;
+            color: var(--text-gray);
+        }
+
+        /* Callout Boxes - Strategic Brand Color Use */
+        .callout {
+            background: var(--bg-subtle);
+            border-left: 4px solid var(--core-purple);
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .callout.critical {
+            background: #fffaf0;
+            border-left-color: #ff6b35;
+        }
+
+        .callout.success {
+            background: #f0fff4;
+            border-left-color: #28a745;
+        }
+
+        .callout > strong {
+            color: var(--core-purple);
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .callout.critical > strong {
+            color: #cc5500;
+        }
+
+        .callout.success > strong {
+            color: #1e7d32;
+        }
+
+        /* Section Divider */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-light);
+            margin: 40px 0;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 2px solid var(--border-light);
+            padding-top: 30px;
+            margin-top: 60px;
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+
+        footer .gt-symbol {
+            font-size: 32px;
+            color: var(--core-purple);
+            margin-top: 15px;
+        }
+
+        /* Links */
+        a {
+            color: var(--core-purple);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 20px 0 20px 30px;
+            line-height: 1.8;
+            color: var(--text-gray);
+            font-size: 1.1em;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--core-purple) 0%, var(--accent-purple) 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-gray);
+            font-size: 1.0em;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Recommendation Table */
+        .recommendation-wrapper {
+            background: var(--bg-subtle);
+            border-left: 4px solid var(--core-purple);
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .recommendation-wrapper > strong {
+            color: var(--core-purple);
+            display: block;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        /* Decision Matrix Table */
+        .decision-matrix {
+            background: var(--bg-subtle);
+            border-left: 4px solid var(--core-purple);
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .decision-matrix > strong {
+            color: var(--core-purple);
+            display: block;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+            h1 {
+                font-size: 32px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            h3 {
+                font-size: 20px;
+            }
+            .wordmark {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            header {
+                padding: 35px 25px;
+            }
+            table {
+                font-size: 0.9em;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            header {
+                background: white;
+                border: 2px solid var(--core-purple);
+                color: var(--text-black);
+            }
+            .gt-symbol {
+                color: var(--core-purple);
+            }
+            .callout {
+                border: 1px solid var(--border-light);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="wordmark">
+                <span class="gt-symbol">&gt;</span>
+                <div>
+                    <h1>Harness Platform Efficacy Brief</h1>
+                    <div class="subtitle">Tool Evaluation</div>
+                    <div class="meta">GenAI COTS Team | Accenture Federal Services | January 2025</div>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <h2>Executive Summary</h2>
+
+            <p>Harness is a comprehensive software delivery platform available in both SaaS and Self-Managed Enterprise Edition (on-premise) deployment models. The platform spans the entire SDLC with modules for CI/CD, feature flags, security testing orchestration, chaos engineering, cloud cost management, and an internal developer portal. Harness positions itself as "AI-Native" through its AIDA (AI Development Assistant) feature, which vendor materials claim enables ~88-90% faster deployments, ~$500K+ annual savings per organization, and ~10x ROI within months for some customers (based on published case studies from <a href="https://www.harness.io/customers/oneadvanced">OneAdvanced</a>, <a href="https://www.harness.io/customers/jobvite">Jobvite</a>, and <a href="https://www.harness.io/customers/raisin">Raisin</a>).</p>
+
+            <p>The most critical finding for federal environment compatibility is that <strong>Harness lacks <a href="https://marketplace.fedramp.gov/">FedRAMP authorization</a> but offers alternative federal access paths</strong>. Harness Self-Managed Enterprise Edition supports <strong>FIPS 140-2/140-3</strong> compliance and explicit integration with <strong><a href="https://aws.amazon.com/govcloud-us/">AWS GovCloud</a></strong> for DoD Impact Levels 2, 4, and 5, and DoD agencies can access Harness via <strong><a href="https://p1.dso.mil/">Platform One</a></strong> with continuous authority to operate (cATO). However, AIDA AI features are currently available only in Harness SaaS (not Self-Managed Enterprise Edition) and require external connectivity to third-party LLM providers (OpenAI GPT-4o, Anthropic Claude 3.7 Sonnet, Google Gemini Flash). While authorized LLM endpoints exist in Gov Cloud environments (<a href="https://aws.amazon.com/bedrock/">AWS Bedrock</a> with FedRAMP High, <a href="https://azure.microsoft.com/en-us/products/ai-services/openai-service">Azure OpenAI Service</a> with FedRAMP High), Harness does not currently support AIDA in Self-Managed deployments. This creates a fundamental split: federal organizations can deploy Harness core platform locally to mitigate FedRAMP requirements through Platform One or Self-Managed editions, but cannot access AIDA AI capabilities in those deployment models.</p>
+
+            <div class="recommendation-wrapper">
+                <strong>Recommendation Summary:</strong>
+                <table>
+                    <tr>
+                        <th>Recommendation</th>
+                        <th>Explanation</th>
+                    </tr>
+                    <tr>
+                        <td><strong style="color: #1e7d32;">Proceed with Pilot</strong></td>
+                        <td>Multiple viable federal deployment paths exist: Platform One (cATO), AWS GovCloud (IL 2/4/5), or Self-Managed Enterprise Edition with FIPS compliance; core platform fully functional for local compute to mitigate FedRAMP requirements; AIDA AI currently unavailable in Self-Managed deployments</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="decision-matrix">
+                <strong>Decision Matrix:</strong>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Alignment to Existing Stack</th>
+                            <th>Differentiation</th>
+                            <th>Security and Compliance</th>
+                            <th>ROI Potential</th>
+                            <th>Industry / Community Backing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Replaces existing tools</strong> - Direct alternative to Jenkins, GitLab CI, CircleCI, and Spinnaker with superior developer experience and unified platform approach</td>
+                            <td><strong>Platform integration, not proprietary AI</strong> - AIDA leverages third-party LLMs (OpenAI, Anthropic, Google); differentiation comes from orchestration, workflow automation, and comprehensive module coverage</td>
+                            <td><strong>DoD-approved, no FedRAMP</strong> - Available via Platform One (cATO), Iron Bank hardened containers, AWS GovCloud (DoD IL 2/4/5), FIPS 140-2/140-3 compliant Self-Managed Enterprise Edition; not FedRAMP authorized</td>
+                            <td><strong>Significant for commercial</strong> - Vendor case studies report 88-90% deployment time reduction and $500K+ annual savings, though results vary by organization maturity</td>
+                            <td><strong>Strong enterprise adoption</strong> - Deployed at Citi (20,000 engineers), Fortune 100 companies, DoD Platform One integration; backed by GSI partnerships</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout critical">
+                <strong>Critical Finding: AIDA AI Capabilities Require External Cloud Connectivity</strong>
+                <p>Harness Self-Managed Enterprise Edition can deploy in air-gapped environments, allowing core CI/CD, deployment, and governance features to operate without internet access. However, AIDA—the AI assistant that Harness increasingly markets as its primary differentiator—requires connectivity to external LLM providers for inference. <strong>Developers cannot use AIDA's AI-powered troubleshooting, policy generation, security remediation, or code assistance features without internet connectivity to third-party AI services.</strong> This represents an architectural constraint, not a configuration issue—fully offline AI would require fundamental product changes to support local inference.</p>
+            </div>
+
+            <div class="callout">
+                <strong>Assessment Context: Federal Access Paths and Compliance Positioning</strong>
+                <p>As of January 2025, Harness does not appear on the FedRAMP Marketplace and lacks public FedRAMP authorization at any impact level. However, <strong>Harness has established alternative federal access mechanisms that bypass the FedRAMP requirement for many DoD and federal use cases:</strong></p>
+
+                <p><strong>DoD Access via Platform One (February 2023):</strong></p>
+                <ul>
+                    <li>Harness CI, CD, and Security Testing Orchestration (STO) modules accepted into <strong>U.S. Air Force Platform One</strong></li>
+                    <li>Platform One provides DoD-wide DevSecOps managed service with <strong>continuous Authority to Operate (cATO)</strong></li>
+                    <li>Harness containers available through <strong>Iron Bank</strong> (DoD's hardened container repository with supply chain security vetting)</li>
+                    <li>Enables "any U.S. government agency" to use Harness in DevSecOps environments without individual FedRAMP authorization</li>
+                </ul>
+
+                <p><strong>Gov Cloud Deployment Options:</strong></p>
+                <ul>
+                    <li>Explicit integration with <strong>AWS GovCloud</strong> supporting <strong>DoD Cloud Computing SRG Impact Levels 2, 4, and 5</strong></li>
+                    <li>Self-Managed Enterprise Edition deployable in AWS GovCloud and Azure Government clouds</li>
+                    <li>Supports air-gapped regulatory environments for public sector developers</li>
+                </ul>
+
+                <p><strong>FIPS Compliance (Self-Managed Enterprise Edition):</strong></p>
+                <ul>
+                    <li><strong>FIPS 140-2 and 140-3</strong> compliance support for federal cryptographic requirements</li>
+                    <li>Enables government, defense, and regulated industry deployments meeting mandatory security standards</li>
+                    <li>Note: FIPS mode only supported on new installations, not backward compatible</li>
+                </ul>
+
+                <p><strong>Data Residency Considerations:</strong> Self-Managed Enterprise Edition addresses data residency requirements by keeping deployment artifacts, code, and operational data on-premise or within authorized Gov Cloud boundaries—core platform compute runs locally to mitigate FedRAMP requirements. <strong>AIDA is not currently available in Self-Managed Edition</strong>. If Harness adds AIDA support to Self-Managed in the future, federal organizations would simply configure it to point to their authorized Gov Cloud LLM endpoints (AWS Bedrock with FedRAMP High/DoD IL-4/5 in GovCloud, Azure OpenAI with FedRAMP High/DoD IL-6 in Azure Government) rather than public cloud LLMs. The limitation is product architecture (AIDA SaaS-only), not the availability of compliant LLM infrastructure.</p>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Bottom Line Recommendation</h2>
+
+            <p><strong>Proceed for DoD and Federal Agencies</strong> - Harness offers viable federal deployment paths that satisfy DoD and many federal agency requirements without requiring FedRAMP authorization. Platform One integration (cATO) and AWS GovCloud support (DoD IL 2/4/5) provide authorized access mechanisms for government use. However, due diligence is required to understand deployment model trade-offs.</p>
+
+            <p>For organizations considering Harness in federal environments, the following must be evaluated:</p>
+
+            <ol>
+                <li><strong>Platform One vs. Self-Managed Deployment</strong> - DoD agencies can leverage Platform One's cATO for rapid adoption with DoD-vetted hardened containers from Iron Bank. Other federal agencies must deploy Self-Managed Enterprise Edition in AWS GovCloud, Azure Government, or on-premise with FIPS compliance.</li>
+                <li><strong>Data Transit Requirements for AIDA</strong> - Assess whether data transit to external LLM providers violates classification requirements. <strong>Platform One and Gov Cloud deployments can run core Harness platform, but AIDA features require explicit approval for external data transit.</strong></li>
+                <li><strong>Impact Level and Classification Requirements</strong> - AWS GovCloud deployment supports DoD IL 2, 4, and 5 for core platform features. However, AIDA is incompatible with classified workloads requiring air-gap.</li>
+                <li><strong>FIPS Compliance Requirements</strong> - FIPS mode is only supported on new Self-Managed Enterprise Edition installations (not backward compatible).</li>
+            </ol>
+
+            <p><strong>Effort Level: Moderate for DoD agencies (Platform One), Moderate-to-High for other federal agencies (Self-Managed Gov Cloud).</strong> Platform One provides the fastest path to federal adoption with continuous ATO.</p>
+
+            <div class="callout success">
+                <strong>Proceed with adoption when:</strong>
+                <ul>
+                    <li><strong>DoD Agency with Platform One Access</strong> - Leverage existing Platform One cATO and Iron Bank hardened containers for rapid deployment</li>
+                    <li><strong>Federal Agency with Gov Cloud Authorization</strong> - Deploy Self-Managed Enterprise Edition in AWS GovCloud (IL 2/4/5) or Azure Government with FIPS compliance</li>
+                    <li><strong>Core Platform Delivers Value Without AIDA</strong> - Business case validated based on deployment orchestration, governance, and automated verification</li>
+                    <li><strong>Acceptable Operational Model</strong> - Organization has Kubernetes expertise for Self-Managed infrastructure management</li>
+                    <li><strong>Impact Level Alignment</strong> - Workload classification matches supported deployment models</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Platform One: DoD's Authorized Path</h2>
+
+            <p>In February 2023, Harness became available on <strong>U.S. Air Force Platform One</strong>, the Department of Defense's approved DevSecOps platform. This integration provides a critical federal access path:</p>
+
+            <h3>What is Platform One?</h3>
+
+            <ul>
+                <li><strong>DoD-wide DevSecOps managed service</strong> - Centralized platform for secure software development and delivery across DoD agencies</li>
+                <li><strong>Continuous Authority to Operate (cATO)</strong> - Eliminates individual authorization processes for approved tools</li>
+                <li><strong>Iron Bank</strong> - Hardened container repository with supply chain security vetting for approved images</li>
+                <li><strong>Big Bang</strong> - Customizable infrastructure and configuration as code pulling from vetted containers</li>
+                <li><strong>Party Bus</strong> - Managed PaaS providing secure, multitenant, multiclassification environments</li>
+            </ul>
+
+            <h3>Harness on Platform One</h3>
+
+            <ul>
+                <li><strong>Available Modules:</strong> Continuous Integration (CI), Continuous Delivery (CD), Security Testing Orchestration (STO)</li>
+                <li><strong>Deployment Model:</strong> Hardened containers from Iron Bank, vetted for DoD security requirements</li>
+                <li><strong>Authorization:</strong> Platform One's cATO covers Harness modules—no separate FedRAMP authorization required</li>
+                <li><strong>Access:</strong> "Any U.S. government agency" can use Harness via Platform One</li>
+            </ul>
+
+            <p><strong>Significance:</strong> Platform One integration bypasses traditional FedRAMP authorization requirements and provides the fastest path to federal adoption for DoD agencies and contractors with Platform One access.</p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Conclusion</h2>
+
+            <p>Harness represents a mature, comprehensive software delivery platform with demonstrated enterprise deployments and significant productivity improvements for organizations migrating from legacy CI/CD tooling. Vendor-reported case studies document 88-90% deployment time reductions and $500K+ annual savings, though these results reflect optimal conditions and migration from manual processes.</p>
+
+            <p><strong>Federal adoption is viable through multiple authorized paths that bypass FedRAMP requirements.</strong> In February 2023, Harness achieved a significant federal milestone with integration into U.S. Air Force Platform One, providing DoD agencies continuous Authority to Operate (cATO) and access to hardened containers through Iron Bank. Additionally, AWS GovCloud support for DoD Impact Levels 2, 4, and 5, combined with FIPS 140-2/140-3 compliance in Self-Managed Enterprise Edition, enables federal civilian agencies to deploy Harness in authorized cloud or on-premise environments. The primary constraint is that AIDA AI features require external connectivity to third-party LLM providers, creating incompatibility with classified workloads requiring air-gap—though core platform capabilities function fully without AIDA.</p>
+
+            <div class="callout">
+                <strong>Recommendation: Proceed for DoD and Federal Agencies</strong>
+                <p>Federal adoption should be scoped based on organizational context:</p>
+                <p><strong>Harness is appropriate for:</strong></p>
+                <ul>
+                    <li><strong>DoD agencies at all classification levels</strong> via Platform One (cATO) or AWS GovCloud (IL 2/4/5); AIDA disabled for classified workloads</li>
+                    <li><strong>Federal civilian agencies (unclassified)</strong> via Self-Managed Enterprise Edition with FIPS 140-2/140-3 in Gov Cloud or on-premise</li>
+                    <li><strong>Air-gapped classified environments</strong> for core CI/CD platform (without AIDA)</li>
+                    <li><strong>Commercial cloud-first organizations</strong> seeking comprehensive SDLC platform consolidation with AI capabilities</li>
+                </ul>
+                <p><strong>Harness is NOT appropriate for:</strong></p>
+                <ul>
+                    <li><strong>Air-gapped classified workloads requiring AIDA AI</strong> - architectural incompatibility</li>
+                    <li><strong>Organizations mandating FedRAMP-authorized SaaS only</strong> - Platform One and Self-Managed bypass this requirement</li>
+                    <li><strong>Teams requiring AI-powered features as essential</strong> in environments prohibiting external data transit</li>
+                </ul>
+            </div>
+
+            <div class="callout success">
+                <strong>Next Step: Initiate Federal-Appropriate Evaluation Path</strong>
+                <p><strong>For DoD Agencies:</strong></p>
+                <ol>
+                    <li>Assess Platform One access and onboarding process</li>
+                    <li>Engage Platform One program office for Harness module availability</li>
+                    <li>Identify pilot applications on Platform One</li>
+                    <li>Evaluate GovCloud alternative if Platform One constraints exist</li>
+                </ol>
+                <p><strong>For Federal Civilian Agencies:</strong></p>
+                <ol>
+                    <li>Deploy Self-Managed Enterprise Edition POC with FIPS configuration</li>
+                    <li>Map compliance controls to FISMA, NIST 800-53, and agency frameworks</li>
+                    <li>Pilot with unclassified workloads</li>
+                    <li>Conduct AIDA data transit review if AI features desired</li>
+                </ol>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Sources and Methodology</h2>
+
+            <p>This evaluation is based on publicly available information from Harness website, technical documentation, marketing materials, customer case studies, and independent reviews accessed in January 2025. Performance metrics reflect vendor-reported results under optimal conditions.</p>
+
+            <p><strong>Key Sources:</strong></p>
+            <ul>
+                <li>Harness Developer Hub documentation (developer.harness.io)</li>
+                <li>Harness federal compliance blog posts (zero-trust requirements, policy-as-code)</li>
+                <li>Platform One integration announcements (February 2023, MeriTalk, Air Force Technology, PRNewswire)</li>
+                <li>AWS GovCloud and DoD Impact Level integration documentation</li>
+                <li>FIPS 140-2/140-3 compliance documentation for Self-Managed Enterprise Edition</li>
+                <li>Customer case studies (OneAdvanced, Jobvite, Raisin, Citi)</li>
+                <li>FedRAMP Marketplace public listings (marketplace.fedramp.gov)</li>
+                <li>Third-party reviews (G2, Gartner Peer Insights, TrustRadius)</li>
+            </ul>
+
+            <p><strong>Research Limitations:</strong></p>
+            <ul>
+                <li>Performance claims based on vendor case studies under optimal conditions</li>
+                <li>FedRAMP status from public information only; Platform One and Gov Cloud deployments bypass FedRAMP requirement</li>
+                <li>Platform One integration details limited - public announcements confirm February 2023 availability; operational details not publicly disclosed</li>
+                <li>AIDA LLM dependencies documented in Harness Developer Hub; internal implementation may differ</li>
+                <li>No hands-on testing conducted - analysis based on documented capabilities</li>
+            </ul>
+
+            <p><strong>Validation Recommendations:</strong></p>
+            <ul>
+                <li>Conduct independent proof-of-concept testing in Platform One or Gov Cloud</li>
+                <li>Request detailed technical architecture documentation under NDA</li>
+                <li>Engage Platform One program office for DoD-specific deployment guidance</li>
+                <li>Engage Harness federal team for Gov Cloud support and FIPS roadmap</li>
+                <li>Test AIDA data transit in controlled environment to document actual information sent to external LLM providers</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p><em>Document Classification: Internal Use Only</em></p>
+            <p><em>Research Conducted: January 2025</em></p>
+            <p><em>Contact: christopher.g.roge@afs.com</em></p>
+            <div>
+                <span class="gt-symbol">&gt;</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
