@@ -1,0 +1,443 @@
+# DISCOVERY RESEARCH TEMPLATE
+## Entity Identification and Claim Collection Framework
+
+**Purpose:** Broad exploration to identify Entities (tools/platforms) matching research criteria and collect initial claims/assertions about each. This is fact-finding, not validation.
+
+**When to Use:** Starting new research domain or expanding coverage. This is the "Discovery" workflow from VISION.md.
+
+**Output:** Entity catalog with collected claims, ready for Efficacy analysis.
+
+---
+
+## CORE PRINCIPLES
+
+### Discovery vs. Analysis
+| Discovery (This Template) | Analysis (Efficacy Template) |
+|---------------------------|------------------------------|
+| Cast a broad net | Deep dive on specific entity |
+| Collect claims without judging | Validate/refute claims |
+| "Does this match our criteria?" | "Is this true and useful?" |
+| Record many entities quickly | Thorough single-entity research |
+| Claims default to "Claim" status | Progress claims to "Evidence" |
+
+### Assertion Lifecycle
+```
+Claim → Evidence (human-validated) → Superseded (if newer data found)
+```
+
+### Source Lifecycle
+```
+Proposed → Validated (human-verified)
+```
+
+---
+
+## RESEARCH METHODOLOGY
+
+### Phase 1: Define Search Criteria (15-30 min)
+
+Before searching, establish clear criteria:
+
+```markdown
+## Research Domain Definition
+
+**Domain:** [e.g., "Agentic SDLC Tools"]
+
+**Entity Type:** [e.g., "AI-powered software development tools"]
+
+**Inclusion Criteria:**
+- [Criterion 1: e.g., "Uses AI/ML for code generation or analysis"]
+- [Criterion 2: e.g., "Targets enterprise development workflows"]
+- [Criterion 3: e.g., "Available as SaaS or self-hosted"]
+
+**Exclusion Criteria:**
+- [e.g., "Pure IDE extensions without AI capabilities"]
+- [e.g., "Open-source-only with no commercial support"]
+
+**Primary Questions:**
+1. [e.g., "What tools exist in this space?"]
+2. [e.g., "Who are the market leaders?"]
+3. [e.g., "What deployment models are available?"]
+```
+
+### Phase 2: Broad Web Search (1-2 hours)
+
+Execute searches in priority order:
+
+#### Priority 1: Vendor Documentation & Official Sources
+- Company websites and product pages
+- Official documentation and getting-started guides
+- Pricing pages and enterprise offerings
+- Press releases and announcements
+
+**Search Patterns:**
+```
+"[domain] tools" site:*.io OR site:*.ai OR site:*.dev
+"AI [domain]" enterprise platform
+"[domain] automation" SaaS
+```
+
+#### Priority 2: Industry Analysis & Coverage
+- Analyst reports (Gartner, Forrester, G2)
+- Tech publication articles (InfoQ, The New Stack, DevOps.com)
+- Conference presentations (YouTube, SlideShare)
+- Podcasts and webinars
+
+**Search Patterns:**
+```
+"[domain]" market landscape 2024 2025
+"[domain]" comparison guide
+"[domain]" Gartner OR Forrester OR G2
+```
+
+#### Priority 3: Community Discussion
+- GitHub discussions and issues
+- Stack Overflow threads
+- Reddit (r/devops, r/programming, r/sre)
+- Hacker News discussions
+
+**Search Patterns:**
+```
+site:github.com "[tool name]" issues
+site:reddit.com "[domain]" recommendations
+site:news.ycombinator.com "[domain]"
+```
+
+### Phase 3: Entity Recording (Concurrent with Phase 2)
+
+For each potential Entity discovered:
+
+```markdown
+## Entity: [TOOL NAME]
+
+**Discovered:** [Date]
+**Source:** [URL where first found]
+**Initial Match Assessment:** [Strong/Moderate/Weak fit to criteria]
+
+### Basic Information
+- **Vendor:** [Company name]
+- **Website:** [URL]
+- **Category:** [e.g., "AI Code Review", "Test Automation"]
+- **Pricing Model:** [SaaS/Self-hosted/Hybrid/Open Source]
+
+### Initial Claims Collected
+[Record claims exactly as found - do not validate yet]
+
+| Claim | Source | Status |
+|-------|--------|--------|
+| "[Exact claim from vendor]" | [URL] | Claim |
+| "[Exact claim from review]" | [URL] | Claim |
+
+### Federal Relevance Signals
+- [ ] FedRAMP mentioned
+- [ ] Government customers cited
+- [ ] Self-hosted option available
+- [ ] Air-gap deployment mentioned
+- [ ] SOC 2/compliance certifications
+
+### Notes
+[Quick observations, questions for follow-up]
+```
+
+### Phase 4: Source Documentation
+
+Track all sources for later validation:
+
+```markdown
+## Sources Catalog
+
+| URL | Type | Entity Referenced | Date Accessed | Status |
+|-----|------|-------------------|---------------|--------|
+| [URL] | Vendor | [Entity] | [Date] | Proposed |
+| [URL] | Analysis | [Entity] | [Date] | Proposed |
+| [URL] | Community | [Entity] | [Date] | Proposed |
+```
+
+---
+
+## ENTITY CATALOG TEMPLATE
+
+Create a consolidated catalog as discovery progresses:
+
+```markdown
+# [DOMAIN] Entity Catalog
+*Discovery Research | [Date Range]*
+
+## Summary
+
+**Total Entities Identified:** [N]
+**Strong Fit:** [N] entities
+**Moderate Fit:** [N] entities
+**Weak Fit/Excluded:** [N] entities
+
+## Entities by Category
+
+### [Category 1: e.g., "AI Code Generation"]
+
+#### [Entity 1 Name]
+- **Vendor:** [Company]
+- **URL:** [Website]
+- **Fit:** [Strong/Moderate/Weak]
+- **Key Claims:**
+  - [Claim 1]
+  - [Claim 2]
+- **Federal Signals:** [FedRAMP/GovCloud/Self-hosted/None observed]
+- **Recommended for Efficacy Analysis:** [Yes/No - with reason]
+
+#### [Entity 2 Name]
+...
+
+### [Category 2: e.g., "AI Testing"]
+...
+
+## Cross-Cutting Observations
+
+### Market Trends
+[Patterns observed across entities]
+
+### Common Limitations
+[Repeated constraints or gaps]
+
+### Federal Landscape
+[Overall assessment of federal-readiness in this domain]
+
+## Recommended Next Steps
+
+### High Priority (Efficacy Analysis)
+1. [Entity A] - [Reason: strong fit + federal signals]
+2. [Entity B] - [Reason: market leader, unclear compliance]
+
+### Medium Priority (Monitor)
+- [Entity C] - [Reason: emerging, insufficient data]
+
+### Low Priority/Exclude
+- [Entity D] - [Reason: doesn't meet criteria]
+
+## Sources
+
+[Total sources reviewed: N]
+[Proposed: N | Validated: N]
+
+[Link to full sources catalog]
+```
+
+---
+
+## SEARCH STRATEGIES BY DOMAIN
+
+### For Agentic SDLC Tools
+```
+"AI code review" enterprise
+"AI test generation" platform
+"autonomous coding" agent
+"AI DevOps" automation
+"LLM software development" tools
+"AI pair programming" enterprise
+site:g2.com "AI development tools"
+```
+
+### For Observability/Monitoring
+```
+"AI observability" platform
+"LLM monitoring" production
+"AI tracing" distributed
+"intelligent alerting" machine learning
+site:datadoghq.com OR site:splunk.com competitors
+```
+
+### For Security Tools
+```
+"AI security scanning" SAST DAST
+"AI vulnerability detection" code
+"AI threat detection" DevSecOps
+"automated security testing" AI
+```
+
+### For Data/ML Platforms
+```
+"MLOps platform" enterprise
+"AI model deployment" production
+"machine learning infrastructure"
+"feature store" "model registry"
+```
+
+---
+
+## CLAIM RECORDING BEST PRACTICES
+
+### DO Record
+- Exact vendor claims with quotation marks
+- Specific metrics ("~50% faster", "~$500K savings")
+- Named customer references
+- Compliance certifications mentioned
+- Technical architecture claims (self-hosted, air-gapped)
+
+### DO NOT
+- Paraphrase or interpret claims
+- Add your own assessment (save for Efficacy phase)
+- Validate claims at this stage
+- Reject entities based on unverified limitations
+
+### Claim Categories
+```
+- Performance: "~X% faster/reduction/improvement"
+- Scale: "Deployed at [N] engineers/companies"
+- Compliance: "FedRAMP authorized", "SOC 2 Type II"
+- Technical: "Self-hosted option", "Air-gap support"
+- Customer: "[Company] uses [tool] for [use case]"
+- Comparison: "Replaces [competitor]", "Unlike [tool]"
+```
+
+---
+
+## FEDERAL RELEVANCE SCORING
+
+Quickly assess federal potential during discovery:
+
+| Signal | Points | Notes |
+|--------|--------|-------|
+| FedRAMP Authorized | +3 | Check marketplace.fedramp.gov |
+| FedRAMP In Process | +2 | May not be current |
+| Government customers named | +2 | Verify if public sector |
+| Self-hosted/on-premise option | +2 | Critical for air-gap |
+| SOC 2 Type II | +1 | Table stakes for enterprise |
+| FIPS compliance mentioned | +2 | Signals federal awareness |
+| Platform One/GovCloud available | +3 | Direct federal path |
+| Air-gap deployment documented | +3 | Rare, highly valuable |
+| No compliance mentions | 0 | May indicate commercial-only focus |
+
+**Scoring Guide:**
+- 6+ points: High federal potential - prioritize for Efficacy
+- 3-5 points: Moderate potential - may require due diligence
+- 0-2 points: Low initial signals - commercial focus likely
+
+---
+
+## DISCOVERY SESSION TEMPLATE
+
+Use this format for each discovery session:
+
+```markdown
+# Discovery Session: [DOMAIN]
+**Date:** [Date]
+**Duration:** [X hours]
+**Researcher:** [Name]
+
+## Session Objectives
+- [Objective 1]
+- [Objective 2]
+
+## Search Queries Executed
+1. [Query 1] → [N results reviewed]
+2. [Query 2] → [N results reviewed]
+
+## New Entities Identified
+| Entity | Category | Fit | Federal Score | Priority |
+|--------|----------|-----|---------------|----------|
+| [Name] | [Cat] | [S/M/W] | [0-10] | [H/M/L] |
+
+## Key Observations
+- [Observation 1]
+- [Observation 2]
+
+## Sources Added
+[N new sources, N total]
+
+## Next Session Focus
+- [Follow-up area 1]
+- [Follow-up area 2]
+
+## Handoff Notes
+[For next researcher or Efficacy phase]
+```
+
+---
+
+## TRANSITIONING TO EFFICACY
+
+When an Entity is ready for deep analysis:
+
+### Readiness Criteria
+- [ ] Basic information complete (vendor, URL, category)
+- [ ] At least 3-5 initial claims collected
+- [ ] Federal relevance score calculated
+- [ ] Sources documented with URLs
+- [ ] Fit assessment completed
+
+### Handoff Document
+
+```markdown
+## Efficacy Analysis Request: [ENTITY NAME]
+
+**Discovery Date:** [Date]
+**Recommended Priority:** [High/Medium]
+
+### Why This Entity
+[1-2 sentences on why it warrants deep analysis]
+
+### Initial Claims to Validate
+1. [Claim 1 - source]
+2. [Claim 2 - source]
+3. [Claim 3 - source]
+
+### Federal Relevance Signals
+[Summary of signals observed]
+
+### Key Questions for Efficacy Phase
+1. [Question about architecture]
+2. [Question about compliance]
+3. [Question about technical claims]
+
+### Sources to Review
+- [Primary vendor source]
+- [Technical documentation]
+- [Case study/review]
+
+### Comparison Entities
+[Other entities in same category for competitive analysis]
+```
+
+---
+
+## QUALITY CHECKLIST
+
+Before concluding discovery phase:
+
+- [ ] Search criteria clearly defined
+- [ ] Multiple source types consulted (vendor, analyst, community)
+- [ ] All entities documented with consistent format
+- [ ] Claims recorded exactly as found (not interpreted)
+- [ ] Sources cataloged with URLs and access dates
+- [ ] Federal relevance scored for each entity
+- [ ] Clear recommendations for Efficacy phase
+- [ ] Handoff documents prepared for priority entities
+- [ ] Session notes captured for knowledge continuity
+
+---
+
+## DATABASE INTEGRATION (Future State)
+
+Per VISION.md, discovery data should flow to PostgreSQL:
+
+```sql
+-- Entities table
+INSERT INTO entities (name, vendor, category, url, fit_score, federal_score)
+VALUES ('[name]', '[vendor]', '[category]', '[url]', '[S/M/W]', [0-10]);
+
+-- Assertions table (claims)
+INSERT INTO assertions (entity_id, claim_text, source_url, status)
+VALUES ([entity_id], '[exact claim]', '[source]', 'Claim');
+
+-- Sources table
+INSERT INTO sources (url, type, access_date, status)
+VALUES ('[url]', '[vendor/analyst/community]', '[date]', 'Proposed');
+```
+
+Status transitions:
+- `Claim` → `Evidence` (human validates)
+- `Proposed` → `Validated` (human verifies source)
+
+---
+
+*Template Version: January 2025*
+*Based on VISION.md research framework*

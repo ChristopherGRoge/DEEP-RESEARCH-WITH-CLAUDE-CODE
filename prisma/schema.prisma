@@ -1,0 +1,213 @@
+// Deep Research Schema
+// Based on VISION.md - A framework for persistent, repeatable research
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================
+// ENUMS - Validation States
+// ============================================
+
+enum AssertionStatus {
+  CLAIM     // Default - unvalidated assertion
+  EVIDENCE  // Human-validated assertion
+  REJECTED  // Explicitly rejected by human
+}
+
+enum SourceStatus {
+  PROPOSED   // Default - unvalidated source
+  VALIDATED  // Human-validated source
+  REJECTED   // Explicitly rejected by human
+}
+
+enum ResearchWorkflow {
+  DISCOVERY  // Broad net, finding entities
+  ANALYSIS   // Deep dive on specific entity
+}
+
+enum ExtractionStatus {
+  PENDING    // Queued for extraction
+  COMPLETED  // Successfully extracted
+  FAILED     // Extraction failed
+  STALE      // Data expired, needs refresh
+}
+
+// ============================================
+// CORE MODELS
+// ============================================
+
+/// A research project/topic being investigated
+model ResearchProject {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  searchQuery String?  // The initial search criteria
+  workflow    ResearchWorkflow @default(DISCOVERY)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  entities    Entity[]
+
+  @@map("research_projects")
+}
+
+/// An entity being researched (e.g., a tool, framework, product)
+model Entity {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  entityType  String?  // e.g., "tool", "framework", "product", "company"
+  url         String?  // Primary URL for the entity
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  projectId   String
+  project     ResearchProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  assertions  Assertion[]
+  extractions Extraction[]
+
+  @@unique([projectId, name])
+  @@map("entities")
+}
+
+/// An assertion/claim about an entity
+model Assertion {
+  id          String   @id @default(cuid())
+  claim       String   // The assertion being made
+  status      AssertionStatus @default(CLAIM)
+  category    String?  // e.g., "feature", "pricing", "integration", "performance"
+  confidence  Float?   // Optional confidence score (0-1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  validatedAt DateTime?
+  validatedBy String?  // Human validator identifier
+
+  entityId    String
+  entity      Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  reasoning   Reasoning[]
+  sources     AssertionSource[]
+
+  @@map("assertions")
+}
+
+/// Reasoning supporting an assertion
+model Reasoning {
+  id          String   @id @default(cuid())
+  content     String   // The reasoning/analysis
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  assertionId String
+  assertion   Assertion @relation(fields: [assertionId], references: [id], onDelete: Cascade)
+
+  @@map("reasoning")
+}
+
+/// A source URL backing claims
+model Source {
+  id          String   @id @default(cuid())
+  url         String   @unique
+  title       String?
+  description String?
+  sourceType  String?  // e.g., "vendor_docs", "blog", "github", "forum", "press"
+  status      SourceStatus @default(PROPOSED)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  validatedAt DateTime?
+  validatedBy String?  // Human validator identifier
+
+  // URL validation fields (populated by extractor)
+  lastFetchedAt   DateTime?  // When URL was last successfully fetched
+  lastStatusCode  Int?       // HTTP status code from last fetch
+  contentHash     String?    // Hash of page content for change detection
+  isAccessible    Boolean    @default(true)
+
+  assertions  AssertionSource[]
+  extractions Extraction[]
+
+  @@map("sources")
+}
+
+/// Many-to-many relationship between Assertions and Sources
+model AssertionSource {
+  id          String   @id @default(cuid())
+  quote       String?  // Relevant quote from the source
+  createdAt   DateTime @default(now())
+
+  assertionId String
+  assertion   Assertion @relation(fields: [assertionId], references: [id], onDelete: Cascade)
+
+  sourceId    String
+  source      Source   @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@unique([assertionId, sourceId])
+  @@map("assertion_sources")
+}
+
+/// Audit log for tracking research activities
+model ResearchLog {
+  id          String   @id @default(cuid())
+  action      String   // e.g., "entity_created", "assertion_validated", "source_added"
+  details     Json?    // Additional context
+  agentId     String?  // Identifier for the subagent that performed the action
+  createdAt   DateTime @default(now())
+
+  @@map("research_logs")
+}
+
+// ============================================
+// EXTRACTION MODELS - Structured Data Capture
+// ============================================
+
+/// Screenshot evidence captured during extraction
+model Screenshot {
+  id          String   @id @default(cuid())
+  filePath    String   // Local path to screenshot file
+  url         String   // URL that was captured
+  fullPage    Boolean  @default(true)
+  width       Int?
+  height      Int?
+  capturedAt  DateTime @default(now())
+
+  extractions Extraction[]
+
+  @@map("screenshots")
+}
+
+/// Structured data extracted from a source
+/// This is the PRIMARY tool for deep research - extracts queryable data from web pages
+model Extraction {
+  id            String   @id @default(cuid())
+  schemaType    String   // "pricing", "features", "company", "compliance", "integrations", "custom"
+  data          Json     // The structured data conforming to schema
+  rawQuotes     Json?    // Supporting quotes from the source
+  status        ExtractionStatus @default(COMPLETED)
+  confidence    Float?   // LLM confidence in extraction (0-1)
+  error         String?  // Error message if extraction failed
+  extractedAt   DateTime @default(now())
+  expiresAt     DateTime? // When this data should be re-extracted
+
+  entityId      String
+  entity        Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  sourceId      String
+  source        Source   @relation(fields: [sourceId], references: [id])
+
+  screenshotId  String?
+  screenshot    Screenshot? @relation(fields: [screenshotId], references: [id])
+
+  // Auto-generated assertions from this extraction
+  assertionIds  String[] // IDs of assertions created from this extraction
+
+  @@index([entityId, schemaType])
+  @@index([status])
+  @@map("extractions")
+}

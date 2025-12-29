@@ -1,0 +1,395 @@
+{
+  "id": "1242b571b576",
+  "name": "Extract pricing for all entities",
+  "projectId": "cmjkbj8n00000b5tuv300a826",
+  "projectName": "Agentic SDLC Tools",
+  "taskType": "extract:pricing",
+  "createdAt": "2025-12-29T20:47:16.105Z",
+  "updatedAt": "2025-12-29T20:48:04.945Z",
+  "items": [
+    {
+      "entityId": "cmjkbuaw70000cutuqpu3d5d4",
+      "entityName": "AWS Kiro",
+      "entityUrl": "https://kiro.dev",
+      "status": "completed",
+      "startedAt": "2025-12-29T20:47:45.837Z",
+      "completedAt": "2025-12-29T20:48:04.945Z",
+      "notes": "Pricing extracted successfully"
+    },
+    {
+      "entityId": "cmjkbvlea0000s3tux3yrlzvt",
+      "entityName": "Aider",
+      "entityUrl": "https://aider.chat",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbwfk50000rqtui8qk7k2r",
+      "entityName": "Aikido Security",
+      "entityUrl": "https://www.aikido.dev",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbx8ng0000m5tuc1otgx5d",
+      "entityName": "Amazon CodeGuru",
+      "entityUrl": "https://aws.amazon.com/codeguru",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbv1k400007wtuy3x4t262",
+      "entityName": "Amazon Q Developer",
+      "entityUrl": "https://aws.amazon.com/q/developer",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbtw190000v3tujmeza1in",
+      "entityName": "Applitools",
+      "entityUrl": "https://applitools.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbybi20000qntunynf7rkm",
+      "entityName": "Augment Code",
+      "entityUrl": "https://www.augmentcode.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbyyk30000f0tutqhvlmi2",
+      "entityName": "Autify",
+      "entityUrl": "https://autify.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbxdms0000rdtugunx77o7",
+      "entityName": "Automaker",
+      "entityUrl": "https://automaker.app",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbykbb00000ytuadzv11em",
+      "entityName": "Aviator",
+      "entityUrl": "https://www.aviator.co",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbtd6x0000d8tuubvsdfao",
+      "entityName": "Bito AI",
+      "entityUrl": "https://bito.ai",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkby10u0000g6tu9egezpqg",
+      "entityName": "BlinqIO",
+      "entityUrl": "https://blinq.io",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbv7gd0000eztugoq5fxnu",
+      "entityName": "Cast AI",
+      "entityUrl": "https://cast.ai",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbxeyi0000uotul03oif72",
+      "entityName": "Codacy",
+      "entityUrl": "https://www.codacy.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbt9eo000059tuha5isn8k",
+      "entityName": "CodeRabbit",
+      "entityUrl": "https://www.coderabbit.ai",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbx6ph0000jptuomk36bqm",
+      "entityName": "Codeium",
+      "entityUrl": "https://codeium.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbwuwr00007otu3hf6krki",
+      "entityName": "Codel",
+      "entityUrl": "https://github.com/semanser/codel",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbwx6a0000b4tuiv3uo5tj",
+      "entityName": "Corgea",
+      "entityUrl": "https://corgea.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbxwo30000cetu6ekijetp",
+      "entityName": "DeepSource",
+      "entityUrl": "https://deepsource.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbysjj000078tuvt827adi",
+      "entityName": "Devika",
+      "entityUrl": "https://github.com/stitionai/devika",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbt7420000zutukh52xxtz",
+      "entityName": "Devin",
+      "entityUrl": "https://devin.ai",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbur5v0000uptuh6xzn5ub",
+      "entityName": "DuploCloud",
+      "entityUrl": "https://duplocloud.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbts0u0000pituiolltze9",
+      "entityName": "Factory Droids",
+      "entityUrl": "https://factory.ai",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbt4280000u2tuh917x4c4",
+      "entityName": "GitHub Copilot",
+      "entityUrl": "https://github.com/features/copilot",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbydkc0000sxtuwvxyw9xv",
+      "entityName": "Graphite",
+      "entityUrl": "https://graphite.dev",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbtvde0000uhtu0y51cnw9",
+      "entityName": "Greptile",
+      "entityUrl": "https://www.greptile.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkby49v0000lituoh15rntm",
+      "entityName": "Harness",
+      "entityUrl": "https://www.harness.io",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbwpru00001ttujg0auq1f",
+      "entityName": "Itential",
+      "entityUrl": "https://www.itential.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbvoy70000zetue48mx7ho",
+      "entityName": "K8sGPT",
+      "entityUrl": "https://k8sgpt.ai",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbuzxk000046tusuwhplhj",
+      "entityName": "Katalon",
+      "entityUrl": "https://katalon.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbyuvu0000a3tup7za3a7x",
+      "entityName": "Kodus AI",
+      "entityUrl": "https://kodus.io",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbz8ir0000lytujorlqg96",
+      "entityName": "Korbit AI",
+      "entityUrl": "https://www.korbit.ai",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbt6xc0000zbturjccwp3g",
+      "entityName": "Kubiya",
+      "entityUrl": "https://www.kubiya.ai",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbzcds0000pmtup1q6qhzj",
+      "entityName": "LambdaTest",
+      "entityUrl": "https://www.lambdatest.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbufaa0000jutuqukixiif",
+      "entityName": "Mabl",
+      "entityUrl": "https://mabl.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbvyxa00007oturwtck0lo",
+      "entityName": "Metabob",
+      "entityUrl": "https://metabob.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbx4re0000gutu097p6qz8",
+      "entityName": "Meticulous",
+      "entityUrl": "https://www.meticulous.ai",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbw3it0000bgtutbjr4t54",
+      "entityName": "Momentic",
+      "entityUrl": "https://momentic.ai",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbuv3v0000xntuubshdoh0",
+      "entityName": "OpenHands",
+      "entityUrl": "https://github.com/All-Hands-AI/OpenHands",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbwogo0000zmtu7lh0eel7",
+      "entityName": "Pieces for Developers",
+      "entityUrl": "https://pieces.app",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbsv9w0000p3tuak1j81r8",
+      "entityName": "Qodo",
+      "entityUrl": "https://www.qodo.ai",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbtyib0000z3tuaol4swne",
+      "entityName": "Qodo Cover",
+      "entityUrl": "https://www.qodo.ai/products/qodo-cover",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbw68x0000irtu84fwatg7",
+      "entityName": "Rafay",
+      "entityUrl": "https://rafay.co",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbxjv5000011tujs7cckyr",
+      "entityName": "Reflect",
+      "entityUrl": "https://reflect.run",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbvek40000istuovquxv54",
+      "entityName": "Replit Agent",
+      "entityUrl": "https://replit.com/agent3",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbxopn000057tucmflh0kt",
+      "entityName": "Robusta",
+      "entityUrl": "https://home.robusta.dev",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbwd4w0000p5tu12by6u5w",
+      "entityName": "SWE-agent",
+      "entityUrl": "https://github.com/SWE-agent/SWE-agent",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbuxcm00000rtu53wylt61",
+      "entityName": "Semgrep",
+      "entityUrl": "https://semgrep.dev",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbudp40000hltuqi7z81tz",
+      "entityName": "Snyk Code",
+      "entityUrl": "https://snyk.io/product/snyk-code",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbvgm70000litu3rybbvuv",
+      "entityName": "SonarQube",
+      "entityUrl": "https://www.sonarsource.com/products/sonarqube",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbu27u00005otujaet4x4n",
+      "entityName": "Sourcegraph Cody",
+      "entityUrl": "https://sourcegraph.com/cody",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbu9qj0000antunm8iw2el",
+      "entityName": "Spacelift",
+      "entityUrl": "https://spacelift.io",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbw5aq0000eitu6232d40u",
+      "entityName": "Supermaven",
+      "entityUrl": "https://supermaven.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbui990000ontul4x1bz33",
+      "entityName": "Tabnine",
+      "entityUrl": "https://www.tabnine.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbwmzy0000x4tu3i9j9p4k",
+      "entityName": "TestSprite",
+      "entityUrl": "https://www.testsprite.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbvjs60000pktutqhyo8nt",
+      "entityName": "TestZeus Hercules",
+      "entityUrl": "https://testzeus.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbzorg0000xotuvki9bwym",
+      "entityName": "Testsigma",
+      "entityUrl": "https://testsigma.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbyi8y0000xhtulzz0ptvp",
+      "entityName": "Virtuoso QA",
+      "entityUrl": "https://www.virtuosoqa.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbvwmw00003wtuvt5zr8py",
+      "entityName": "Windsurf",
+      "entityUrl": "https://windsurf.com",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbxvgo00009btumemz5b1c",
+      "entityName": "Zencoder",
+      "entityUrl": "https://zencoder.ai",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbtq3b0000mttu7d41ovn8",
+      "entityName": "nOps",
+      "entityUrl": "https://www.nops.io",
+      "status": "pending"
+    },
+    {
+      "entityId": "cmjkbt9v500005jtuu6b1ligp",
+      "entityName": "testRigor",
+      "entityUrl": "https://testrigor.com",
+      "status": "pending"
+    }
+  ],
+  "currentIndex": 0,
+  "stats": {
+    "total": 62,
+    "pending": 61,
+    "inProgress": 0,
+    "completed": 1,
+    "skipped": 0,
+    "failed": 0
+  }
+}

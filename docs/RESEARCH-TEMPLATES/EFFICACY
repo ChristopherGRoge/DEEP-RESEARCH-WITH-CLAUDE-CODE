@@ -1,0 +1,414 @@
+# EFFICACY RESEARCH TEMPLATE
+## Tool Evaluation Framework for Federal Environment Compatibility
+
+**Purpose:** Deep-dive analysis of a specific Entity (tool/platform) to validate or refute claims, assess technical architecture, and determine federal deployment viability.
+
+**When to Use:** After Discovery phase has identified an Entity worth detailed investigation. This is the "Analysis" workflow from VISION.md.
+
+---
+
+## OUTPUT ARTIFACTS
+
+This template produces three deliverables:
+
+1. **00-EFFICACY-BRIEF.md** - Full technical analysis (this template)
+2. **00-one-pager.html** - Standard executive summary (detailed)
+3. **01-one-pager.html** - Ultra-concise executive briefing
+
+---
+
+## RESEARCH METHODOLOGY
+
+### Phase 1: Discovery (2-4 hours)
+1. Vendor website deep-dive (product pages, pricing, documentation)
+2. Technical documentation review (API docs, SDK references, architecture guides)
+3. FedRAMP Marketplace search (marketplace.fedramp.gov)
+4. Case studies and customer testimonials
+5. Third-party reviews and competitive analyses
+6. Community discussion (GitHub issues, Stack Overflow, Reddit)
+7. Funding/valuation research (PitchBook, Crunchbase)
+
+### Phase 2: Technical Validation (2-4 hours)
+1. Identify AI/ML claims and search for substantiation
+2. Map data flows (what leaves local environment, where does it go)
+3. Document deployment options (SaaS, hybrid, self-hosted, air-gapped)
+4. Assess compliance status (FedRAMP, SOC 2, FIPS, Platform One)
+5. Identify metadata vs. application data separation
+
+### Phase 3: Federal Assessment (1-2 hours)
+1. Classify each feature as: air-gap compatible, cloud-dependent, or hybrid
+2. Identify CUI transmission risks
+3. Map to Impact Levels (IL-2, IL-4, IL-5, IL-6, classified)
+4. Document vendor federal market interest signals
+
+### Phase 4: Synthesis (1-2 hours)
+1. Write recommendation with clear rationale
+2. Quantify effort/uncertainty for due diligence
+3. Create decision framework (Proceed if/Halt if)
+4. Generate one-pagers from brief
+
+---
+
+## DOCUMENT STRUCTURE
+
+```markdown
+# [TOOL NAME] Efficacy Brief
+**Tool Evaluation**
+*GenAI COTS Team | Accenture Federal Services | [MONTH YEAR]*
+
+---
+
+## Executive Summary
+
+**Tool Overview:** [1-2 sentences: cloud-based/local, SaaS/on-premise, core capability]
+
+**Critical Finding for Federal:** [1-3 sentences: THE most important constraint for federal use. Bold the architectural blocker.]
+
+**Recommendation:** **[Proceed/Wait and Watch/Conditional Proceed/Halt]** | [One-line justification]
+
+---
+
+### Assessment Dimensions
+
+| Dimension | Assessment |
+|-----------|------------|
+| **Alignment to Stack** | [Replaces/Complements/Fills gap] + specific tools |
+| **Differentiation** | [Genuine innovation vs. wrapper/integration layer] |
+| **Security & Compliance** | [FedRAMP status, self-hosted options, data residency] |
+| **ROI Potential** | [~X% metrics with vendor attribution and caveats] |
+| **Industry Backing** | [Named customers + scale, funding, community] |
+
+**Bottom Line:** [2-3 sentences: Where viable, what's blocked, recommended action]
+
+---
+
+### Critical Federal Blocker (Callout)
+
+[Detailed explanation of THE fundamental constraint:
+- Architectural limitation (cloud-only AI, metadata transmission, etc.)
+- Air-gap compatibility
+- Classification level constraints
+- Use **bold** for key terms]
+
+---
+
+### Assessment Context (Callout)
+
+[Explain compliance positioning:
+- FedRAMP authorization status and roadmap
+- Alternative federal paths (Platform One, GovCloud, Self-Managed)
+- Data residency considerations
+- What local deployment actually means for compliance]
+
+---
+
+## Technical Architecture: Marketing Claims vs. Documented Reality
+
+### What's Actually Documented
+- **Underlying Technology Stack:** [Frameworks, platforms, infrastructure]
+- **AI/ML Claims Validation:** [Peer-reviewed? Model specs? Independent benchmarks? Third-party LLMs?]
+
+### Differentiation Assessment
+- **Verified Value:** [Documentable differentiators: packaging, integration, workflow automation]
+- **Unverified Claims:** [Marketing claims lacking technical substantiation]
+- **Competitive Moat:** [Innovation vs. platform integration/distribution advantages]
+
+**Federal Implication (Callout):** [Whether premium pricing is justified; whether to assess value based on workflow automation vs. claimed AI breakthroughs; vendor lock-in risk]
+
+---
+
+## Local Development: What Works and What Doesn't
+
+### Features Supporting Local Operation
+[Document capabilities enabling local/on-premise operation:
+- Self-hosted deployment options (containers, Helm, Terraform)
+- Secure tunneling for local testing
+- On-premise device labs
+- Data isolation guarantees]
+
+### The Cloud Dependency Reality
+[Identify capabilities requiring cloud connectivity:
+- AI inference location (cloud vs. local)
+- Data transit requirements (metadata, telemetry, application data)
+- Feature gaps in offline mode
+- Air-gapped deployment support (production-ready vs. testing-only)]
+
+**Fundamental Constraint Statement:** "Developers cannot [perform core function] without internet connectivity to [vendor] servers."
+
+---
+
+## Enterprise Fit: Commercial vs. Federal
+
+### Where [Tool] Excels
+[Document strong use cases:
+- Cloud-first organizations, modern CI/CD
+- Specific integrations (list platforms)
+- Target customer profile from case studies
+- Operational maturity evidence (deployments, GSI partnerships)]
+
+### Federal Environment Challenges
+[Identify specific federal blockers - mark as Configuration vs. Architectural:]
+
+| Challenge | Type | Details |
+|-----------|------|---------|
+| Air-gapped networks | [Config/Arch] | [Capability statement] |
+| Zero-cloud-data-transit | [Config/Arch] | [What data leaves enclave] |
+| Classified workloads | [Config/Arch] | [Insurmountable obstacles] |
+| Zero-trust architectures | [Config/Arch] | [Architectural conflicts] |
+| PHI/IP exposure | [Config/Arch] | [Specific concerns] |
+
+---
+
+## Onboarding Assessment
+
+**Complexity Rating:** [1-5]/5
+- 1 = Trivial (single npm install)
+- 2 = Simple (basic configuration)
+- 3 = Moderate (technical setup)
+- 4 = Complex (significant integration)
+- 5 = Very Complex (major infrastructure changes)
+
+**Entry Points:** [No-code, low-code, pro-code workflows]
+
+**POC Timeline:** [Days/weeks to validate basic functionality]
+
+**Production Integration:** [Infrastructure requirements, IT involvement, DevOps expertise]
+
+**Typical Deployment Phases:**
+1. POC Validation: [timeline, scope]
+2. Production Integration: [timeline, effort]
+3. Enterprise Rollout: [timeline, considerations]
+
+---
+
+## Value Proposition and ROI
+
+### Performance Improvements (Vendor-Reported)
+[Document with ~X% format, clearly attribute to vendor:]
+- ~X% faster [metric] (vendor reports, [caveat])
+- ~X% reduction in [metric]
+- Specific case studies: [Customer, outcome, timeline]
+
+**Caveat:** Results reflect optimal deployment conditions; actual outcomes vary by [factors].
+
+### ROI Framework
+[Hypothetical calculation with clear assumptions:]
+- Typical labor cost: ~$X/day (loaded)
+- Annual time savings: ~X days
+- Issue prevention value: ~$X
+- **Total annual benefit per [role]:** ~$X-X (conservative estimate)
+
+### Total Cost of Ownership
+- Licensing: [pricing tiers]
+- Infrastructure: [additional costs]
+- Migration: [one-time effort]
+- Training: [onboarding investment]
+
+---
+
+## Key Benefits
+
+### Strategic Value (Vendor-Reported)
+[Consolidated performance claims with attribution:]
+- Quantified improvements
+- Key differentiating capabilities
+- Enterprise credibility evidence
+
+### Operational Advantages
+[Practical workflow benefits:]
+- Accessibility features (no-code, collaboration)
+- Automation capabilities
+- Deployment flexibility
+- Ecosystem integrations
+- Operational maturity indicators
+
+---
+
+## Critical Blockers
+
+### Technical Limitations
+- Processing location (cloud-only, hybrid, local)
+- Offline/air-gap capability
+- Required connectivity for core features
+- Data transit requirements
+
+### Federal and Enterprise Concerns
+- Classified workload compatibility
+- Intellectual property exposure risks
+- Compliance constraint violations
+- Vendor lock-in and migration challenges
+
+### Roadmap and Federal Alignment
+- Vendor federal market prioritization
+- Public roadmap alignment with federal needs
+- FedRAMP certification status/timeline
+- Due diligence effort required
+- **Uncertainty acknowledgment:** "Determining [X] requires significant technical due diligence with no assurance of favorable outcomes"
+
+---
+
+## Competitive Analysis
+
+### vs. Traditional Tools
+[Productivity gains vs. deployment constraints]
+
+### vs. AI-Native Competitors
+[Differentiation from similar modern tools]
+
+### Fundamental Tradeoff
+[Core architectural decision creating both advantages and limitations]
+
+**Key Insight:** [Why compliance-compatible tools may be superior despite lower productivity]
+
+---
+
+## Recommended Actions
+
+### Initial Discovery
+**Effort Level:** [Lightweight/Moderate/Significant] ([X-X hours], ~$X-X cost)
+
+**Technical Deep-Dive:**
+- [Specific investigation items]
+
+**Vendor Engagement:**
+- [Questions requiring executive-level meetings]
+
+**Security/Compliance Reviews:**
+- [Analysis and risk assessment items]
+
+**Uncertainty:** [Acknowledge effort may not yield favorable outcomes]
+
+### Evaluation Phase
+- POC scope and validation criteria
+- Federal viability by IL level
+- ROI calculation methodology
+
+### Strategic Development
+- Feature advocacy priorities
+- Certification monitoring
+- Capability building
+
+---
+
+## Decision Framework
+
+### Proceed if:
+- [Condition 1]
+- [Condition 2]
+- [Condition 3]
+
+### Halt if:
+- [Condition 1]
+- [Condition 2]
+- [Condition 3]
+
+### Wait and Watch if:
+- [Condition 1]
+- [Condition 2]
+
+---
+
+## Conclusion
+
+[Paragraph 1: Acknowledge tool quality and capabilities]
+
+[Paragraph 2: State the fundamental limitation or constraint]
+
+[Paragraph 3: Clear recommendation with appropriate scope]
+
+**Recommendation (Callout):** [Where tool is appropriate and how to focus adoption]
+
+**Advocacy Strategy:** [If tool has long-term potential, how to create optionality for future expansion]
+
+**Next Steps (Callout):** [Immediate actions for different audiences]
+
+---
+
+## Sources and Methodology
+
+This evaluation is based on publicly available information from [vendor] website, marketing materials, case studies, and technical documentation accessed in [MONTH YEAR]. Performance metrics and deployment claims reflect vendor-reported results under optimal conditions.
+
+**Key Sources:**
+- Vendor website and product documentation
+- Marketing materials and case studies
+- FedRAMP Marketplace public listings
+- Third-party analysis and reviews
+- Community discussions
+
+**Research Limitations:**
+- Performance claims based on vendor materials
+- FedRAMP status from public information only
+- Technical architecture from public docs; internal may differ
+- ROI calculations use hypothetical scenarios
+
+**Validation Recommendations:**
+- Independent POC testing
+- Technical architecture documentation under NDA
+- Direct vendor executive commitment on compliance roadmap
+- Reference customer engagement in similar environments
+
+---
+
+*Document Classification: Internal Use Only*
+*Research Conducted: [MONTH YEAR]*
+*Contact: christopher.g.roge@afs.com*
+```
+
+---
+
+## ONE-PAGER GENERATION
+
+### 00-one-pager.html (Standard - 50-80 words per section)
+
+Transform the full brief into a single-page executive summary with these sections:
+- **Title:** [TOOL NAME] Critical Assessment
+- **Overview:** 1-2 sentences (30-50 words) with 3-4 purple-highlighted key phrases
+- **Critical Finding:** 2-4 sentences (50-80 words) in yellow callout
+- **Recommendation:** 1 sentence (15-25 words) in green/yellow callout
+- **Assessment Table:** 5 columns (40-70 words per cell)
+- **Bottom Line:** 2-3 sentences (40-60 words) in purple callout
+
+### 01-one-pager.html (Executive - 20-40 words per section)
+
+Ultra-concise version for 30-second reads:
+- **Overview:** 1 sentence (20-30 words)
+- **Critical Finding:** 1-2 sentences (30-40 words), **bold the blocker**
+- **Recommendation:** 1 sentence (10-15 words)
+- **Assessment Table:** 1-2 sentences per cell (25-40 words)
+- **Bottom Line:** 1-2 sentences (20-30 words)
+
+---
+
+## STYLING REFERENCE
+
+### Colors
+- **Primary Purple:** #7500c0 (brand color, key phrases)
+- **Accent Purple:** #a055f5 (table highlighting)
+- **Critical Finding:** Yellow gradient (#FEF3C7 → #FDE68A), amber border (#F59E0B)
+- **Proceed Recommendation:** Green gradient (#D1FAE5 → #A7F3D0), green border (#10B981)
+- **Wait/Conditional:** Yellow gradient (same as critical finding)
+- **Bottom Line:** Purple gradient (#F3E8FF → #E9D5FF), purple border (#7500c0)
+
+### Typography
+- **Headline:** Black (font-weight 700), purple underline
+- **Callout Titles:** Black (font-weight 700) at 1.6em
+- **Callout Content:** 1.2em with comfortable line-height
+- **Table Headers:** White on purple background at 1.4em
+- **Body Text:** 1.1em
+
+---
+
+## QUALITY CHECKLIST
+
+Before finalizing:
+- [ ] Executive summary captures single most critical federal finding
+- [ ] All ~X% metrics attributed to vendor
+- [ ] Clear distinction between marketing claims and documented reality
+- [ ] Air-gap and FedRAMP status explicitly stated
+- [ ] Metadata vs. application data flows documented
+- [ ] Challenges marked as Configuration vs. Architectural
+- [ ] Due diligence effort quantified with uncertainty acknowledged
+- [ ] Decision framework has clear go/no-go criteria
+- [ ] Advocacy strategy provided for tools with long-term potential
+- [ ] Sources and limitations documented
+- [ ] One-pagers generated with correct styling
