@@ -528,6 +528,158 @@ pending → in_progress → completed
 
 ---
 
+## LOGO WORKFLOW - Entity Branding (SVG-Focused)
+
+**USE THESE COMMANDS FOR VISUAL IDENTITY.** Automatically find, download, and store logos for entities. **Prioritizes SVG format** for inline storage and infinite scalability.
+
+### Why SVG?
+
+| Benefit | Impact |
+|---------|--------|
+| **Vector format** | Scales infinitely without quality loss |
+| **Stored inline** | SVG content saved directly in database |
+| **Small size** | Typically 1-10KB vs 50-500KB for PNGs |
+| **Embeddable** | Can be inserted directly into HTML/documents |
+
+### Full Workflow (Recommended)
+
+```bash
+# Fetch logo automatically - searches website, prioritizes SVG, stores inline
+npm run cli -- logo:fetch '{"entityId": "..."}'
+```
+
+Returns:
+```json
+{
+  "success": true,
+  "entityName": "Cursor",
+  "logoUrl": "https://cursor.com/brand/logo.svg",
+  "logoPath": "logos/cursor-abc123.svg",
+  "logoFormat": "svg",
+  "hasSvgContent": true,
+  "searchedPages": ["https://cursor.com", "https://cursor.com/brand"],
+  "candidatesFound": 10
+}
+```
+
+### Get Inline SVG
+
+```bash
+# Get raw SVG markup for direct embedding
+npm run cli -- logo:inline '{"entityId": "..."}'
+```
+
+Returns:
+```json
+{
+  "success": true,
+  "entityName": "Cursor",
+  "format": "svg",
+  "svgContent": "<svg xmlns=\"http://www.w3.org/2000/svg\"...>...</svg>",
+  "logoUrl": "https://cursor.com/brand/logo.svg"
+}
+```
+
+Use the `svgContent` directly in HTML, markdown, or documents.
+
+### Step-by-Step Workflow
+
+```bash
+# 1. Search for logo candidates on entity's website
+npm run cli -- logo:search '{"entityId": "..."}'
+
+# 2. Verify a specific logo URL is valid
+npm run cli -- logo:verify '{"url": "https://example.com/logo.svg"}'
+
+# 3. Download a logo to local storage
+npm run cli -- logo:download '{"url": "https://example.com/logo.svg", "entityName": "Example"}'
+
+# 4. Save logo info to entity (with optional download)
+npm run cli -- logo:save '{
+  "entityId": "...",
+  "logoUrl": "https://example.com/logo.svg",
+  "logoSourceUrl": "https://example.com/brand",
+  "download": true
+}'
+```
+
+### Query Commands
+
+```bash
+# Get logo coverage summary for project
+npm run cli -- logo:summary '{"projectId": "..."}'
+
+# List entities without logos
+npm run cli -- logo:missing '{"projectId": "..."}'
+
+# Human verification of a logo
+npm run cli -- logo:validate '{"entityId": "...", "verifiedBy": "researcher-name"}'
+
+# Clear/remove logo from entity
+npm run cli -- logo:clear '{"entityId": "..."}'
+
+# Get inline SVG for embedding
+npm run cli -- logo:inline '{"entityId": "..."}'
+```
+
+### Logo Storage
+
+- **Remote URL**: Stored in `entity.logoUrl`
+- **Local File**: Downloaded to `logos/` directory, path in `entity.logoPath`
+- **SVG Inline**: Raw SVG markup stored in `entity.logoSvgContent` (database)
+- **Format**: Detected automatically (svg preferred, then png, jpg, webp)
+- **Source**: Where found stored in `entity.logoSourceUrl`
+
+**SVG Priority**: When fetching logos, SVG candidates are tried first regardless of confidence score. This ensures inline storage whenever possible.
+
+### What It Searches
+
+The logo fetcher automatically checks:
+- Main website homepage
+- `/press`, `/press-kit`, `/brand`, `/brand-assets`
+- `/media`, `/media-kit`, `/about`, `/company`
+
+It looks for:
+- Images with "logo" in filename, alt text, or CSS class
+- SVG files (preferred format)
+- Images containing the entity name
+- Direct links to logo files on press/brand pages
+
+### Logo Summary Output
+
+```json
+{
+  "total": 63,
+  "withLogo": 1,
+  "withoutLogo": 62,
+  "verified": 0,
+  "downloaded": 1,
+  "coverage": 2,
+  "entitiesNeedingLogos": [...]
+}
+```
+
+### Batch Logo Collection
+
+```bash
+# 1. Check which entities need logos
+npm run cli -- logo:missing '{"projectId": "..."}'
+
+# 2. Create agenda for batch processing
+npm run cli -- agenda:create '{
+  "projectId": "...",
+  "name": "Fetch all logos",
+  "taskType": "logo:fetch"
+}'
+
+# 3. Work through the agenda
+npm run cli -- agenda:next '{"agendaId": "..."}'
+npm run cli -- logo:fetch '{"entityId": "..."}'
+npm run cli -- agenda:complete '{"agendaId": "..."}'
+```
+
+---
+
 ## Core Concepts
 
 ### Research Workflow

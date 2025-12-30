@@ -247,6 +247,40 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
         break;
 
       // ============================================
+      // LOGO COMMANDS - Entity branding/visual identity
+      // ============================================
+      case 'logo:search':
+        result = await tools.searchForLogo(args.entityId as string);
+        break;
+      case 'logo:verify':
+        result = await tools.verifyLogoUrl(args.url as string);
+        break;
+      case 'logo:download':
+        result = await tools.downloadLogo(args.url as string, args.entityName as string);
+        break;
+      case 'logo:save':
+        result = await tools.saveLogo(args as unknown as tools.LogoSaveInput);
+        break;
+      case 'logo:fetch':
+        result = await tools.fetchLogo(args.entityId as string);
+        break;
+      case 'logo:missing':
+        result = await tools.getEntitiesWithoutLogos(args.projectId as string | undefined);
+        break;
+      case 'logo:summary':
+        result = await tools.getLogoSummary(args.projectId as string);
+        break;
+      case 'logo:validate':
+        result = await tools.verifyEntityLogo(args.entityId as string, args.verifiedBy as string);
+        break;
+      case 'logo:clear':
+        result = await tools.clearLogo(args.entityId as string);
+        break;
+      case 'logo:inline':
+        result = await tools.getLogoInline(args.entityId as string);
+        break;
+
+      // ============================================
       // EXTRACTION COMMANDS - Primary deep research tool
       // ============================================
 
@@ -360,6 +394,8 @@ async function main() {
         'diff:latest', 'diff:compare', 'diff:history', 'diff:changes',
         // Research agenda
         'agenda:create', 'agenda:list', 'agenda:get', 'agenda:status', 'agenda:next', 'agenda:complete', 'agenda:skip', 'agenda:fail', 'agenda:reset', 'agenda:delete', 'agenda:suggest',
+        // Logo/branding (SVG-focused)
+        'logo:search', 'logo:verify', 'logo:download', 'logo:save', 'logo:fetch', 'logo:missing', 'logo:summary', 'logo:validate', 'logo:clear', 'logo:inline',
       ],
     }));
     process.exit(1);

@@ -10,6 +10,7 @@ export * from './extractor';
 export * from './queries';
 export * from './diff';
 export * from './agenda';
+export * from './logos';
 
 // Re-export Prisma client for direct access if needed
 export { prisma } from '../db/client';

@@ -67,6 +67,15 @@ model Entity {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  // Logo/branding fields
+  logoUrl        String?   // Direct URL to logo file (SVG preferred)
+  logoPath       String?   // Local path to downloaded logo file
+  logoFormat     String?   // "svg", "png", "jpg", "webp"
+  logoSvgContent String?   // Raw SVG markup (stored inline for SVG logos)
+  logoSourceUrl  String?   // URL where logo was found (press kit, brand page)
+  logoFetchedAt  DateTime? // When logo was last fetched/verified
+  logoVerified   Boolean   @default(false) // Human-verified as correct logo
+
   projectId   String
   project     ResearchProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
