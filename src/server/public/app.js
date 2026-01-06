@@ -17,6 +17,10 @@ function validationApp() {
     sidebarCollapsed: false,
     statusFilter: null, // null = all, 'pending', 'validated', 'rejected'
 
+    // Panel layout: 'auto' follows screen width, 'split' forces side-by-side, 'stacked' forces vertical
+    panelLayout: 'auto',
+    assertionPanelOpen: true, // For split mode - whether assertion panel is visible
+
     // Chat state - per assertion conversations and status
     // Status: 'not_started' | 'in_progress' | 'validated' | 'rejected'
     conversations: {}, // Map of assertionId -> { messages: [], currentStreamText: '', status: string }
@@ -268,6 +272,11 @@ function validationApp() {
       this.statusFilter = this.statusFilter === filter ? null : filter;
     },
 
+    // Toggle assertion panel visibility (for split layout)
+    toggleAssertionPanel() {
+      this.assertionPanelOpen = !this.assertionPanelOpen;
+    },
+
     // Filter assertions by status
     filterAssertions(assertions) {
       if (!this.statusFilter) return assertions;
@@ -392,11 +401,30 @@ function validationApp() {
         const res = await fetch(`/api/assertions/${assertion.id}`);
         const data = await res.json();
         if (data.success && data.data) {
+          // Flatten sources - merge AssertionSource fields with nested Source fields
+          const flattenedSources = (data.data.sources || []).map(as => ({
+            // AssertionSource fields
+            id: as.id,
+            quote: as.quote,
+            addedBy: as.addedBy, // null = agent-added, string = researcher name
+            relevanceGrade: as.relevanceGrade,
+            annotation: as.annotation,
+            gradedBy: as.gradedBy,
+            gradedAt: as.gradedAt,
+            // Source fields (flattened)
+            sourceId: as.source?.id,
+            url: as.source?.url,
+            title: as.source?.title,
+            sourceType: as.source?.sourceType,
+            // UI state
+            expanded: false,
+          }));
+
           // Merge full data into currentAssertion
           this.currentAssertion = {
             ...assertion,
             ...data.data,
-            sources: data.data.sources || [],
+            sources: flattenedSources,
             reasoning: data.data.reasoning || [],
           };
         }
@@ -420,6 +448,147 @@ function validationApp() {
       if (!text) return '';
       if (text.length <= maxLength) return text;
       return text.substring(0, maxLength) + '...';
+    },
+
+    // Truncate URL for display
+    truncateUrl(url) {
+      if (!url) return '';
+      try {
+        const parsed = new URL(url);
+        const path = parsed.pathname.length > 30 ? parsed.pathname.substring(0, 30) + '...' : parsed.pathname;
+        return parsed.hostname + path;
+      } catch {
+        return url.length > 50 ? url.substring(0, 50) + '...' : url;
+      }
+    },
+
+    // Format grade enum for display
+    formatGrade(grade) {
+      if (!grade) return '';
+      const labels = {
+        'DIRECT_EVIDENCE': 'Direct',
+        'STRONG_SUPPORT': 'Strong',
+        'PARTIAL_SUPPORT': 'Partial',
+        'WEAK_SUPPORT': 'Weak',
+        'NOT_RELEVANT': 'N/A',
+        'MISLEADING': 'Wrong',
+      };
+      return labels[grade] || grade;
+    },
+
+    // Extract URLs from text
+    extractUrls(text) {
+      if (!text) return [];
+      // Match http/https URLs
+      const urlRegex = /https?:\/\/[^\s<>"{}|\\^`\[\]]+/gi;
+      const matches = text.match(urlRegex) || [];
+      // Clean up trailing punctuation
+      return matches.map(url => url.replace(/[.,;:!?)]+$/, ''));
+    },
+
+    // Add researcher-found sources to assertion
+    async addResearcherSources(assertionId, urls) {
+      if (!urls || urls.length === 0 || !this.validatorName) return;
+
+      try {
+        const res = await fetch(`/api/assertions/${assertionId}/researcher-sources`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            urls,
+            addedBy: this.validatorName,
+          }),
+        });
+
+        const data = await res.json();
+        if (data.success && data.data.sources) {
+          // Add new sources to currentAssertion
+          const newSources = data.data.sources.map(s => ({
+            id: s.id,
+            quote: s.quote,
+            relevanceGrade: s.relevanceGrade,
+            annotation: s.annotation,
+            gradedBy: s.gradedBy,
+            gradedAt: s.gradedAt,
+            addedBy: s.addedBy,
+            sourceId: s.source?.id,
+            url: s.source?.url,
+            title: s.source?.title,
+            sourceType: s.source?.sourceType,
+            isResearcherAdded: true,
+            expanded: false,
+          }));
+
+          // Merge with existing sources (avoid duplicates)
+          const existingUrls = new Set(this.currentAssertion?.sources?.map(s => s.url) || []);
+          for (const ns of newSources) {
+            if (!existingUrls.has(ns.url)) {
+              this.currentAssertion.sources.push(ns);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Failed to add researcher sources:', error);
+      }
+    },
+
+    // Grade a source's relevance
+    async gradeSource(assertionSourceId, grade) {
+      if (!this.validatorName) {
+        alert('Please enter your name first');
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/sources/${assertionSourceId}/grade`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            relevanceGrade: grade,
+            gradedBy: this.validatorName,
+          }),
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          // Update the source in currentAssertion
+          const source = this.currentAssertion?.sources?.find(s => s.id === assertionSourceId);
+          if (source) {
+            source.relevanceGrade = grade;
+            source.gradedBy = this.validatorName;
+            source.gradedAt = new Date().toISOString();
+          }
+        } else {
+          console.error('Failed to grade source:', data.error);
+        }
+      } catch (error) {
+        console.error('Failed to grade source:', error);
+      }
+    },
+
+    // Save source annotation
+    async saveSourceAnnotation(assertionSourceId, annotation) {
+      if (!this.validatorName) return;
+
+      try {
+        const source = this.currentAssertion?.sources?.find(s => s.id === assertionSourceId);
+        const res = await fetch(`/api/sources/${assertionSourceId}/grade`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            relevanceGrade: source?.relevanceGrade || null,
+            annotation: annotation,
+            gradedBy: this.validatorName,
+          }),
+        });
+
+        const data = await res.json();
+        if (data.success && source) {
+          source.annotation = annotation;
+        }
+      } catch (error) {
+        console.error('Failed to save annotation:', error);
+      }
     },
 
     // Check if assertion has a conversation started
@@ -588,12 +757,18 @@ function validationApp() {
     },
 
     // Send user message (question)
-    sendMessage() {
+    async sendMessage() {
       const content = this.userInput.trim();
       if (!content || !this.currentAssertionId) return;
 
       const conv = this.ensureConversation(this.currentAssertionId);
       if (conv.status !== 'in_progress') return;
+
+      // Extract URLs and add as researcher sources
+      const urls = this.extractUrls(content);
+      if (urls.length > 0) {
+        await this.addResearcherSources(this.currentAssertionId, urls);
+      }
 
       // Add to current assertion's conversation
       conv.messages.push({
@@ -641,6 +816,12 @@ function validationApp() {
 
       const conv = this.ensureConversation(this.currentAssertionId);
       if (conv.status !== 'in_progress') return;
+
+      // Extract URLs and add as researcher sources
+      const urls = this.extractUrls(verificationText);
+      if (urls.length > 0) {
+        await this.addResearcherSources(this.currentAssertionId, urls);
+      }
 
       // Upload pending screenshot first if one exists
       let screenshotUrl = null;

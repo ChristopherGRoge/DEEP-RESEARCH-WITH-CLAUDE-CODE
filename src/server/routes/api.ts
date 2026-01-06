@@ -6,7 +6,7 @@
 import { Hono } from 'hono';
 import * as tools from '../../tools';
 import { getAuthStatus } from '../middleware/auth';
-import { AssertionStatus, AssertionCriticality } from '../../../generated/prisma/client';
+import { AssertionStatus, AssertionCriticality, SourceRelevance } from '../../../generated/prisma/client';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -387,6 +387,213 @@ api.put('/assertions/:id/conversation', async (c) => {
       id: updated.id,
       status: status,
       messages: updated.validationNotes,
+    },
+  });
+});
+
+// ============================================
+// Source Grading
+// ============================================
+
+// Grade a source's relevance to an assertion
+api.put('/sources/:assertionSourceId/grade', async (c) => {
+  const assertionSourceId = c.req.param('assertionSourceId');
+  const body = await c.req.json();
+  const { relevanceGrade, annotation, gradedBy } = body;
+
+  if (!gradedBy) {
+    return c.json({ success: false, error: 'gradedBy is required' }, 400);
+  }
+
+  // Validate relevanceGrade if provided
+  const validGrades = ['DIRECT_EVIDENCE', 'STRONG_SUPPORT', 'PARTIAL_SUPPORT', 'WEAK_SUPPORT', 'NOT_RELEVANT', 'MISLEADING'];
+  if (relevanceGrade && !validGrades.includes(relevanceGrade)) {
+    return c.json({ success: false, error: `Invalid relevanceGrade. Must be one of: ${validGrades.join(', ')}` }, 400);
+  }
+
+  try {
+    const updated = await tools.prisma.assertionSource.update({
+      where: { id: assertionSourceId },
+      data: {
+        relevanceGrade: relevanceGrade as SourceRelevance,
+        annotation,
+        gradedBy,
+        gradedAt: new Date(),
+      },
+      include: {
+        source: true,
+      },
+    });
+
+    return c.json({
+      success: true,
+      data: updated,
+    });
+  } catch (error: any) {
+    if (error.code === 'P2025') {
+      return c.json({ success: false, error: 'Source link not found' }, 404);
+    }
+    throw error;
+  }
+});
+
+// Get all source grades for an assertion
+api.get('/assertions/:id/sources', async (c) => {
+  const assertionId = c.req.param('id');
+
+  const sources = await tools.prisma.assertionSource.findMany({
+    where: { assertionId },
+    include: {
+      source: true,
+    },
+    orderBy: { createdAt: 'asc' },
+  });
+
+  return c.json({
+    success: true,
+    data: sources,
+  });
+});
+
+// Add researcher-found sources to an assertion
+api.post('/assertions/:id/researcher-sources', async (c) => {
+  const assertionId = c.req.param('id');
+  const body = await c.req.json();
+  const { urls, addedBy } = body;
+
+  if (!addedBy) {
+    return c.json({ success: false, error: 'addedBy is required' }, 400);
+  }
+
+  if (!urls || !Array.isArray(urls) || urls.length === 0) {
+    return c.json({ success: false, error: 'urls array is required' }, 400);
+  }
+
+  // Verify assertion exists
+  const assertion = await tools.prisma.assertion.findUnique({
+    where: { id: assertionId },
+  });
+
+  if (!assertion) {
+    return c.json({ success: false, error: 'Assertion not found' }, 404);
+  }
+
+  const createdSources: any[] = [];
+
+  for (const url of urls) {
+    try {
+      // Upsert the Source record
+      const source = await tools.prisma.source.upsert({
+        where: { url },
+        create: {
+          url,
+          sourceType: 'researcher_found',
+        },
+        update: {}, // Don't update existing sources
+      });
+
+      // Check if this source is already linked to the assertion
+      const existingLink = await tools.prisma.assertionSource.findUnique({
+        where: {
+          assertionId_sourceId: {
+            assertionId,
+            sourceId: source.id,
+          },
+        },
+      });
+
+      if (!existingLink) {
+        // Create the link with addedBy
+        const assertionSource = await tools.prisma.assertionSource.create({
+          data: {
+            assertionId,
+            sourceId: source.id,
+            addedBy,
+          },
+          include: {
+            source: true,
+          },
+        });
+        createdSources.push(assertionSource);
+      }
+    } catch (error) {
+      console.error(`Failed to add source ${url}:`, error);
+    }
+  }
+
+  return c.json({
+    success: true,
+    data: {
+      sources: createdSources,
+      count: createdSources.length,
+    },
+  });
+});
+
+// Get grading statistics for a project (for research quality analysis)
+api.get('/projects/:id/source-grades', async (c) => {
+  const projectId = c.req.param('id');
+
+  // Get all assertion sources for this project with grades
+  const assertionSources = await tools.prisma.assertionSource.findMany({
+    where: {
+      assertion: {
+        entity: {
+          projectId,
+        },
+      },
+      relevanceGrade: { not: null },
+    },
+    select: {
+      relevanceGrade: true,
+      annotation: true,
+      gradedBy: true,
+      assertion: {
+        select: {
+          category: true,
+        },
+      },
+    },
+  });
+
+  // Aggregate statistics
+  const gradeDistribution: Record<string, number> = {};
+  const gradesByCategory: Record<string, Record<string, number>> = {};
+
+  for (const as of assertionSources) {
+    const grade = as.relevanceGrade as string;
+    gradeDistribution[grade] = (gradeDistribution[grade] || 0) + 1;
+
+    const category = as.assertion.category || 'uncategorized';
+    if (!gradesByCategory[category]) {
+      gradesByCategory[category] = {};
+    }
+    gradesByCategory[category][grade] = (gradesByCategory[category][grade] || 0) + 1;
+  }
+
+  // Calculate quality metrics
+  const totalGraded = assertionSources.length;
+  const highQuality = (gradeDistribution['DIRECT_EVIDENCE'] || 0) + (gradeDistribution['STRONG_SUPPORT'] || 0);
+  const lowQuality = (gradeDistribution['NOT_RELEVANT'] || 0) + (gradeDistribution['MISLEADING'] || 0);
+
+  return c.json({
+    success: true,
+    data: {
+      totalGraded,
+      gradeDistribution,
+      gradesByCategory,
+      qualityMetrics: {
+        highQualityPercent: totalGraded > 0 ? Math.round((highQuality / totalGraded) * 100) : 0,
+        lowQualityPercent: totalGraded > 0 ? Math.round((lowQuality / totalGraded) * 100) : 0,
+      },
+      // Annotations can be used for agent training
+      annotations: assertionSources
+        .filter(as => as.annotation)
+        .map(as => ({
+          grade: as.relevanceGrade,
+          annotation: as.annotation,
+          category: as.assertion.category,
+        })),
     },
   });
 });

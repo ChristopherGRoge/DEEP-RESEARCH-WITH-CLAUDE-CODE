@@ -45,6 +45,15 @@ enum AssertionCriticality {
   LOW        // Optional validation - general observations
 }
 
+enum SourceRelevance {
+  DIRECT_EVIDENCE  // Source explicitly states/proves the assertion (5)
+  STRONG_SUPPORT   // Source strongly supports with related evidence (4)
+  PARTIAL_SUPPORT  // Source partially addresses the claim (3)
+  WEAK_SUPPORT     // Source tangentially related (2)
+  NOT_RELEVANT     // Source doesn't actually support the claim (1)
+  MISLEADING       // Source was misinterpreted or contradicts claim (0)
+}
+
 // ============================================
 // CORE MODELS
 // ============================================
@@ -168,10 +177,20 @@ model Source {
 }
 
 /// Many-to-many relationship between Assertions and Sources
+/// Includes human grading of source relevance for research quality improvement
 model AssertionSource {
   id          String   @id @default(cuid())
   quote       String?  // Relevant quote from the source
   createdAt   DateTime @default(now())
+
+  // Source provenance - who added this source?
+  addedBy     String?  // null = agent-added, "researcher-name" = human-added during validation
+
+  // Human grading fields - used to improve agent citation behavior
+  relevanceGrade  SourceRelevance?  // How relevant is this source to the assertion?
+  annotation      String?           // Human notes explaining the grade
+  gradedBy        String?           // Who graded this source
+  gradedAt        DateTime?         // When it was graded
 
   assertionId String
   assertion   Assertion @relation(fields: [assertionId], references: [id], onDelete: Cascade)
@@ -180,6 +199,8 @@ model AssertionSource {
   source      Source   @relation(fields: [sourceId], references: [id], onDelete: Cascade)
 
   @@unique([assertionId, sourceId])
+  @@index([relevanceGrade])
+  @@index([addedBy])
   @@map("assertion_sources")
 }
 
