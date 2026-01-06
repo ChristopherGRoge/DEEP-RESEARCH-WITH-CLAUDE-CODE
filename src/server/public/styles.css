@@ -151,6 +151,10 @@ body {
     color: var(--criticality-critical);
 }
 
+.stat.total .stat-count {
+    font-weight: 700;
+}
+
 .stat-count {
     font-family: var(--font-display);
     font-size: 1.25rem;
@@ -496,12 +500,28 @@ body.sidebar-collapsed .content {
 
 /* Claim Card */
 .claim-card {
-    padding: var(--space-xl) var(--space-2xl);
-    border-bottom: 1px solid var(--border-light);
+    padding: var(--space-lg) var(--space-2xl) var(--space-xl);
     flex-shrink: 0;
     max-width: var(--content-max-width);
     margin: 0 auto;
     width: 100%;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-md);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.card-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border-light);
 }
 
 .claim-meta {
@@ -644,12 +664,32 @@ body.sidebar-collapsed .content {
 }
 
 /* ==========================================================================
-   Chat Thread
+   Chat Section
    ========================================================================== */
+.chat-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+}
+
+.chat-label {
+    flex-shrink: 0;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: var(--space-md) var(--space-2xl);
+    border-bottom: 1px solid var(--border-light);
+    background: var(--bg-primary);
+}
+
 .chat-thread {
     flex: 1;
     overflow-y: auto;
-    padding: var(--space-lg) var(--space-2xl);
+    padding: var(--space-md) var(--space-2xl) var(--space-lg);
     display: flex;
     flex-direction: column;
     gap: var(--space-md);

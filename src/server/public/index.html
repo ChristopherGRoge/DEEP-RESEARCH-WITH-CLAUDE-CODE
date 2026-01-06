@@ -23,13 +23,28 @@
             <span class="brand-text">Validation</span>
         </div>
 
-        <div class="header-stats" x-show="pendingCounts.total > 0">
+        <div class="header-stats">
             <span class="stat" :class="{ 'has-items': pendingCounts.critical > 0 }">
                 <span class="stat-count" x-text="pendingCounts.critical"></span>
                 <span class="stat-label">Critical</span>
             </span>
             <span class="stat-divider"></span>
+            <span class="stat" :class="{ 'has-items': pendingCounts.high > 0 }">
+                <span class="stat-count" x-text="pendingCounts.high"></span>
+                <span class="stat-label">High</span>
+            </span>
+            <span class="stat-divider"></span>
             <span class="stat">
+                <span class="stat-count" x-text="pendingCounts.medium"></span>
+                <span class="stat-label">Medium</span>
+            </span>
+            <span class="stat-divider"></span>
+            <span class="stat">
+                <span class="stat-count" x-text="pendingCounts.low"></span>
+                <span class="stat-label">Low</span>
+            </span>
+            <span class="stat-divider"></span>
+            <span class="stat total">
                 <span class="stat-count" x-text="pendingCounts.total"></span>
                 <span class="stat-label">Pending</span>
             </span>
@@ -118,6 +133,7 @@
                 <div class="assertion-view">
                     <!-- Claim Card -->
                     <div class="claim-card">
+                        <div class="card-label">Assertion</div>
                         <div class="claim-meta">
                             <span class="entity-name" x-text="currentAssertion?.entityName"></span>
                             <span class="meta-separator">/</span>
@@ -172,7 +188,9 @@
                     </template>
 
                     <!-- Chat Thread -->
-                    <div class="chat-thread" x-ref="chatContainer">
+                    <div class="chat-section">
+                        <div class="chat-label">Conversation</div>
+                        <div class="chat-thread" x-ref="chatContainer">
                         <template x-for="(msg, index) in chatMessages" :key="index">
                             <div class="message" :class="msg.role">
                                 <template x-if="msg.type === 'screenshot'">
@@ -196,6 +214,7 @@
                                 </div>
                             </div>
                         </template>
+                        </div>
                     </div>
 
                     <!-- Input Area -->

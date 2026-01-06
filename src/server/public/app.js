@@ -70,37 +70,51 @@ function validationApp() {
       await this.loadPendingCounts();
       await this.loadAssertionsByProject();
 
-      // Restore validator name from localStorage
+      // Restore validator name from localStorage (preference only)
       const savedName = localStorage.getItem('validatorName');
       if (savedName) {
         this.validatorName = savedName;
       }
-
-      // Restore conversations from localStorage
-      this.loadConversationsFromStorage();
     },
 
-    // Save conversations to localStorage
-    saveConversationsToStorage() {
+    // Save conversation to API
+    async saveConversationToApi(assertionId) {
+      if (!assertionId) return;
+      const conv = this.conversations[assertionId];
+      if (!conv) return;
+
       try {
-        const data = JSON.stringify(this.conversations);
-        localStorage.setItem('validation-conversations', data);
+        await fetch(`/api/assertions/${assertionId}/conversation`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: conv.messages,
+            status: conv.status,
+          }),
+        });
       } catch (e) {
-        console.error('Failed to save conversations:', e);
+        console.error('Failed to save conversation:', e);
       }
     },
 
-    // Load conversations from localStorage
-    loadConversationsFromStorage() {
+    // Load conversation from API
+    async loadConversationFromApi(assertionId) {
+      if (!assertionId) return null;
+
       try {
-        const data = localStorage.getItem('validation-conversations');
-        if (data) {
-          this.conversations = JSON.parse(data);
+        const res = await fetch(`/api/assertions/${assertionId}/conversation`);
+        const data = await res.json();
+        if (data.success) {
+          return {
+            messages: data.data.messages || [],
+            currentStreamText: '',
+            status: data.data.status || 'not_started',
+          };
         }
       } catch (e) {
-        console.error('Failed to load conversations:', e);
-        this.conversations = {};
+        console.error('Failed to load conversation:', e);
       }
+      return null;
     },
 
     // Auto-grow textarea as user types
@@ -169,7 +183,7 @@ function validationApp() {
             content: data.data.url,
             type: 'screenshot',
           });
-          this.saveConversationsToStorage();
+          this.saveConversationToApi(this.currentAssertionId);
 
           this.pendingScreenshot = null;
           return data.data.url;
@@ -337,6 +351,7 @@ function validationApp() {
         const prevConv = this.conversations[this.currentAssertionId];
         if (prevConv) {
           prevConv.currentStreamText = this.currentStreamText;
+          await this.saveConversationToApi(this.currentAssertionId);
         }
       }
 
@@ -360,8 +375,12 @@ function validationApp() {
         console.error('Failed to fetch assertion details:', error);
       }
 
-      // Ensure conversation exists and restore streaming state
-      const conv = this.ensureConversation(assertion.id);
+      // Load conversation from API (or create new one)
+      let conv = await this.loadConversationFromApi(assertion.id);
+      if (!conv) {
+        conv = { messages: [], currentStreamText: '', status: 'not_started' };
+      }
+      this.conversations[assertion.id] = conv;
       this.currentStreamText = conv.currentStreamText || '';
 
       this.scrollToBottom();
@@ -462,7 +481,7 @@ function validationApp() {
                 content: msg.content,
               });
             }
-            this.saveConversationsToStorage();
+            this.saveConversationToApi(this.currentAssertionId);
           }
           this.scrollToBottom();
           break;
@@ -478,7 +497,7 @@ function validationApp() {
               this.currentStreamText = '';
               conv.currentStreamText = '';
             }
-            this.saveConversationsToStorage();
+            this.saveConversationToApi(this.currentAssertionId);
           }
           this.isStreaming = false;
           // Refresh counts after each completion
@@ -552,7 +571,7 @@ function validationApp() {
         role: 'user',
         content: content,
       });
-      this.saveConversationsToStorage();
+      this.saveConversationToApi(this.currentAssertionId);
 
       this.sendWs({
         type: 'user_message',
@@ -624,7 +643,7 @@ function validationApp() {
       }
       // 'skip' keeps it in_progress
 
-      this.saveConversationsToStorage();
+      this.saveConversationToApi(this.currentAssertionId);
 
       // Build message content, include screenshot if uploaded
       let messageContent = `[Assertion ${this.currentAssertionId}] ${fullMessage}`;

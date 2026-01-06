@@ -296,6 +296,88 @@ api.get('/assertions/:id/evidence', async (c) => {
   });
 });
 
+// Get conversation state for an assertion (messages, status)
+api.get('/assertions/:id/conversation', async (c) => {
+  const assertionId = c.req.param('id');
+
+  const assertion = await tools.prisma.assertion.findUnique({
+    where: { id: assertionId },
+    select: {
+      id: true,
+      status: true,
+      validationNotes: true,
+      partiallyValidated: true,
+    },
+  });
+
+  if (!assertion) {
+    return c.json({ success: false, error: 'Assertion not found' }, 404);
+  }
+
+  // Determine conversation status from assertion status
+  let conversationStatus = 'not_started';
+  if (assertion.status === 'EVIDENCE') {
+    conversationStatus = 'validated';
+  } else if (assertion.status === 'REJECTED') {
+    conversationStatus = 'rejected';
+  } else if (assertion.validationNotes && Array.isArray(assertion.validationNotes) && assertion.validationNotes.length > 0) {
+    conversationStatus = 'in_progress';
+  }
+
+  return c.json({
+    success: true,
+    data: {
+      messages: assertion.validationNotes || [],
+      status: conversationStatus,
+      partiallyValidated: assertion.partiallyValidated,
+    },
+  });
+});
+
+// Save conversation state for an assertion
+api.put('/assertions/:id/conversation', async (c) => {
+  const assertionId = c.req.param('id');
+  const body = await c.req.json();
+  const { messages, status } = body;
+
+  const assertion = await tools.prisma.assertion.findUnique({
+    where: { id: assertionId },
+  });
+
+  if (!assertion) {
+    return c.json({ success: false, error: 'Assertion not found' }, 404);
+  }
+
+  // Update the validationNotes with the full conversation
+  const updateData: any = {
+    validationNotes: messages || [],
+  };
+
+  // If status changed to validated or rejected, update assertion status too
+  if (status === 'validated' && assertion.status === 'CLAIM') {
+    updateData.status = 'EVIDENCE';
+    updateData.validatedAt = new Date();
+  } else if (status === 'rejected' && assertion.status === 'CLAIM') {
+    updateData.status = 'REJECTED';
+  } else if (status === 'in_progress') {
+    updateData.partiallyValidated = true;
+  }
+
+  const updated = await tools.prisma.assertion.update({
+    where: { id: assertionId },
+    data: updateData,
+  });
+
+  return c.json({
+    success: true,
+    data: {
+      id: updated.id,
+      status: status,
+      messages: updated.validationNotes,
+    },
+  });
+});
+
 // ============================================
 // Entities
 // ============================================

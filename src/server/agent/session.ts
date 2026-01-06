@@ -36,11 +36,20 @@ class ValidationSessionManager {
     // Create MCP server with validation tools
     const validationMcp = createValidationMcpServer();
 
-    // Build the initial prompt - DO NOT auto-fetch assertions, wait for specific request
+    // Build the initial prompt - assertion is already visible in UI, don't restate it
     let initialPrompt: string;
     if (config.assertionId) {
-      // Specific assertion requested - fetch it directly
-      initialPrompt = `Validation session started. Validator: ${config.validatorName}. Please use get_assertion_by_id to fetch assertion ID: ${config.assertionId} and present it for validation.`;
+      // Specific assertion requested - it's already displayed in UI, but fetch to get source URL
+      initialPrompt = `Validation session started for assertion ${config.assertionId}. Validator: ${config.validatorName}.
+
+The assertion details are already visible in the UI above - do NOT restate the claim.
+
+Use get_assertion_by_id to fetch the assertion data, then:
+1. Briefly greet the researcher by name
+2. Provide the source URL(s) they should visit to verify the claim
+3. Ask if they have any questions
+
+Keep your response concise - just the greeting, URL(s), and offer to help.`;
     } else {
       // No specific assertion - just acknowledge session start, wait for instructions
       initialPrompt = `Validation session started. Validator: ${config.validatorName}. Waiting for assertion selection. The researcher will select specific assertions from their UI.`;
