@@ -15,6 +15,7 @@ function validationApp() {
 
     // UI state
     sidebarCollapsed: false,
+    statusFilter: null, // null = all, 'pending', 'validated', 'rejected'
 
     // Chat state - per assertion conversations and status
     // Status: 'not_started' | 'in_progress' | 'validated' | 'rejected'
@@ -30,6 +31,8 @@ function validationApp() {
       medium: 0,
       low: 0,
       total: 0,
+      validated: 0,
+      rejected: 0,
     },
 
     // Assertions by project (topic)
@@ -258,6 +261,32 @@ function validationApp() {
         console.error('Failed to load assertions:', error);
         this.assertionsByProject = [];
       }
+    },
+
+    // Toggle status filter
+    toggleStatusFilter(filter) {
+      this.statusFilter = this.statusFilter === filter ? null : filter;
+    },
+
+    // Filter assertions by status
+    filterAssertions(assertions) {
+      if (!this.statusFilter) return assertions;
+
+      return assertions.filter(assertion => {
+        const status = this.getAssertionStatus(assertion.id, assertion.status);
+        if (this.statusFilter === 'pending') {
+          return status === 'not_started' || status === 'in_progress';
+        }
+        return status === this.statusFilter;
+      });
+    },
+
+    // Get filtered assertions by project (for sidebar)
+    getFilteredAssertionsByProject() {
+      return this.assertionsByProject.map(group => ({
+        ...group,
+        assertions: this.filterAssertions(group.assertions),
+      })).filter(group => group.assertions.length > 0);
     },
 
     // Get current conversation messages
@@ -643,7 +672,14 @@ function validationApp() {
       }
       // 'skip' keeps it in_progress
 
-      this.saveConversationToApi(this.currentAssertionId);
+      // Save to API and refresh counts
+      await this.saveConversationToApi(this.currentAssertionId);
+
+      // Refresh counts and sidebar after validation/rejection
+      if (action === 'validate' || action === 'reject') {
+        await this.loadPendingCounts();
+        await this.loadAssertionsByProject();
+      }
 
       // Build message content, include screenshot if uploaded
       let messageContent = `[Assertion ${this.currentAssertionId}] ${fullMessage}`;

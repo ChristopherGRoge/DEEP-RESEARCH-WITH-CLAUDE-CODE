@@ -24,30 +24,23 @@
         </div>
 
         <div class="header-stats">
-            <span class="stat" :class="{ 'has-items': pendingCounts.critical > 0 }">
-                <span class="stat-count" x-text="pendingCounts.critical"></span>
-                <span class="stat-label">Critical</span>
-            </span>
+            <button class="stat-btn validated" :class="{ active: statusFilter === 'validated' }" @click="toggleStatusFilter('validated')">
+                <span class="stat-count" x-text="pendingCounts.validated"></span>
+                <span class="stat-label">Validated</span>
+            </button>
+            <button class="stat-btn rejected" :class="{ active: statusFilter === 'rejected' }" @click="toggleStatusFilter('rejected')">
+                <span class="stat-count" x-text="pendingCounts.rejected"></span>
+                <span class="stat-label">Rejected</span>
+            </button>
             <span class="stat-divider"></span>
-            <span class="stat" :class="{ 'has-items': pendingCounts.high > 0 }">
-                <span class="stat-count" x-text="pendingCounts.high"></span>
-                <span class="stat-label">High</span>
-            </span>
-            <span class="stat-divider"></span>
-            <span class="stat">
-                <span class="stat-count" x-text="pendingCounts.medium"></span>
-                <span class="stat-label">Medium</span>
-            </span>
-            <span class="stat-divider"></span>
-            <span class="stat">
-                <span class="stat-count" x-text="pendingCounts.low"></span>
-                <span class="stat-label">Low</span>
-            </span>
-            <span class="stat-divider"></span>
-            <span class="stat total">
+            <button class="stat-btn" :class="{ active: statusFilter === 'pending', 'has-items': pendingCounts.critical > 0 }" @click="toggleStatusFilter('pending')">
                 <span class="stat-count" x-text="pendingCounts.total"></span>
                 <span class="stat-label">Pending</span>
-            </span>
+            </button>
+            <span class="stat-divider"></span>
+            <button class="stat-btn" :class="{ active: statusFilter === null }" @click="toggleStatusFilter(null)">
+                <span class="stat-label">All</span>
+            </button>
         </div>
 
         <div class="header-right">
@@ -76,13 +69,13 @@
             </div>
 
             <div class="assertion-list">
-                <template x-if="assertionsByProject.length === 0">
+                <template x-if="getFilteredAssertionsByProject().length === 0">
                     <div class="empty-sidebar">
-                        <p>No assertions</p>
+                        <p x-text="statusFilter ? 'No ' + statusFilter + ' assertions' : 'No assertions'"></p>
                     </div>
                 </template>
 
-                <template x-for="group in assertionsByProject" :key="group.projectId">
+                <template x-for="group in getFilteredAssertionsByProject()" :key="group.projectId">
                     <div class="project-section">
                         <button class="project-toggle" @click="group.expanded = !group.expanded">
                             <span class="project-name" x-text="group.projectName"></span>

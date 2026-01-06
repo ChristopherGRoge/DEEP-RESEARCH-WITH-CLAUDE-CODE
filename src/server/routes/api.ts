@@ -91,12 +91,23 @@ api.get('/assertions/pending', async (c) => {
     take: 100,
   });
 
-  // Get counts by criticality
-  const counts = await Promise.all([
+  // Get counts by criticality (pending only)
+  const pendingCounts = await Promise.all([
     tools.prisma.assertion.count({ where: { ...where, criticality: 'CRITICAL' } }),
     tools.prisma.assertion.count({ where: { ...where, criticality: 'HIGH' } }),
     tools.prisma.assertion.count({ where: { ...where, criticality: 'MEDIUM' } }),
     tools.prisma.assertion.count({ where: { ...where, criticality: 'LOW' } }),
+  ]);
+
+  // Get validated and rejected counts (across all, or filtered by project)
+  const statusWhere: any = {};
+  if (projectId) {
+    statusWhere.entity = { projectId };
+  }
+
+  const [validatedCount, rejectedCount] = await Promise.all([
+    tools.prisma.assertion.count({ where: { ...statusWhere, status: AssertionStatus.EVIDENCE } }),
+    tools.prisma.assertion.count({ where: { ...statusWhere, status: AssertionStatus.REJECTED } }),
   ]);
 
   return c.json({
@@ -104,11 +115,13 @@ api.get('/assertions/pending', async (c) => {
     data: {
       assertions,
       counts: {
-        critical: counts[0],
-        high: counts[1],
-        medium: counts[2],
-        low: counts[3],
-        total: counts.reduce((a, b) => a + b, 0),
+        critical: pendingCounts[0],
+        high: pendingCounts[1],
+        medium: pendingCounts[2],
+        low: pendingCounts[3],
+        total: pendingCounts.reduce((a, b) => a + b, 0),
+        validated: validatedCount,
+        rejected: rejectedCount,
       },
     },
   });

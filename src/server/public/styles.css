@@ -147,12 +147,54 @@ body {
     gap: var(--space-xs);
 }
 
-.stat.has-items .stat-count {
+.stat-btn {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.stat-btn:hover {
+    background: var(--bg-secondary);
+}
+
+.stat-btn.active {
+    background: var(--bg-tertiary);
+    border-color: var(--border-medium);
+}
+
+.stat.has-items .stat-count,
+.stat-btn.has-items .stat-count {
     color: var(--criticality-critical);
 }
 
 .stat.total .stat-count {
     font-weight: 700;
+}
+
+.stat.validated .stat-count,
+.stat-btn.validated .stat-count {
+    color: var(--status-validated);
+}
+
+.stat.rejected .stat-count,
+.stat-btn.rejected .stat-count {
+    color: var(--status-rejected);
+}
+
+.stat-btn.validated.active {
+    background: var(--status-validated-bg);
+    border-color: var(--status-validated);
+}
+
+.stat-btn.rejected.active {
+    background: var(--status-rejected-bg);
+    border-color: var(--status-rejected);
 }
 
 .stat-count {
