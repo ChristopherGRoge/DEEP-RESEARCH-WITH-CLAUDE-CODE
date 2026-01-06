@@ -38,6 +38,13 @@ enum ExtractionStatus {
   STALE      // Data expired, needs refresh
 }
 
+enum AssertionCriticality {
+  CRITICAL   // Must validate before conclusions - federal compliance, security architecture
+  HIGH       // Should validate - pricing, integration claims
+  MEDIUM     // Validate as time permits - feature claims, community metrics
+  LOW        // Optional validation - general observations
+}
+
 // ============================================
 // CORE MODELS
 // ============================================
@@ -92,11 +99,24 @@ model Assertion {
   claim       String   // The assertion being made
   status      AssertionStatus @default(CLAIM)
   category    String?  // e.g., "feature", "pricing", "integration", "performance"
-  confidence  Float?   // Optional confidence score (0-1)
+  confidence  Float?   // Optional confidence score (0-1) - how sure the AI is
+  criticality AssertionCriticality @default(MEDIUM) // How important to conclusions
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   validatedAt DateTime?
   validatedBy String?  // Human validator identifier
+
+  // Human-in-the-loop validation fields
+  citedInConclusion  Boolean  @default(false) // Is this assertion referenced in deliverables?
+  conclusionContext  String?  // Where/how this assertion is used in conclusions
+  rejectionReason    String?  // Why assertion was rejected (for re-research)
+  supersededBy       String?  // ID of assertion that replaced this one after re-research
+
+  // Conversational validation - human researcher dialogue
+  humanResponse      String?  // Researcher's written response/interpretation
+  validationNotes    Json?    // Array of {role: "human"|"agent", content: string, timestamp: Date}
+  partiallyValidated Boolean  @default(false) // Some claims verified, others need work
+  evidenceScreenshots String[] // Paths to screenshots uploaded as validation evidence
 
   entityId    String
   entity      Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
@@ -104,6 +124,8 @@ model Assertion {
   reasoning   Reasoning[]
   sources     AssertionSource[]
 
+  @@index([criticality, status])
+  @@index([citedInConclusion])
   @@map("assertions")
 }
 

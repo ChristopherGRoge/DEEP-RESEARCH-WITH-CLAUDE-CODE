@@ -7,6 +7,8 @@ description: Creates PowerPoint presentations from research documents. Use when 
 
 Create professional, consistent PowerPoint presentations from research documents using this project's established styling and templates.
 
+**IMPORTANT:** Deck generation is a REQUIRED deliverable for all research phases. Every completed research phase must produce a PPTX following the template at `docs/RESEARCH-TEMPLATES/DECK-TEMPLATE.md`.
+
 ## When to Use
 
 This skill should be invoked when:
@@ -15,11 +17,15 @@ This skill should be invoked when:
 - User mentions "PowerPoint", "PPTX", or "slides"
 - User wants to generate one-pagers or executive briefings
 - User has an Efficacy Brief that needs presentation format
+- **Research phase is marked complete** (deck is required deliverable)
+- User asks to run `/research-to-deck` skill
 
 ## Prerequisites
 
 Ensure these are available:
-- `python-pptx` installed (`pip install python-pptx`)
+- `python-pptx` installed (`pip install python-pptx`) - **REQUIRED**
+- Deck template spec at `docs/RESEARCH-TEMPLATES/DECK-TEMPLATE.md`
+- Research data: RESEARCH.md, comparison matrix, EFFICACY briefs
 - Template file at `docs/template/` (if using existing styles)
 - Pandoc installed (optional, for markdown workflow)
 
@@ -90,7 +96,61 @@ BODY_SIZE = 18  # pt
 CALLOUT_SIZE = 24  # pt
 ```
 
-### Step 5: Generate HTML One-Pagers
+### Step 5: Generate Research Phase Deck (REQUIRED)
+
+For completed research phases, generate a PPTX following `docs/RESEARCH-TEMPLATES/DECK-TEMPLATE.md`:
+
+```python
+#!/usr/bin/env python3
+"""
+Generate research deck for [Phase Name]
+Template: docs/RESEARCH-TEMPLATES/DECK-TEMPLATE.md
+"""
+
+from pptx import Presentation
+from pptx.util import Inches, Pt
+from pptx.dml.color import RGBColor
+from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
+from pptx.enum.shapes import MSO_SHAPE
+
+# Standard colors (from DECK-TEMPLATE.md)
+BRAND_PURPLE = RGBColor(117, 0, 192)  # #7500c0
+ACCENT_PURPLE = RGBColor(160, 85, 245)  # #a055f5
+DARK_GRAY = RGBColor(51, 51, 51)
+LIGHT_GRAY = RGBColor(128, 128, 128)
+WHITE = RGBColor(255, 255, 255)
+PROCEED_GREEN = RGBColor(16, 185, 129)  # Score >= 8.5
+CAUTION_AMBER = RGBColor(245, 158, 11)  # Score < 8.5
+
+def main():
+    prs = Presentation()
+    prs.slide_width = Inches(10)
+    prs.slide_height = Inches(5.63)  # 16:9
+
+    # REQUIRED SLIDES (in order):
+    # 1. Title Slide
+    # 2. Executive Summary
+    # 3. Context/Framework (1-2 slides)
+    # 4. Comparison Tables (1-2 slides)
+    # 5. Top Recommendations (4-6 entity slides)
+    # 6. Decision Matrix
+    # 7. Next Steps
+    # 8. Summary/Takeaways
+
+    prs.save(f"Deliverables/00-{PHASE_NAME}-RESEARCH.pptx")
+
+if __name__ == "__main__":
+    main()
+```
+
+**Slide count targets:**
+- Discovery research: 8-12 slides
+- Analysis research: 12-20 slides
+- Full phase: 15-25 slides
+
+**Reference implementation:** `RESEARCH/Agentic-SDLC/Design-Build/Deliverables/generate_deck.py`
+
+### Step 6: Generate HTML One-Pagers
 
 For Efficacy Briefs, generate styled HTML one-pagers:
 
@@ -260,8 +320,26 @@ Before delivering:
 
 ## Related Files
 
+- `docs/RESEARCH-TEMPLATES/DECK-TEMPLATE.md` - **REQUIRED** deck template specification
 - `docs/template/00-one-pager.md` - Standard one-pager template
 - `docs/template/01-one-pager.md` - Executive one-pager template
 - `docs/research-to-deck/AI_AGENT_GUIDE.md` - Detailed agent instructions
 - `docs/research-to-deck/python-pptx-guide.md` - python-pptx reference
 - `docs/RESEARCH-TEMPLATES/EFFICACY` - Full Efficacy Brief template
+- `RESEARCH/Agentic-SDLC/Design-Build/Deliverables/generate_deck.py` - Reference implementation
+
+## Research Phase Deck Checklist
+
+Before marking a research deck as complete:
+
+- [ ] Follows `docs/RESEARCH-TEMPLATES/DECK-TEMPLATE.md` structure
+- [ ] Title slide with phase name, domain, date
+- [ ] Executive summary with entity count and top recommendations
+- [ ] Comparison tables with federal viability data
+- [ ] Individual slides for top 4-6 entities
+- [ ] Decision matrix ("If you need X, choose Y")
+- [ ] Next steps with actionable recommendations
+- [ ] Summary with key takeaways
+- [ ] Score badges use correct colors (green ≥8.5, amber <8.5)
+- [ ] All text is editable (no images of text)
+- [ ] File opens without errors in PowerPoint

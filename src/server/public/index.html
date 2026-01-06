@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assertion Validation</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body x-data="validationApp()" x-init="init()">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <h1>Assertion Validation</h1>
+            <span class="auth-badge" :class="authStatus.valid ? 'valid' : 'invalid'">
+                <span x-text="authStatus.valid ? '\u2713' : '\u26A0'"></span>
+                <span x-text="authStatus.method"></span>
+            </span>
+            <!-- Connection Status -->
+            <div class="connection-indicator" :class="wsConnected ? 'connected' : 'disconnected'">
+                <span class="dot"></span>
+                <span x-text="wsConnected ? 'Connected' : 'Disconnected'"></span>
+            </div>
+        </div>
+
+        <!-- Pending Queue Stats in Header -->
+        <div class="header-center">
+            <div class="queue-stats-inline">
+                <div class="stat-chip critical">
+                    <span class="stat-value" x-text="pendingCounts.critical"></span>
+                    <span class="stat-label">Critical</span>
+                </div>
+                <div class="stat-chip high">
+                    <span class="stat-value" x-text="pendingCounts.high"></span>
+                    <span class="stat-label">High</span>
+                </div>
+                <div class="stat-chip medium">
+                    <span class="stat-value" x-text="pendingCounts.medium"></span>
+                    <span class="stat-label">Medium</span>
+                </div>
+                <div class="stat-chip low">
+                    <span class="stat-value" x-text="pendingCounts.low"></span>
+                    <span class="stat-label">Low</span>
+                </div>
+                <div class="stat-chip total">
+                    <span class="stat-value" x-text="pendingCounts.total"></span>
+                    <span class="stat-label">Total</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="validator-info">
+                <label class="validator-label">Validator:</label>
+                <input type="text" x-model="validatorName" placeholder="Your name" class="input-field compact">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Left Panel: Assertions by Project -->
+        <aside class="assertions-panel">
+            <div class="panel-header">
+                <h2>Assertions</h2>
+                <select x-model="selectedProject" @change="loadAssertionsByProject()" class="select-field compact">
+                    <option value="">All Projects</option>
+                    <template x-for="project in projects" :key="project.id">
+                        <option :value="project.id" x-text="project.name"></option>
+                    </template>
+                </select>
+            </div>
+
+            <div class="assertions-list">
+                <template x-if="assertionsByProject.length === 0">
+                    <div class="empty-list">
+                        <p>No pending assertions</p>
+                    </div>
+                </template>
+                <template x-for="group in assertionsByProject" :key="group.projectId">
+                    <div class="project-group">
+                        <div class="project-header" @click="group.expanded = !group.expanded">
+                            <span class="expand-icon" x-text="group.expanded ? '\u25BC' : '\u25B6'"></span>
+                            <span class="project-name" x-text="group.projectName"></span>
+                            <span class="project-count" x-text="group.assertions.length"></span>
+                        </div>
+                        <div class="project-assertions" x-show="group.expanded">
+                            <template x-for="assertion in group.assertions" :key="assertion.id">
+                                <div
+                                    class="assertion-item"
+                                    :class="{
+                                        active: currentAssertionId === assertion.id,
+                                        critical: assertion.criticality === 'CRITICAL',
+                                        high: assertion.criticality === 'HIGH',
+                                        medium: assertion.criticality === 'MEDIUM',
+                                        low: assertion.criticality === 'LOW',
+                                        validated: getAssertionStatus(assertion.id, assertion.status) === 'validated',
+                                        rejected: getAssertionStatus(assertion.id, assertion.status) === 'rejected'
+                                    }"
+                                    @click="selectAssertion(assertion)"
+                                >
+                                    <div class="assertion-claim" x-text="assertion.claim"></div>
+                                    <div class="assertion-meta">
+                                        <span class="criticality-badge" :class="assertion.criticality?.toLowerCase()" x-text="assertion.criticality"></span>
+                                        <span class="category-badge" x-text="assertion.category"></span>
+                                        <span class="status-badge" :class="getAssertionStatus(assertion.id, assertion.status)" x-text="getStatusLabel(assertion.id, assertion.status)"></span>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </aside>
+
+        <!-- Center: Chat Thread -->
+        <section class="chat-panel">
+            <!-- Current Assertion Header -->
+            <div class="assertion-header" x-show="currentAssertion">
+                <div class="assertion-header-content">
+                    <span class="assertion-entity-name" x-text="currentAssertion?.entityName"></span>
+                    <span class="assertion-category" x-text="currentAssertion?.category"></span>
+                    <span class="assertion-criticality" :class="currentAssertion?.criticality?.toLowerCase()" x-text="currentAssertion?.criticality"></span>
+                </div>
+                <div class="assertion-claim-full" x-text="currentAssertion?.claim"></div>
+            </div>
+
+            <div class="chat-messages" x-ref="chatContainer">
+                <!-- No assertion selected -->
+                <template x-if="!currentAssertionId">
+                    <div class="empty-state">
+                        <h3>Select an Assertion</h3>
+                        <p>Choose an assertion from the left panel to start validating.</p>
+                        <p>Each assertion has its own conversation thread and status.</p>
+                    </div>
+                </template>
+                <!-- Assertion selected but not started -->
+                <template x-if="currentAssertionId && getAssertionStatus(currentAssertionId) === 'not_started'">
+                    <div class="empty-state start-validation-prompt">
+                        <h3>Ready to Validate</h3>
+                        <p class="claim-preview" x-text="currentAssertion?.claim"></p>
+                        <div class="start-validation-form">
+                            <template x-if="!validatorName">
+                                <div class="name-prompt">
+                                    <p>Enter your name to begin:</p>
+                                    <input type="text" x-model="validatorName" placeholder="Your name" class="input-field" @keydown.enter="startAssertionValidation()">
+                                </div>
+                            </template>
+                            <button
+                                @click="startAssertionValidation()"
+                                :disabled="!authStatus.valid || !validatorName"
+                                class="btn btn-primary btn-large"
+                            >
+                                Start Validation
+                            </button>
+                        </div>
+                    </div>
+                </template>
+                <!-- Assertion already validated -->
+                <template x-if="currentAssertionId && getAssertionStatus(currentAssertionId) === 'validated'">
+                    <div class="status-banner validated">
+                        <span class="status-icon">&#10003;</span>
+                        <span>This assertion has been validated</span>
+                    </div>
+                </template>
+                <!-- Assertion rejected -->
+                <template x-if="currentAssertionId && getAssertionStatus(currentAssertionId) === 'rejected'">
+                    <div class="status-banner rejected">
+                        <span class="status-icon">&#10007;</span>
+                        <span>This assertion has been rejected</span>
+                    </div>
+                </template>
+                <template x-for="(msg, index) in chatMessages" :key="index">
+                    <div class="chat-message" :class="msg.role">
+                        <div class="message-content">
+                            <template x-if="msg.role === 'assistant'">
+                                <div class="assistant-avatar">C</div>
+                            </template>
+                            <template x-if="msg.role === 'user'">
+                                <div class="user-avatar" x-text="validatorName.charAt(0).toUpperCase()"></div>
+                            </template>
+                            <template x-if="msg.role === 'evidence'">
+                                <div class="evidence-avatar">&#128247;</div>
+                            </template>
+                            <template x-if="msg.type === 'screenshot'">
+                                <div class="evidence-screenshot">
+                                    <img :src="msg.content" alt="Evidence screenshot" class="evidence-image">
+                                    <a :href="msg.content" target="_blank" class="evidence-link">View full size</a>
+                                </div>
+                            </template>
+                            <template x-if="msg.type !== 'screenshot'">
+                                <div class="message-text" x-html="formatMessage(msg.content)"></div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+                <template x-if="isStreaming">
+                    <div class="chat-message assistant streaming">
+                        <div class="message-content">
+                            <div class="assistant-avatar">C</div>
+                            <div class="message-text">
+                                <span x-text="currentStreamText"></span>
+                                <span class="typing-indicator">|</span>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Input Area - Pinned to Bottom -->
+            <div class="chat-input-area">
+                <template x-if="!currentAssertionId">
+                    <div class="input-disabled-message">
+                        Select an assertion from the left panel to begin validation
+                    </div>
+                </template>
+                <template x-if="currentAssertionId && getAssertionStatus(currentAssertionId) === 'not_started'">
+                    <div class="input-disabled-message">
+                        Click "Start Validation" above to begin
+                    </div>
+                </template>
+                <template x-if="currentAssertionId && (getAssertionStatus(currentAssertionId) === 'validated' || getAssertionStatus(currentAssertionId) === 'rejected')">
+                    <div class="input-disabled-message">
+                        This assertion has been completed
+                    </div>
+                </template>
+                <template x-if="currentAssertionId && getAssertionStatus(currentAssertionId) === 'in_progress'">
+                    <div>
+                        <div class="input-instructions">
+                            <p>Describe your verification of this claim, then select an action:</p>
+                        </div>
+                        <!-- Screenshot preview -->
+                        <div class="screenshot-preview" x-show="pendingScreenshot">
+                            <img :src="pendingScreenshot?.preview" alt="Screenshot preview" class="screenshot-thumb">
+                            <button @click="clearPendingScreenshot()" class="screenshot-remove" title="Remove screenshot">&times;</button>
+                            <span class="screenshot-label">Evidence screenshot attached</span>
+                        </div>
+                        <div class="input-row">
+                            <textarea
+                                x-model="userInput"
+                                @input="autoGrow($event)"
+                                @paste="handlePaste($event)"
+                                @keydown.ctrl.enter="submitWithAction(selectedAction)"
+                                @keydown.meta.enter="submitWithAction(selectedAction)"
+                                placeholder="Describe what you verified. Paste screenshots (Ctrl+V) to attach evidence..."
+                                :disabled="isStreaming || isUploadingScreenshot"
+                                class="chat-input"
+                                rows="1"
+                            ></textarea>
+                        </div>
+                        <div class="action-row">
+                            <div class="compound-button" :class="{ disabled: !userInput.trim() || isStreaming }">
+                                <button
+                                    @click="submitWithAction('validate')"
+                                    :disabled="!userInput.trim() || isStreaming"
+                                    class="action-main validate"
+                                    :class="{ active: selectedAction === 'validate' }"
+                                >
+                                    &#10003; Validate
+                                </button>
+                                <button
+                                    @click="submitWithAction('reject')"
+                                    :disabled="!userInput.trim() || isStreaming"
+                                    class="action-main reject"
+                                    :class="{ active: selectedAction === 'reject' }"
+                                >
+                                    &#10007; Reject
+                                </button>
+                                <button
+                                    @click="submitWithAction('skip')"
+                                    :disabled="!userInput.trim() || isStreaming"
+                                    class="action-main skip"
+                                    :class="{ active: selectedAction === 'skip' }"
+                                >
+                                    &#8594; Skip
+                                </button>
+                                <button
+                                    @click="sendMessage()"
+                                    :disabled="!userInput.trim() || isStreaming"
+                                    class="action-main question"
+                                >
+                                    ? Question
+                                </button>
+                            </div>
+                            <div class="input-hint">
+                                <span x-show="!userInput.trim()">Type your verification notes to enable actions</span>
+                                <span x-show="userInput.trim()">Ctrl+Enter to submit</span>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </section>
+    </main>
+
+    <script src="/app.js"></script>
+</body>
+</html>

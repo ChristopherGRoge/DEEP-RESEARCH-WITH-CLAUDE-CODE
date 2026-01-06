@@ -91,7 +91,44 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
         result = await tools.validateAssertion(args.assertionId as string, args.validatedBy as string);
         break;
       case 'assertion:reject':
-        result = await tools.rejectAssertion(args.assertionId as string, args.validatedBy as string);
+        result = await tools.rejectAssertion(args.assertionId as string, args.validatedBy as string, args.rejectionReason as string | undefined);
+        break;
+      case 'assertion:setCriticality':
+        result = await tools.setCriticality(args.assertionId as string, args.criticality as tools.AssertionCriticality);
+        break;
+      case 'assertion:markCited':
+        result = await tools.markCitedInConclusion(args.assertionId as string, args.conclusionContext as string);
+        break;
+      case 'assertion:pendingValidation':
+        result = await tools.getAssertionsPendingValidation(args.projectId as string | undefined);
+        break;
+      case 'assertion:rejectedForReresearch':
+        result = await tools.getRejectedForReresearch(args.projectId as string | undefined);
+        break;
+      case 'assertion:supersede':
+        result = await tools.supersededAssertion(args.rejectedId as string, args.newAssertionId as string);
+        break;
+      case 'assertion:respond':
+        result = await tools.addHumanResponse(
+          args.assertionId as string,
+          args.response as string,
+          args.validatedBy as string,
+          {
+            partiallyValidated: args.partiallyValidated as boolean | undefined,
+            validatedClaims: args.validatedClaims as string[] | undefined,
+            challengedClaims: args.challengedClaims as string[] | undefined,
+          }
+        );
+        break;
+      case 'assertion:agentRespond':
+        result = await tools.addAgentResponse(
+          args.assertionId as string,
+          args.response as string,
+          args.agentId as string | undefined
+        );
+        break;
+      case 'assertion:dialogues':
+        result = await tools.getActiveDialogues(args.projectId as string | undefined);
         break;
       case 'assertion:delete':
         result = await tools.deleteAssertion(args.assertionId as string);
@@ -281,6 +318,17 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
         break;
 
       // ============================================
+      // VALIDATION DASHBOARD - Human-in-the-loop review
+      // ============================================
+      case 'validation:generate':
+        result = await tools.generateValidationDashboard({
+          projectId: args.projectId as string | undefined,
+          outputPath: args.outputPath as string | undefined,
+          validatorName: args.validatorName as string | undefined,
+        });
+        break;
+
+      // ============================================
       // EXTRACTION COMMANDS - Primary deep research tool
       // ============================================
 
@@ -384,6 +432,7 @@ async function main() {
         'project:create', 'project:get', 'project:list', 'project:update', 'project:delete', 'project:find',
         'entity:create', 'entity:get', 'entity:find', 'entity:list', 'entity:search', 'entity:update', 'entity:delete', 'entity:exists',
         'assertion:create', 'assertion:get', 'assertion:list', 'assertion:search', 'assertion:update', 'assertion:validate', 'assertion:reject', 'assertion:delete', 'assertion:addReasoning', 'assertion:findSimilar',
+        'assertion:setCriticality', 'assertion:markCited', 'assertion:pendingValidation', 'assertion:rejectedForReresearch', 'assertion:supersede',
         'source:create', 'source:get', 'source:find', 'source:list', 'source:search', 'source:link', 'source:update', 'source:validate', 'source:reject', 'source:delete', 'source:byType',
         'search:global', 'search:summary', 'search:pending', 'search:activity', 'search:noAssertions', 'search:noSources',
         // Research planning
@@ -396,6 +445,8 @@ async function main() {
         'agenda:create', 'agenda:list', 'agenda:get', 'agenda:status', 'agenda:next', 'agenda:complete', 'agenda:skip', 'agenda:fail', 'agenda:reset', 'agenda:delete', 'agenda:suggest',
         // Logo/branding (SVG-focused)
         'logo:search', 'logo:verify', 'logo:download', 'logo:save', 'logo:fetch', 'logo:missing', 'logo:summary', 'logo:validate', 'logo:clear', 'logo:inline',
+        // Validation dashboard
+        'validation:generate',
       ],
     }));
     process.exit(1);

@@ -11,6 +11,7 @@ export * from './queries';
 export * from './diff';
 export * from './agenda';
 export * from './logos';
+export * from './validation-dashboard';
 
 // Re-export Prisma client for direct access if needed
 export { prisma } from '../db/client';
@@ -18,6 +19,7 @@ export { prisma } from '../db/client';
 // Re-export enums for convenience
 export {
   AssertionStatus,
+  AssertionCriticality,
   SourceStatus,
   ResearchWorkflow,
   ExtractionStatus

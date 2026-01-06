@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabby Critical Assessment</title>
+    <style>
+        @font-face {
+            font-family: 'Graphik';
+            src: url('docs/branding/Font_Graphik_GT/Graphik/Graphik-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Graphik';
+            src: url('docs/branding/Font_Graphik_GT/Graphik/Graphik-Medium.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Graphik';
+            src: url('docs/branding/Font_Graphik_GT/Graphik/Graphik-Semibold.ttf') format('truetype');
+            font-weight: 600;
+            font-style: normal;
+        }
+        body {
+            font-family: 'Graphik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #000000;
+            font-weight: 700;
+            border-bottom: 3px solid #7500c0;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .overview-text {
+            font-size: 1.4em;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            color: #000000;
+            font-weight: 600;
+        }
+        .purple-highlight {
+            color: #7500c0;
+        }
+        .callout-container {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 20px;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        .callout-title {
+            font-weight: 700;
+            color: #000000;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 5px;
+        }
+        .callout-icon {
+            width: 1.5em;
+            height: 1.5em;
+            flex-shrink: 0;
+        }
+        .callout-content {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        .critical-finding {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border-left: 4px solid #F59E0B;
+        }
+        .recommendation {
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+            border-left: 4px solid #10B981;
+        }
+        .bottom-line {
+            background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 100%);
+            border-left: 4px solid #7500c0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 15px 12px;
+            text-align: left;
+            border-bottom: 1px solid #E9D5FF;
+            vertical-align: top;
+        }
+        th {
+            background-color: #7500c0;
+            color: white;
+            font-weight: 600;
+            font-size: 1.4em;
+        }
+        tr:hover {
+            background-color: #F3E8FF;
+        }
+        .highlight {
+            font-weight: 600;
+            color: #a055f5;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #7f8c8d;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .footer-logo {
+            font-size: 48px;
+            font-weight: 700;
+            color: #7500c0;
+            line-height: 1;
+        }
+        .footer-info {
+            text-align: right;
+            line-height: 1.6;
+        }
+        .vendor-link {
+            color: #7500c0;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .vendor-link:hover {
+            text-decoration: underline;
+        }
+        @media print {
+            body {
+                background-color: white;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tabby Critical Assessment</h1>
+
+        <div class="overview-text">
+            <span class="purple-highlight">Self-hosted, open-source AI code assistant</span> written in Rust with <span class="purple-highlight">zero cloud dependencies</span> and <span class="purple-highlight">complete air-gapped deployment support</span>. Apache 2.0 licensed for full organizational control.
+        </div>
+
+        <div class="callout-container critical-finding">
+            <div class="callout-title">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="#D97706">
+                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                </svg>
+                Critical Finding for Federal
+            </div>
+            <div class="callout-content">
+                <strong>Path B (Self-Hosted) Excellence</strong> - Tabby represents the ideal candidate for federal environments. Unlike commercial alternatives offering "on-premise options" while maintaining cloud dependencies, Tabby runs <strong>entirely on local infrastructure</strong> with no telemetry, no license servers, and documented air-gapped installation. All AI processing occurs on-premise using organization-controlled hardware.
+            </div>
+        </div>
+
+        <div class="callout-container recommendation">
+            <div class="callout-title">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="#10B981">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                Recommendation
+            </div>
+            <div class="callout-content">
+                <strong>Proceed with Pilot</strong> | Best-in-class self-hosted architecture for air-gapped and IL5+ environments; Apache 2.0 eliminates vendor lock-in; infrastructure-only costs (~$0 licensing).
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Alignment to Stack</th>
+                    <th>Differentiation</th>
+                    <th>Security & Compliance</th>
+                    <th>ROI Potential</th>
+                    <th>Industry Backing</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Fills critical gap</strong> - Provides GitHub Copilot-equivalent functionality for air-gapped environments. Integrates with VS Code, JetBrains, Vim/Neovim, and existing Git repositories.</td>
+                    <td><strong>True self-hosted architecture</strong> - Built ground-up for local deployment, not cloud-first with self-hosted afterthought. <span class="highlight">Rust implementation</span> provides memory safety. Answer Engine with RAG for internal knowledge bases.</td>
+                    <td><strong>Federal-optimized by design</strong> - <span class="highlight">Zero telemetry, no phone-home, fully air-gapped capable</span>. Supports FedRAMP-authorized backends (AWS Bedrock, Azure OpenAI) via OpenAI-compatible API. IL5+ and classified environments viable.</td>
+                    <td><strong>~15-30% productivity improvement</strong> (industry benchmarks). <span class="highlight">$0 licensing</span>; infrastructure only (~$500-2,000/month for 50-engineer deployment). Significant positive ROI with minimal ongoing costs.</td>
+                    <td><strong>25K+ GitHub stars</strong>; Y Combinator backed; monthly release cadence; active community support. Production deployments at enterprise scale.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="callout-container bottom-line">
+            <div class="callout-title">
+                <svg class="callout-icon" viewBox="0 0 24 24" fill="#7500c0">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+                Bottom Line
+            </div>
+            <div class="callout-content">
+                Tabby is the <strong>gold standard for federal self-hosted AI code assistance</strong>. For IL5+, air-gapped, or classified environments, <strong>Tabby is the only viable option</strong> - the decision is not Tabby vs. commercial alternatives but Tabby vs. no AI code assistance. Deploy POC in 1-3 days; production Kubernetes in 1-2 weeks post-validation.
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-logo">&gt;</div>
+            <div class="footer-info">
+                Internal Use Only | Federal Score: 9/10 (Best Path B Candidate)<br>
+                <strong>Vendor:</strong> <a href="https://tabby.tabbyml.com" class="vendor-link">tabby.tabbyml.com</a><br>
+                <strong>Contact:</strong> christopher.g.roge@afs.com
+            </div>
+        </div>
+    </div>
+</body>
+</html>

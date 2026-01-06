@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design-Build Phase: Federal Comparison Matrix</title>
+    <style>
+        :root {
+            --primary-purple: #7500c0;
+            --accent-purple: #a055f5;
+            --light-purple: #f3e8ff;
+            --proceed-green: #10B981;
+            --proceed-bg: #D1FAE5;
+            --warning-amber: #F59E0B;
+            --warning-bg: #FEF3C7;
+            --danger-red: #dc2626;
+            --danger-bg: #fef2f2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 11px;
+            line-height: 1.4;
+            color: #1f2937;
+            background: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--primary-purple);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: var(--primary-purple);
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .badge-purple {
+            background: var(--primary-purple);
+            color: white;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-purple));
+            color: white;
+            padding: 8px 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+
+        th {
+            background: var(--primary-purple);
+            color: white;
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid var(--primary-purple);
+        }
+
+        td {
+            padding: 6px 10px;
+            border: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        tr:hover {
+            background: var(--light-purple);
+        }
+
+        .tool-name {
+            font-weight: 700;
+            color: var(--primary-purple);
+        }
+
+        .score {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .score-high {
+            color: var(--proceed-green);
+        }
+
+        .score-mid {
+            color: var(--warning-amber);
+        }
+
+        .recommend-proceed {
+            background: var(--proceed-bg);
+            color: var(--proceed-green);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .recommend-conditional {
+            background: var(--warning-bg);
+            color: var(--warning-amber);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .yes {
+            color: var(--proceed-green);
+            font-weight: 600;
+        }
+
+        .no {
+            color: var(--danger-red);
+            font-weight: 600;
+        }
+
+        .partial {
+            color: var(--warning-amber);
+            font-weight: 600;
+        }
+
+        .highlight {
+            background: var(--light-purple);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        .callout {
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .callout-purple {
+            background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+            border-left: 4px solid var(--primary-purple);
+        }
+
+        .callout-title {
+            font-weight: 700;
+            font-size: 1em;
+            margin-bottom: 5px;
+            color: var(--primary-purple);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .card {
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .card-title {
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .card-highlight {
+            border-color: var(--primary-purple);
+            border-width: 2px;
+        }
+
+        .path-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8em;
+            margin-right: 5px;
+        }
+
+        .path-a {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .path-b {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        footer {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 2px solid var(--primary-purple);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85em;
+            color: #6b7280;
+        }
+
+        @media print {
+            body {
+                font-size: 9px;
+                padding: 10px;
+            }
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1>Design-Build: Federal Comparison Matrix</h1>
+                <div class="subtitle">AI Code Assistants for Federal Environments | December 2025</div>
+            </div>
+            <div>
+                <span class="badge badge-purple">6 Tools Evaluated</span>
+            </div>
+        </header>
+
+        <!-- Executive Summary -->
+        <div class="callout callout-purple">
+            <div class="callout-title">Top Recommendations</div>
+            <div class="grid-3" style="margin-top: 8px;">
+                <div><strong>Air-Gapped/IL5+:</strong> <span class="highlight">Tabby (9/10)</span> - Zero cloud dependencies</div>
+                <div><strong>AWS GovCloud:</strong> <span class="highlight">Claude Code (8.5/10)</span> - FedRAMP High via Bedrock</div>
+                <div><strong>FedRAMP SaaS:</strong> <span class="highlight">Windsurf (8.5/10)</span> - Only actual FedRAMP High</div>
+            </div>
+        </div>
+
+        <!-- Main Comparison Table -->
+        <div class="section">
+            <div class="section-title">Federal Viability Overview</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Score</th>
+                        <th>Path</th>
+                        <th>FedRAMP</th>
+                        <th>Air-Gap</th>
+                        <th>GovCloud LLM</th>
+                        <th>Recommendation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="tool-name">Tabby</td>
+                        <td><span class="score score-high">9/10</span></td>
+                        <td><span class="path-badge path-b">Path B</span></td>
+                        <td>N/A (self-hosted)</td>
+                        <td class="yes">Full</td>
+                        <td>Bedrock, Azure</td>
+                        <td><span class="recommend-proceed">Proceed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tool-name">Continue.dev</td>
+                        <td><span class="score score-high">8.5/10</span></td>
+                        <td><span class="path-badge path-b">Path B</span></td>
+                        <td>N/A (self-hosted)</td>
+                        <td class="yes">Full</td>
+                        <td>Bedrock (native), Azure (native)</td>
+                        <td><span class="recommend-proceed">Proceed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tool-name">Claude Code</td>
+                        <td><span class="score score-high">8.5/10</span></td>
+                        <td><span class="path-badge path-b">Path B</span></td>
+                        <td class="yes">High (via Bedrock)</td>
+                        <td class="no">No</td>
+                        <td>Bedrock only</td>
+                        <td><span class="recommend-conditional">Conditional</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tool-name">Windsurf</td>
+                        <td><span class="score score-high">8.5/10</span></td>
+                        <td><span class="path-badge path-a">Path A</span><span class="path-badge path-b">Path B</span></td>
+                        <td class="yes">High (actual)</td>
+                        <td class="partial">BYOL only</td>
+                        <td>Bedrock, Azure</td>
+                        <td><span class="recommend-proceed">Proceed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tool-name">Tabnine</td>
+                        <td><span class="score score-mid">8/10</span></td>
+                        <td><span class="path-badge path-b">Path B</span></td>
+                        <td class="no">No</td>
+                        <td class="yes">Full</td>
+                        <td>Bedrock, Azure, Vertex</td>
+                        <td><span class="recommend-proceed">Proceed</span></td>
+                    </tr>
+                    <tr>
+                        <td class="tool-name">Qodo</td>
+                        <td><span class="score score-mid">8/10</span></td>
+                        <td><span class="path-badge path-b">Path B</span></td>
+                        <td class="no">No</td>
+                        <td class="yes">Full</td>
+                        <td>Bedrock, Azure</td>
+                        <td><span class="recommend-proceed">Proceed</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Architecture & LLM Support -->
+        <div class="grid-2">
+            <div class="section">
+                <div class="section-title">Architecture & Deployment</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tool</th>
+                            <th>Type</th>
+                            <th>Self-Hosted</th>
+                            <th>License</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="tool-name">Tabby</td>
+                            <td>Rust binary</td>
+                            <td class="yes">Full features</td>
+                            <td>Apache 2.0</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Continue.dev</td>
+                            <td>IDE extension</td>
+                            <td class="yes">Full features</td>
+                            <td>Apache 2.0</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Claude Code</td>
+                            <td>CLI client</td>
+                            <td class="no">Cloud only</td>
+                            <td>Proprietary</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Windsurf</td>
+                            <td>IDE (VS Code)</td>
+                            <td class="partial">Reduced*</td>
+                            <td>Proprietary</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Tabnine</td>
+                            <td>IDE extension</td>
+                            <td class="yes">Full features</td>
+                            <td>Proprietary</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Qodo</td>
+                            <td>IDE extension</td>
+                            <td class="yes">Full features</td>
+                            <td>Mixed (PR-Agent OSS)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="font-size: 0.85em; color: #6b7280;">*Windsurf self-hosted loses Cascade feature</div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">LLM Backend Flexibility</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tool</th>
+                            <th>Local Models</th>
+                            <th>Bedrock</th>
+                            <th>Azure</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="tool-name">Tabby</td>
+                            <td class="yes">StarCoder, Qwen, etc.</td>
+                            <td class="yes">Via API</td>
+                            <td class="yes">Via API</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Continue.dev</td>
+                            <td class="yes">Ollama, vLLM</td>
+                            <td class="yes">Native</td>
+                            <td class="yes">Native</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Claude Code</td>
+                            <td class="no">No</td>
+                            <td class="yes">Native</td>
+                            <td class="no">No</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Windsurf</td>
+                            <td class="no">No</td>
+                            <td class="yes">Yes</td>
+                            <td class="yes">Yes</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Tabnine</td>
+                            <td class="yes">Proprietary</td>
+                            <td class="yes">Yes</td>
+                            <td class="yes">Yes</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Qodo</td>
+                            <td class="yes">Ollama, vLLM</td>
+                            <td class="yes">Yes</td>
+                            <td class="yes">Yes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pricing & Capabilities -->
+        <div class="grid-2">
+            <div class="section">
+                <div class="section-title">Pricing Comparison</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tool</th>
+                            <th>Free Tier</th>
+                            <th>Per-User</th>
+                            <th>Infrastructure</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="tool-name">Tabby</td>
+                            <td class="yes">Full (OSS)</td>
+                            <td>$0</td>
+                            <td>GPU: ~$500-2K/mo</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Continue.dev</td>
+                            <td class="yes">Full (OSS)</td>
+                            <td>$0-10/mo</td>
+                            <td>Minimal</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Claude Code</td>
+                            <td class="partial">Limited</td>
+                            <td>~$20-50/mo*</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Windsurf</td>
+                            <td class="yes">Yes</td>
+                            <td>$60/user/mo</td>
+                            <td>Hybrid: minimal</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Tabnine</td>
+                            <td class="partial">Limited</td>
+                            <td>$39/user/mo</td>
+                            <td>GPU for self-hosted</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Qodo</td>
+                            <td class="partial">Limited</td>
+                            <td>$45/user/mo</td>
+                            <td>Varies</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="font-size: 0.85em; color: #6b7280;">*Token-based via Bedrock</div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Core Capabilities</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tool</th>
+                            <th>Completion</th>
+                            <th>Agentic</th>
+                            <th>Code Review</th>
+                            <th>Test Gen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="tool-name">Tabby</td>
+                            <td class="yes">Yes</td>
+                            <td class="partial">Limited</td>
+                            <td class="no">No</td>
+                            <td class="no">No</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Continue.dev</td>
+                            <td class="yes">Yes</td>
+                            <td class="yes">Yes</td>
+                            <td class="no">No</td>
+                            <td class="no">No</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Claude Code</td>
+                            <td class="yes">Yes</td>
+                            <td class="yes">Native</td>
+                            <td class="yes">Yes</td>
+                            <td class="yes">Yes</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Windsurf</td>
+                            <td class="yes">Yes</td>
+                            <td class="yes">Cascade</td>
+                            <td class="no">No</td>
+                            <td class="no">No</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Tabnine</td>
+                            <td class="yes">Yes</td>
+                            <td class="partial">Limited</td>
+                            <td class="no">No</td>
+                            <td class="no">No</td>
+                        </tr>
+                        <tr>
+                            <td class="tool-name">Qodo</td>
+                            <td class="yes">Yes</td>
+                            <td class="yes">Yes</td>
+                            <td class="yes">PR-Agent</td>
+                            <td class="yes">Yes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Decision Cards -->
+        <div class="section">
+            <div class="section-title">When to Choose Each Tool</div>
+            <div class="grid-3">
+                <div class="card card-highlight">
+                    <div class="card-title">Maximum Security (Air-Gap)</div>
+                    <div><strong>1. Tabby</strong> - Zero cloud deps, Rust</div>
+                    <div><strong>2. Tabnine</strong> - Enterprise + Dell GPU</div>
+                    <div><strong>3. Continue.dev + Ollama</strong> - OSS stack</div>
+                </div>
+                <div class="card card-highlight">
+                    <div class="card-title">AWS GovCloud</div>
+                    <div><strong>1. Claude Code</strong> - Native Bedrock</div>
+                    <div><strong>2. Continue.dev</strong> - Bedrock provider</div>
+                    <div><strong>3. Windsurf Hybrid</strong> - FedRAMP High</div>
+                </div>
+                <div class="card card-highlight">
+                    <div class="card-title">FedRAMP SaaS</div>
+                    <div><strong>1. Windsurf</strong> - Only FedRAMP High</div>
+                    <div><strong>2. Claude Code</strong> - Via Bedrock</div>
+                    <div><strong>3. Amazon Q</strong> - AWS native</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Features -->
+        <div class="section">
+            <div class="section-title">Security & Compliance Features</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>DoD IL Support</th>
+                        <th>SOC 2</th>
+                        <th>Zero Code Retention</th>
+                        <th>IP Indemnification</th>
+                        <th>SSO/SAML</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="tool-name">Tabby</td>
+                        <td>IL2-IL6 viable</td>
+                        <td>N/A</td>
+                        <td class="yes">Yes (local)</td>
+                        <td>N/A (OSS)</td>
+                        <td class="no">No</td>
+                    </tr>
+                    <tr>
+                        <td class="tool-name">Continue.dev</td>
+                        <td>IL2-IL6 viable</td>
+                        <td>N/A</td>
+                        <td class="yes">Yes (local)</td>
+                        <td>N/A (OSS)</td>
+                        <td class="yes">Enterprise</td>
+                    </tr>
+                    <tr>
+                        <td class="tool-name">Claude Code</td>
+                        <td>IL4/IL5</td>
+                        <td>Via AWS</td>
+                        <td class="yes">Configurable</td>
+                        <td>Via Anthropic</td>
+                        <td class="yes">Via AWS</td>
+                    </tr>
+                    <tr>
+                        <td class="tool-name">Windsurf</td>
+                        <td>IL4/IL5/IL6, ITAR</td>
+                        <td class="yes">Type II</td>
+                        <td class="yes">Enterprise</td>
+                        <td class="yes">Yes</td>
+                        <td class="yes">Yes</td>
+                    </tr>
+                    <tr>
+                        <td class="tool-name">Tabnine</td>
+                        <td>IL2-IL6 viable</td>
+                        <td class="yes">Type II</td>
+                        <td class="yes">Policy</td>
+                        <td class="yes">Yes</td>
+                        <td class="yes">Yes</td>
+                    </tr>
+                    <tr>
+                        <td class="tool-name">Qodo</td>
+                        <td>IL2-IL6 viable</td>
+                        <td class="yes">Type II</td>
+                        <td class="partial">48hr</td>
+                        <td class="no">No</td>
+                        <td class="yes">Yes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer>
+            <div><strong>GenAI COTS Team</strong> | Accenture Federal Services</div>
+            <div>Document Classification: Internal Use Only</div>
+            <div>December 2025 | christopher.g.roge@afs.com</div>
+        </footer>
+    </div>
+</body>
+</html>

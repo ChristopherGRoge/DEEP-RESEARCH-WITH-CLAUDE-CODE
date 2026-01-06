@@ -335,13 +335,78 @@ Task(
 ## Phase 4: Deliverables
 
 ### Objective
-Generate final research deliverables using established templates.
+Generate final research deliverables using established templates. **This phase MUST produce a PowerPoint deck summarizing the research.**
 
 ### Agent Assignment
 - **Primary:** Opus (quality review, final writing)
 - **Support:** Haiku (formatting, template application)
 
-### Execution
+### Required Deliverables
+
+Every completed research phase MUST include:
+
+| Deliverable | Format | Template |
+|-------------|--------|----------|
+| Research Deck | PPTX | `docs/RESEARCH-TEMPLATES/DECK-TEMPLATE.md` |
+| Comparison Matrix | MD + HTML | Phase-specific |
+| EFFICACY Briefs | MD + HTML | `docs/RESEARCH-TEMPLATES/EFFICACY` |
+| One-Pagers | HTML | `docs/template/` |
+
+### Deck Generation (REQUIRED)
+
+```python
+# Generate research deck using python-pptx
+# Template spec: docs/RESEARCH-TEMPLATES/DECK-TEMPLATE.md
+
+Task(
+    subagent_type="general-purpose",
+    model="sonnet",
+    prompt=f"""
+    Generate PowerPoint deck for: {context['domain']} / {context['phase_name']}
+
+    ═══════════════════════════════════════════════════════════════
+    DECK TEMPLATE SPECIFICATION
+    ═══════════════════════════════════════════════════════════════
+    Follow the template at: docs/RESEARCH-TEMPLATES/DECK-TEMPLATE.md
+
+    ═══════════════════════════════════════════════════════════════
+    RESEARCH DATA
+    ═══════════════════════════════════════════════════════════════
+    - Comparison Matrix: {context['output_dir']}/Deliverables/00-COMPARISON-MATRIX.md
+    - EFFICACY Briefs: {context['output_dir']}/Deliverables/*/00-EFFICACY-BRIEF.md
+    - Session Log: {context['output_dir']}/RESEARCH.md (Session Log section)
+
+    ═══════════════════════════════════════════════════════════════
+    REQUIRED SLIDE STRUCTURE
+    ═══════════════════════════════════════════════════════════════
+    1. Title Slide - Phase name, domain, date
+    2. Executive Summary - Entity count, paths, top recommendations
+    3. Framework/Context - Deployment paths, evaluation criteria
+    4. Comparison Tables - Federal viability, architecture
+    5. Top Recommendations - 4-6 entity highlight slides
+    6. Decision Matrix - When to choose each tool
+    7. Next Steps - Actionable recommendations
+    8. Summary - Key takeaways
+
+    ═══════════════════════════════════════════════════════════════
+    IMPLEMENTATION
+    ═══════════════════════════════════════════════════════════════
+    Create a Python script using python-pptx:
+    - Use standard color scheme from template
+    - Include purple header bars on content slides
+    - Score badges: green (≥8.5), amber (<8.5), red (<7)
+    - Tables with alternating row colors
+    - Entity slides with feature checkmarks
+
+    Save script to: {context['output_dir']}/Deliverables/generate_deck.py
+    Run script to generate: {context['output_dir']}/Deliverables/00-{phase_name}-RESEARCH.pptx
+
+    CRITICAL: This deck is a REQUIRED deliverable. Do not mark research as complete without it.
+    """
+)
+```
+
+### EFFICACY Brief Generation
 
 ```python
 for entity in entities_for_efficacy:
@@ -460,4 +525,21 @@ Claude:
 - `docs/RESEARCH-SYSTEM.md` - Full architecture documentation
 - `docs/RESEARCH-TEMPLATES/EFFICACY` - Efficacy brief template
 - `docs/RESEARCH-TEMPLATES/PHASE-RESEARCH.md` - Phase RESEARCH.md template
+- `docs/RESEARCH-TEMPLATES/DECK-TEMPLATE.md` - **REQUIRED** deck template specification
 - `.claude/skills/research-to-deck/SKILL.md` - Deck generation skill
+
+---
+
+## Research Completion Checklist
+
+Before marking a research phase as complete, verify:
+
+- [ ] Session log updated in RESEARCH.md
+- [ ] Comparison matrix generated (MD + HTML)
+- [ ] EFFICACY briefs for top entities
+- [ ] One-pagers (HTML) for top entities
+- [ ] **Research deck (PPTX) generated and validated**
+- [ ] Logos fetched for all entities
+- [ ] Database updated with all assertions
+
+**CRITICAL: The research deck is a REQUIRED deliverable.** Do not mark research as complete without generating the PPTX presentation following `docs/RESEARCH-TEMPLATES/DECK-TEMPLATE.md`.
