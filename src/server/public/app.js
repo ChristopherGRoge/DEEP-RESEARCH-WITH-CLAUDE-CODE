@@ -13,6 +13,9 @@ function validationApp() {
     selectedProject: '',
     projects: [],
 
+    // UI state
+    sidebarCollapsed: false,
+
     // Chat state - per assertion conversations and status
     // Status: 'not_started' | 'in_progress' | 'validated' | 'rejected'
     conversations: {}, // Map of assertionId -> { messages: [], currentStreamText: '', status: string }
@@ -328,7 +331,7 @@ function validationApp() {
     },
 
     // Select an assertion to validate
-    selectAssertion(assertion) {
+    async selectAssertion(assertion) {
       // Save any streaming content to previous conversation
       if (this.currentAssertionId && this.isStreaming && this.currentStreamText) {
         const prevConv = this.conversations[this.currentAssertionId];
@@ -339,6 +342,23 @@ function validationApp() {
 
       this.currentAssertionId = assertion.id;
       this.currentAssertion = assertion;
+
+      // Fetch full assertion details with sources and reasoning
+      try {
+        const res = await fetch(`/api/assertions/${assertion.id}`);
+        const data = await res.json();
+        if (data.success && data.data) {
+          // Merge full data into currentAssertion
+          this.currentAssertion = {
+            ...assertion,
+            ...data.data,
+            sources: data.data.sources || [],
+            reasoning: data.data.reasoning || [],
+          };
+        }
+      } catch (error) {
+        console.error('Failed to fetch assertion details:', error);
+      }
 
       // Ensure conversation exists and restore streaming state
       const conv = this.ensureConversation(assertion.id);
