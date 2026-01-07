@@ -125,7 +125,12 @@ model Assertion {
   humanResponse      String?  // Researcher's written response/interpretation
   validationNotes    Json?    // Array of {role: "human"|"agent", content: string, timestamp: Date}
   partiallyValidated Boolean  @default(false) // Some claims verified, others need work
-  evidenceScreenshots String[] // Paths to screenshots uploaded as validation evidence
+  evidenceScreenshots String[] // Paths to screenshots uploaded as validation evidence (legacy)
+
+  // Evidence-first research fields - screenshots as primary evidence
+  evidenceChain      Json?    // Array of {screenshotPath, description, capturedAt} - agent-captured evidence
+  evidenceDescription String? // Primary evidence description (what on screenshot supports claim)
+  evidenceScreenshotPath String? // Primary evidence screenshot path
 
   entityId    String
   entity      Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)

@@ -115,17 +115,43 @@ Keep your response concise - just the greeting, URL(s), and offer to help.`;
   }
 
   /**
-   * Send a message to an existing session
+   * Send a message to an existing session (supports multimodal with images)
    */
-  sendMessage(sessionId: string, content: string): void {
+  sendMessage(
+    sessionId: string,
+    content: string,
+    images?: Array<{ base64: string; mediaType: string }>
+  ): void {
     const session = this.sessions.get(sessionId);
     if (!session || !session.isActive) {
       throw new Error(`Session ${sessionId} not found or inactive`);
     }
 
+    // Build multimodal content if images are provided
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let messageContent: any;
+
+    if (images && images.length > 0) {
+      // Multimodal message with text and images (Claude API format)
+      messageContent = [
+        { type: 'text', text: content },
+        ...images.map((img) => ({
+          type: 'image',
+          source: {
+            type: 'base64',
+            media_type: img.mediaType,
+            data: img.base64,
+          },
+        })),
+      ];
+    } else {
+      // Text-only message
+      messageContent = content;
+    }
+
     session.inputQueue.push({
       type: 'user',
-      message: { role: 'user', content },
+      message: { role: 'user', content: messageContent },
       parent_tool_use_id: null,
       session_id: sessionId,
     });

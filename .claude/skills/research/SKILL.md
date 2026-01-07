@@ -237,30 +237,43 @@ for entity in approved_entities:
         YOUR OBJECTIVES
         ═══════════════════════════════════════════════════════════════
 
+        CRITICAL: Follow Evidence-First Research Protocol for all claims.
+        Screenshots are PRIMARY evidence, URLs are secondary references.
+
         1. Extract structured data using CLI:
-           npm run cli -- extract:fetch '{{...}}'  # Fetch page content
+           npm run cli -- extract:fetch '{{...}}'  # Fetch page + screenshot
            npm run cli -- extract:save '{{...}}'   # Save extraction
 
-        2. For pricing, features, compliance, integrations:
-           - Read screenshots and extract data
-           - Save with appropriate schemaType
+        2. For EVERY assertion, follow Evidence-First workflow:
+           a. FIRST: Capture screenshot with extract:fetch
+           b. SECOND: Visually analyze the screenshot
+           c. THIRD: Record assertion WITH evidence fields:
+              npm run cli -- assertion:create '{{
+                "entityId": "...",
+                "claim": "...",
+                "category": "...",
+                "evidenceDescription": "On screenshot at [path], [specific text/element] shows [quote]",
+                "evidenceScreenshotPath": "[screenshot path from extract:fetch]",
+                "sourceUrl": "..."
+              }}'
 
         3. Fetch logo (SVG preferred):
            npm run cli -- logo:fetch '{{"entityId": "..."}}'
 
-        4. Validate claims:
-           - EVIDENCE: Found substantiation
-           - REFUTED: Found contradicting info
-           - UNVERIFIABLE: Cannot confirm
+        4. Validate claims WITH evidence:
+           - EVIDENCE: Screenshot shows substantiation (include evidenceDescription)
+           - REFUTED: Screenshot contradicts claim
+           - UNVERIFIABLE: Cannot find visual confirmation
 
-        5. Federal assessment:
-           - Check FedRAMP marketplace
-           - Document data flows
-           - Identify deployment options
+        5. Federal assessment (each claim needs evidence):
+           - Check FedRAMP marketplace (screenshot the search results)
+           - Document data flows (screenshot architecture diagrams)
+           - Identify deployment options (screenshot deployment page)
 
         6. Write to: {context['output_dir']}/analysis/{entity['name']}/
 
-        Focus on ACCURACY. Verify everything with sources.
+        CRITICAL: Every assertion MUST have evidenceDescription + evidenceScreenshotPath.
+        Source URLs alone are NOT sufficient evidence.
         """
     )
 ```

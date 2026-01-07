@@ -201,13 +201,20 @@
                             <!-- Active validation -->
                             <template x-if="getAssertionStatus(currentAssertionId) === 'in_progress'">
                                 <div class="active-input">
-                                    <!-- Screenshot preview -->
-                                    <div class="screenshot-preview" x-show="pendingScreenshot">
-                                        <img :src="pendingScreenshot?.preview" alt="Screenshot">
-                                        <button class="remove-screenshot" @click="clearPendingScreenshot()">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M18 6L6 18M6 6l12 12"/>
-                                            </svg>
+                                    <!-- Multiple screenshot previews -->
+                                    <div class="screenshots-preview" x-show="pendingScreenshots.length > 0">
+                                        <template x-for="screenshot in pendingScreenshots" :key="screenshot.id">
+                                            <div class="screenshot-thumb">
+                                                <img :src="screenshot.preview" alt="Screenshot">
+                                                <button class="remove-screenshot" @click="removePendingScreenshot(screenshot.id)">
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <path d="M18 6L6 18M6 6l12 12"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </template>
+                                        <button class="clear-all-screenshots" @click="clearPendingScreenshots()" x-show="pendingScreenshots.length > 1">
+                                            Clear all
                                         </button>
                                     </div>
 
@@ -288,12 +295,77 @@
                                     <span class="criticality-tag" :class="currentAssertion?.criticality?.toLowerCase()" x-text="currentAssertion?.criticality"></span>
                                 </div>
 
-                                <blockquote class="claim-text" x-text="currentAssertion?.claim"></blockquote>
+                                <div class="claim-container">
+                                    <blockquote class="claim-text" x-text="currentAssertion?.claim"></blockquote>
+                                    <div class="claim-actions">
+                                        <button
+                                            class="claim-action-btn"
+                                            @click="copyClaimToClipboard()"
+                                            title="Copy claim to clipboard"
+                                        >
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                                            </svg>
+                                        </button>
+                                        <button
+                                            class="claim-action-btn"
+                                            @click="searchClaimOnWeb()"
+                                            title="Search web for this claim"
+                                        >
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="11" cy="11" r="8"/>
+                                                <path d="M21 21l-4.35-4.35"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
 
-                                <!-- Sources with Grading -->
+                                <!-- Evidence Chain (Primary Evidence) -->
+                                <template x-if="currentAssertion?.evidenceChain && currentAssertion.evidenceChain.length > 0">
+                                    <div class="evidence-chain-section">
+                                        <h4>Evidence</h4>
+                                        <template x-for="(evidence, index) in currentAssertion.evidenceChain" :key="'evidence-chain-' + index">
+                                            <div class="evidence-chain-item">
+                                                <div class="evidence-chain-header">
+                                                    <span class="evidence-badge" :class="evidence.source === 'agent' ? 'agent' : 'validation'" :title="evidence.source === 'agent' ? 'Agent-captured evidence' : 'Validation screenshot'">
+                                                        <template x-if="evidence.source === 'agent'">A</template>
+                                                        <template x-if="evidence.source !== 'agent'">V</template>
+                                                    </span>
+                                                    <a :href="'/' + evidence.screenshotPath" target="_blank" class="evidence-path" x-text="evidence.screenshotPath.split('/').pop()"></a>
+                                                </div>
+                                                <div class="evidence-thumb-container">
+                                                    <a :href="'/' + evidence.screenshotPath" target="_blank">
+                                                        <img :src="'/' + evidence.screenshotPath" alt="Evidence screenshot" class="evidence-chain-thumb">
+                                                    </a>
+                                                </div>
+                                                <p class="evidence-description" x-text="evidence.description"></p>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+
+                                <!-- Primary Evidence Description (if no chain but has description) -->
+                                <template x-if="(!currentAssertion?.evidenceChain || currentAssertion.evidenceChain.length === 0) && currentAssertion?.evidenceDescription">
+                                    <div class="evidence-chain-section">
+                                        <h4>Evidence</h4>
+                                        <div class="evidence-chain-item">
+                                            <template x-if="currentAssertion.evidenceScreenshotPath">
+                                                <div class="evidence-thumb-container">
+                                                    <a :href="'/' + currentAssertion.evidenceScreenshotPath" target="_blank">
+                                                        <img :src="'/' + currentAssertion.evidenceScreenshotPath" alt="Evidence screenshot" class="evidence-chain-thumb">
+                                                    </a>
+                                                </div>
+                                            </template>
+                                            <p class="evidence-description" x-text="currentAssertion.evidenceDescription"></p>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <!-- Reference URLs (formerly Sources) -->
                                 <template x-if="currentAssertion?.sources && currentAssertion.sources.length > 0">
                                     <div class="sources-section">
-                                        <h4>Sources</h4>
+                                        <h4>Reference URLs</h4>
                                         <template x-for="source in currentAssertion.sources" :key="source.id">
                                             <div class="source-card" :class="{ graded: source.relevanceGrade, 'researcher-added': source.addedBy }">
                                                 <div class="source-header">

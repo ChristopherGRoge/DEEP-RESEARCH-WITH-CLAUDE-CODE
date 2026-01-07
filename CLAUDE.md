@@ -17,6 +17,113 @@ npm run cli -- <command> '<json-args>'
 
 ---
 
+## EVIDENCE-FIRST RESEARCH PROTOCOL
+
+**CRITICAL: This protocol replaces URL-centric evidence collection.**
+
+Analysis of validated assertions revealed that 43% of agent-provided source URLs were graded as MISLEADING - the assertions were correct but the URLs didn't support them. Screenshots captured during human validation became the actual evidence.
+
+### The Problem with URL-Only Evidence
+
+| Issue | Example |
+|-------|---------|
+| Quote hallucination | Agent cites text that doesn't exist at URL |
+| Broken links | Page moved or removed (404) |
+| Content drift | Pricing changed since capture |
+| Wrong page | Correct site, wrong URL |
+
+### Evidence-First Workflow
+
+When making assertions, follow this order:
+
+#### Step 1: Capture Screenshot Evidence FIRST
+
+```bash
+npm run cli -- extract:fetch '{"url": "https://example.com/pricing", "entityId": "<id>"}'
+# Returns: screenshotPath, cacheId, contentPreview
+```
+
+#### Step 2: Analyze Screenshot and Extract Supporting Text
+
+- **Read the screenshot visually** (use the returned screenshotPath)
+- **Identify SPECIFIC text/elements** that support the claim
+- **Note the exact location** on the page (e.g., "pricing table row 3")
+
+#### Step 3: Record Assertion with Evidence Chain
+
+```bash
+npm run cli -- assertion:create '{
+  "entityId": "<id>",
+  "claim": "Tabnine Enterprise pricing starts at $39 per user per month",
+  "category": "pricing",
+  "evidenceDescription": "On screenshot at screenshots/2025-01/tabnine-pricing.png, the Enterprise tier row shows: Enterprise - Starting at $39/user/mo (billed annually)",
+  "evidenceScreenshotPath": "screenshots/2025-01/tabnine-pricing.png",
+  "sourceUrl": "https://tabnine.com/pricing",
+  "reasoning": "Establishes baseline pricing for federal budget planning"
+}'
+```
+
+### Evidence Description Requirements
+
+Your `evidenceDescription` MUST:
+- Reference the specific screenshot path
+- Quote the EXACT visible text that supports the claim
+- Explain WHERE on the page the text appears
+- Describe HOW the text supports the claim
+
+**Good Examples:**
+- "On screenshot at screenshots/2025-01/cursor-pricing.png, the pricing table shows 'Pro: $20/mo' in the second column header"
+- "Screenshot screenshots/2025-01/tabnine-docs.png shows the deployment diagram with 'Air-gapped' as an option in the architecture section"
+- "The compliance page screenshot shows SOC 2 Type II badge in the certifications grid (upper right)"
+
+**Bad Examples:**
+- "See pricing page" (no specific evidence)
+- "Documentation mentions this feature" (no screenshot reference)
+- "From the website" (no details)
+
+### Multiple Evidence Screenshots
+
+For complex claims, chain multiple screenshots:
+
+```bash
+npm run cli -- assertion:create '{
+  "entityId": "<id>",
+  "claim": "Tabnine offers both cloud and air-gapped deployment options",
+  "category": "feature",
+  "evidenceDescription": "Primary: Deployment page shows 'Self-Hosted' option in the deployment selector",
+  "evidenceScreenshotPath": "screenshots/2025-01/tabnine-deployment-options.png",
+  "evidenceChain": [
+    {
+      "screenshotPath": "screenshots/2025-01/tabnine-deployment-options.png",
+      "description": "Deployment options dropdown showing SaaS, VPC, Self-Hosted, Air-Gapped"
+    },
+    {
+      "screenshotPath": "screenshots/2025-01/tabnine-airgap-docs.png",
+      "description": "Air-gapped installation documentation page confirming offline deployment"
+    }
+  ],
+  "sourceUrl": "https://docs.tabnine.com/deployment"
+}'
+```
+
+### DO NOT
+
+- Cite quotes you haven't **visually confirmed** on a screenshot
+- Assume URL content matches your quote without capturing evidence
+- Use source URL as **primary** evidence (it's now secondary reference)
+- Create assertions without `evidenceDescription` and `evidenceScreenshotPath`
+
+### Source URLs Are Now Secondary
+
+Source URLs remain useful for:
+- Traceability (where did info come from?)
+- Future verification (human can revisit)
+- Citation in reports
+
+But the **primary evidence** is always: Screenshot + Description
+
+---
+
 ## STRUCTURED EXTRACTION - Primary Deep Research Tool
 
 **USE THESE COMMANDS FOR DEEP RESEARCH.** They extract queryable structured data from web pages, capture screenshots as evidence, and auto-generate assertions.

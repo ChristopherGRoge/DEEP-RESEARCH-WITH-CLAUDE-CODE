@@ -1,6 +1,13 @@
 import prisma from '../db/client';
 import { AssertionStatus, AssertionCriticality } from '../../generated/prisma/client';
 
+export interface EvidenceChainItem {
+  screenshotPath: string;
+  description: string;
+  capturedAt?: string;
+  source?: 'agent' | 'validation';
+}
+
 export interface CreateAssertionInput {
   entityId: string;
   claim: string;
@@ -11,6 +18,10 @@ export interface CreateAssertionInput {
   sourceUrl?: string;
   sourceQuote?: string;
   agentId?: string;
+  // Evidence-first research fields
+  evidenceDescription?: string;    // REQUIRED for new assertions: what on screenshot supports claim
+  evidenceScreenshotPath?: string; // REQUIRED for new assertions: path to primary evidence screenshot
+  evidenceChain?: EvidenceChainItem[]; // Optional: multiple screenshots with descriptions
 }
 
 export interface UpdateAssertionInput {
@@ -35,8 +46,27 @@ export interface SearchAssertionsInput {
 /**
  * Create a new assertion about an entity
  * Optionally includes reasoning and source in one operation
+ *
+ * Evidence-First Research: New assertions SHOULD include evidenceDescription
+ * and evidenceScreenshotPath to provide direct screenshot evidence rather
+ * than relying solely on source URLs.
  */
 export async function createAssertion(input: CreateAssertionInput) {
+  // Build evidence chain from provided evidence
+  let evidenceChain: EvidenceChainItem[] | undefined;
+  if (input.evidenceScreenshotPath && input.evidenceDescription) {
+    evidenceChain = [{
+      screenshotPath: input.evidenceScreenshotPath,
+      description: input.evidenceDescription,
+      capturedAt: new Date().toISOString(),
+      source: 'agent',
+    }];
+  }
+  // If additional evidence chain items provided, merge them
+  if (input.evidenceChain && input.evidenceChain.length > 0) {
+    evidenceChain = [...(evidenceChain || []), ...input.evidenceChain];
+  }
+
   const assertion = await prisma.assertion.create({
     data: {
       entityId: input.entityId,
@@ -45,6 +75,10 @@ export async function createAssertion(input: CreateAssertionInput) {
       confidence: input.confidence,
       criticality: input.criticality || AssertionCriticality.MEDIUM,
       status: AssertionStatus.CLAIM,
+      // Evidence-first fields
+      evidenceDescription: input.evidenceDescription,
+      evidenceScreenshotPath: input.evidenceScreenshotPath,
+      evidenceChain: evidenceChain as unknown as any,
     },
   });
 
@@ -83,6 +117,8 @@ export async function createAssertion(input: CreateAssertionInput) {
         assertionId: assertion.id,
         entityId: input.entityId,
         claim: input.claim,
+        hasEvidence: !!(input.evidenceDescription && input.evidenceScreenshotPath),
+        evidenceScreenshotPath: input.evidenceScreenshotPath,
       },
     },
   });

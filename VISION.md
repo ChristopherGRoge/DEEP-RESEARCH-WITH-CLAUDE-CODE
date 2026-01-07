@@ -10,9 +10,9 @@ We seek to develop a deep research process which utilizes Claude Code subagents 
 2. Tool calling to search existing Entities
 3. Existing Entities Assertions are refined as new data is discovered
 4. New Entities Assertions are made as new Entities are discovered
-5. Entitiess are supported by Evidence and Reasoning always backed by a relevant Source (URL)
+5. Entities are supported by Evidence and Reasoning always backed by a relevant Source (URL)
 6. Prior Evidence and Reasoning are considered when reviewing previously recorded Entities to ensure we only make meaningful additions or updates to Assertions and Reasoning - we only modify a Assertion or Reasoning when new and compelling data is discovered
-7. Sources are recorded, sourced defaul to Proposed and progress to Validated only when huamn researcher validates the source
+7. Sources are recorded, sourced default to Proposed and progress to Validated only when huamn researcher validates the source
 8. Research workflow is either "Discovery" where we cast a net and refine to identify Entities OR research workflow is "Analsysis" where we focus in on a given Entity
 
 ## Discovery

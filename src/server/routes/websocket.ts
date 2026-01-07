@@ -15,7 +15,7 @@ import * as tools from '../../tools';
 
 export type WsIncomingMessage =
   | { type: 'start_session'; projectId?: string; validatorName: string; assertionId?: string }
-  | { type: 'user_message'; content: string }
+  | { type: 'user_message'; content: string; images?: Array<{ base64: string; mediaType: string }> }
   | { type: 'action'; action: 'validate' | 'reject' | 'skip'; assertionId?: string; reason?: string }
   | { type: 'interrupt' }
   | { type: 'ping' };
@@ -166,7 +166,7 @@ async function handleStartSession(
 async function handleUserMessage(
   ws: WSContext,
   state: WSState,
-  message: { content: string }
+  message: { content: string; images?: Array<{ base64: string; mediaType: string }> }
 ) {
   if (!state.session) {
     sendMessage(ws, { type: 'error', message: 'No active session. Start a session first.' });
@@ -174,7 +174,7 @@ async function handleUserMessage(
   }
 
   try {
-    sessionManager.sendMessage(state.session.id, message.content);
+    sessionManager.sendMessage(state.session.id, message.content, message.images);
   } catch (error) {
     sendMessage(ws, {
       type: 'error',

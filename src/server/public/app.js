@@ -58,8 +58,8 @@ function validationApp() {
     // Action selection
     selectedAction: 'validate',
 
-    // Screenshot state
-    pendingScreenshot: null, // { file: File, preview: string }
+    // Screenshot state - array for multiple screenshots
+    pendingScreenshots: [], // [{ file: File, preview: string, id: string }]
     isUploadingScreenshot: false,
 
     // Initialize
@@ -70,9 +70,6 @@ function validationApp() {
       // Check auth status
       await this.checkAuth();
 
-      // Connect WebSocket
-      this.connectWebSocket();
-
       // Load pending counts and assertions
       await this.loadPendingCounts();
       await this.loadAssertionsByProject();
@@ -82,6 +79,54 @@ function validationApp() {
       if (savedName) {
         this.validatorName = savedName;
       }
+
+      // Restore last selected assertion BEFORE connecting WebSocket
+      const savedAssertionId = localStorage.getItem('currentAssertionId');
+      if (savedAssertionId && this.validatorName) {
+        // Find the assertion in our loaded data
+        for (const project of this.assertionsByProject) {
+          const assertion = project.assertions.find(a => a.id === savedAssertionId);
+          if (assertion) {
+            console.log('Restoring previous assertion:', savedAssertionId);
+            // Set IDs and load data (but don't start session yet - WebSocket will do that)
+            this.currentAssertionId = assertion.id;
+            this.currentAssertion = assertion;
+
+            // Fetch full assertion details
+            try {
+              const res = await fetch(`/api/assertions/${assertion.id}`);
+              const data = await res.json();
+              if (data.success && data.data) {
+                const flattenedSources = (data.data.sources || []).map(as => ({
+                  id: as.id,
+                  quote: as.quote,
+                  addedBy: as.addedBy,
+                  relevanceGrade: as.relevanceGrade,
+                  annotation: as.annotation,
+                  gradedBy: as.gradedBy,
+                  gradedAt: as.gradedAt,
+                  sourceId: as.source?.id,
+                  url: as.source?.url,
+                  title: as.source?.title,
+                  sourceType: as.source?.sourceType,
+                  expanded: false,
+                }));
+                this.currentAssertion = { ...assertion, ...data.data, sources: flattenedSources };
+              }
+            } catch (e) {
+              console.error('Failed to load assertion details:', e);
+            }
+
+            // Load conversation
+            const conv = await this.loadConversationFromApi(assertion.id);
+            this.conversations[assertion.id] = conv || { messages: [], currentStreamText: '', status: 'not_started' };
+            break;
+          }
+        }
+      }
+
+      // Connect WebSocket AFTER restoring state (so auto-restart works)
+      this.connectWebSocket();
     },
 
     // Save conversation to API
@@ -141,66 +186,85 @@ function validationApp() {
           event.preventDefault();
           const file = item.getAsFile();
           if (file) {
-            this.setPendingScreenshot(file);
+            this.addPendingScreenshot(file);
           }
           return;
         }
       }
     },
 
-    // Set pending screenshot with preview
-    setPendingScreenshot(file) {
+    // Add a screenshot to pending (supports multiple)
+    addPendingScreenshot(file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        this.pendingScreenshot = {
+        this.pendingScreenshots.push({
+          id: `sc-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
           file: file,
           preview: e.target.result,
-        };
+          base64: e.target.result.split(',')[1], // Extract base64 data for Claude
+          mediaType: file.type || 'image/png',
+        });
       };
       reader.readAsDataURL(file);
     },
 
-    // Clear pending screenshot
-    clearPendingScreenshot() {
-      this.pendingScreenshot = null;
+    // Remove a specific pending screenshot
+    removePendingScreenshot(id) {
+      this.pendingScreenshots = this.pendingScreenshots.filter(s => s.id !== id);
     },
 
-    // Upload screenshot as evidence
-    async uploadScreenshot() {
-      if (!this.pendingScreenshot || !this.currentAssertionId) return null;
+    // Clear all pending screenshots
+    clearPendingScreenshots() {
+      this.pendingScreenshots = [];
+    },
+
+    // Upload all pending screenshots as evidence and return their data
+    async uploadScreenshots() {
+      if (this.pendingScreenshots.length === 0 || !this.currentAssertionId) return [];
 
       this.isUploadingScreenshot = true;
+      const results = [];
 
       try {
-        const formData = new FormData();
-        formData.append('screenshot', this.pendingScreenshot.file);
+        for (const screenshot of this.pendingScreenshots) {
+          const formData = new FormData();
+          formData.append('screenshot', screenshot.file);
 
-        const res = await fetch(`/api/assertions/${this.currentAssertionId}/evidence`, {
-          method: 'POST',
-          body: formData,
-        });
-
-        const data = await res.json();
-
-        if (data.success) {
-          // Add to conversation
-          const conv = this.ensureConversation(this.currentAssertionId);
-          conv.messages.push({
-            role: 'evidence',
-            content: data.data.url,
-            type: 'screenshot',
+          const res = await fetch(`/api/assertions/${this.currentAssertionId}/evidence`, {
+            method: 'POST',
+            body: formData,
           });
-          this.saveConversationToApi(this.currentAssertionId);
 
-          this.pendingScreenshot = null;
-          return data.data.url;
-        } else {
-          console.error('Failed to upload screenshot:', data.error);
-          return null;
+          const data = await res.json();
+
+          if (data.success) {
+            // Add to conversation
+            const conv = this.ensureConversation(this.currentAssertionId);
+            conv.messages.push({
+              role: 'evidence',
+              content: data.data.url,
+              type: 'screenshot',
+            });
+
+            results.push({
+              url: data.data.url,
+              base64: screenshot.base64,
+              mediaType: screenshot.mediaType,
+            });
+          } else {
+            console.error('Failed to upload screenshot:', data.error);
+          }
         }
+
+        if (results.length > 0) {
+          this.saveConversationToApi(this.currentAssertionId);
+        }
+
+        this.pendingScreenshots = [];
+        return results;
       } catch (error) {
-        console.error('Failed to upload screenshot:', error);
-        return null;
+        console.error('Failed to upload screenshots:', error);
+        return results;
       } finally {
         this.isUploadingScreenshot = false;
       }
@@ -396,6 +460,9 @@ function validationApp() {
       this.currentAssertionId = assertion.id;
       this.currentAssertion = assertion;
 
+      // Persist assertion ID for session restore
+      localStorage.setItem('currentAssertionId', assertion.id);
+
       // Fetch full assertion details with sources and reasoning
       try {
         const res = await fetch(`/api/assertions/${assertion.id}`);
@@ -474,6 +541,35 @@ function validationApp() {
         'MISLEADING': 'Wrong',
       };
       return labels[grade] || grade;
+    },
+
+    // Copy claim text to clipboard
+    async copyClaimToClipboard() {
+      if (!this.currentAssertion?.claim) return;
+
+      try {
+        await navigator.clipboard.writeText(this.currentAssertion.claim);
+        // Brief visual feedback - button will flash
+        const btn = event.currentTarget;
+        btn.classList.add('copied');
+        setTimeout(() => btn.classList.remove('copied'), 1000);
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+    },
+
+    // Search the web for the claim
+    searchClaimOnWeb() {
+      if (!this.currentAssertion?.claim) return;
+
+      // Build search query with entity name for context
+      const entityName = this.currentAssertion.entityName || '';
+      const claim = this.currentAssertion.claim;
+      const query = entityName ? `${entityName} ${claim}` : claim;
+
+      // Open Google search in new tab
+      const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+      window.open(searchUrl, '_blank', 'noopener,noreferrer');
     },
 
     // Extract URLs from text
@@ -607,6 +703,23 @@ function validationApp() {
       this.ws.onopen = () => {
         console.log('WebSocket connected');
         this.wsConnected = true;
+
+        // Auto-restart session if we have a current assertion (handles reconnects)
+        if (this.currentAssertionId && this.validatorName) {
+          console.log('Auto-restarting session for assertion:', this.currentAssertionId);
+
+          // Ensure conversation is in progress state
+          const conv = this.ensureConversation(this.currentAssertionId);
+          if (conv.status === 'not_started' || !conv.status) {
+            conv.status = 'in_progress';
+          }
+
+          this.sendWs({
+            type: 'start_session',
+            validatorName: this.validatorName.trim(),
+            assertionId: this.currentAssertionId,
+          });
+        }
       };
 
       this.ws.onclose = () => {
@@ -823,11 +936,8 @@ function validationApp() {
         await this.addResearcherSources(this.currentAssertionId, urls);
       }
 
-      // Upload pending screenshot first if one exists
-      let screenshotUrl = null;
-      if (this.pendingScreenshot) {
-        screenshotUrl = await this.uploadScreenshot();
-      }
+      // Upload pending screenshots and collect their data for Claude
+      const uploadedScreenshots = await this.uploadScreenshots();
 
       // Build message with verification and action
       const actionLabels = {
@@ -862,16 +972,20 @@ function validationApp() {
         await this.loadAssertionsByProject();
       }
 
-      // Build message content, include screenshot if uploaded
+      // Build message content
       let messageContent = `[Assertion ${this.currentAssertionId}] ${fullMessage}`;
-      if (screenshotUrl) {
-        messageContent += `\n[Evidence screenshot: ${screenshotUrl}]`;
+      if (uploadedScreenshots.length > 0) {
+        messageContent += `\n[${uploadedScreenshots.length} evidence screenshot(s) attached]`;
       }
 
-      // Send as user message with assertion context
+      // Send as user message with images for Claude to analyze
       this.sendWs({
         type: 'user_message',
         content: messageContent,
+        images: uploadedScreenshots.map(s => ({
+          base64: s.base64,
+          mediaType: s.mediaType,
+        })),
       });
 
       // Also send action for tool invocation
