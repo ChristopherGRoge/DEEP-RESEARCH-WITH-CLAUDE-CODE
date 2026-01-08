@@ -62,6 +62,10 @@ function validationApp() {
     pendingScreenshots: [], // [{ file: File, preview: string, id: string }]
     isUploadingScreenshot: false,
 
+    // AI Assessment state
+    aiAssessment: null, // { verdict, confidence, reasoning, concerns, recommendation }
+    assessmentLoading: false,
+
     // Initialize
     async init() {
       // Load projects
@@ -457,6 +461,9 @@ function validationApp() {
         }
       }
 
+      // Clear AI assessment when switching assertions
+      this.clearAiAssessment();
+
       this.currentAssertionId = assertion.id;
       this.currentAssertion = assertion;
 
@@ -570,6 +577,53 @@ function validationApp() {
       // Open Google search in new tab
       const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
       window.open(searchUrl, '_blank', 'noopener,noreferrer');
+    },
+
+    // Request AI assessment of the current assertion
+    async requestAiAssessment() {
+      if (!this.currentAssertionId || this.assessmentLoading) return;
+
+      this.assessmentLoading = true;
+      this.aiAssessment = null;
+
+      try {
+        const res = await fetch(`/api/assertions/${this.currentAssertionId}/ai-assess`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          this.aiAssessment = data.data;
+        } else {
+          console.error('AI Assessment failed:', data.error);
+          this.aiAssessment = {
+            verdict: 'INSUFFICIENT_EVIDENCE',
+            confidence: 'LOW',
+            reasoning: `Assessment failed: ${data.error || 'Unknown error'}`,
+            concerns: 'Could not complete AI assessment',
+            recommendation: 'Review evidence manually',
+          };
+        }
+      } catch (error) {
+        console.error('AI Assessment error:', error);
+        this.aiAssessment = {
+          verdict: 'INSUFFICIENT_EVIDENCE',
+          confidence: 'LOW',
+          reasoning: 'Network error during assessment',
+          concerns: 'Could not connect to AI assessment service',
+          recommendation: 'Check server status and try again',
+        };
+      } finally {
+        this.assessmentLoading = false;
+      }
+    },
+
+    // Clear AI assessment (when switching assertions)
+    clearAiAssessment() {
+      this.aiAssessment = null;
+      this.assessmentLoading = false;
     },
 
     // Extract URLs from text

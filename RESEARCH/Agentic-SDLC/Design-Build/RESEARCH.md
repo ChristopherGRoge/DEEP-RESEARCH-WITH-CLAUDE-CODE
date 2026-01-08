@@ -408,3 +408,86 @@ All future research phases MUST produce a PPTX following `docs/RESEARCH-TEMPLATE
 - [ ] Apply template to future research phases
 
 ---
+
+### Session 005 - 2026-01-07
+| Field | Value |
+|-------|-------|
+| **Activity** | Deep Research Refresh (Evidence-First Protocol) |
+| **Entities Researched** | 22 (full coverage) |
+| **Assertions Created** | 317 (all with screenshot evidence) |
+| **Extractions Completed** | 48 |
+| **Sources Documented** | 91 |
+| **Logos Fetched** | 18/22 (82%) |
+
+**Summary:** Executed comprehensive research refresh using new evidence-first protocol. Launched 22 parallel subagents to systematically research all Design-Build entities with screenshot evidence backing every assertion.
+
+#### Evidence-First Protocol Results
+
+All assertions now include:
+- `evidenceScreenshotPath` - Screenshot file path
+- `evidenceDescription` - Text explaining what on screenshot supports claim
+- `sourceUrl` - Reference URL (secondary to screenshot evidence)
+
+#### Database State After Refresh
+
+| Metric | Before | After | Change |
+|--------|--------|-------|--------|
+| Assertions | 1 | 317 | +316 |
+| Sources | 0 | 91 | +91 |
+| Extractions | 0 | 48 | +48 |
+| Screenshots | 0 | 87+ | +87+ |
+| Logos | 0 | 18 | +18 |
+
+#### Extraction Coverage
+
+| Schema Type | Coverage | Notes |
+|-------------|----------|-------|
+| Pricing | 73% (16/22) | Most commercial tools documented |
+| Features | 55% (12/22) | Core capabilities extracted |
+| Compliance | 50% (11/22) | FedRAMP, SOC 2, certifications |
+| Company | 36% (8/22) | Funding, leadership, metrics |
+| Integrations | 5% (1/22) | Lowest coverage - future focus |
+
+#### Key Federal Viability Findings (Refreshed)
+
+| Entity | Federal Score | Path | Key Finding |
+|--------|---------------|------|-------------|
+| **Windsurf** | 9/10 | A | Only FedRAMP High certified (Palantir FedStart) |
+| **Codeium** | 9/10 | A+B | FedRAMP High, air-gapped, zero retention |
+| **Tabby** | 9/10 | B | Rust-based, air-gapped, Apache 2.0 |
+| **Continue.dev** | 8.5/10 | B | Apache 2.0, 20+ LLM providers, Bedrock |
+| **Tabnine** | 8/10 | B | Air-gapped, Dell partnership, no-train |
+| **Qodo** | 8/10 | B | Air-gapped, SOC 2, 80% DeepCodeBench |
+| **Greptile** | 7/10 | B | BYOL, SOC 2, self-hosted, 82% bug detection |
+| **CodeRabbit** | 7/10 | B | Self-hosted (500+ seats), AWS Marketplace |
+
+#### NOT Federally Viable (Confirmed)
+
+| Entity | Reason |
+|--------|--------|
+| **Cursor** | All requests route through Cursor servers; no self-hosted option |
+| **Devin AI** | SaaS-only, no compliance certifications, no air-gap |
+| **GitHub Copilot** | Requires GitHub cloud; no self-hosted; privacy concerns |
+
+#### New Discoveries
+
+1. **Augment Code** - ISO/IEC 42001 certified (first AI management certification), CMEK support
+2. **Theia IDE** - Eclipse Foundation governance, open alternative to Copilot/Cursor
+3. **Aider** - 39.6K stars, true air-gap with Ollama, zero cost
+
+#### Entities Still Missing Extractions
+
+| Entity | Status |
+|--------|--------|
+| Claude Code | Has assertions, needs structured extractions |
+| Devin AI | Has assertions, needs structured extractions |
+| Qodo | Has assertions, needs structured extractions |
+
+**Next:**
+- [ ] Complete remaining structured extractions
+- [ ] Fetch missing logos (4 entities)
+- [ ] Update comparison matrix with refreshed data
+- [ ] Validate assertions via human review
+- [ ] Regenerate research deck with 2026 data
+
+---

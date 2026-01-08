@@ -1595,6 +1595,150 @@ body.sidebar-collapsed .content {
 }
 
 /* ==========================================================================
+   AI Assessment Panel
+   ========================================================================== */
+.ai-assessment-panel {
+    margin-top: var(--space-lg);
+    padding: var(--space-md);
+    background: #fafafa;
+    border: 1px solid var(--border-light);
+    border-left: 3px solid var(--status-in-progress);
+    border-radius: 8px;
+}
+
+.assessment-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+
+.assessment-verdict {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.assessment-verdict.likely-valid {
+    background: #22c55e;
+    color: white;
+}
+
+.assessment-verdict.needs-verification {
+    background: #f59e0b;
+    color: #1a1a1a;
+}
+
+.assessment-verdict.likely-invalid {
+    background: #ef4444;
+    color: white;
+}
+
+.assessment-verdict.insufficient-evidence {
+    background: #6b7280;
+    color: white;
+}
+
+.assessment-confidence {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.assessment-dismiss {
+    margin-left: auto;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.assessment-dismiss:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.assessment-reasoning {
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: var(--space-md);
+}
+
+.assessment-concerns {
+    font-size: 0.8125rem;
+    color: var(--status-rejected);
+    background: var(--status-rejected-bg);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: 6px;
+    margin-bottom: var(--space-sm);
+    line-height: 1.5;
+}
+
+.assessment-concerns strong {
+    font-weight: 600;
+}
+
+.assessment-recommendation {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    line-height: 1.5;
+}
+
+.assessment-recommendation strong {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* AI Assessment Button (Start Actions) */
+.start-actions {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-assess {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: var(--space-sm) var(--space-lg);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-medium);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-assess:hover:not(:disabled) {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-color: var(--text-tertiary);
+}
+
+.btn-assess:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+/* ==========================================================================
    Scrollbar
    ========================================================================== */
 ::-webkit-scrollbar {

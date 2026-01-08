@@ -181,13 +181,27 @@
                                     <template x-if="!validatorName">
                                         <p class="name-required">Enter your name above to begin</p>
                                     </template>
-                                    <button
-                                        class="btn-start"
-                                        @click="startAssertionValidation()"
-                                        :disabled="!authStatus.valid || !validatorName"
-                                    >
-                                        Begin Validation
-                                    </button>
+                                    <div class="start-actions">
+                                        <button
+                                            class="btn-assess"
+                                            @click="requestAiAssessment()"
+                                            :disabled="assessmentLoading"
+                                        >
+                                            <template x-if="!assessmentLoading">
+                                                <span>Critically Assess with AI</span>
+                                            </template>
+                                            <template x-if="assessmentLoading">
+                                                <span>Assessing...</span>
+                                            </template>
+                                        </button>
+                                        <button
+                                            class="btn-start"
+                                            @click="startAssertionValidation()"
+                                            :disabled="!authStatus.valid || !validatorName"
+                                        >
+                                            Begin Validation
+                                        </button>
+                                    </div>
                                 </div>
                             </template>
 
@@ -320,6 +334,30 @@
                                         </button>
                                     </div>
                                 </div>
+
+                                <!-- AI Assessment Panel -->
+                                <template x-if="aiAssessment">
+                                    <div class="ai-assessment-panel">
+                                        <div class="assessment-header">
+                                            <span class="assessment-verdict" :class="aiAssessment.verdict?.toLowerCase()?.replace('_', '-')" x-text="aiAssessment.verdict?.replace('_', ' ')"></span>
+                                            <span class="assessment-confidence" x-text="aiAssessment.confidence + ' confidence'"></span>
+                                            <button class="assessment-dismiss" @click="clearAiAssessment()" title="Dismiss">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div class="assessment-reasoning" x-text="aiAssessment.reasoning"></div>
+                                        <template x-if="aiAssessment.concerns">
+                                            <div class="assessment-concerns">
+                                                <strong>Concerns:</strong> <span x-text="aiAssessment.concerns"></span>
+                                            </div>
+                                        </template>
+                                        <div class="assessment-recommendation">
+                                            <strong>Focus on:</strong> <span x-text="aiAssessment.recommendation"></span>
+                                        </div>
+                                    </div>
+                                </template>
 
                                 <!-- Evidence Chain (Primary Evidence) -->
                                 <template x-if="currentAssertion?.evidenceChain && currentAssertion.evidenceChain.length > 0">

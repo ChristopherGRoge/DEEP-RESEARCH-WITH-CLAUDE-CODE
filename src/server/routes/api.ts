@@ -9,6 +9,7 @@ import { getAuthStatus } from '../middleware/auth';
 import { AssertionStatus, AssertionCriticality, SourceRelevance } from '../../../generated/prisma/client';
 import * as fs from 'fs';
 import * as path from 'path';
+import { assessAssertion, AssertionForAssessment } from '../agent/assessment';
 
 const api = new Hono();
 
@@ -389,6 +390,66 @@ api.put('/assertions/:id/conversation', async (c) => {
       messages: updated.validationNotes,
     },
   });
+});
+
+// ============================================
+// AI Assessment (Pre-Validation)
+// ============================================
+
+// AI pre-assessment of an assertion's evidence quality
+api.post('/assertions/:id/ai-assess', async (c) => {
+  const assertionId = c.req.param('id');
+
+  // Fetch full assertion with evidence
+  const assertion = await tools.prisma.assertion.findUnique({
+    where: { id: assertionId },
+    include: {
+      entity: {
+        select: { name: true },
+      },
+      reasoning: {
+        select: { content: true },
+      },
+      sources: {
+        include: {
+          source: {
+            select: { url: true },
+          },
+        },
+      },
+    },
+  });
+
+  if (!assertion) {
+    return c.json({ success: false, error: 'Assertion not found' }, 404);
+  }
+
+  // Transform to AssertionForAssessment interface
+  const assertionForAssessment: AssertionForAssessment = {
+    id: assertion.id,
+    claim: assertion.claim,
+    category: assertion.category,
+    evidenceDescription: assertion.evidenceDescription,
+    evidenceScreenshotPath: assertion.evidenceScreenshotPath,
+    evidenceChain: assertion.evidenceChain as any[] | null,
+    entity: assertion.entity,
+    reasoning: assertion.reasoning,
+    sources: assertion.sources.map(s => ({
+      quote: s.quote,
+      source: s.source,
+    })),
+  };
+
+  try {
+    const assessment = await assessAssertion(assertionForAssessment);
+    return c.json({ success: true, data: assessment });
+  } catch (error: any) {
+    console.error('AI Assessment error:', error);
+    return c.json({
+      success: false,
+      error: error.message || 'Failed to assess assertion',
+    }, 500);
+  }
 });
 
 // ============================================

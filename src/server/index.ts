@@ -38,6 +38,15 @@ app.use(
   })
 );
 
+// Serve screenshots directory
+app.use(
+  '/screenshots/*',
+  serveStatic({
+    root: './',
+    rewriteRequestPath: (path) => path,
+  })
+);
+
 // Static files (serve frontend)
 app.use(
   '/*',
