@@ -10,6 +10,7 @@ import { AssertionStatus, AssertionCriticality, SourceRelevance } from '../../..
 import * as fs from 'fs';
 import * as path from 'path';
 import { assessAssertion, AssertionForAssessment } from '../agent/assessment';
+import { investigateGap, GapInvestigationRequest } from '../agent/investigate';
 
 const api = new Hono();
 
@@ -448,6 +449,122 @@ api.post('/assertions/:id/ai-assess', async (c) => {
     return c.json({
       success: false,
       error: error.message || 'Failed to assess assertion',
+    }, 500);
+  }
+});
+
+// Investigate an evidence gap for an assertion
+api.post('/assertions/:id/investigate-gap', async (c) => {
+  const assertionId = c.req.param('id');
+  const body = await c.req.json();
+  const { gapDescription, searchQuery } = body;
+
+  if (!gapDescription) {
+    return c.json({ success: false, error: 'gapDescription is required' }, 400);
+  }
+
+  // Fetch assertion with entity info
+  const assertion = await tools.prisma.assertion.findUnique({
+    where: { id: assertionId },
+    include: {
+      entity: {
+        select: { name: true },
+      },
+    },
+  });
+
+  if (!assertion) {
+    return c.json({ success: false, error: 'Assertion not found' }, 404);
+  }
+
+  const request: GapInvestigationRequest = {
+    assertionId,
+    entityName: assertion.entity.name,
+    claim: assertion.claim,
+    gapDescription,
+    searchQuery: searchQuery || gapDescription, // Use description as fallback search
+  };
+
+  try {
+    console.log(`Investigating gap for assertion ${assertionId}: "${gapDescription}"`);
+    const result = await investigateGap(request);
+
+    // If evidence was found, optionally add to assertion's evidence chain
+    if (result.evidenceFound && result.sourceUrl) {
+      // Add source to assertion if not already present
+      const existingSource = await tools.prisma.source.findUnique({
+        where: { url: result.sourceUrl },
+      });
+
+      let sourceId: string;
+      if (existingSource) {
+        sourceId = existingSource.id;
+      } else {
+        const newSource = await tools.prisma.source.create({
+          data: { url: result.sourceUrl },
+        });
+        sourceId = newSource.id;
+      }
+
+      // Link source to assertion with the quote
+      await tools.prisma.assertionSource.upsert({
+        where: {
+          assertionId_sourceId: {
+            assertionId,
+            sourceId,
+          },
+        },
+        update: {
+          quote: result.sourceQuote,
+          addedBy: 'gap-investigation',
+        },
+        create: {
+          assertionId,
+          sourceId,
+          quote: result.sourceQuote,
+          addedBy: 'gap-investigation',
+        },
+      });
+
+      // If screenshot was captured, add to evidence chain
+      if (result.screenshotPath && result.screenshotDescription) {
+        const currentChain = (assertion.evidenceChain as any[]) || [];
+        const newEvidence = {
+          screenshotPath: result.screenshotPath,
+          description: result.screenshotDescription,
+          capturedAt: new Date().toISOString(),
+          source: 'gap-investigation',
+          gapDescription: gapDescription,
+        };
+
+        await tools.prisma.assertion.update({
+          where: { id: assertionId },
+          data: {
+            evidenceChain: [...currentChain, newEvidence],
+          },
+        });
+      }
+
+      // Log the investigation
+      await tools.prisma.researchLog.create({
+        data: {
+          action: 'gap_investigated',
+          details: {
+            assertionId,
+            gapDescription,
+            evidenceFound: result.evidenceFound,
+            sourceUrl: result.sourceUrl,
+          },
+        },
+      });
+    }
+
+    return c.json({ success: true, data: result });
+  } catch (error: any) {
+    console.error('Gap Investigation error:', error);
+    return c.json({
+      success: false,
+      error: error.message || 'Failed to investigate gap',
     }, 500);
   }
 });

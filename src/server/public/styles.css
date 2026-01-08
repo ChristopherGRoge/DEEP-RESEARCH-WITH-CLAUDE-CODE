@@ -1739,6 +1739,88 @@ body.sidebar-collapsed .content {
 }
 
 /* ==========================================================================
+   Gap Investigation Buttons
+   ========================================================================== */
+.gaps-message {
+    padding: var(--space-md);
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+}
+
+.gaps-header {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-sm);
+}
+
+.gaps-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.btn-investigate-gap {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-medium);
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: all var(--transition-fast);
+}
+
+.btn-investigate-gap:hover:not(:disabled) {
+    background: #fff3cd;
+    border-color: #f59e0b;
+}
+
+.btn-investigate-gap:disabled {
+    cursor: not-allowed;
+}
+
+.btn-investigate-gap.investigating {
+    background: #e0f2fe;
+    border-color: #0ea5e9;
+    opacity: 0.8;
+}
+
+.btn-investigate-gap.resolved {
+    background: #d1fae5;
+    border-color: #10b981;
+    opacity: 0.7;
+}
+
+.btn-investigate-gap.no-evidence {
+    background: #fef2f2;
+    border-color: #ef4444;
+    opacity: 0.7;
+}
+
+.gap-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.gap-text {
+    font-size: 0.8125rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+}
+
+.btn-investigate-gap.resolved .gap-text,
+.btn-investigate-gap.no-evidence .gap-text {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+/* ==========================================================================
    Scrollbar
    ========================================================================== */
 ::-webkit-scrollbar {

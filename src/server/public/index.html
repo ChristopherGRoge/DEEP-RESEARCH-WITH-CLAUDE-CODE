@@ -155,7 +155,32 @@
                                                 <a :href="msg.content" target="_blank" class="evidence-link">View full size</a>
                                             </div>
                                         </template>
-                                        <template x-if="msg.type !== 'screenshot'">
+                                        <template x-if="msg.type === 'gaps'">
+                                            <div class="gaps-message">
+                                                <div class="gaps-header">Investigate Evidence Gaps:</div>
+                                                <div class="gaps-buttons">
+                                                    <template x-for="gap in msg.gaps" :key="gap.id">
+                                                        <button
+                                                            class="btn-investigate-gap"
+                                                            :class="{
+                                                                investigating: gap.investigating,
+                                                                resolved: gap.resolved,
+                                                                'no-evidence': gap.noEvidence
+                                                            }"
+                                                            @click="investigateGap(gap)"
+                                                            :disabled="gap.investigating || gap.resolved || gap.noEvidence"
+                                                        >
+                                                            <span class="gap-icon" x-show="!gap.investigating && !gap.resolved && !gap.noEvidence">🔍</span>
+                                                            <span class="gap-icon" x-show="gap.investigating">⏳</span>
+                                                            <span class="gap-icon" x-show="gap.resolved">✅</span>
+                                                            <span class="gap-icon" x-show="gap.noEvidence">❌</span>
+                                                            <span class="gap-text" x-text="gap.description"></span>
+                                                        </button>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template x-if="msg.type !== 'screenshot' && msg.type !== 'gaps'">
                                             <div class="message-bubble" x-html="formatMessage(msg.content)"></div>
                                         </template>
                                     </div>

@@ -16,12 +16,19 @@ import { query } from '@anthropic-ai/claude-agent-sdk';
 export type Verdict = 'LIKELY_VALID' | 'NEEDS_VERIFICATION' | 'LIKELY_INVALID' | 'INSUFFICIENT_EVIDENCE';
 export type Confidence = 'HIGH' | 'MEDIUM' | 'LOW';
 
+export interface EvidenceGap {
+  id: string;
+  description: string;  // What's missing from the evidence
+  searchQuery: string;  // Suggested web search to fill the gap
+}
+
 export interface AssessmentResult {
   verdict: Verdict;
   confidence: Confidence;
   reasoning: string;
   concerns: string | null;
   recommendation: string;
+  gaps: EvidenceGap[];  // Discrete evidence gaps that could be investigated
 }
 
 export interface AssertionForAssessment {
@@ -71,15 +78,24 @@ Common issues to flag:
 - Claim extrapolates significantly beyond what the evidence shows
 - Evidence may be from a different entity/product than claimed
 - Mismatch between claim category and evidence type
+- Part of the claim is not addressed by any evidence (e.g., claim mentions A, B, C but evidence only covers A)
+- Screenshot was not captured even though evidence description references visual content
 
-Always provide actionable recommendations for what the human validator should verify.
+IMPORTANT: Identify discrete EVIDENCE GAPS that could be filled by additional research. A gap is a specific piece of missing evidence that, if found, would strengthen or weaken the assessment. For each gap, suggest a specific web search query that could find the missing evidence.
 
-Respond in EXACTLY this format with each field on its own line:
+Respond in EXACTLY this format:
 VERDICT: [exactly one of: LIKELY_VALID, NEEDS_VERIFICATION, LIKELY_INVALID, INSUFFICIENT_EVIDENCE]
 CONFIDENCE: [exactly one of: HIGH, MEDIUM, LOW]
 REASONING: [2-3 sentences explaining your assessment]
 CONCERNS: [specific issues to check, or "None"]
-RECOMMENDATION: [what the human validator should focus on]`;
+RECOMMENDATION: [what the human validator should focus on]
+GAPS: [List of evidence gaps, one per line in format "description | search query", or "None" if no gaps]
+
+Example GAPS format:
+GAPS:
+- Google Cloud data retention policy not mentioned in evidence | GitHub Copilot Google Cloud data retention policy
+- No screenshot captured for the pricing page | (no search needed - requires screenshot capture)
+- Claim mentions AWS Bedrock but evidence only covers Azure | GitHub Copilot AWS Bedrock integration`;
 
 // ============================================
 // Prompt Builder
@@ -158,13 +174,15 @@ Based ONLY on the evidence above (not external knowledge), determine:
 2. Do the quoted sources directly support the claim?
 3. Are there logical gaps between evidence and claim?
 4. Is the evidence specific enough, or too vague?
+5. Are there parts of the claim not addressed by any evidence?
 
 Respond in this exact format:
 VERDICT: [LIKELY_VALID | NEEDS_VERIFICATION | LIKELY_INVALID | INSUFFICIENT_EVIDENCE]
 CONFIDENCE: [HIGH | MEDIUM | LOW]
 REASONING: [2-3 sentences explaining your assessment]
 CONCERNS: [Specific issues the human should check, or "None"]
-RECOMMENDATION: [What the human validator should focus on]`);
+RECOMMENDATION: [What the human validator should focus on]
+GAPS: [Evidence gaps that could be investigated, format: "description | search query" per line, or "None"]`);
 
   return parts.join('\n');
 }
@@ -181,27 +199,66 @@ export function parseAssessmentResponse(text: string): AssessmentResult {
   let reasoning = '';
   let concerns: string | null = null;
   let recommendation = '';
+  const gaps: EvidenceGap[] = [];
+
+  let inGapsSection = false;
+  let gapCounter = 0;
 
   for (const line of lines) {
     const trimmed = line.trim();
 
     if (trimmed.startsWith('VERDICT:')) {
+      inGapsSection = false;
       const value = trimmed.replace('VERDICT:', '').trim();
       if (['LIKELY_VALID', 'NEEDS_VERIFICATION', 'LIKELY_INVALID', 'INSUFFICIENT_EVIDENCE'].includes(value)) {
         verdict = value as Verdict;
       }
     } else if (trimmed.startsWith('CONFIDENCE:')) {
+      inGapsSection = false;
       const value = trimmed.replace('CONFIDENCE:', '').trim();
       if (['HIGH', 'MEDIUM', 'LOW'].includes(value)) {
         confidence = value as Confidence;
       }
     } else if (trimmed.startsWith('REASONING:')) {
+      inGapsSection = false;
       reasoning = trimmed.replace('REASONING:', '').trim();
     } else if (trimmed.startsWith('CONCERNS:')) {
+      inGapsSection = false;
       const value = trimmed.replace('CONCERNS:', '').trim();
       concerns = value.toLowerCase() === 'none' ? null : value;
     } else if (trimmed.startsWith('RECOMMENDATION:')) {
+      inGapsSection = false;
       recommendation = trimmed.replace('RECOMMENDATION:', '').trim();
+    } else if (trimmed.startsWith('GAPS:')) {
+      inGapsSection = true;
+      // Check if gaps are on the same line
+      const sameLineContent = trimmed.replace('GAPS:', '').trim();
+      if (sameLineContent && sameLineContent.toLowerCase() !== 'none') {
+        // Single gap on same line
+        const gapParts = sameLineContent.replace(/^-\s*/, '').split('|').map(s => s.trim());
+        if (gapParts.length >= 1 && gapParts[0]) {
+          gapCounter++;
+          gaps.push({
+            id: `gap-${gapCounter}`,
+            description: gapParts[0],
+            searchQuery: gapParts[1] || gapParts[0], // Use description as search if no query
+          });
+        }
+      }
+    } else if (inGapsSection && trimmed.startsWith('-')) {
+      // Parse gap line: "- description | search query"
+      const gapContent = trimmed.replace(/^-\s*/, '');
+      if (gapContent.toLowerCase() !== 'none') {
+        const gapParts = gapContent.split('|').map(s => s.trim());
+        if (gapParts.length >= 1 && gapParts[0]) {
+          gapCounter++;
+          gaps.push({
+            id: `gap-${gapCounter}`,
+            description: gapParts[0],
+            searchQuery: gapParts[1] || gapParts[0],
+          });
+        }
+      }
     }
   }
 
@@ -211,6 +268,7 @@ export function parseAssessmentResponse(text: string): AssessmentResult {
     reasoning: reasoning || 'Unable to parse reasoning from response.',
     concerns,
     recommendation: recommendation || 'Review the evidence manually.',
+    gaps,
   };
 }
 

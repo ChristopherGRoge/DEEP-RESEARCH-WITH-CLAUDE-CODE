@@ -635,11 +635,28 @@ function validationApp() {
           }
           assessmentMessage += `**Focus on:** ${data.data.recommendation}`;
 
+          // Add gaps section if there are gaps
+          if (data.data.gaps && data.data.gaps.length > 0) {
+            assessmentMessage += `\n\n**Evidence Gaps Identified:**`;
+            for (const gap of data.data.gaps) {
+              assessmentMessage += `\n- ${gap.description}`;
+            }
+          }
+
           conv.messages.push({
             role: 'assistant',
             type: 'text',
             content: assessmentMessage,
           });
+
+          // Add gap investigation message with buttons if gaps exist
+          if (data.data.gaps && data.data.gaps.length > 0) {
+            conv.messages.push({
+              role: 'assistant',
+              type: 'gaps',
+              gaps: data.data.gaps,
+            });
+          }
         } else {
           console.error('AI Assessment failed:', data.error);
           conv.messages.push({
@@ -669,6 +686,120 @@ function validationApp() {
     clearAiAssessment() {
       this.aiAssessment = null;
       this.assessmentLoading = false;
+    },
+
+    // Investigate a specific evidence gap
+    async investigateGap(gap) {
+      if (!this.currentAssertionId) return;
+
+      const conv = this.conversations[this.currentAssertionId];
+      if (!conv) return;
+
+      // Mark gap as investigating
+      gap.investigating = true;
+
+      // Add investigation start message
+      conv.messages.push({
+        role: 'assistant',
+        type: 'text',
+        content: `**Investigating gap:** "${gap.description}"\n\n*Searching for evidence...*`,
+      });
+
+      this.$nextTick(() => {
+        const container = this.$refs.chatContainer;
+        if (container) container.scrollTop = container.scrollHeight;
+      });
+
+      try {
+        const res = await fetch(`/api/assertions/${this.currentAssertionId}/investigate-gap`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            gapDescription: gap.description,
+            searchQuery: gap.searchQuery,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          const result = data.data;
+          let resultMessage = '';
+
+          if (result.evidenceFound) {
+            resultMessage = `**Evidence Found for Gap**\n\n`;
+            resultMessage += `${result.findings}\n\n`;
+            if (result.sourceUrl) {
+              resultMessage += `**Source:** ${result.sourceUrl}\n`;
+            }
+            if (result.sourceQuote) {
+              resultMessage += `**Quote:** "${result.sourceQuote}"\n`;
+            }
+            if (result.screenshotDescription) {
+              resultMessage += `\n**Screenshot:** ${result.screenshotDescription}`;
+            }
+            // Mark gap as resolved
+            gap.resolved = true;
+          } else {
+            resultMessage = `**No Evidence Found**\n\n${result.findings}`;
+            gap.noEvidence = true;
+          }
+
+          conv.messages.push({
+            role: 'assistant',
+            type: 'text',
+            content: resultMessage,
+          });
+
+          // Refresh assertion to get updated evidence chain
+          await this.refreshCurrentAssertion();
+        } else {
+          conv.messages.push({
+            role: 'assistant',
+            type: 'text',
+            content: `**Investigation failed:** ${data.error || 'Unknown error'}`,
+          });
+        }
+      } catch (error) {
+        console.error('Gap investigation error:', error);
+        conv.messages.push({
+          role: 'assistant',
+          type: 'text',
+          content: '**Investigation failed:** Network error. Please try again.',
+        });
+      } finally {
+        gap.investigating = false;
+        this.$nextTick(() => {
+          const container = this.$refs.chatContainer;
+          if (container) container.scrollTop = container.scrollHeight;
+        });
+      }
+    },
+
+    // Refresh the current assertion data
+    async refreshCurrentAssertion() {
+      if (!this.currentAssertionId) return;
+
+      try {
+        const res = await fetch(`/api/assertions/${this.currentAssertionId}`);
+        const data = await res.json();
+        if (data.success && data.data) {
+          // Update current assertion with fresh data
+          this.currentAssertion = {
+            ...this.currentAssertion,
+            ...data.data,
+            entityName: data.data.entity?.name || this.currentAssertion?.entityName,
+          };
+
+          // Update in assertions array too
+          const idx = this.assertions.findIndex(a => a.id === this.currentAssertionId);
+          if (idx >= 0) {
+            this.assertions[idx] = this.currentAssertion;
+          }
+        }
+      } catch (error) {
+        console.error('Failed to refresh assertion:', error);
+      }
     },
 
     // Extract URLs from text
