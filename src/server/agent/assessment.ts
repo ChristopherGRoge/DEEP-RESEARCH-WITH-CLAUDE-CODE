@@ -3,9 +3,11 @@
  *
  * Provides closed-loop validation of assertions based ONLY on collected evidence.
  * No web search or external knowledge - pure assessment of evidence artifacts.
+ *
+ * Uses Claude Agent SDK for authentication (supports both `claude login` and ANTHROPIC_API_KEY).
  */
 
-import Anthropic from '@anthropic-ai/sdk';
+import { query } from '@anthropic-ai/claude-agent-sdk';
 
 // ============================================
 // Types
@@ -217,23 +219,48 @@ export function parseAssessmentResponse(text: string): AssessmentResult {
 // ============================================
 
 export async function assessAssertion(assertion: AssertionForAssessment): Promise<AssessmentResult> {
-  const client = new Anthropic();
   const prompt = buildAssessmentPrompt(assertion);
+
+  // Single-turn input generator for the assessment prompt
+  async function* singleTurnInput() {
+    yield {
+      type: 'user' as const,
+      message: { role: 'user' as const, content: prompt },
+      parent_tool_use_id: null,
+      session_id: `assessment-${Date.now()}`,
+    };
+  }
 
   // CRITICAL: No tools enabled - pure text analysis only
   // This ensures closed-loop validation with no external data access
-  const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 500,
-    messages: [{ role: 'user', content: prompt }],
-    system: ASSESSMENT_SYSTEM_PROMPT,
-    // NO tools array - prevents web search, file access, etc.
+  const q = query({
+    prompt: singleTurnInput(),
+    options: {
+      systemPrompt: ASSESSMENT_SYSTEM_PROMPT,
+      model: 'claude-sonnet-4-20250514',
+      maxTurns: 1, // Single turn, no tool use
+      allowedTools: [], // NO tools - prevents any external access
+      permissionMode: 'acceptEdits',
+      cwd: process.cwd(),
+    },
   });
 
-  const textContent = response.content.find(c => c.type === 'text');
-  if (!textContent || textContent.type !== 'text') {
+  // Collect the streamed response
+  let responseText = '';
+  for await (const event of q) {
+    if (event.type === 'assistant' && event.message?.content) {
+      // Extract text from content blocks
+      for (const block of event.message.content) {
+        if (block.type === 'text') {
+          responseText = block.text; // Use the final complete text
+        }
+      }
+    }
+  }
+
+  if (!responseText) {
     throw new Error('No text response from Claude');
   }
 
-  return parseAssessmentResponse(textContent.text);
+  return parseAssessmentResponse(responseText);
 }

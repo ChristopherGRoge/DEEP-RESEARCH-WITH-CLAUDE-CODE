@@ -586,6 +586,29 @@ function validationApp() {
       this.assessmentLoading = true;
       this.aiAssessment = null;
 
+      // Get or create conversation for this assertion
+      if (!this.conversations[this.currentAssertionId]) {
+        this.conversations[this.currentAssertionId] = {
+          messages: [],
+          status: 'not_started',
+        };
+      }
+      const conv = this.conversations[this.currentAssertionId];
+
+      // Add the assessment prompt as a visible "thinking" message
+      const claim = this.currentAssertion?.claim || 'this assertion';
+      conv.messages.push({
+        role: 'assistant',
+        type: 'text',
+        content: `**Critically assessing the following statement:**\n\n> "${claim}"\n\n*Evaluating whether the collected evidence supports this claim...*`,
+      });
+
+      // Scroll to show the assessment prompt
+      this.$nextTick(() => {
+        const container = this.$refs.chatContainer;
+        if (container) container.scrollTop = container.scrollHeight;
+      });
+
       try {
         const res = await fetch(`/api/assertions/${this.currentAssertionId}/ai-assess`, {
           method: 'POST',
@@ -596,27 +619,49 @@ function validationApp() {
 
         if (data.success) {
           this.aiAssessment = data.data;
+
+          // Format the assessment as a chat message
+          const verdictEmoji = {
+            'LIKELY_VALID': '✅',
+            'NEEDS_VERIFICATION': '⚠️',
+            'LIKELY_INVALID': '❌',
+            'INSUFFICIENT_EVIDENCE': '❓',
+          }[data.data.verdict] || '❓';
+
+          let assessmentMessage = `**${verdictEmoji} ${data.data.verdict.replace('_', ' ')}** (${data.data.confidence} confidence)\n\n`;
+          assessmentMessage += `${data.data.reasoning}\n\n`;
+          if (data.data.concerns) {
+            assessmentMessage += `**Concerns:** ${data.data.concerns}\n\n`;
+          }
+          assessmentMessage += `**Focus on:** ${data.data.recommendation}`;
+
+          conv.messages.push({
+            role: 'assistant',
+            type: 'text',
+            content: assessmentMessage,
+          });
         } else {
           console.error('AI Assessment failed:', data.error);
-          this.aiAssessment = {
-            verdict: 'INSUFFICIENT_EVIDENCE',
-            confidence: 'LOW',
-            reasoning: `Assessment failed: ${data.error || 'Unknown error'}`,
-            concerns: 'Could not complete AI assessment',
-            recommendation: 'Review evidence manually',
-          };
+          conv.messages.push({
+            role: 'assistant',
+            type: 'text',
+            content: `**Assessment failed:** ${data.error || 'Unknown error'}\n\nPlease review the evidence manually.`,
+          });
         }
       } catch (error) {
         console.error('AI Assessment error:', error);
-        this.aiAssessment = {
-          verdict: 'INSUFFICIENT_EVIDENCE',
-          confidence: 'LOW',
-          reasoning: 'Network error during assessment',
-          concerns: 'Could not connect to AI assessment service',
-          recommendation: 'Check server status and try again',
-        };
+        conv.messages.push({
+          role: 'assistant',
+          type: 'text',
+          content: '**Assessment failed:** Network error. Please check server status and try again.',
+        });
       } finally {
         this.assessmentLoading = false;
+        // Scroll to show the result
+        this.$nextTick(() => {
+          const container = this.$refs.chatContainer;
+          if (container) container.scrollTop = container.scrollHeight;
+        });
       }
     },
 
