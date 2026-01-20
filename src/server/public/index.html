@@ -75,10 +75,10 @@
                     </div>
                 </template>
 
-                <template x-for="group in getFilteredAssertionsByProject()" :key="group.projectId">
+                <template x-for="group in getFilteredAssertionsByProject()" :key="group.entityId || group.projectId">
                     <div class="project-section">
                         <button class="project-toggle" @click="group.expanded = !group.expanded">
-                            <span class="project-name" x-text="group.projectName"></span>
+                            <span class="project-name" x-text="group.displayName || group.projectName"></span>
                             <span class="project-count" x-text="group.assertions.length"></span>
                             <svg class="chevron" :class="{ expanded: group.expanded }" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M6 9l6 6 6-6"/>
@@ -159,15 +159,16 @@
                                             <div class="gaps-message">
                                                 <div class="gaps-header">Investigate Evidence Gaps:</div>
                                                 <div class="gaps-buttons">
-                                                    <template x-for="gap in msg.gaps" :key="gap.id">
+                                                    <template x-for="(gap, gapIdx) in msg.gaps" :key="gapIdx">
                                                         <button
+                                                            type="button"
                                                             class="btn-investigate-gap"
                                                             :class="{
                                                                 investigating: gap.investigating,
                                                                 resolved: gap.resolved,
                                                                 'no-evidence': gap.noEvidence
                                                             }"
-                                                            @click="investigateGap(gap)"
+                                                            @click.prevent.stop="console.log('[GAP BUTTON CLICK]', gap); investigateGap(gap)"
                                                             :disabled="gap.investigating || gap.resolved || gap.noEvidence"
                                                         >
                                                             <span class="gap-icon" x-show="!gap.investigating && !gap.resolved && !gap.noEvidence">🔍</span>

@@ -12,6 +12,15 @@ export * from './diff';
 export * from './agenda';
 export * from './logos';
 export * from './validation-dashboard';
+export * from './orchestrator';
+export * from './evidence-validator';
+export * from './criticality-scorer';
+export * from './crawlers';
+export * from './discovery-sources';
+export * from './discovery-processor';
+export * from './trend-detector';
+export * from './crawl-orchestrator';
+export * from './domains';
 
 // Re-export Prisma client for direct access if needed
 export { prisma } from '../db/client';

@@ -823,11 +823,37 @@ npm run cli -- project:update '{"projectId": "<id>", "name": "New Name"}'
 npm run cli -- project:delete '{"projectId": "<id>"}'
 ```
 
+### Research Domain Commands
+
+```bash
+# Create a research domain (for domain-driven discovery)
+npm run cli -- domain:create '{"name": "AI-Testing-Tools", "description": "AI-powered testing and QA tools", "entityTypes": ["tool"], "knownLeaders": ["Testim", "Mabl"], "relevantTopics": ["test generation", "QA automation"]}'
+
+# List all research domains
+npm run cli -- domain:list
+
+# Get domain by name or ID
+npm run cli -- domain:get '{"name": "AI-Testing-Tools"}'
+
+# Update a domain
+npm run cli -- domain:update '{"domainId": "<id>", "relevantTopics": ["test generation", "QA automation", "E2E testing"]}'
+
+# Delete a domain
+npm run cli -- domain:delete '{"domainId": "<id>"}'
+
+# Get entities in a domain
+npm run cli -- domain:entities '{"domainId": "<id>"}'
+
+# Get domain summary with statistics
+npm run cli -- domain:summary '{"domainId": "<id>"}'
+```
+
 ### Entity Commands
 
 ```bash
 # Create/upsert an entity (won't duplicate if name exists in project)
-npm run cli -- entity:create '{"projectId": "<id>", "name": "Entity Name", "description": "Description", "entityType": "tool", "url": "https://example.com"}'
+# Include domainId for domain-driven categorization
+npm run cli -- entity:create '{"projectId": "<id>", "name": "Entity Name", "description": "Description", "entityType": "tool", "url": "https://example.com", "domainId": "<domain-id>"}'
 
 # List entities in a project
 npm run cli -- entity:list '{"projectId": "<id>"}'
@@ -1141,4 +1167,24 @@ Final deliverables use templates from `docs/RESEARCH-TEMPLATES/`:
 - `docs/RESEARCH-SYSTEM.md` - Full research orchestration architecture
 - `docs/RESEARCH-TEMPLATES/` - Research output templates
 - `.claude/skills/research/` - Research orchestration skill
+- `.claude/skills/research-domain/` - Domain management skill (create, list, show domains)
+- `.claude/skills/research-discover/` - Domain-driven discovery skill
 - `.claude/skills/research-to-deck/` - Deck generation skill
+
+## Skills Reference
+
+### Domain-Driven Discovery
+
+```
+/research-domain create <name>   # Create a new research domain
+/research-domain list            # List all domains
+/research-domain show <name>     # Show domain details
+
+/research-discover <domain-name> # Run discovery for a domain (domain REQUIRED)
+```
+
+**Workflow:**
+1. Create a domain with `/research-domain create AI-Testing-Tools`
+2. Answer questions about what to find and how
+3. Run discovery with `/research-discover AI-Testing-Tools`
+4. Repeat to find more entities

@@ -54,6 +54,30 @@ enum SourceRelevance {
   MISLEADING       // Source was misinterpreted or contradicts claim (0)
 }
 
+enum SourceType {
+  BLOG
+  GITHUB_LIST
+  GITHUB_TRENDING
+  GITHUB_REPO
+  NEWSLETTER
+  AGGREGATOR
+  REDDIT
+  X_ACCOUNT
+  X_SEARCH
+  FORUM
+  NEWS
+  ACADEMIC
+  DEV_COMMUNITY
+}
+
+enum CrawlStatus {
+  IN_PROGRESS
+  PAUSED
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
 // ============================================
 // CORE MODELS
 // ============================================
@@ -83,6 +107,16 @@ model Entity {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  // Discovery categorization - which research category this entity belongs to
+  // Values: ai_code_assistants, ai_code_review, ai_debugging, ai_testing,
+  //         ai_documentation, ai_security, ai_devops, ai_analytics, genai_concepts
+  // DEPRECATED: Use domainId instead for new entities
+  discoveryCategory String?
+
+  // Domain-driven research - replaces discoveryCategory
+  domainId    String?
+  domain      ResearchDomain? @relation(fields: [domainId], references: [id])
+
   // Logo/branding fields
   logoUrl        String?   // Direct URL to logo file (SVG preferred)
   logoPath       String?   // Local path to downloaded logo file
@@ -95,10 +129,12 @@ model Entity {
   projectId   String
   project     ResearchProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
-  assertions  Assertion[]
-  extractions Extraction[]
+  assertions       Assertion[]
+  extractions      Extraction[]
+  researchSessions ResearchSession[]
 
   @@unique([projectId, name])
+  @@index([domainId])
   @@map("entities")
 }
 
@@ -109,6 +145,9 @@ model Assertion {
   status      AssertionStatus @default(CLAIM)
   category    String?  // e.g., "feature", "pricing", "integration", "performance"
   confidence  Float?   // Optional confidence score (0-1) - how sure the AI is
+  confidenceFactors Json?    // Breakdown of scoring factors (sources, quality, freshness, conflicts)
+  lastValidatedAt   DateTime? // When confidence was last calculated
+  validationHistory Json?    // History of validation attempts and score changes
   criticality AssertionCriticality @default(MEDIUM) // How important to conclusions
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -132,6 +171,14 @@ model Assertion {
   evidenceDescription String? // Primary evidence description (what on screenshot supports claim)
   evidenceScreenshotPath String? // Primary evidence screenshot path
 
+  // Discovery provenance - tracking how assertions were discovered
+  discoverySourceId  String?   // Which discovery source first mentioned this
+  firstDiscoveredAt  DateTime? // When first discovered in crawl
+  mentionCount       Int       @default(1) // How many times mentioned across sources
+  sourceSpread       Int       @default(1) // How many different sources mention this
+  criticalityScore   Float?    // Computed criticality score (0-1)
+  criticalityFactors Json?     // Breakdown of what makes this critical
+
   entityId    String
   entity      Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
 
@@ -140,6 +187,7 @@ model Assertion {
 
   @@index([criticality, status])
   @@index([citedInConclusion])
+  @@index([discoverySourceId])
   @@map("assertions")
 }
 
@@ -267,4 +315,282 @@ model Extraction {
   @@index([entityId, schemaType])
   @@index([status])
   @@map("extractions")
+}
+
+// ============================================
+// RESEARCH SESSION MODELS - Orchestrated Multi-Category Research
+// ============================================
+
+enum ResearchSessionStatus {
+  INITIALIZING  // Session created, tasks not yet generated
+  PLANNING      // Tasks being planned/generated
+  RESEARCHING   // Active research in progress
+  PAUSED        // Session temporarily paused
+  COMPLETED     // All tasks completed successfully
+  FAILED        // Session failed with errors
+  CANCELLED     // Session cancelled by user
+}
+
+enum ResearchTaskStatus {
+  PENDING       // Task queued, not yet started
+  IN_PROGRESS   // Task currently being executed
+  COMPLETED     // Task completed successfully
+  FAILED        // Task failed with error
+  CANCELLED     // Task cancelled by user
+  PAUSED        // Task temporarily paused
+}
+
+/// A research session orchestrating multi-category deep research on an entity
+model ResearchSession {
+  id                  String   @id @default(cuid())
+  entityId            String
+  projectId           String
+  researcherName      String   // Name of the researcher/agent managing this session
+  status              ResearchSessionStatus @default(INITIALIZING)
+  createdAt           DateTime @default(now())
+  startedAt           DateTime?
+  completedAt         DateTime?
+  pausedAt            DateTime?
+
+  // Research configuration
+  categories          String[] // e.g., ["pricing", "features", "compliance"]
+  mode                String   // "sequential" or "parallel"
+  config              Json?    // Full ResearchSessionConfig object
+
+  // Progress tracking
+  overallProgress     Json?    // Aggregated SessionProgress object
+  totalTasks          Int      @default(0)
+  completedTasks      Int      @default(0)
+  failedTasks         Int      @default(0)
+
+  // Research output metrics
+  totalAssertions     Int      @default(0)
+  totalScreenshots    Int      @default(0)
+  totalExtractions    Int      @default(0)
+
+  // Relations
+  entity              Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  tasks               ResearchTask[]
+
+  @@index([entityId])
+  @@index([projectId])
+  @@index([status])
+  @@map("research_sessions")
+}
+
+/// An individual research task within a session
+model ResearchTask {
+  id          String   @id @default(cuid())
+  sessionId   String
+  category    String   // "pricing", "features", "company", "compliance", "integrations"
+  status      ResearchTaskStatus @default(PENDING)
+  agentId     String?  // ID of the agent working on this task
+  startedAt   DateTime?
+  completedAt DateTime?
+  error       String?  // Error message if task failed
+
+  // Task progress and results
+  progress    Json?    // TaskProgress object
+  results     Json?    // TaskResults object
+
+  // Relations
+  session     ResearchSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([status])
+  @@index([category])
+  @@map("research_tasks")
+}
+
+// ============================================
+// DISCOVERY MODELS - Systematic Source Crawling
+// ============================================
+
+/// A curated information source for discovery crawling
+model DiscoverySource {
+  id              String   @id @default(cuid())
+  name            String   @unique
+  url             String
+  sourceType      SourceType
+  category        String   // "blogs", "github", "reddit", "x", "newsletters", etc.
+
+  // Crawl configuration
+  crawlStrategy   String   // "rss", "json_api", "html_scrape", "nitter_rss", "hn_api", "github_api"
+  crawlFrequency  String   // "hourly", "daily", "weekly"
+  crawlDepth      Int      @default(1)
+  selectors       Json?    // CSS selectors for HTML scraping
+  feedUrl         String?  // RSS/Atom feed URL
+  apiEndpoint     String?  // API endpoint
+
+  // Crawl state
+  lastCrawledAt   DateTime?
+  lastSuccessAt   DateTime?
+  lastError       String?
+  consecutiveErrors Int     @default(0)
+  isActive        Boolean  @default(true)
+
+  // Quality metrics
+  discoveriesCount Int     @default(0)
+  validatedCount  Int      @default(0)
+  hitRate         Float?
+  avgNoveltyScore Float?
+
+  // Metadata
+  description     String?
+  tags            String[]
+  priority        Int       @default(50)
+
+  discoveries     RawDiscovery[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([sourceType])
+  @@index([lastCrawledAt])
+  @@index([isActive, priority])
+  @@map("discovery_sources")
+}
+
+/// A raw discovery from a source before deduplication
+model RawDiscovery {
+  id              String   @id @default(cuid())
+  sourceId        String
+  source          DiscoverySource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  // Discovery content
+  mentionedName   String
+  briefDescription String?
+  discoveryUrl    String
+  contextSnippet  String?
+
+  // Extracted metadata
+  extractedLinks  String[]
+  releaseVersion  String?
+  releaseDate     DateTime?
+  keywords        String[]
+
+  // Discovery metadata
+  discoveredAt    DateTime @default(now())
+  crawlSessionId  String
+
+  // Processing state
+  processed       Boolean  @default(false)
+  matchedEntityId String?
+  createdEntityId String?
+
+  // Scoring
+  noveltyScore    Float?
+  relevanceScore  Float?
+
+  @@index([sourceId, discoveredAt])
+  @@index([processed])
+  @@index([mentionedName])
+  @@map("raw_discoveries")
+}
+
+/// A crawl session for tracking progress
+model DiscoveryCrawl {
+  id              String   @id @default(cuid())
+  projectId       String?
+
+  // Scope
+  sourceIds       String[]
+  researchFocus   String?
+
+  // Timing
+  startedAt       DateTime @default(now())
+  completedAt     DateTime?
+  pausedAt        DateTime?
+
+  // Progress
+  status          CrawlStatus @default(IN_PROGRESS)
+  sourcesTotal    Int
+  sourcesComplete Int      @default(0)
+  sourcesFailed   Int      @default(0)
+
+  // Results
+  discoveriesFound Int     @default(0)
+  entitiesCreated Int      @default(0)
+  entitiesUpdated Int      @default(0)
+  trendsDetected  Int      @default(0)
+
+  // Resumability
+  checkpoint      Json?
+
+  @@index([status])
+  @@index([startedAt])
+  @@map("discovery_crawls")
+}
+
+/// A detected trend across discoveries
+model DiscoveryTrend {
+  id              String   @id @default(cuid())
+  projectId       String?
+
+  name            String
+  description     String?
+  category        String?
+
+  // Metrics
+  mentionCount    Int      @default(0)
+  entityCount     Int      @default(0)
+  sourceSpread    Int      @default(0)
+  velocity        Float?
+
+  // Temporal
+  firstSeenAt     DateTime
+  lastSeenAt      DateTime
+  peakAt          DateTime?
+
+  // Related data
+  entityIds       String[]
+  keywords        String[]
+
+  // Scoring
+  trendScore      Float?
+  emergingScore   Float?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([category])
+  @@index([trendScore])
+  @@map("discovery_trends")
+}
+
+// ============================================
+// RESEARCH DOMAIN MODELS - Flexible Domain-Driven Research
+// ============================================
+
+/// A research domain defining what to discover and how to find it
+model ResearchDomain {
+  id                  String   @id @default(cuid())
+  name                String   @unique  // e.g., "Agentic-SDLC-Tools"
+  description         String   // What this domain covers
+
+  // What to find
+  entityTypes         String[] // ["tool", "framework", "platform"]
+  inclusionCriteria   String?  // Markdown: what qualifies an entity
+  exclusionCriteria   String?  // Markdown: what disqualifies
+
+  // How to find it (Claude uses these to generate queries)
+  searchHints         String?  // Guidance for query generation
+  knownLeaders        String[] // Known tools for "[X] alternatives" searches
+  relevantTopics      String[] // Topics to explore
+
+  // How to evaluate (for scoring discovered entities)
+  evaluationDimensions Json?   // [{name: "differentiation", weight: 0.3}, ...]
+
+  // Tracking
+  lastDiscoveryAt     DateTime?
+  entityCount         Int      @default(0)
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  createdBy           String?
+
+  // Relations
+  entities            Entity[]
+
+  @@map("research_domains")
 }

@@ -39,8 +39,9 @@ function validationApp() {
       rejected: 0,
     },
 
-    // Assertions by project (topic)
+    // Assertions by project (or by entity when project is selected)
     assertionsByProject: [],
+    groupedBy: 'project', // 'project' or 'entity'
     currentAssertionId: null,
     currentAssertion: null,
 
@@ -161,8 +162,23 @@ function validationApp() {
         const res = await fetch(`/api/assertions/${assertionId}/conversation`);
         const data = await res.json();
         if (data.success) {
+          // Ensure gap messages have state properties initialized
+          const messages = (data.data.messages || []).map(msg => {
+            if (msg.type === 'gaps' && msg.gaps) {
+              return {
+                ...msg,
+                gaps: msg.gaps.map(gap => ({
+                  ...gap,
+                  investigating: gap.investigating ?? false,
+                  resolved: gap.resolved ?? false,
+                  noEvidence: gap.noEvidence ?? false,
+                })),
+              };
+            }
+            return msg;
+          });
           return {
-            messages: data.data.messages || [],
+            messages,
             currentStreamText: '',
             status: data.data.status || 'not_started',
           };
@@ -316,22 +332,29 @@ function validationApp() {
       }
     },
 
-    // Load assertions grouped by project
+    // Load assertions grouped by project (or by entity when project is selected)
     async loadAssertionsByProject() {
       try {
         const params = this.selectedProject ? `?projectId=${this.selectedProject}` : '';
         const res = await fetch(`/api/assertions/by-project${params}`);
         const data = await res.json();
         if (data.success) {
+          // Store grouping mode for UI rendering
+          this.groupedBy = data.groupedBy || 'project';
+
           // Add expanded state to each group
+          // When grouped by entity, use entityName; when by project, use projectName
           this.assertionsByProject = data.data.map(group => ({
             ...group,
+            // Unified display name for sidebar
+            displayName: group.entityName || group.projectName,
             expanded: true, // Default expanded
           }));
         }
       } catch (error) {
         console.error('Failed to load assertions:', error);
         this.assertionsByProject = [];
+        this.groupedBy = 'project';
       }
     },
 
@@ -651,11 +674,20 @@ function validationApp() {
 
           // Add gap investigation message with buttons if gaps exist
           if (data.data.gaps && data.data.gaps.length > 0) {
+            // Initialize tracking properties on each gap for Alpine reactivity
+            const gapsWithState = data.data.gaps.map(gap => ({
+              ...gap,
+              investigating: false,
+              resolved: false,
+              noEvidence: false,
+            }));
+            console.log('[AI Assessment] Adding gaps message with', gapsWithState.length, 'gaps:', gapsWithState);
             conv.messages.push({
               role: 'assistant',
               type: 'gaps',
-              gaps: data.data.gaps,
+              gaps: gapsWithState,
             });
+            console.log('[AI Assessment] Current messages:', conv.messages.map(m => ({ role: m.role, type: m.type })));
           }
         } else {
           console.error('AI Assessment failed:', data.error);
@@ -674,6 +706,8 @@ function validationApp() {
         });
       } finally {
         this.assessmentLoading = false;
+        // Save conversation with the new assessment and gaps
+        await this.saveConversationToApi(this.currentAssertionId);
         // Scroll to show the result
         this.$nextTick(() => {
           const container = this.$refs.chatContainer;
@@ -690,9 +724,16 @@ function validationApp() {
 
     // Investigate a specific evidence gap
     async investigateGap(gap) {
-      if (!this.currentAssertionId) return;
+      console.log('[investigateGap] Called with gap:', gap);
+      console.log('[investigateGap] currentAssertionId:', this.currentAssertionId);
+
+      if (!this.currentAssertionId) {
+        console.log('[investigateGap] No currentAssertionId, returning');
+        return;
+      }
 
       const conv = this.conversations[this.currentAssertionId];
+      console.log('[investigateGap] conversation:', conv ? 'found' : 'not found');
       if (!conv) return;
 
       // Mark gap as investigating
@@ -769,6 +810,8 @@ function validationApp() {
         });
       } finally {
         gap.investigating = false;
+        // Save conversation with investigation results
+        await this.saveConversationToApi(this.currentAssertionId);
         this.$nextTick(() => {
           const container = this.$refs.chatContainer;
           if (container) container.scrollTop = container.scrollHeight;
@@ -934,21 +977,18 @@ function validationApp() {
         console.log('WebSocket connected');
         this.wsConnected = true;
 
-        // Auto-restart session if we have a current assertion (handles reconnects)
+        // Auto-restart session ONLY if it was already in progress (handles reconnects)
+        // Don't auto-start new sessions - user must click "Begin Validation"
         if (this.currentAssertionId && this.validatorName) {
-          console.log('Auto-restarting session for assertion:', this.currentAssertionId);
-
-          // Ensure conversation is in progress state
-          const conv = this.ensureConversation(this.currentAssertionId);
-          if (conv.status === 'not_started' || !conv.status) {
-            conv.status = 'in_progress';
+          const conv = this.conversations[this.currentAssertionId];
+          if (conv && conv.status === 'in_progress') {
+            console.log('Auto-restarting in-progress session for assertion:', this.currentAssertionId);
+            this.sendWs({
+              type: 'start_session',
+              validatorName: this.validatorName.trim(),
+              assertionId: this.currentAssertionId,
+            });
           }
-
-          this.sendWs({
-            type: 'start_session',
-            validatorName: this.validatorName.trim(),
-            assertionId: this.currentAssertionId,
-          });
         }
       };
 

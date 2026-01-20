@@ -1,11 +1,25 @@
 import prisma from '../db/client';
 
+// Valid discovery categories for the /discover skill
+export type DiscoveryCategory =
+  | 'ai_code_assistants'
+  | 'ai_code_review'
+  | 'ai_debugging'
+  | 'ai_testing'
+  | 'ai_documentation'
+  | 'ai_security'
+  | 'ai_devops'
+  | 'ai_analytics'
+  | 'genai_concepts';
+
 export interface CreateEntityInput {
   projectId: string;
   name: string;
   description?: string;
   entityType?: string;
   url?: string;
+  discoveryCategory?: DiscoveryCategory | string;  // DEPRECATED: Use domainId
+  domainId?: string;  // New domain-driven categorization
 }
 
 export interface UpdateEntityInput {
@@ -13,6 +27,8 @@ export interface UpdateEntityInput {
   description?: string;
   entityType?: string;
   url?: string;
+  discoveryCategory?: DiscoveryCategory | string;  // DEPRECATED: Use domainId
+  domainId?: string;  // New domain-driven categorization
 }
 
 export interface SearchEntitiesInput {
@@ -38,6 +54,8 @@ export async function createEntity(input: CreateEntityInput) {
       description: input.description || undefined,
       entityType: input.entityType || undefined,
       url: input.url || undefined,
+      discoveryCategory: input.discoveryCategory || undefined,
+      domainId: input.domainId || undefined,
     },
     create: {
       projectId: input.projectId,
@@ -45,6 +63,8 @@ export async function createEntity(input: CreateEntityInput) {
       description: input.description,
       entityType: input.entityType,
       url: input.url,
+      discoveryCategory: input.discoveryCategory,
+      domainId: input.domainId,
     },
   });
 
@@ -198,4 +218,189 @@ export async function entityExists(projectId: string, name: string): Promise<boo
     },
   });
   return count > 0;
+}
+
+/**
+ * Keyword patterns for inferring discovery category from entity name/description
+ */
+const categoryPatterns: Record<DiscoveryCategory, RegExp[]> = {
+  ai_code_assistants: [
+    /\b(copilot|cursor|codeium|tabnine|code\s*completion|code\s*assist|ai\s*code|coding\s*assistant|ai\s*ide|code\s*editor|autocomplete|intellicode)\b/i,
+    /\b(github\s*copilot|amazon\s*q|aws\s*codewhisperer|sourcegraph\s*cody|continue\.dev|supermaven|codegpt)\b/i,
+  ],
+  ai_code_review: [
+    /\b(code\s*review|pull\s*request|pr\s*review|codacy|codeclimate|sonar|lint|static\s*analysis|code\s*quality)\b/i,
+    /\b(codeball|gitclear|prhythm|bito|coderabbit|sourcery)\b/i,
+  ],
+  ai_debugging: [
+    /\b(debug|debugger|error\s*detect|bug\s*find|exception|stack\s*trace|root\s*cause|troubleshoot)\b/i,
+    /\b(whyline|buglab|sentry|raygun|rollbar)\b/i,
+  ],
+  ai_testing: [
+    /\b(test|testing|qa|quality\s*assurance|unit\s*test|e2e|end.to.end|selenium|playwright|cypress|pytest)\b/i,
+    /\b(qodo|codium|testim|mabl|katalon|functionize|applitools|launchable|autify)\b/i,
+  ],
+  ai_documentation: [
+    /\b(document|documentation|readme|api\s*doc|javadoc|jsdoc|docstring|technical\s*writ|spec\s*writ)\b/i,
+    /\b(mintlify|readme\.io|gitbook|stoplight|swimm|archbee)\b/i,
+  ],
+  ai_security: [
+    /\b(security|secure|vulnerab|cve|sast|dast|appsec|pentest|penetration|exploit|malware|threat)\b/i,
+    /\b(snyk|checkmarx|veracode|fortify|semgrep|sonatype|mend|aikido|orca|wiz)\b/i,
+  ],
+  ai_devops: [
+    /\b(devops|ci\/cd|cicd|pipeline|deploy|kubernetes|k8s|docker|terraform|ansible|infrastructure|aiops)\b/i,
+    /\b(harness|gitlab|circleci|jenkins|argo|flux|pulumi|spacelift|env0)\b/i,
+  ],
+  ai_analytics: [
+    /\b(analytics|bi\b|business\s*intelligence|data\s*viz|dashboard|metric|insight|forecast|predict)\b/i,
+    /\b(tableau|looker|powerbi|metabase|mode|thoughtspot|databricks|snowflake|dbt)\b/i,
+  ],
+  genai_concepts: [
+    /\b(rag|retrieval|augment|agent|agentic|llm|large\s*language|prompt|langchain|llamaindex|vector|embedding)\b/i,
+    /\b(autogen|crewai|semantic\s*kernel|guidance|dspy|instructor)\b/i,
+  ],
+};
+
+/**
+ * Infer the discovery category from entity name and description using keyword matching
+ */
+export function inferDiscoveryCategory(name: string, description?: string | null): DiscoveryCategory | null {
+  const text = `${name} ${description || ''}`.toLowerCase();
+
+  // Score each category by number of pattern matches
+  const scores: { category: DiscoveryCategory; score: number }[] = [];
+
+  for (const [category, patterns] of Object.entries(categoryPatterns)) {
+    let score = 0;
+    for (const pattern of patterns) {
+      const matches = text.match(pattern);
+      if (matches) {
+        score += matches.length;
+      }
+    }
+    if (score > 0) {
+      scores.push({ category: category as DiscoveryCategory, score });
+    }
+  }
+
+  // Return highest scoring category, or null if no matches
+  if (scores.length === 0) return null;
+
+  scores.sort((a, b) => b.score - a.score);
+  return scores[0].category;
+}
+
+export interface CategorizeEntitiesInput {
+  projectId: string;
+  dryRun?: boolean; // If true, don't update, just return what would be categorized
+  overwrite?: boolean; // If true, re-categorize even if already has a category
+}
+
+export interface CategorizeEntitiesResult {
+  total: number;
+  processed: number;
+  categorized: number;
+  skipped: number;
+  uncategorizable: number;
+  results: {
+    entityId: string;
+    name: string;
+    oldCategory: string | null;
+    newCategory: string | null;
+    status: 'categorized' | 'skipped' | 'uncategorizable';
+  }[];
+}
+
+/**
+ * Categorize entities in a project using keyword pattern matching
+ */
+export async function categorizeEntities(input: CategorizeEntitiesInput): Promise<CategorizeEntitiesResult> {
+  const { projectId, dryRun = false, overwrite = false } = input;
+
+  // Get all entities in the project
+  const entities = await prisma.entity.findMany({
+    where: { projectId },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      discoveryCategory: true,
+    },
+  });
+
+  const result: CategorizeEntitiesResult = {
+    total: entities.length,
+    processed: 0,
+    categorized: 0,
+    skipped: 0,
+    uncategorizable: 0,
+    results: [],
+  };
+
+  for (const entity of entities) {
+    result.processed++;
+
+    // Skip if already has category and not overwriting
+    if (entity.discoveryCategory && !overwrite) {
+      result.skipped++;
+      result.results.push({
+        entityId: entity.id,
+        name: entity.name,
+        oldCategory: entity.discoveryCategory,
+        newCategory: entity.discoveryCategory,
+        status: 'skipped',
+      });
+      continue;
+    }
+
+    // Infer category
+    const inferredCategory = inferDiscoveryCategory(entity.name, entity.description);
+
+    if (!inferredCategory) {
+      result.uncategorizable++;
+      result.results.push({
+        entityId: entity.id,
+        name: entity.name,
+        oldCategory: entity.discoveryCategory,
+        newCategory: null,
+        status: 'uncategorizable',
+      });
+      continue;
+    }
+
+    // Update entity if not dry run
+    if (!dryRun) {
+      await prisma.entity.update({
+        where: { id: entity.id },
+        data: { discoveryCategory: inferredCategory },
+      });
+    }
+
+    result.categorized++;
+    result.results.push({
+      entityId: entity.id,
+      name: entity.name,
+      oldCategory: entity.discoveryCategory,
+      newCategory: inferredCategory,
+      status: 'categorized',
+    });
+  }
+
+  // Log the categorization action
+  if (!dryRun) {
+    await prisma.researchLog.create({
+      data: {
+        action: 'entities_categorized',
+        details: {
+          projectId,
+          total: result.total,
+          categorized: result.categorized,
+          uncategorizable: result.uncategorizable,
+        },
+      },
+    });
+  }
+
+  return result;
 }

@@ -13,6 +13,7 @@
 
 import 'dotenv/config';
 import * as tools from './tools';
+import { SourceType } from '../generated/prisma/client';
 
 interface CommandResult {
   success: boolean;
@@ -35,9 +36,11 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
       case 'project:list':
         result = await tools.listProjects();
         break;
-      case 'project:update':
-        result = await tools.updateProject(args.projectId as string, args as unknown as tools.UpdateProjectInput);
+      case 'project:update': {
+        const { projectId, ...updateData } = args;
+        result = await tools.updateProject(projectId as string, updateData as unknown as tools.UpdateProjectInput);
         break;
+      }
       case 'project:delete':
         result = await tools.deleteProject(args.projectId as string);
         break;
@@ -61,14 +64,19 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
       case 'entity:search':
         result = await tools.searchEntities(args as unknown as tools.SearchEntitiesInput);
         break;
-      case 'entity:update':
-        result = await tools.updateEntity(args.entityId as string, args as unknown as tools.UpdateEntityInput);
+      case 'entity:update': {
+        const { entityId, ...updateData } = args;
+        result = await tools.updateEntity(entityId as string, updateData as unknown as tools.UpdateEntityInput);
         break;
+      }
       case 'entity:delete':
         result = await tools.deleteEntity(args.entityId as string);
         break;
       case 'entity:exists':
         result = await tools.entityExists(args.projectId as string, args.name as string);
+        break;
+      case 'entity:categorize':
+        result = await tools.categorizeEntities(args as unknown as tools.CategorizeEntitiesInput);
         break;
 
       // Assertion commands
@@ -84,9 +92,11 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
       case 'assertion:search':
         result = await tools.searchAssertions(args as unknown as tools.SearchAssertionsInput);
         break;
-      case 'assertion:update':
-        result = await tools.updateAssertion(args.assertionId as string, args as unknown as tools.UpdateAssertionInput);
+      case 'assertion:update': {
+        const { assertionId, ...updateData } = args;
+        result = await tools.updateAssertion(assertionId as string, updateData as unknown as tools.UpdateAssertionInput);
         break;
+      }
       case 'assertion:validate':
         result = await tools.validateAssertion(args.assertionId as string, args.validatedBy as string);
         break;
@@ -139,6 +149,32 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
       case 'assertion:findSimilar':
         result = await tools.findSimilarAssertions(args.entityId as string, args.claim as string);
         break;
+      case 'assertion:calculate-confidence':
+        result = await tools.calculateConfidence(args.assertionId as string);
+        break;
+      case 'assertion:set-confidence':
+        result = await tools.updateConfidence(
+          args.assertionId as string,
+          args.score as number | undefined,
+          args.factors as tools.AssertionConfidenceFactors | undefined
+        );
+        break;
+      case 'assertion:by-confidence':
+        result = await tools.getAssertionsByConfidence(
+          args.entityId as string,
+          args.minConfidence as number,
+          args.maxConfidence as number | undefined
+        );
+        break;
+      case 'assertion:low-confidence':
+        result = await tools.getLowConfidenceAssertions(
+          args.projectId as string | undefined,
+          args.threshold as number | undefined
+        );
+        break;
+      case 'assertion:recalculate-confidence':
+        result = await tools.recalculateProjectConfidence(args.projectId as string);
+        break;
 
       // Source commands
       case 'source:create':
@@ -159,9 +195,11 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
       case 'source:link':
         result = await tools.linkSourceToAssertion(args as unknown as tools.LinkSourceInput);
         break;
-      case 'source:update':
-        result = await tools.updateSource(args.sourceId as string, args as unknown as tools.UpdateSourceInput);
+      case 'source:update': {
+        const { sourceId, ...updateData } = args;
+        result = await tools.updateSource(sourceId as string, updateData as unknown as tools.UpdateSourceInput);
         break;
+      }
       case 'source:validate':
         result = await tools.validateSource(args.sourceId as string, args.validatedBy as string);
         break;
@@ -318,6 +356,19 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
         break;
 
       // ============================================
+      // RSS CRAWLER - Automated entity discovery from feeds
+      // ============================================
+      case 'rss:crawl':
+        result = await tools.crawlRSSFeed(args as unknown as tools.RSSCrawlerConfig);
+        break;
+      case 'rss:save':
+        result = await tools.saveDiscoveries(args.discoveries as tools.RawDiscoveryInput[]);
+        break;
+      case 'rss:stats':
+        result = await tools.getCrawlStats(args.projectId as string);
+        break;
+
+      // ============================================
       // VALIDATION DASHBOARD - Human-in-the-loop review
       // ============================================
       case 'validation:generate':
@@ -401,6 +452,359 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
         result = await tools.getExtractionSummary(args.projectId as string);
         break;
 
+      // ============================================
+      // CRAWLERS - Web discovery tools
+      // ============================================
+      case 'crawl:hn':
+        result = await tools.crawlHackerNews(args as unknown as tools.HNCrawlerConfig);
+        break;
+      case 'crawl:hn-persist':
+        result = await tools.crawlAndPersist(args as unknown as tools.HNCrawlerConfig & { projectId: string });
+        break;
+      case 'crawl:show-hn':
+        result = await tools.crawlShowHN(args.projectId as string, args.limit as number | undefined);
+        break;
+      case 'crawl:top-ai':
+        result = await tools.crawlTopAIStories(args.projectId as string, args.limit as number | undefined);
+        break;
+
+      // ============================================
+      // EVIDENCE VALIDATION - Evidence quality and integrity
+      // ============================================
+      case 'evidence:conflicts':
+        result = await tools.findConflictingEvidence(args as unknown as tools.FindConflictsInput);
+        break;
+      case 'evidence:crossref':
+        result = await tools.crossReferenceEvidence(args as unknown as tools.CrossReferenceInput);
+        break;
+      case 'evidence:freshness':
+        result = await tools.checkEvidenceFreshness(args as unknown as tools.CheckFreshnessInput);
+        break;
+      case 'evidence:validate-chain':
+        result = await tools.validateEvidenceChain(args as unknown as tools.ValidateChainInput);
+        break;
+      case 'evidence:confidence':
+        result = await tools.calculateEvidenceConfidence(args as unknown as tools.CalculateEvidenceConfidenceInput);
+        break;
+
+      // ============================================
+      // ORCHESTRATOR COMMANDS - Spawn and manage subagents
+      // ============================================
+      case 'orchestrate:spawn':
+        result = await tools.spawnSubagent(args as unknown as tools.SpawnSubagentInput);
+        break;
+      case 'orchestrate:status':
+        result = tools.getSubagentStatus(args.taskId as string);
+        break;
+      case 'orchestrate:list':
+        result = tools.listAllSubagents(args as { status?: tools.TaskStatus; taskType?: tools.TaskType });
+        break;
+      case 'orchestrate:active':
+        result = tools.listActiveSubagents();
+        break;
+      case 'orchestrate:cancel':
+        result = tools.cancelSubagent(args.taskId as string);
+        break;
+      case 'orchestrate:send':
+        tools.sendInputToSubagent(args.taskId as string, args.message as string);
+        result = { success: true, message: 'Input sent to subagent' };
+        break;
+      case 'orchestrate:cleanup':
+        result = tools.cleanupOldTasks(args.olderThanHours as number | undefined);
+        break;
+
+      // Convenience spawners
+      case 'orchestrate:haiku':
+        result = await tools.spawnHaikuAgent(
+          args.taskType as tools.TaskType,
+          args.prompt as string,
+          args as Partial<tools.SpawnSubagentInput>
+        );
+        break;
+      case 'orchestrate:sonnet':
+        result = await tools.spawnSonnetAgent(
+          args.taskType as tools.TaskType,
+          args.prompt as string,
+          args as Partial<tools.SpawnSubagentInput>
+        );
+        break;
+      case 'orchestrate:opus':
+        result = await tools.spawnOpusAgent(
+          args.taskType as tools.TaskType,
+          args.prompt as string,
+          args as Partial<tools.SpawnSubagentInput>
+        );
+        break;
+
+      // Synchronous spawners (wait for completion)
+      case 'orchestrate:run':
+        result = await tools.spawnSubagentSync({
+          taskType: (args.taskType as tools.TaskType) || 'custom',
+          prompt: args.prompt as string,
+          model: args.model as tools.ModelTier,
+          entityId: args.entityId as string | undefined,
+          timeout: args.timeout as number | undefined,
+        });
+        break;
+      case 'orchestrate:run-haiku':
+        result = await tools.spawnSubagentSync({
+          taskType: (args.taskType as tools.TaskType) || 'custom',
+          prompt: args.prompt as string,
+          model: 'haiku',
+          entityId: args.entityId as string | undefined,
+          timeout: args.timeout as number | undefined,
+        });
+        break;
+      case 'orchestrate:run-sonnet':
+        result = await tools.spawnSubagentSync({
+          taskType: (args.taskType as tools.TaskType) || 'custom',
+          prompt: args.prompt as string,
+          model: 'sonnet',
+          entityId: args.entityId as string | undefined,
+          timeout: args.timeout as number | undefined,
+        });
+        break;
+
+      // ============================================
+      // REDDIT CRAWLER - Community research
+      // ============================================
+      case 'crawler:reddit':
+        result = await tools.crawlSubreddit(args as unknown as tools.RedditCrawlerConfig, args.crawlSessionId as string || 'manual');
+        break;
+      case 'crawler:reddit-multi':
+        result = await tools.crawlMultipleSubreddits(args.configs as tools.RedditCrawlerConfig[], args.crawlSessionId as string || 'manual');
+        break;
+      case 'crawler:reddit-comments':
+        result = await tools.fetchPostComments(args.permalink as string, args.limit as number | undefined);
+        break;
+      case 'crawler:reddit-aggregate':
+        result = tools.aggregateRedditDiscoveries(args.results as tools.RedditCrawlResult[]);
+        break;
+
+      // ============================================
+      // DISCOVERY SOURCE REGISTRY - Source management
+      // ============================================
+      case 'discovery:source:create':
+        result = await tools.createDiscoverySource(args as unknown as tools.SourceCreateInput);
+        break;
+      case 'discovery:source:get':
+        result = await tools.getDiscoverySource(args.sourceId as string);
+        break;
+      case 'discovery:source:update':
+        result = await tools.updateDiscoverySource(args.sourceId as string, args as Partial<tools.SourceCreateInput>);
+        break;
+      case 'discovery:source:delete':
+        result = await tools.deleteDiscoverySource(args.sourceId as string);
+        break;
+      case 'discovery:source:list':
+        result = await tools.listDiscoverySources(args as { sourceType?: SourceType; isActive?: boolean; category?: string });
+        break;
+      case 'discovery:source:byType':
+        result = await tools.getDiscoverySourcesByType(args.sourceType as SourceType);
+        break;
+      case 'discovery:source:stale':
+        result = await tools.getStaleSources(args.maxAgeHours as number);
+        break;
+      case 'discovery:source:stats':
+        result = await tools.getSourceStats();
+        break;
+      case 'discovery:source:markCrawled':
+        result = await tools.markSourceCrawled(
+          args.sourceId as string,
+          args.success as boolean,
+          args.error as string | undefined
+        );
+        break;
+      case 'discovery:source:updateMetrics':
+        result = await tools.updateSourceMetrics(
+          args.sourceId as string,
+          args as { discoveriesCount?: number; validatedCount?: number }
+        );
+        break;
+      case 'discovery:source:seed':
+        result = await tools.seedDefaultSources();
+        break;
+
+      // ============================================
+      // DISCOVERY CRAWL ORCHESTRATOR - Coordinate crawls
+      // ============================================
+      case 'discovery:crawl:start':
+        result = await tools.startDiscoveryCrawl(args as unknown as tools.CrawlConfig);
+        break;
+      case 'discovery:crawl:status':
+        result = await tools.getCrawlStatus(args.crawlId as string);
+        break;
+      case 'discovery:crawl:pause':
+        result = await tools.pauseCrawl(args.crawlId as string);
+        break;
+      case 'discovery:crawl:resume':
+        result = await tools.resumeCrawl(args.crawlId as string);
+        break;
+      case 'discovery:crawl:cancel':
+        result = await tools.cancelCrawl(args.crawlId as string);
+        break;
+      case 'discovery:crawl:history':
+        result = await tools.getCrawlHistory(args.projectId as string, args.limit as number | undefined);
+        break;
+      case 'discovery:crawl:due':
+        result = await tools.getSourcesDueForCrawl();
+        break;
+      case 'discovery:crawl:scheduled':
+        result = await tools.runScheduledCrawl(args.projectId as string);
+        break;
+
+      // ============================================
+      // DISCOVERY PROCESSOR - Deduplication and entity resolution
+      // ============================================
+      case 'discovery:process:one':
+        result = await tools.processRawDiscovery(args.projectId as string, args.rawDiscoveryId as string);
+        break;
+      case 'discovery:process:pending':
+        result = await tools.processPendingDiscoveries(args.projectId as string, args.limit as number | undefined);
+        break;
+      case 'discovery:process:match':
+        result = await tools.findMatchingEntity(
+          args.projectId as string,
+          args.name as string,
+          args.urls as string[] || [],
+          args.description as string | undefined
+        );
+        break;
+      case 'discovery:process:save':
+        result = await tools.saveRawDiscovery(args as unknown as tools.DiscoveryProcessorInput);
+        break;
+      case 'discovery:process:getPending':
+        result = await tools.getPendingDiscoveries(args.projectId as string | undefined, args.limit as number | undefined);
+        break;
+      case 'discovery:process:search':
+        result = await tools.searchDiscoveries(
+          args.query as string,
+          args as { sourceType?: string; processed?: boolean }
+        );
+        break;
+      case 'discovery:process:stats':
+        result = await tools.getDiscoveryStats(args.projectId as string);
+        break;
+
+      // ============================================
+      // CRITICALITY SCORING - Prioritize assertions
+      // ============================================
+      case 'discovery:criticality:calculate':
+        result = await tools.calculateCriticality(args.assertionId as string, args.weights as any);
+        break;
+      case 'discovery:criticality:scoreEntity':
+        result = await tools.scoreEntityAssertions(args.entityId as string, args.weights as any);
+        break;
+      case 'discovery:criticality:scoreProject':
+        result = await tools.scoreProjectAssertions(args.projectId as string, args.weights as any);
+        break;
+      case 'discovery:criticality:byLevel':
+        result = await tools.getAssertionsByCriticality(
+          args.projectId as string,
+          args.level as 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW',
+          args.limit as number | undefined
+        );
+        break;
+      case 'discovery:criticality:needingValidation':
+        result = await tools.getCriticalAssertionsNeedingValidation(args.projectId as string);
+        break;
+      case 'discovery:criticality:summary':
+        result = await tools.getCriticalitySummary(args.projectId as string);
+        break;
+
+      // ============================================
+      // TREND DETECTION - Pattern analysis
+      // ============================================
+      case 'discovery:trends:detect':
+        result = await tools.detectTrends(
+          args.projectId as string,
+          args as { windowDays?: number; minMentions?: number; minSources?: number }
+        );
+        break;
+      case 'discovery:trends:list':
+        result = await tools.listTrends(
+          args.projectId as string,
+          args as { minScore?: number; category?: string; emerging?: boolean; limit?: number }
+        );
+        break;
+      case 'discovery:trends:details':
+        result = await tools.getTrendDetails(args.trendId as string);
+        break;
+      case 'discovery:trends:entities':
+        result = await tools.getTrendingEntities(args.projectId as string, args.limit as number | undefined);
+        break;
+      case 'discovery:trends:report':
+        result = await tools.generateTrendReport(args.projectId as string);
+        break;
+      case 'discovery:trends:export':
+        result = await tools.exportTrendsMarkdown(args.projectId as string);
+        break;
+
+      // ============================================
+      // GITHUB CRAWLER - Awesome lists and trending
+      // ============================================
+      case 'crawler:github-awesome':
+        result = await tools.crawlAwesomeList(
+          args as unknown as tools.GitHubListConfig,
+          args.crawlSessionId as string || 'manual'
+        );
+        break;
+      case 'crawler:github-trending':
+        result = await tools.crawlGitHubTrending(
+          args as unknown as tools.GitHubTrendingConfig,
+          args.crawlSessionId as string || 'manual'
+        );
+        break;
+      case 'crawler:github-diff':
+        result = await tools.diffAwesomeList(
+          args.oldEntries as tools.AwesomeListEntry[],
+          args.newEntries as tools.AwesomeListEntry[]
+        );
+        break;
+
+      // ============================================
+      // NITTER/X CRAWLER - Twitter/X via Nitter
+      // ============================================
+      case 'crawler:nitter':
+        result = await tools.crawlAccount(args as unknown as tools.NitterAccountConfig);
+        break;
+      case 'crawler:nitter-search':
+        result = await tools.crawlSearch(args as unknown as tools.NitterSearchConfig);
+        break;
+
+      // ============================================
+      // RESEARCH DOMAIN COMMANDS - Domain-driven research
+      // ============================================
+      case 'domain:create':
+        result = await tools.createDomain(args as unknown as tools.CreateDomainInput);
+        break;
+      case 'domain:get':
+        result = await tools.getDomain((args.domainId || args.name || args.identifier) as string);
+        break;
+      case 'domain:list':
+        result = await tools.listDomains();
+        break;
+      case 'domain:update': {
+        const { domainId, ...domainUpdateData } = args;
+        result = await tools.updateDomain(domainId as string, domainUpdateData as unknown as tools.UpdateDomainInput);
+        break;
+      }
+      case 'domain:delete':
+        result = await tools.deleteDomain(args.domainId as string);
+        break;
+      case 'domain:find':
+        result = await tools.findDomainByName(args.name as string);
+        break;
+      case 'domain:entities':
+        result = await tools.getDomainEntities(args.domainId as string, { limit: args.limit as number, offset: args.offset as number });
+        break;
+      case 'domain:summary':
+        result = await tools.getDomainSummary(args.domainId as string);
+        break;
+      case 'domain:updateStats':
+        result = await tools.updateDomainDiscoveryStats(args.domainId as string);
+        break;
+
       default:
         return { success: false, error: `Unknown command: ${command}` };
     }
@@ -433,6 +837,7 @@ async function main() {
         'entity:create', 'entity:get', 'entity:find', 'entity:list', 'entity:search', 'entity:update', 'entity:delete', 'entity:exists',
         'assertion:create', 'assertion:get', 'assertion:list', 'assertion:search', 'assertion:update', 'assertion:validate', 'assertion:reject', 'assertion:delete', 'assertion:addReasoning', 'assertion:findSimilar',
         'assertion:setCriticality', 'assertion:markCited', 'assertion:pendingValidation', 'assertion:rejectedForReresearch', 'assertion:supersede',
+        'assertion:calculate-confidence', 'assertion:set-confidence', 'assertion:by-confidence', 'assertion:low-confidence', 'assertion:recalculate-confidence',
         'source:create', 'source:get', 'source:find', 'source:list', 'source:search', 'source:link', 'source:update', 'source:validate', 'source:reject', 'source:delete', 'source:byType',
         'search:global', 'search:summary', 'search:pending', 'search:activity', 'search:noAssertions', 'search:noSources',
         // Research planning
@@ -447,6 +852,35 @@ async function main() {
         'logo:search', 'logo:verify', 'logo:download', 'logo:save', 'logo:fetch', 'logo:missing', 'logo:summary', 'logo:validate', 'logo:clear', 'logo:inline',
         // Validation dashboard
         'validation:generate',
+        // Evidence validation
+        'evidence:conflicts', 'evidence:crossref', 'evidence:freshness', 'evidence:validate-chain', 'evidence:confidence',
+        // Orchestrator - Spawn and manage subagents
+        'orchestrate:spawn', 'orchestrate:status', 'orchestrate:list', 'orchestrate:active', 'orchestrate:cancel', 'orchestrate:send', 'orchestrate:cleanup',
+        'orchestrate:haiku', 'orchestrate:sonnet', 'orchestrate:opus',
+        'orchestrate:run', 'orchestrate:run-haiku', 'orchestrate:run-sonnet',
+        // Reddit crawler - Community research
+        'crawler:reddit', 'crawler:reddit-multi', 'crawler:reddit-comments', 'crawler:reddit-aggregate',
+        // Discovery Source Registry - Source management
+        'discovery:source:create', 'discovery:source:get', 'discovery:source:update', 'discovery:source:delete', 'discovery:source:list',
+        'discovery:source:byType', 'discovery:source:stale', 'discovery:source:stats', 'discovery:source:markCrawled', 'discovery:source:updateMetrics', 'discovery:source:seed',
+        // Discovery Crawl Orchestrator
+        'discovery:crawl:start', 'discovery:crawl:status', 'discovery:crawl:pause', 'discovery:crawl:resume', 'discovery:crawl:cancel',
+        'discovery:crawl:history', 'discovery:crawl:due', 'discovery:crawl:scheduled',
+        // Discovery Processor (deduplication)
+        'discovery:process:one', 'discovery:process:pending', 'discovery:process:match', 'discovery:process:save',
+        'discovery:process:getPending', 'discovery:process:search', 'discovery:process:stats',
+        // Criticality Scoring
+        'discovery:criticality:calculate', 'discovery:criticality:scoreEntity', 'discovery:criticality:scoreProject',
+        'discovery:criticality:byLevel', 'discovery:criticality:needingValidation', 'discovery:criticality:summary',
+        // Trend Detection
+        'discovery:trends:detect', 'discovery:trends:list', 'discovery:trends:details', 'discovery:trends:entities',
+        'discovery:trends:report', 'discovery:trends:export',
+        // GitHub Crawler
+        'crawler:github-awesome', 'crawler:github-trending', 'crawler:github-diff',
+        // Nitter/X Crawler
+        'crawler:nitter', 'crawler:nitter-search',
+        // Research Domains - Domain-driven research
+        'domain:create', 'domain:get', 'domain:list', 'domain:update', 'domain:delete', 'domain:find', 'domain:entities', 'domain:summary', 'domain:updateStats',
       ],
     }));
     process.exit(1);
