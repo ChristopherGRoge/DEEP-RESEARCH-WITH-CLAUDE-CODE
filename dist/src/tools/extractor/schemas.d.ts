@@ -324,6 +324,33 @@ export declare const CertificationSchema: z.ZodObject<{
     validUntil?: string | undefined;
     documentUrl?: string | undefined;
 }>;
+/**
+ * Federal Compliance Pathway - captures how an entity can achieve
+ * federal compliance, including inherited authorization through
+ * cloud providers.
+ */
+export declare const FederalPathwaySchema: z.ZodObject<{
+    pathway: z.ZodEnum<["direct_fedramp", "inherited_aws", "inherited_azure", "inherited_gcp", "air_gapped", "private_link", "on_premise", "hybrid"]>;
+    status: z.ZodEnum<["available", "in_progress", "planned", "unavailable", "unknown"]>;
+    provider: z.ZodOptional<z.ZodString>;
+    authLevel: z.ZodOptional<z.ZodString>;
+    regions: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    notes: z.ZodOptional<z.ZodString>;
+}, "strip", z.ZodTypeAny, {
+    status: "unknown" | "in_progress" | "planned" | "available" | "unavailable";
+    pathway: "direct_fedramp" | "inherited_aws" | "inherited_azure" | "inherited_gcp" | "air_gapped" | "private_link" | "on_premise" | "hybrid";
+    provider?: string | undefined;
+    authLevel?: string | undefined;
+    regions?: string[] | undefined;
+    notes?: string | undefined;
+}, {
+    status: "unknown" | "in_progress" | "planned" | "available" | "unavailable";
+    pathway: "direct_fedramp" | "inherited_aws" | "inherited_azure" | "inherited_gcp" | "air_gapped" | "private_link" | "on_premise" | "hybrid";
+    provider?: string | undefined;
+    authLevel?: string | undefined;
+    regions?: string[] | undefined;
+    notes?: string | undefined;
+}>;
 export declare const ComplianceSchema: z.ZodObject<{
     certifications: z.ZodArray<z.ZodObject<{
         name: z.ZodString;
@@ -347,6 +374,31 @@ export declare const ComplianceSchema: z.ZodObject<{
     hipaaCompliant: z.ZodOptional<z.ZodBoolean>;
     soc2: z.ZodOptional<z.ZodBoolean>;
     fedRampStatus: z.ZodOptional<z.ZodString>;
+    federalPathways: z.ZodOptional<z.ZodArray<z.ZodObject<{
+        pathway: z.ZodEnum<["direct_fedramp", "inherited_aws", "inherited_azure", "inherited_gcp", "air_gapped", "private_link", "on_premise", "hybrid"]>;
+        status: z.ZodEnum<["available", "in_progress", "planned", "unavailable", "unknown"]>;
+        provider: z.ZodOptional<z.ZodString>;
+        authLevel: z.ZodOptional<z.ZodString>;
+        regions: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+        notes: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
+        status: "unknown" | "in_progress" | "planned" | "available" | "unavailable";
+        pathway: "direct_fedramp" | "inherited_aws" | "inherited_azure" | "inherited_gcp" | "air_gapped" | "private_link" | "on_premise" | "hybrid";
+        provider?: string | undefined;
+        authLevel?: string | undefined;
+        regions?: string[] | undefined;
+        notes?: string | undefined;
+    }, {
+        status: "unknown" | "in_progress" | "planned" | "available" | "unavailable";
+        pathway: "direct_fedramp" | "inherited_aws" | "inherited_azure" | "inherited_gcp" | "air_gapped" | "private_link" | "on_premise" | "hybrid";
+        provider?: string | undefined;
+        authLevel?: string | undefined;
+        regions?: string[] | undefined;
+        notes?: string | undefined;
+    }>, "many">>;
+    federalViabilityScore: z.ZodOptional<z.ZodNumber>;
+    federalViabilityLevel: z.ZodOptional<z.ZodEnum<["GREEN", "YELLOW", "ORANGE", "RED"]>>;
+    federalViabilityNotes: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     certifications: {
         name: string;
@@ -360,6 +412,17 @@ export declare const ComplianceSchema: z.ZodObject<{
     hipaaCompliant?: boolean | undefined;
     soc2?: boolean | undefined;
     fedRampStatus?: string | undefined;
+    federalPathways?: {
+        status: "unknown" | "in_progress" | "planned" | "available" | "unavailable";
+        pathway: "direct_fedramp" | "inherited_aws" | "inherited_azure" | "inherited_gcp" | "air_gapped" | "private_link" | "on_premise" | "hybrid";
+        provider?: string | undefined;
+        authLevel?: string | undefined;
+        regions?: string[] | undefined;
+        notes?: string | undefined;
+    }[] | undefined;
+    federalViabilityScore?: number | undefined;
+    federalViabilityLevel?: "GREEN" | "YELLOW" | "ORANGE" | "RED" | undefined;
+    federalViabilityNotes?: string | undefined;
 }, {
     certifications: {
         name: string;
@@ -373,8 +436,20 @@ export declare const ComplianceSchema: z.ZodObject<{
     hipaaCompliant?: boolean | undefined;
     soc2?: boolean | undefined;
     fedRampStatus?: string | undefined;
+    federalPathways?: {
+        status: "unknown" | "in_progress" | "planned" | "available" | "unavailable";
+        pathway: "direct_fedramp" | "inherited_aws" | "inherited_azure" | "inherited_gcp" | "air_gapped" | "private_link" | "on_premise" | "hybrid";
+        provider?: string | undefined;
+        authLevel?: string | undefined;
+        regions?: string[] | undefined;
+        notes?: string | undefined;
+    }[] | undefined;
+    federalViabilityScore?: number | undefined;
+    federalViabilityLevel?: "GREEN" | "YELLOW" | "ORANGE" | "RED" | undefined;
+    federalViabilityNotes?: string | undefined;
 }>;
 export type ComplianceData = z.infer<typeof ComplianceSchema>;
+export type FederalPathwayData = z.infer<typeof FederalPathwaySchema>;
 export declare const IntegrationSchema: z.ZodObject<{
     name: z.ZodString;
     type: z.ZodEnum<["native", "plugin", "api", "webhook"]>;
@@ -487,7 +562,170 @@ export declare const IntegrationsSchema: z.ZodObject<{
     sdkLanguages?: string[] | undefined;
 }>;
 export type IntegrationsData = z.infer<typeof IntegrationsSchema>;
-export declare const SCHEMA_TYPES: readonly ["pricing", "features", "company", "compliance", "integrations"];
+/**
+ * Captures features with competitive differentiation context.
+ * This schema goes beyond basic feature listing to identify
+ * what makes an entity UNIQUE vs competitors.
+ */
+export declare const DifferentiatingFeatureSchema: z.ZodObject<{
+    name: z.ZodString;
+    description: z.ZodString;
+    evidenceSource: z.ZodOptional<z.ZodString>;
+    comparedTo: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+}, "strip", z.ZodTypeAny, {
+    name: string;
+    description: string;
+    evidenceSource?: string | undefined;
+    comparedTo?: string[] | undefined;
+}, {
+    name: string;
+    description: string;
+    evidenceSource?: string | undefined;
+    comparedTo?: string[] | undefined;
+}>;
+export declare const LaggingFeatureSchema: z.ZodObject<{
+    name: z.ZodString;
+    reason: z.ZodString;
+    competitors: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+}, "strip", z.ZodTypeAny, {
+    name: string;
+    reason: string;
+    competitors?: string[] | undefined;
+}, {
+    name: string;
+    reason: string;
+    competitors?: string[] | undefined;
+}>;
+export declare const MissingFeatureSchema: z.ZodObject<{
+    name: z.ZodString;
+    competitors: z.ZodArray<z.ZodString, "many">;
+    importance: z.ZodOptional<z.ZodEnum<["critical", "important", "nice-to-have"]>>;
+}, "strip", z.ZodTypeAny, {
+    name: string;
+    competitors: string[];
+    importance?: "critical" | "important" | "nice-to-have" | undefined;
+}, {
+    name: string;
+    competitors: string[];
+    importance?: "critical" | "important" | "nice-to-have" | undefined;
+}>;
+export declare const DifferentiatorsSchema: z.ZodObject<{
+    uniqueFeatures: z.ZodArray<z.ZodObject<{
+        name: z.ZodString;
+        description: z.ZodString;
+        evidenceSource: z.ZodOptional<z.ZodString>;
+        comparedTo: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, "strip", z.ZodTypeAny, {
+        name: string;
+        description: string;
+        evidenceSource?: string | undefined;
+        comparedTo?: string[] | undefined;
+    }, {
+        name: string;
+        description: string;
+        evidenceSource?: string | undefined;
+        comparedTo?: string[] | undefined;
+    }>, "many">;
+    leadingFeatures: z.ZodArray<z.ZodObject<{
+        name: z.ZodString;
+        description: z.ZodString;
+        evidenceSource: z.ZodOptional<z.ZodString>;
+        comparedTo: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, "strip", z.ZodTypeAny, {
+        name: string;
+        description: string;
+        evidenceSource?: string | undefined;
+        comparedTo?: string[] | undefined;
+    }, {
+        name: string;
+        description: string;
+        evidenceSource?: string | undefined;
+        comparedTo?: string[] | undefined;
+    }>, "many">;
+    tableStakes: z.ZodArray<z.ZodString, "many">;
+    laggingFeatures: z.ZodOptional<z.ZodArray<z.ZodObject<{
+        name: z.ZodString;
+        reason: z.ZodString;
+        competitors: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, "strip", z.ZodTypeAny, {
+        name: string;
+        reason: string;
+        competitors?: string[] | undefined;
+    }, {
+        name: string;
+        reason: string;
+        competitors?: string[] | undefined;
+    }>, "many">>;
+    missingFeatures: z.ZodOptional<z.ZodArray<z.ZodObject<{
+        name: z.ZodString;
+        competitors: z.ZodArray<z.ZodString, "many">;
+        importance: z.ZodOptional<z.ZodEnum<["critical", "important", "nice-to-have"]>>;
+    }, "strip", z.ZodTypeAny, {
+        name: string;
+        competitors: string[];
+        importance?: "critical" | "important" | "nice-to-have" | undefined;
+    }, {
+        name: string;
+        competitors: string[];
+        importance?: "critical" | "important" | "nice-to-have" | undefined;
+    }>, "many">>;
+    primaryCompetitors: z.ZodArray<z.ZodString, "many">;
+    differentiationSummary: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    uniqueFeatures: {
+        name: string;
+        description: string;
+        evidenceSource?: string | undefined;
+        comparedTo?: string[] | undefined;
+    }[];
+    leadingFeatures: {
+        name: string;
+        description: string;
+        evidenceSource?: string | undefined;
+        comparedTo?: string[] | undefined;
+    }[];
+    tableStakes: string[];
+    primaryCompetitors: string[];
+    differentiationSummary: string;
+    laggingFeatures?: {
+        name: string;
+        reason: string;
+        competitors?: string[] | undefined;
+    }[] | undefined;
+    missingFeatures?: {
+        name: string;
+        competitors: string[];
+        importance?: "critical" | "important" | "nice-to-have" | undefined;
+    }[] | undefined;
+}, {
+    uniqueFeatures: {
+        name: string;
+        description: string;
+        evidenceSource?: string | undefined;
+        comparedTo?: string[] | undefined;
+    }[];
+    leadingFeatures: {
+        name: string;
+        description: string;
+        evidenceSource?: string | undefined;
+        comparedTo?: string[] | undefined;
+    }[];
+    tableStakes: string[];
+    primaryCompetitors: string[];
+    differentiationSummary: string;
+    laggingFeatures?: {
+        name: string;
+        reason: string;
+        competitors?: string[] | undefined;
+    }[] | undefined;
+    missingFeatures?: {
+        name: string;
+        competitors: string[];
+        importance?: "critical" | "important" | "nice-to-have" | undefined;
+    }[] | undefined;
+}>;
+export type DifferentiatorsData = z.infer<typeof DifferentiatorsSchema>;
+export declare const SCHEMA_TYPES: readonly ["pricing", "features", "company", "compliance", "integrations", "differentiators"];
 export type SchemaType = typeof SCHEMA_TYPES[number];
 export declare const SCHEMAS: Record<SchemaType, z.ZodSchema>;
 export declare function getSchema(schemaType: SchemaType): z.ZodSchema;
