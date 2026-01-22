@@ -848,6 +848,141 @@ npm run cli -- domain:entities '{"domainId": "<id>"}'
 npm run cli -- domain:summary '{"domainId": "<id>"}'
 ```
 
+### Discovery Category Commands
+
+**LLM-based semantic classification** replaces regex-based entity categorization. Categories have rich definitions that Claude can reason about, including inclusion/exclusion criteria and exemplar entities.
+
+#### Why Use Categories?
+
+| Problem (Regex) | Solution (LLM Categories) |
+|-----------------|---------------------------|
+| "DocuWriter.ai" matched as code_assistants | DocuWriter.ai in anti-exemplars prevents misclassification |
+| No semantic understanding | Claude reasons about category definitions |
+| Changes require code deployment | Edit definitions in database |
+| Can't explain classifications | `category:explain` shows reasoning |
+
+#### CRUD Commands
+
+```bash
+# List all categories (9 default categories available)
+npm run cli -- category:list
+
+# Get category by ID
+npm run cli -- category:get '{"categoryId": "<id>"}'
+
+# Get category by name
+npm run cli -- category:getByName '{"name": "ai_code_assistants"}'
+
+# Create a new category
+npm run cli -- category:create '{
+  "name": "ai_code_assistants",
+  "displayName": "Code Assistants",
+  "description": "AI-powered tools that assist developers with code completion...",
+  "inclusionCriteria": "Tools that: provide inline code completion, generate code from prompts",
+  "exclusionCriteria": "Tools that: only review code, only generate documentation",
+  "exemplarEntities": ["GitHub Copilot", "Cursor", "Codeium"],
+  "antiExemplars": ["SonarQube", "DocuWriter.ai", "CodeRabbit"]
+}'
+
+# Update a category (fix misclassification by updating definition)
+npm run cli -- category:update '{"categoryId": "<id>", "antiExemplars": ["DocuWriter.ai", "NewMisclassifiedTool"]}'
+
+# Delete a category
+npm run cli -- category:delete '{"categoryId": "<id>"}'
+```
+
+#### Classification Commands
+
+```bash
+# Get classification context (prompt + entity info for Claude to classify)
+npm run cli -- category:context '{"entityId": "<id>"}'
+# Returns: prompt with all category definitions, entity name/description
+
+# Build classification prompt for any entity name
+npm run cli -- category:prompt '{"entityName": "DocuWriter.ai", "description": "AI documentation tool"}'
+
+# Apply a classification result to an entity
+npm run cli -- category:apply '{
+  "entityId": "<id>",
+  "classification": {
+    "categoryName": "ai_documentation",
+    "confidence": "high",
+    "reasoning": "DocuWriter.ai is listed as an exemplar for Documentation category"
+  }
+}'
+
+# Explain why an entity has its current classification
+npm run cli -- category:explain '{"entityId": "<id>"}'
+# Returns: category definition, whether entity is exemplar/anti-exemplar, explanation
+```
+
+#### Analysis Commands
+
+```bash
+# Get entities in a category
+npm run cli -- category:entities '{"categoryId": "<id>", "limit": 50}'
+
+# Get category summary with statistics
+npm run cli -- category:summary '{"categoryId": "<id>"}'
+# Returns: entity count, assertions, extractions, logo coverage
+
+# Get unclassified entities (need classification)
+npm run cli -- category:unclassified '{"projectId": "<id>", "limit": 50}'
+
+# Preview reclassification (dry-run)
+npm run cli -- category:preview '{"projectId": "<id>", "onlyUnclassified": true}'
+
+# Update category entity count
+npm run cli -- category:updateStats '{"categoryId": "<id>"}'
+npm run cli -- category:updateAllStats
+```
+
+#### Seeding & Migration
+
+```bash
+# Seed 9 default categories (run once after migration)
+npm run cli -- category:seed
+
+# Migrate entities from legacy discoveryCategory string to categoryId
+npm run cli -- category:migrate '{"dryRun": true}'   # Preview
+npm run cli -- category:migrate '{"dryRun": false}'  # Execute
+```
+
+#### Default Categories
+
+| Name | Display Name | Examples |
+|------|--------------|----------|
+| `ai_code_assistants` | Code Assistants | GitHub Copilot, Cursor, Codeium |
+| `ai_code_review` | Code Review | CodeRabbit, Codacy, SonarQube |
+| `ai_debugging` | Debugging & Error Analysis | Sentry, Raygun, Rollbar |
+| `ai_testing` | Testing & QA | Qodo, Testim, Mabl |
+| `ai_documentation` | Documentation | Mintlify, ReadMe, DocuWriter.ai |
+| `ai_security` | Security | Snyk, Checkmarx, Semgrep |
+| `ai_devops` | DevOps & Infrastructure | Harness, GitLab CI, Argo CD |
+| `ai_analytics` | Analytics & Observability | Datadog, New Relic, Langfuse |
+| `genai_concepts` | GenAI & LLM Infrastructure | LangChain, LlamaIndex, CrewAI |
+
+#### Classification Workflow
+
+```bash
+# 1. Get unclassified entities
+npm run cli -- category:unclassified '{"projectId": "..."}'
+
+# 2. Get classification context for an entity
+npm run cli -- category:context '{"entityId": "<id>"}'
+# → Returns prompt with all category definitions
+
+# 3. Claude reasons about the prompt and returns JSON:
+# {"categoryName": "ai_documentation", "confidence": "high", "reasoning": "..."}
+
+# 4. Apply the classification
+npm run cli -- category:apply '{"entityId": "<id>", "classification": {...}}'
+
+# 5. If misclassified, update category definition and re-classify
+npm run cli -- category:update '{"categoryId": "<id>", "antiExemplars": ["MisclassifiedTool"]}'
+npm run cli -- category:context '{"entityId": "<id>"}'  # Re-classify
+```
+
 ### Entity Commands
 
 ```bash
