@@ -805,6 +805,72 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
         result = await tools.updateDomainDiscoveryStats(args.domainId as string);
         break;
 
+      // ============================================
+      // DISCOVERY CATEGORY COMMANDS - LLM-based classification
+      // ============================================
+      case 'category:create':
+        result = await tools.createCategory(args as unknown as tools.CreateCategoryInput);
+        break;
+      case 'category:get':
+        result = await tools.getCategory(args.categoryId as string);
+        break;
+      case 'category:getByName':
+        result = await tools.getCategoryByName(args.name as string);
+        break;
+      case 'category:list':
+        result = await tools.listCategories();
+        break;
+      case 'category:update': {
+        const { categoryId, ...categoryUpdateData } = args;
+        result = await tools.updateCategory(categoryId as string, categoryUpdateData as unknown as tools.UpdateCategoryInput);
+        break;
+      }
+      case 'category:delete':
+        result = await tools.deleteCategory(args.categoryId as string);
+        break;
+
+      // Category analysis
+      case 'category:entities':
+        result = await tools.getCategoryWithEntities(args.categoryId as string, { limit: args.limit as number, offset: args.offset as number });
+        break;
+      case 'category:summary':
+        result = await tools.getCategorySummary(args.categoryId as string);
+        break;
+      case 'category:updateStats':
+        result = await tools.updateCategoryStats(args.categoryId as string);
+        break;
+      case 'category:updateAllStats':
+        result = await tools.updateAllCategoryStats();
+        break;
+
+      // Classification
+      case 'category:prompt':
+        result = await tools.buildClassificationPrompt(args.entityName as string, args.description as string | undefined);
+        break;
+      case 'category:context':
+        result = await tools.getClassificationContext(args.entityId as string);
+        break;
+      case 'category:apply':
+        result = await tools.applyClassification(args.entityId as string, args.classification as tools.ClassificationResult);
+        break;
+      case 'category:explain':
+        result = await tools.explainClassification(args.entityId as string);
+        break;
+      case 'category:unclassified':
+        result = await tools.getUnclassifiedEntities(args.projectId as string | undefined, args.limit as number | undefined);
+        break;
+      case 'category:preview':
+        result = await tools.getReclassificationPreview(args as unknown as tools.ReclassifyOptions);
+        break;
+
+      // Seeding and migration
+      case 'category:seed':
+        result = await tools.seedCategories();
+        break;
+      case 'category:migrate':
+        result = await tools.migrateFromLegacyCategories({ projectId: args.projectId as string, dryRun: args.dryRun as boolean });
+        break;
+
       default:
         return { success: false, error: `Unknown command: ${command}` };
     }
@@ -881,6 +947,11 @@ async function main() {
         'crawler:nitter', 'crawler:nitter-search',
         // Research Domains - Domain-driven research
         'domain:create', 'domain:get', 'domain:list', 'domain:update', 'domain:delete', 'domain:find', 'domain:entities', 'domain:summary', 'domain:updateStats',
+        // Discovery Categories - LLM-based classification
+        'category:create', 'category:get', 'category:getByName', 'category:list', 'category:update', 'category:delete',
+        'category:entities', 'category:summary', 'category:updateStats', 'category:updateAllStats',
+        'category:prompt', 'category:context', 'category:apply', 'category:explain', 'category:unclassified', 'category:preview',
+        'category:seed', 'category:migrate',
       ],
     }));
     process.exit(1);

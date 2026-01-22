@@ -110,10 +110,14 @@ model Entity {
   // Discovery categorization - which research category this entity belongs to
   // Values: ai_code_assistants, ai_code_review, ai_debugging, ai_testing,
   //         ai_documentation, ai_security, ai_devops, ai_analytics, genai_concepts
-  // DEPRECATED: Use domainId instead for new entities
+  // DEPRECATED: Use categoryId for new entities (LLM-based classification)
   discoveryCategory String?
 
-  // Domain-driven research - replaces discoveryCategory
+  // New LLM-based categorization (replaces regex-based discoveryCategory)
+  categoryId  String?
+  category    DiscoveryCategory? @relation(fields: [categoryId], references: [id])
+
+  // Domain-driven research - for research scoping
   domainId    String?
   domain      ResearchDomain? @relation(fields: [domainId], references: [id])
 
@@ -135,6 +139,7 @@ model Entity {
 
   @@unique([projectId, name])
   @@index([domainId])
+  @@index([categoryId])
   @@map("entities")
 }
 
@@ -556,6 +561,35 @@ model DiscoveryTrend {
   @@index([category])
   @@index([trendScore])
   @@map("discovery_trends")
+}
+
+// ============================================
+// DISCOVERY CATEGORY MODELS - LLM-Based Entity Classification
+// ============================================
+
+/// A category definition for LLM-based entity classification
+/// Replaces regex-based classification with semantic understanding
+model DiscoveryCategory {
+  id          String   @id @default(cuid())
+  name        String   @unique  // e.g., "ai_code_assistants"
+  displayName String             // e.g., "Code Assistants"
+  description String   @db.Text  // Rich text definition
+
+  // Classification guidance for LLM
+  inclusionCriteria  String?  @db.Text  // What qualifies an entity for this category
+  exclusionCriteria  String?  @db.Text  // What disqualifies an entity
+  exemplarEntities   String[]           // Example entities that belong here
+  antiExemplars      String[]           // Entities that might seem to fit but don't
+
+  // Metadata
+  entityCount Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  entities    Entity[]
+
+  @@map("discovery_categories")
 }
 
 // ============================================
