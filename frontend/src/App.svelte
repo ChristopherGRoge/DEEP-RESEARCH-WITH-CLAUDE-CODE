@@ -4,9 +4,11 @@
   import ResearchPage from './pages/ResearchPage.svelte';
   import DiscoveryPage from './pages/DiscoveryPage.svelte';
   import VisualizationPage from './pages/VisualizationPage.svelte';
+  import EntityDetailPage from './components/visualization/EntityDetailPage.svelte';
 
   // Current route state
-  let currentRoute = $state<'landing' | 'discovery' | 'research' | 'validate' | 'grove'>('landing');
+  let currentRoute = $state<'landing' | 'discovery' | 'research' | 'validate' | 'grove' | 'entity'>('landing');
+  let entityId = $state<string | null>(null);
 
   // Parse hash and set route
   function updateRoute() {
@@ -14,18 +16,31 @@
 
     if (hash === '/' || hash === '') {
       currentRoute = 'landing';
+      entityId = null;
     } else if (hash.startsWith('/discovery')) {
       currentRoute = 'discovery';
+      entityId = null;
     } else if (hash.startsWith('/research')) {
       currentRoute = 'research';
+      entityId = null;
     } else if (hash === '/validate') {
       currentRoute = 'validate';
+      entityId = null;
+    } else if (hash.startsWith('/entity/')) {
+      currentRoute = 'entity';
+      entityId = hash.replace('/entity/', '');
     } else if (hash === '/grove' || hash.startsWith('/grove')) {
       currentRoute = 'grove';
+      entityId = null;
     } else {
       // Default to landing for unknown routes
       currentRoute = 'landing';
+      entityId = null;
     }
+  }
+
+  function navigateToGrove() {
+    window.location.hash = '#/grove';
   }
 
   // Initialize on mount and listen for hash changes
@@ -53,6 +68,8 @@
     </div>
   {:else if currentRoute === 'grove'}
     <VisualizationPage />
+  {:else if currentRoute === 'entity' && entityId}
+    <EntityDetailPage entityId={entityId} onBack={navigateToGrove} />
   {/if}
 </main>
 

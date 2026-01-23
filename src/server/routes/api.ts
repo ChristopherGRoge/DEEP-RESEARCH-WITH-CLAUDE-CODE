@@ -973,6 +973,21 @@ api.get('/entities/:id', async (c) => {
 });
 
 // ============================================
+// Extractions
+// ============================================
+
+api.get('/extractions', async (c) => {
+  const entityId = c.req.query('entityId');
+
+  if (!entityId) {
+    return c.json({ success: false, error: 'entityId query parameter is required' }, 400);
+  }
+
+  const extractions = await tools.getExtractions(entityId);
+  return c.json({ success: true, data: extractions });
+});
+
+// ============================================
 // Search
 // ============================================
 
