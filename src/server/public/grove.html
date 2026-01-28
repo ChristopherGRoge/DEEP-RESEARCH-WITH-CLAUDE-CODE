@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Grove - Entity Knowledge Graph</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', system-ui, sans-serif;
+            background: #f8f8f6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .material-symbols-rounded {
+            font-family: 'Material Symbols Rounded';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            display: inline-block;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Header */
+        .grove-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background: #ffffff;
+            border-bottom: 1px solid #e8e8e5;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-mark {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+        }
+
+        .logo-icon {
+            color: #ffffff;
+            font-size: 22px;
+        }
+
+        .title-group h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -0.3px;
+        }
+
+        .tagline {
+            font-size: 11px;
+            color: #7a7a7a;
+            font-weight: 500;
+            margin-top: 1px;
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #f5f5f3;
+            border-radius: 8px;
+            border: 1px solid #e8e8e5;
+        }
+
+        .stat-chip .material-symbols-rounded {
+            font-size: 16px;
+            color: #9a9a9a;
+        }
+
+        .stat-chip.highlight .material-symbols-rounded,
+        .stat-chip.accent .material-symbols-rounded {
+            color: #059669;
+        }
+
+        .stat-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .stat-chip.accent .stat-value {
+            color: #059669;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #9a9a9a;
+            font-weight: 500;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .project-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f5f5f3;
+            padding: 4px 4px 4px 10px;
+            border-radius: 10px;
+            border: 1px solid #e8e8e5;
+        }
+
+        .selector-icon {
+            color: #7a7a7a;
+            font-size: 18px;
+        }
+
+        .project-selector select {
+            padding: 6px 28px 6px 6px;
+            background: transparent;
+            border: none;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: #1a1a1a;
+            min-width: 160px;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a7a7a' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 6px center;
+        }
+
+        .project-selector select:focus {
+            outline: none;
+        }
+
+        /* Main Canvas */
+        .grove-main {
+            flex: 1;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grove-canvas {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #tree-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        #tree-container svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Tree Styles */
+        .node circle {
+            stroke-width: 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .node circle:hover {
+            stroke-width: 3px;
+        }
+
+        .node text {
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 12px;
+            fill: #1a1a1a;
+        }
+
+        .link {
+            fill: none;
+            stroke: #d1d5db;
+            stroke-width: 1.5px;
+        }
+
+        /* Category colors */
+        .node-project circle { fill: #059669; stroke: #047857; }
+        .node-category circle { fill: #6366f1; stroke: #4f46e5; }
+        .node-entity circle { fill: #f59e0b; stroke: #d97706; }
+
+        /* Loading State */
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            color: #7a7a7a;
+        }
+
+        .spinning {
+            font-size: 48px;
+            color: #059669;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error State */
+        .error-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            color: #dc2626;
+        }
+
+        .retry-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: #059669;
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .retry-btn:hover {
+            background: #047857;
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            color: #7a7a7a;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            color: #9a9a9a;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            padding: 12px 16px;
+            background: #1a1a1a;
+            color: #ffffff;
+            border-radius: 8px;
+            font-size: 13px;
+            pointer-events: none;
+            z-index: 1000;
+            max-width: 300px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .tooltip-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .tooltip-meta {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <header class="grove-header">
+        <div class="header-left">
+            <div class="logo-mark">
+                <span class="material-symbols-rounded logo-icon">account_tree</span>
+            </div>
+            <div class="title-group">
+                <h1>Research Grove</h1>
+                <p class="tagline">Entity Knowledge Graph</p>
+            </div>
+        </div>
+
+        <div class="header-center" id="stats-container">
+            <!-- Stats populated by JS -->
+        </div>
+
+        <div class="header-right">
+            <div class="project-selector">
+                <span class="material-symbols-rounded selector-icon">folder</span>
+                <select id="project-select">
+                    <option value="">Loading...</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main class="grove-main">
+        <div class="grove-canvas">
+            <div id="tree-container">
+                <div class="loading-state" id="loading-state">
+                    <span class="material-symbols-rounded spinning">progress_activity</span>
+                    <p>Loading research grove...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="tooltip" id="tooltip" style="display: none;"></div>
+
+    <script>
+        // State
+        let projects = [];
+        let selectedProjectId = null;
+        let treeData = null;
+
+        // DOM elements
+        const projectSelect = document.getElementById('project-select');
+        const treeContainer = document.getElementById('tree-container');
+        const loadingState = document.getElementById('loading-state');
+        const statsContainer = document.getElementById('stats-container');
+        const tooltip = document.getElementById('tooltip');
+
+        // Initialize
+        async function init() {
+            await fetchProjects();
+        }
+
+        async function fetchProjects() {
+            try {
+                const response = await fetch('/api/projects');
+                const result = await response.json();
+                if (result.success) {
+                    projects = result.data;
+                    populateProjectSelect();
+                    if (projects.length > 0) {
+                        selectedProjectId = projects[0].id;
+                        projectSelect.value = selectedProjectId;
+                        await fetchTreeData(selectedProjectId);
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to fetch projects:', err);
+                showError('Failed to load projects');
+            }
+        }
+
+        function populateProjectSelect() {
+            projectSelect.innerHTML = projects.map(p =>
+                `<option value="${p.id}">${p.name}</option>`
+            ).join('');
+        }
+
+        async function fetchTreeData(projectId) {
+            showLoading();
+            try {
+                const response = await fetch(`/api/entities/tree/${projectId}`);
+                const result = await response.json();
+                if (result.success) {
+                    treeData = result.data;
+                    updateStats();
+                    renderTree();
+                } else {
+                    showError(result.error || 'Failed to load tree data');
+                }
+            } catch (err) {
+                console.error('Failed to fetch tree data:', err);
+                showError('Failed to load visualization data');
+            }
+        }
+
+        function updateStats() {
+            if (!treeData || !treeData.children) {
+                statsContainer.innerHTML = '';
+                return;
+            }
+
+            let totalEntities = 0;
+            let totalAssertions = 0;
+            let totalValidated = 0;
+
+            for (const category of treeData.children) {
+                if (category.children) {
+                    totalEntities += category.children.length;
+                    for (const entity of category.children) {
+                        const count = entity.assertionCount || 0;
+                        const ratio = entity.evidenceRatio || 0;
+                        totalAssertions += count;
+                        totalValidated += count * ratio;
+                    }
+                }
+            }
+
+            const validatedPercent = totalAssertions > 0 ? Math.round((totalValidated / totalAssertions) * 100) : 0;
+
+            statsContainer.innerHTML = `
+                <div class="stat-chip">
+                    <span class="material-symbols-rounded">grid_view</span>
+                    <span class="stat-value">${treeData.children.length}</span>
+                    <span class="stat-label">categories</span>
+                </div>
+                <div class="stat-chip highlight">
+                    <span class="material-symbols-rounded">deployed_code</span>
+                    <span class="stat-value">${totalEntities}</span>
+                    <span class="stat-label">entities</span>
+                </div>
+                <div class="stat-chip">
+                    <span class="material-symbols-rounded">chat</span>
+                    <span class="stat-value">${totalAssertions}</span>
+                    <span class="stat-label">assertions</span>
+                </div>
+                <div class="stat-chip accent">
+                    <span class="material-symbols-rounded">verified</span>
+                    <span class="stat-value">${validatedPercent}%</span>
+                    <span class="stat-label">validated</span>
+                </div>
+            `;
+        }
+
+        function showLoading() {
+            treeContainer.innerHTML = `
+                <div class="loading-state">
+                    <span class="material-symbols-rounded spinning">progress_activity</span>
+                    <p>Loading research grove...</p>
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            treeContainer.innerHTML = `
+                <div class="error-state">
+                    <span class="material-symbols-rounded" style="font-size: 48px;">error</span>
+                    <p>${message}</p>
+                    <button class="retry-btn" onclick="fetchTreeData(selectedProjectId)">
+                        <span class="material-symbols-rounded" style="font-size: 18px;">refresh</span>
+                        Try Again
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderTree() {
+            if (!treeData) return;
+
+            treeContainer.innerHTML = '';
+
+            const width = treeContainer.clientWidth;
+            const height = Math.max(600, window.innerHeight - 80);
+
+            const svg = d3.select('#tree-container')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            const g = svg.append('g')
+                .attr('transform', `translate(80, 40)`);
+
+            // Create tree layout
+            const treeLayout = d3.tree()
+                .size([height - 80, width - 200]);
+
+            // Create hierarchy
+            const root = d3.hierarchy(treeData);
+
+            // Generate tree
+            treeLayout(root);
+
+            // Draw links
+            g.selectAll('.link')
+                .data(root.links())
+                .enter()
+                .append('path')
+                .attr('class', 'link')
+                .attr('d', d3.linkHorizontal()
+                    .x(d => d.y)
+                    .y(d => d.x)
+                );
+
+            // Draw nodes
+            const nodes = g.selectAll('.node')
+                .data(root.descendants())
+                .enter()
+                .append('g')
+                .attr('class', d => `node node-${d.data.type}`)
+                .attr('transform', d => `translate(${d.y}, ${d.x})`)
+                .on('mouseover', showTooltip)
+                .on('mouseout', hideTooltip)
+                .on('click', handleNodeClick);
+
+            // Node circles - size based on type and assertion count
+            nodes.append('circle')
+                .attr('r', d => {
+                    if (d.data.type === 'project') return 12;
+                    if (d.data.type === 'category') return 10;
+                    // Entity size based on assertion count
+                    const count = d.data.assertionCount || 0;
+                    return Math.max(6, Math.min(14, 6 + Math.sqrt(count)));
+                });
+
+            // Node labels
+            nodes.append('text')
+                .attr('dy', 4)
+                .attr('x', d => d.children ? -15 : 15)
+                .style('text-anchor', d => d.children ? 'end' : 'start')
+                .style('font-size', d => d.data.type === 'entity' ? '11px' : '12px')
+                .style('font-weight', d => d.data.type === 'entity' ? '400' : '600')
+                .text(d => {
+                    const name = d.data.name;
+                    if (d.data.type === 'category') {
+                        // Format category name
+                        return name.replace(/_/g, ' ').replace(/\bai\b/gi, 'AI');
+                    }
+                    return name.length > 25 ? name.substring(0, 22) + '...' : name;
+                });
+
+            // Enable zoom/pan
+            const zoom = d3.zoom()
+                .scaleExtent([0.3, 3])
+                .on('zoom', (event) => {
+                    g.attr('transform', event.transform);
+                });
+
+            svg.call(zoom);
+
+            // Initial zoom to fit
+            const bounds = g.node().getBBox();
+            const fullWidth = width;
+            const fullHeight = height;
+            const scale = 0.9 / Math.max(bounds.width / fullWidth, bounds.height / fullHeight);
+            const translateX = (fullWidth - bounds.width * scale) / 2 - bounds.x * scale;
+            const translateY = (fullHeight - bounds.height * scale) / 2 - bounds.y * scale;
+
+            svg.call(zoom.transform, d3.zoomIdentity
+                .translate(translateX, translateY)
+                .scale(scale));
+        }
+
+        function showTooltip(event, d) {
+            const data = d.data;
+            let content = `<div class="tooltip-title">${data.name}</div>`;
+
+            if (data.type === 'entity') {
+                content += `<div class="tooltip-meta">`;
+                if (data.entityType) content += `Type: ${data.entityType}<br>`;
+                if (data.assertionCount) content += `Assertions: ${data.assertionCount}<br>`;
+                if (data.url) content += `${data.url}`;
+                content += `</div>`;
+            } else if (data.type === 'category') {
+                const count = data.children ? data.children.length : 0;
+                content += `<div class="tooltip-meta">${count} entities</div>`;
+            }
+
+            tooltip.innerHTML = content;
+            tooltip.style.display = 'block';
+            tooltip.style.left = (event.pageX + 10) + 'px';
+            tooltip.style.top = (event.pageY - 10) + 'px';
+        }
+
+        function hideTooltip() {
+            tooltip.style.display = 'none';
+        }
+
+        function handleNodeClick(event, d) {
+            const data = d.data;
+            if (data.type === 'entity' && data.url) {
+                window.open(data.url, '_blank');
+            }
+        }
+
+        // Event listeners
+        projectSelect.addEventListener('change', (e) => {
+            selectedProjectId = e.target.value;
+            if (selectedProjectId) {
+                fetchTreeData(selectedProjectId);
+            }
+        });
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            if (treeData) {
+                renderTree();
+            }
+        });
+
+        // Start
+        init();
+    </script>
+</body>
+</html>

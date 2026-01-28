@@ -57,29 +57,19 @@ app.use(
 // Explicit routes (MUST come before static handlers)
 // ============================================
 
-// Serve Svelte app at root (or fallback to Alpine.js landing page)
+// Serve Research Grove as the home page
 app.get('/', async (c) => {
   const fs = await import('fs/promises');
   const pathModule = await import('path');
 
-  // Try Svelte build first
   try {
-    const svelteHtml = await fs.readFile(
-      pathModule.join(process.cwd(), 'src/server/public/dist/index.html'),
+    const html = await fs.readFile(
+      pathModule.join(process.cwd(), 'src/server/public/grove.html'),
       'utf-8'
     );
-    return c.html(svelteHtml);
-  } catch {
-    // Fallback to Alpine.js landing page
-    try {
-      const html = await fs.readFile(
-        pathModule.join(process.cwd(), 'src/server/public/index-new.html'),
-        'utf-8'
-      );
-      return c.html(html);
-    } catch (error) {
-      return c.text('Frontend not found. Run: cd frontend && npm install && npm run build', 404);
-    }
+    return c.html(html);
+  } catch (error) {
+    return c.text('Grove frontend not found. Please ensure src/server/public/grove.html exists.', 404);
   }
 });
 
