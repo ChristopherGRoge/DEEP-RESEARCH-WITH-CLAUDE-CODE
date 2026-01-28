@@ -18,6 +18,29 @@ print_step() { echo -e "${GREEN}==>${NC} $1"; }
 print_warn() { echo -e "${YELLOW}WARNING:${NC} $1"; }
 print_error() { echo -e "${RED}ERROR:${NC} $1"; }
 
+# Function to handle SSL certificate errors
+handle_ssl_error() {
+    echo ""
+    print_error "SSL certificate error detected."
+    echo ""
+    echo "This often happens on corporate networks with SSL inspection."
+    echo ""
+    echo "Workarounds:"
+    echo ""
+    echo "  Option 1: Disable SSL verification (use with caution)"
+    echo "    NODE_TLS_REJECT_UNAUTHORIZED=0 ./install.sh"
+    echo ""
+    echo "  Option 2: Set corporate CA certificate"
+    echo "    export NODE_EXTRA_CA_CERTS=/path/to/corporate-ca.pem"
+    echo "    ./install.sh"
+    echo ""
+    echo "  Option 3: If behind a proxy"
+    echo "    export HTTPS_PROXY=http://your-proxy:port"
+    echo "    ./install.sh"
+    echo ""
+    exit 1
+}
+
 # ============================================
 # Step 1: Check Prerequisites
 # ============================================
@@ -56,21 +79,34 @@ npm install
 print_step "Setting up SQLite database..."
 
 # Check if database exists
-DB_PATH="prisma/research.db"
+DB_PATH="research.db"
 if [ -f "$DB_PATH" ]; then
     print_step "Database already exists at $DB_PATH"
-
-    # Run migrations to ensure schema is up to date
     print_step "Running database migrations..."
-    npx prisma migrate deploy
 else
     print_step "Creating new database..."
-    npx prisma migrate deploy
 fi
+
+# Run migrations - capture output to detect SSL errors
+MIGRATE_OUTPUT=$(npx prisma migrate deploy 2>&1) || {
+    echo "$MIGRATE_OUTPUT"
+    if echo "$MIGRATE_OUTPUT" | grep -q "unable to get local issuer certificate\|UNABLE_TO_GET_ISSUER_CERT"; then
+        handle_ssl_error
+    fi
+    exit 1
+}
+echo "$MIGRATE_OUTPUT"
 
 # Generate Prisma client
 print_step "Generating Prisma client..."
-npx prisma generate
+GENERATE_OUTPUT=$(npx prisma generate 2>&1) || {
+    echo "$GENERATE_OUTPUT"
+    if echo "$GENERATE_OUTPUT" | grep -q "unable to get local issuer certificate\|UNABLE_TO_GET_ISSUER_CERT"; then
+        handle_ssl_error
+    fi
+    exit 1
+}
+echo "$GENERATE_OUTPUT"
 
 # ============================================
 # Step 4: Install git hooks (optional)
@@ -91,7 +127,7 @@ echo -e "${GREEN}========================================${NC}"
 echo -e "${GREEN}  Deep Research setup complete!${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
-echo "Database: prisma/research.db (SQLite)"
+echo "Database: research.db (SQLite)"
 echo ""
 echo "Next steps:"
 echo "  npm run cli -- project:list    # List projects"
