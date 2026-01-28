@@ -508,17 +508,18 @@ export async function getCrawlStats(projectId: string): Promise<{
     discoveriesFound: number;
   }>;
 }> {
-  const logs = await prisma.researchLog.findMany({
+  // Fetch logs and filter by projectId in JavaScript (SQLite doesn't support JSON path queries)
+  const allLogs = await prisma.researchLog.findMany({
     where: {
       action: 'rss_crawl',
-      details: {
-        path: ['projectId'],
-        equals: projectId,
-      },
     },
     orderBy: { createdAt: 'desc' },
-    take: 10,
+    take: 100, // Fetch more and filter
   });
+
+  const logs = allLogs
+    .filter(log => (log.details as any)?.projectId === projectId)
+    .slice(0, 10);
 
   const crawlSessions = logs.map(log => ({
     sessionId: (log.details as any).crawlSessionId,
