@@ -68,13 +68,26 @@ fi
 print_step "Node.js $(node --version) found."
 
 # ============================================
-# Step 2: Install npm dependencies
+# Step 2: Setup environment
+# ============================================
+if [ ! -f ".env" ]; then
+    if [ -f ".env.example" ]; then
+        print_step "Creating .env from .env.example..."
+        cp .env.example .env
+    else
+        print_step "Creating default .env..."
+        echo 'DATABASE_URL="file:./research.db"' > .env
+    fi
+fi
+
+# ============================================
+# Step 3: Install npm dependencies
 # ============================================
 print_step "Installing npm dependencies..."
 npm install
 
 # ============================================
-# Step 3: Setup database
+# Step 4: Setup database
 # ============================================
 print_step "Setting up SQLite database..."
 
@@ -109,7 +122,7 @@ GENERATE_OUTPUT=$(npx prisma generate 2>&1) || {
 echo "$GENERATE_OUTPUT"
 
 # ============================================
-# Step 4: Install git hooks (optional)
+# Step 5: Install git hooks (optional)
 # ============================================
 if [ -f "scripts/hooks/pre-push" ]; then
     print_step "Installing git hooks..."
