@@ -7,7 +7,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 // ============================================
@@ -596,11 +597,11 @@ model DiscoveryCategory {
   id          String   @id @default(cuid())
   name        String   @unique  // e.g., "ai_code_assistants"
   displayName String             // e.g., "Code Assistants"
-  description String   @db.Text  // Rich text definition
+  description String     // Rich text definition
 
   // Classification guidance for LLM
-  inclusionCriteria  String?  @db.Text  // What qualifies an entity for this category
-  exclusionCriteria  String?  @db.Text  // What disqualifies an entity
+  inclusionCriteria  String?    // What qualifies an entity for this category
+  exclusionCriteria  String?    // What disqualifies an entity
   exemplarEntities   String[]           // Example entities that belong here
   antiExemplars      String[]           // Entities that might seem to fit but don't
 

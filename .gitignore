@@ -4,6 +4,12 @@ node_modules
 
 /generated/prisma
 
-# Ignore uncompressed SQL backups, keep .gz files
+# SQLite database files
+prisma/*.db
+prisma/*.db-journal
+
+# Ignore uncompressed backups, keep .gz files
 backups/*.sql
+backups/*.db
 !backups/*.sql.gz
+!backups/*.db.gz

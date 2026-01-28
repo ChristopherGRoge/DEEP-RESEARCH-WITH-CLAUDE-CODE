@@ -1,17 +1,16 @@
 #!/bin/bash
 set -e
 
-# Configuration
-DB_NAME="deep_research"
-DB_USER="researcher"
-DB_PASS="research_dev_2024"
-DB_PORT="5433"
-DB_HOST="localhost"
+# SQLite Restore Script
+# Replaces the database file from a backup
+
+DB_PATH="prisma/research.db"
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <backup-file.sql.gz>"
+    echo "Usage: $0 <backup-file.db.gz>"
+    echo ""
     echo "Available backups:"
-    ls -la backups/
+    ls -la backups/*.db.gz 2>/dev/null || echo "  No backups found"
     exit 1
 fi
 
@@ -29,10 +28,14 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     exit 0
 fi
 
-echo "Dropping existing schema..."
-PGPASSWORD=$DB_PASS psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_NAME -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+# Create a safety backup of current database
+if [ -f "$DB_PATH" ]; then
+    SAFETY_BACKUP="backups/pre-restore-$(date +%Y%m%d-%H%M%S).db"
+    echo "Creating safety backup: $SAFETY_BACKUP"
+    cp "$DB_PATH" "$SAFETY_BACKUP"
+fi
 
 echo "Restoring from backup..."
-gunzip -c "$BACKUP_FILE" | PGPASSWORD=$DB_PASS psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_NAME
+gunzip -c "$BACKUP_FILE" > "$DB_PATH"
 
 echo "Restored from: $BACKUP_FILE"

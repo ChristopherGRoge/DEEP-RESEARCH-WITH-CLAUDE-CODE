@@ -1,7 +1,7 @@
 {
   "name": "deep-research",
   "version": "1.0.0",
-  "description": "Deep Research - Repeatable and Persistent research framework with PostgreSQL",
+  "description": "Deep Research - Repeatable and Persistent research framework with SQLite",
   "main": "dist/tools/index.js",
   "types": "dist/tools/index.d.ts",
   "scripts": {
