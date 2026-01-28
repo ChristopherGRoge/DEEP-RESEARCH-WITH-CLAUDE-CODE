@@ -21,6 +21,7 @@
     "db:reset": "prisma migrate reset",
     "db:backup": "bash scripts/db-backup.sh",
     "db:restore": "bash scripts/db-restore.sh",
+    "db:migrate-from-pg": "ts-node --transpile-only scripts/migrate-pg-to-sqlite.ts",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down"
   },

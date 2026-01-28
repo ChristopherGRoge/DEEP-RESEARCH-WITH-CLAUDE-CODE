@@ -122,7 +122,15 @@ GENERATE_OUTPUT=$(npx prisma generate 2>&1) || {
 echo "$GENERATE_OUTPUT"
 
 # ============================================
-# Step 5: Install git hooks (optional)
+# Step 5: Install frontend dependencies
+# ============================================
+if [ -d "frontend" ]; then
+    print_step "Installing frontend dependencies..."
+    cd frontend && npm install && cd ..
+fi
+
+# ============================================
+# Step 6: Install git hooks (optional)
 # ============================================
 if [ -f "scripts/hooks/pre-push" ]; then
     print_step "Installing git hooks..."
@@ -142,7 +150,14 @@ echo -e "${GREEN}========================================${NC}"
 echo ""
 echo "Database: research.db (SQLite)"
 echo ""
-echo "Next steps:"
+echo "To start the application:"
+echo "  npm run dev                     # Start backend + frontend"
+echo ""
+echo "Or run separately:"
+echo "  npm run server                  # Backend API only (port 3001)"
+echo "  npm run frontend:dev            # Frontend only (port 5173)"
+echo ""
+echo "Other commands:"
 echo "  npm run cli -- project:list    # List projects"
-echo "  npm run db:studio              # Open visual browser"
+echo "  npm run db:studio              # Open visual database browser"
 echo ""
