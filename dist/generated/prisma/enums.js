@@ -9,7 +9,7 @@
 * 🟢 You can import this file directly.
 */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SourceRelevance = exports.AssertionCriticality = exports.ExtractionStatus = exports.ResearchWorkflow = exports.SourceStatus = exports.AssertionStatus = void 0;
+exports.ResearchTaskStatus = exports.ResearchSessionStatus = exports.CrawlStatus = exports.SourceType = exports.SourceRelevance = exports.AssertionCriticality = exports.ExtractionStatus = exports.ResearchWorkflow = exports.SourceStatus = exports.AssertionStatus = void 0;
 exports.AssertionStatus = {
     CLAIM: 'CLAIM',
     EVIDENCE: 'EVIDENCE',
@@ -43,5 +43,44 @@ exports.SourceRelevance = {
     WEAK_SUPPORT: 'WEAK_SUPPORT',
     NOT_RELEVANT: 'NOT_RELEVANT',
     MISLEADING: 'MISLEADING'
+};
+exports.SourceType = {
+    BLOG: 'BLOG',
+    GITHUB_LIST: 'GITHUB_LIST',
+    GITHUB_TRENDING: 'GITHUB_TRENDING',
+    GITHUB_REPO: 'GITHUB_REPO',
+    NEWSLETTER: 'NEWSLETTER',
+    AGGREGATOR: 'AGGREGATOR',
+    REDDIT: 'REDDIT',
+    X_ACCOUNT: 'X_ACCOUNT',
+    X_SEARCH: 'X_SEARCH',
+    FORUM: 'FORUM',
+    NEWS: 'NEWS',
+    ACADEMIC: 'ACADEMIC',
+    DEV_COMMUNITY: 'DEV_COMMUNITY'
+};
+exports.CrawlStatus = {
+    IN_PROGRESS: 'IN_PROGRESS',
+    PAUSED: 'PAUSED',
+    COMPLETED: 'COMPLETED',
+    FAILED: 'FAILED',
+    CANCELLED: 'CANCELLED'
+};
+exports.ResearchSessionStatus = {
+    INITIALIZING: 'INITIALIZING',
+    PLANNING: 'PLANNING',
+    RESEARCHING: 'RESEARCHING',
+    PAUSED: 'PAUSED',
+    COMPLETED: 'COMPLETED',
+    FAILED: 'FAILED',
+    CANCELLED: 'CANCELLED'
+};
+exports.ResearchTaskStatus = {
+    PENDING: 'PENDING',
+    IN_PROGRESS: 'IN_PROGRESS',
+    COMPLETED: 'COMPLETED',
+    FAILED: 'FAILED',
+    CANCELLED: 'CANCELLED',
+    PAUSED: 'PAUSED'
 };
 //# sourceMappingURL=enums.js.map

@@ -1,0 +1,70 @@
+{
+    "vendor": "Tabnine",
+    "enterprise_deployment_capabilities": {
+        "deployment_options": {
+            "models": [
+                "SaaS",
+                "Single-tenant VPC",
+                "On-premises Kubernetes",
+                "Fully offline clusters"
+            ],
+            "cloud_support": [
+                "Google Cloud Platform (GCP)",
+                "Amazon Web Services (AWS)",
+                "Microsoft Azure"
+            ]
+        },
+        "security_features": {
+            "compliance_standards": [
+                "SOC 2",
+                "GDPR",
+                "ISO 27001"
+            ],
+            "data_privacy": {
+                "code_handling": "Ephemeral processing, no persistent code storage",
+                "transmission_security": "End-to-end encryption, TLS-secured channels",
+                "model_training": "Only uses permissively licensed open-source code"
+            },
+            "deployment_security": {
+                "air_gapped_support": true,
+                "zero_telemetry": true,
+                "no_silent_updates": true,
+                "outbound_connection_control": true
+            }
+        },
+        "enterprise_controls": {
+            "admin_capabilities": [
+                "Enable/disable specific AI models",
+                "Policy enforcement",
+                "Usage monitoring",
+                "Dashboard and API access"
+            ],
+            "context_engine_features": [
+                "Learn organizational architecture",
+                "Adapt to mixed tech stacks",
+                "Align with organizational coding standards"
+            ]
+        },
+        "integration_capabilities": {
+            "source_control": true,
+            "ides": true,
+            "enterprise_tools": [
+                "Jira",
+                "Confluence"
+            ]
+        },
+        "performance_metrics": {
+            "user_base": "1,000,000+ users",
+            "productivity_gain": "Up to 45%",
+            "suggestion_acceptance_rate": "90%"
+        },
+        "government_and_regulated_industry_suitability": {
+            "use_cases": [
+                "Highly secure environments",
+                "Strict IP control requirements",
+                "Complex, mixed technology stacks"
+            ],
+            "deployment_flexibility": "High"
+        }
+    }
+}

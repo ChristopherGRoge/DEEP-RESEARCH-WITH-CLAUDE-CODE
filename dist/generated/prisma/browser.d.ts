@@ -49,4 +49,45 @@ export type Screenshot = Prisma.ScreenshotModel;
  * This is the PRIMARY tool for deep research - extracts queryable data from web pages
  */
 export type Extraction = Prisma.ExtractionModel;
+/**
+ * Model ResearchSession
+ * A research session orchestrating multi-category deep research on an entity
+ */
+export type ResearchSession = Prisma.ResearchSessionModel;
+/**
+ * Model ResearchTask
+ * An individual research task within a session
+ */
+export type ResearchTask = Prisma.ResearchTaskModel;
+/**
+ * Model DiscoverySource
+ * A curated information source for discovery crawling
+ */
+export type DiscoverySource = Prisma.DiscoverySourceModel;
+/**
+ * Model RawDiscovery
+ * A raw discovery from a source before deduplication
+ */
+export type RawDiscovery = Prisma.RawDiscoveryModel;
+/**
+ * Model DiscoveryCrawl
+ * A crawl session for tracking progress
+ */
+export type DiscoveryCrawl = Prisma.DiscoveryCrawlModel;
+/**
+ * Model DiscoveryTrend
+ * A detected trend across discoveries
+ */
+export type DiscoveryTrend = Prisma.DiscoveryTrendModel;
+/**
+ * Model DiscoveryCategory
+ * A category definition for LLM-based entity classification
+ * Replaces regex-based classification with semantic understanding
+ */
+export type DiscoveryCategory = Prisma.DiscoveryCategoryModel;
+/**
+ * Model ResearchDomain
+ * A research domain defining what to discover and how to find it
+ */
+export type ResearchDomain = Prisma.ResearchDomainModel;
 //# sourceMappingURL=browser.d.ts.map

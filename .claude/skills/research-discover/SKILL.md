@@ -62,11 +62,93 @@ Intelligent web-based discovery driven by **research domain definitions**. Unlik
 └─────────────────────────┘ └─────────────────────────┘ └─────────────────────────┘
 ```
 
+## Commands
+
+```
+/research-discover <domain-name>  # Run discovery for a domain (REQUIRED)
+/research-discover help           # Verbose overview with workflow explanation
+/research-discover commands       # Concise CLI command reference
+```
+
 ---
 
 ## EXECUTION PROTOCOL
 
-Follow this EXACT sequence when /research-discover is invoked:
+### MODE: `help`
+
+Display a comprehensive overview. Output EXACTLY this format:
+
+```
+## Research Discover Skill
+
+Domain-driven entity discovery using multi-agent orchestration.
+
+### How It Works
+
+1. Loads domain configuration (entityTypes, knownLeaders, relevantTopics)
+2. Claude generates 15-25 search queries dynamically from domain context
+3. Spawns 3-5 parallel Sonnet agents to search the web
+4. Deduplicates results and filters against existing entities
+5. Persists new entities with domainId reference
+
+### Usage
+
+/research-discover <domain-name>
+
+Examples:
+  /research-discover AI-Testing-Tools
+  /research-discover GenAI-Observability
+
+### Prerequisites
+
+A domain must exist first. Create one with:
+  /research-domain create <name>
+
+List available domains:
+  /research-domain list
+
+### Expected Output
+
+- 80-200 raw discoveries across parallel agents
+- 40-100 unique entities after deduplication
+- 20-60 new entities persisted to database
+
+### Related Skills
+
+- `/research-domain` - Create and manage domains (required first)
+- `/research` - Deep research on discovered entities
+- `/research-to-deck` - Generate presentations
+```
+
+---
+
+### MODE: `commands`
+
+Display a minimal, copy-paste ready command reference. Output EXACTLY this format:
+
+```
+## CLI Commands
+
+# Skill command (domain REQUIRED)
+/research-discover <domain-name>
+
+# Prerequisite - create a domain first
+/research-domain create <name>
+/research-domain list
+
+# Related database commands
+npm run cli -- domain:get '{"name": "..."}'
+npm run cli -- domain:entities '{"domainId": "..."}'
+npm run cli -- domain:updateStats '{"domainId": "..."}'
+npm run cli -- entity:create '{"projectId": "...", "name": "...", "domainId": "..."}'
+npm run cli -- entity:list '{"projectId": "..."}'
+```
+
+---
+
+### MODE: `<domain-name>` (Primary Execution)
+
+Follow this EXACT sequence when /research-discover is invoked with a domain name:
 
 ### PHASE 1: VALIDATE DOMAIN (Required)
 

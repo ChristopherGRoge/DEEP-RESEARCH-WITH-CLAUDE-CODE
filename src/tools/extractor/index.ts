@@ -22,7 +22,7 @@ import * as crypto from 'crypto';
 import { prisma } from '../../db/client';
 import { fetchUrl, captureScreenshot, validateUrl, closeBrowser } from './fetcher';
 import { extractWithLLM } from './llm-parser';
-import { SchemaType, SCHEMA_TYPES, PricingData, FeaturesData, CompanyData, ComplianceData, IntegrationsData } from './schemas';
+import { SchemaType, SCHEMA_TYPES, PricingData, FeaturesData, CompanyData, ComplianceData, IntegrationsData, DifferentiatorsData } from './schemas';
 import { createSource } from '../sources';
 import { createAssertion } from '../assertions';
 
@@ -563,6 +563,14 @@ export async function extractIntegrations(
   return extract({ url, entityId, schemaType: 'integrations', ...options });
 }
 
+export async function extractDifferentiators(
+  url: string,
+  entityId: string,
+  options: { screenshot?: boolean; createAssertions?: boolean } = {}
+): Promise<ExtractResult> {
+  return extract({ url, entityId, schemaType: 'differentiators', ...options });
+}
+
 // ============================================
 // ASSERTION GENERATION (Exported for use by saveExtraction)
 // ============================================
@@ -591,6 +599,9 @@ export async function generateAssertionsFromData(
         break;
       case 'integrations':
         assertionIds.push(...await generateIntegrationAssertions(entityId, data as IntegrationsData, sourceUrl));
+        break;
+      case 'differentiators':
+        assertionIds.push(...await generateDifferentiatorAssertions(entityId, data as DifferentiatorsData, sourceUrl));
         break;
     }
   } catch (error) {
@@ -789,6 +800,92 @@ async function generateIntegrationAssertions(
       entityId,
       claim: `SDK available for: ${integrations.sdkLanguages.join(', ')}`,
       category: 'integration',
+      sourceUrl,
+    });
+    if (assertion) ids.push(assertion.id);
+  }
+
+  return ids;
+}
+
+async function generateDifferentiatorAssertions(
+  entityId: string,
+  differentiators: DifferentiatorsData,
+  sourceUrl: string
+): Promise<string[]> {
+  const ids: string[] = [];
+
+  // Create assertions for unique features (true differentiators)
+  for (const feature of differentiators.uniqueFeatures || []) {
+    const comparison = feature.comparedTo?.length
+      ? ` (competitors: ${feature.comparedTo.join('; ')})`
+      : '';
+    const assertion = await createAssertion({
+      entityId,
+      claim: `UNIQUE DIFFERENTIATOR: ${feature.name} - ${feature.description}${comparison}`,
+      category: 'differentiator',
+      sourceUrl,
+    });
+    if (assertion) ids.push(assertion.id);
+  }
+
+  // Create assertions for leading features (best-in-class)
+  for (const feature of differentiators.leadingFeatures || []) {
+    const comparison = feature.comparedTo?.length
+      ? ` (vs ${feature.comparedTo.join('; ')})`
+      : '';
+    const assertion = await createAssertion({
+      entityId,
+      claim: `MARKET LEADER: ${feature.name} - ${feature.description}${comparison}`,
+      category: 'differentiator',
+      sourceUrl,
+    });
+    if (assertion) ids.push(assertion.id);
+  }
+
+  // Create assertions for lagging features (competitive weakness)
+  for (const feature of differentiators.laggingFeatures || []) {
+    const competitors = feature.competitors?.length
+      ? ` (better at: ${feature.competitors.join(', ')})`
+      : '';
+    const assertion = await createAssertion({
+      entityId,
+      claim: `COMPETITIVE GAP: ${feature.name} - ${feature.reason}${competitors}`,
+      category: 'limitation',
+      sourceUrl,
+    });
+    if (assertion) ids.push(assertion.id);
+  }
+
+  // Create assertions for missing features
+  for (const feature of differentiators.missingFeatures || []) {
+    const importance = feature.importance ? ` [${feature.importance}]` : '';
+    const assertion = await createAssertion({
+      entityId,
+      claim: `MISSING FEATURE${importance}: ${feature.name} - available in ${feature.competitors.join(', ')}`,
+      category: 'limitation',
+      sourceUrl,
+    });
+    if (assertion) ids.push(assertion.id);
+  }
+
+  // Create summary assertion
+  if (differentiators.differentiationSummary) {
+    const assertion = await createAssertion({
+      entityId,
+      claim: `Differentiation summary: ${differentiators.differentiationSummary}`,
+      category: 'comparison',
+      sourceUrl,
+    });
+    if (assertion) ids.push(assertion.id);
+  }
+
+  // Create primary competitors assertion
+  if (differentiators.primaryCompetitors?.length) {
+    const assertion = await createAssertion({
+      entityId,
+      claim: `Primary competitors: ${differentiators.primaryCompetitors.join(', ')}`,
+      category: 'comparison',
       sourceUrl,
     });
     if (assertion) ids.push(assertion.id);

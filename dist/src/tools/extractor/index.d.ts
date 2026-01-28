@@ -121,6 +121,10 @@ export declare function extractIntegrations(url: string, entityId: string, optio
     screenshot?: boolean;
     createAssertions?: boolean;
 }): Promise<ExtractResult>;
+export declare function extractDifferentiators(url: string, entityId: string, options?: {
+    screenshot?: boolean;
+    createAssertions?: boolean;
+}): Promise<ExtractResult>;
 export declare function generateAssertionsFromData(entityId: string, schemaType: SchemaType, data: unknown, sourceUrl: string): Promise<string[]>;
 export declare function getExtractions(entityId: string, schemaType?: SchemaType): Promise<({
     source: {
@@ -230,6 +234,9 @@ export declare function getStaleExtractions(projectId?: string): Promise<({
         projectId: string;
         entityType: string | null;
         url: string | null;
+        discoveryCategory: string | null;
+        categoryId: string | null;
+        domainId: string | null;
         logoUrl: string | null;
         logoPath: string | null;
         logoFormat: string | null;
@@ -237,6 +244,25 @@ export declare function getStaleExtractions(projectId?: string): Promise<({
         logoSourceUrl: string | null;
         logoFetchedAt: Date | null;
         logoVerified: boolean;
+        githubUrl: string | null;
+        githubOwner: string | null;
+        githubRepo: string | null;
+        githubStars: number | null;
+        githubForks: number | null;
+        githubWatchers: number | null;
+        githubOpenIssues: number | null;
+        githubContributors: number | null;
+        githubLastCommit: Date | null;
+        githubLastRelease: Date | null;
+        githubLanguage: string | null;
+        githubLicense: string | null;
+        githubCreatedAt: Date | null;
+        githubMetricsAt: Date | null;
+        buzzScore: number | null;
+        buzzComponents: import("@prisma/client/runtime/client").JsonValue | null;
+        buzzCalculatedAt: Date | null;
+        buzzOverride: number | null;
+        buzzOverrideReason: string | null;
     };
 } & {
     error: string | null;

@@ -50,11 +50,14 @@ export declare function getSource(sourceId: string): Promise<({
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            category: string | null;
             entityId: string;
             claim: string;
             status: import("../../generated/prisma/enums").AssertionStatus;
-            category: string | null;
             confidence: number | null;
+            confidenceFactors: import("@prisma/client/runtime/client").JsonValue | null;
+            lastValidatedAt: Date | null;
+            validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
             criticality: import("../../generated/prisma/enums").AssertionCriticality;
             validatedAt: Date | null;
             validatedBy: string | null;
@@ -69,6 +72,12 @@ export declare function getSource(sourceId: string): Promise<({
             evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
             evidenceDescription: string | null;
             evidenceScreenshotPath: string | null;
+            discoverySourceId: string | null;
+            firstDiscoveredAt: Date | null;
+            mentionCount: number;
+            sourceSpread: number;
+            criticalityScore: number | null;
+            criticalityFactors: import("@prisma/client/runtime/client").JsonValue | null;
         };
     } & {
         id: string;
@@ -107,11 +116,14 @@ export declare function findSourceByUrl(url: string): Promise<({
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            category: string | null;
             entityId: string;
             claim: string;
             status: import("../../generated/prisma/enums").AssertionStatus;
-            category: string | null;
             confidence: number | null;
+            confidenceFactors: import("@prisma/client/runtime/client").JsonValue | null;
+            lastValidatedAt: Date | null;
+            validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
             criticality: import("../../generated/prisma/enums").AssertionCriticality;
             validatedAt: Date | null;
             validatedBy: string | null;
@@ -126,6 +138,12 @@ export declare function findSourceByUrl(url: string): Promise<({
             evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
             evidenceDescription: string | null;
             evidenceScreenshotPath: string | null;
+            discoverySourceId: string | null;
+            firstDiscoveredAt: Date | null;
+            mentionCount: number;
+            sourceSpread: number;
+            criticalityScore: number | null;
+            criticalityFactors: import("@prisma/client/runtime/client").JsonValue | null;
         };
     } & {
         id: string;

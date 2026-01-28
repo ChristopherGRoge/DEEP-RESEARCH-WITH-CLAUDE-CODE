@@ -1,7 +1,7 @@
 <script lang="ts">
   /**
-   * Research Grove - Tree visualization of entities by category
-   * Entities appear as leaves on category branches
+   * Research Grove - Drill-Down Visualization Page
+   * Clean, professional interface for entity exploration
    */
 
   import { onMount } from 'svelte';
@@ -10,8 +10,10 @@
   interface TreeNode {
     name: string;
     type: 'project' | 'category' | 'entity';
+    key?: string;
     id?: string;
     url?: string;
+    entityType?: string;
     assertionCount?: number;
     evidenceRatio?: number;
     children?: TreeNode[];
@@ -28,19 +30,17 @@
   let loading = $state(false);
   let error = $state<string | null>(null);
 
-  // Dimensions
   let containerWidth = $state(1200);
   let containerHeight = $state(700);
 
   onMount(async () => {
     await fetchProjects();
 
-    // Handle resize
     const updateDimensions = () => {
-      const container = document.querySelector('.viz-container');
+      const container = document.querySelector('.grove-canvas');
       if (container) {
-        containerWidth = container.clientWidth - 40;
-        containerHeight = Math.max(600, window.innerHeight - 200);
+        containerWidth = container.clientWidth;
+        containerHeight = Math.max(650, window.innerHeight - 140);
       }
     };
 
@@ -56,7 +56,6 @@
       const result = await response.json();
       if (result.success) {
         projects = result.data;
-        // Auto-select first project if available
         if (projects.length > 0 && !selectedProjectId) {
           selectedProjectId = projects[0].id;
           await fetchTreeData(projects[0].id);
@@ -99,10 +98,8 @@
 
   function handleEntityClick(entity: TreeNode) {
     console.log('Entity clicked:', entity);
-    // Could navigate to entity detail or open modal
   }
 
-  // Calculate summary stats
   const stats = $derived(() => {
     if (!treeData || !treeData.children) return null;
 
@@ -131,290 +128,375 @@
   });
 </script>
 
-<div class="visualization-page">
-  <header class="page-header">
-    <div class="title-section">
-      <h1>Research Grove</h1>
-      <p class="subtitle">Explore entities as leaves on the tree of knowledge</p>
+<div class="grove-page">
+  <header class="grove-header">
+    <div class="header-left">
+      <div class="logo-mark">
+        <span class="material-symbols-rounded logo-icon">account_tree</span>
+      </div>
+      <div class="title-group">
+        <h1>Research Grove</h1>
+        <p class="tagline">Entity Knowledge Graph</p>
+      </div>
     </div>
 
-    <div class="controls">
-      <label for="project-select">Project:</label>
-      <select
-        id="project-select"
-        value={selectedProjectId}
-        onchange={handleProjectChange}
-      >
-        {#each projects as project}
-          <option value={project.id}>{project.name}</option>
-        {/each}
-      </select>
+    <div class="header-center">
+      {#if stats()}
+        <div class="stats-inline">
+          <div class="stat-chip">
+            <span class="material-symbols-rounded">grid_view</span>
+            <span class="stat-value">{stats()?.categories}</span>
+            <span class="stat-label">categories</span>
+          </div>
+
+          <div class="stat-chip highlight">
+            <span class="material-symbols-rounded">deployed_code</span>
+            <span class="stat-value">{stats()?.entities}</span>
+            <span class="stat-label">entities</span>
+          </div>
+
+          <div class="stat-chip">
+            <span class="material-symbols-rounded">chat</span>
+            <span class="stat-value">{stats()?.assertions}</span>
+            <span class="stat-label">assertions</span>
+          </div>
+
+          <div class="stat-chip accent">
+            <span class="material-symbols-rounded">verified</span>
+            <span class="stat-value">{stats()?.validatedPercent}%</span>
+            <span class="stat-label">validated</span>
+          </div>
+        </div>
+      {/if}
+    </div>
+
+    <div class="header-right">
+      <div class="project-selector">
+        <span class="material-symbols-rounded selector-icon">folder</span>
+        <select
+          id="project-select"
+          value={selectedProjectId}
+          onchange={handleProjectChange}
+        >
+          {#each projects as project}
+            <option value={project.id}>{project.name}</option>
+          {/each}
+        </select>
+      </div>
     </div>
   </header>
 
-  {#if stats()}
-    <div class="stats-bar">
-      <div class="stat">
-        <span class="stat-value">{stats()?.categories}</span>
-        <span class="stat-label">Categories</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value">{stats()?.entities}</span>
-        <span class="stat-label">Entities</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value">{stats()?.assertions}</span>
-        <span class="stat-label">Assertions</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value">{stats()?.validatedPercent}%</span>
-        <span class="stat-label">Validated</span>
-      </div>
+  <main class="grove-main">
+    <div class="grove-canvas">
+      {#if loading}
+        <div class="loading-state">
+          <div class="loading-spinner">
+            <span class="material-symbols-rounded spinning">progress_activity</span>
+          </div>
+          <p class="loading-text">Loading research grove...</p>
+        </div>
+      {:else if error}
+        <div class="error-state">
+          <span class="material-symbols-rounded error-icon">error</span>
+          <p class="error-text">{error}</p>
+          <button class="retry-btn" onclick={() => selectedProjectId && fetchTreeData(selectedProjectId)}>
+            <span class="material-symbols-rounded">refresh</span>
+            Try Again
+          </button>
+        </div>
+      {:else if treeData}
+        <TreeVisualization
+          data={treeData}
+          width={containerWidth}
+          height={containerHeight}
+          onEntityClick={handleEntityClick}
+        />
+      {:else}
+        <div class="empty-state">
+          <span class="material-symbols-rounded empty-icon">park</span>
+          <p>Select a project to explore its research grove</p>
+        </div>
+      {/if}
     </div>
-  {/if}
-
-  <div class="viz-container">
-    {#if loading}
-      <div class="loading">
-        <div class="spinner"></div>
-        <p>Growing the research tree...</p>
-      </div>
-    {:else if error}
-      <div class="error">
-        <p>{error}</p>
-        <button onclick={() => selectedProjectId && fetchTreeData(selectedProjectId)}>
-          Try Again
-        </button>
-      </div>
-    {:else if treeData}
-      <TreeVisualization
-        data={treeData}
-        width={containerWidth}
-        height={containerHeight}
-        onEntityClick={handleEntityClick}
-      />
-    {:else}
-      <div class="empty">
-        <p>Select a project to visualize its research tree</p>
-      </div>
-    {/if}
-  </div>
-
-  <div class="legend">
-    <h4>Legend</h4>
-    <div class="legend-items">
-      <div class="legend-item">
-        <div class="legend-color" style="background: hsl(80, 30%, 55%);"></div>
-        <span>New (0% validated)</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-color" style="background: hsl(100, 55%, 47%);"></div>
-        <span>Partial (50% validated)</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-color" style="background: hsl(120, 80%, 40%);"></div>
-        <span>Complete (100% validated)</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-color leaf-size-small"></div>
-        <span>Few assertions</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-color leaf-size-large"></div>
-        <span>Many assertions</span>
-      </div>
-    </div>
-  </div>
+  </main>
 </div>
 
 <style>
-  .visualization-page {
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+  .grove-page {
     min-height: 100vh;
-    background: #fafafa;
-    padding: 0;
+    background: #f8f8f6;
+    display: flex;
+    flex-direction: column;
   }
 
-  .page-header {
+  /* Material Symbols base style */
+  .material-symbols-rounded {
+    font-family: 'Material Symbols Rounded';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Header */
+  .grove-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 30px;
-    background: white;
-    border-bottom: 1px solid #e0e0e0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 12px 24px;
+    background: #ffffff;
+    border-bottom: 1px solid #e8e8e5;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    flex-shrink: 0;
   }
 
-  .title-section h1 {
-    margin: 0;
-    font-size: 28px;
-    color: #2E7D32;
-    font-weight: 600;
-  }
-
-  .subtitle {
-    margin: 4px 0 0 0;
-    color: #666;
-    font-size: 14px;
-  }
-
-  .controls {
+  .header-left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
 
-  .controls label {
-    font-size: 14px;
-    color: #555;
+  .logo-mark {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+  }
+
+  .logo-icon {
+    color: #ffffff;
+    font-size: 22px;
+  }
+
+  .title-group h1 {
+    margin: 0;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.3px;
+  }
+
+  .tagline {
+    margin: 1px 0 0 0;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 11px;
+    color: #7a7a7a;
     font-weight: 500;
   }
 
-  .controls select {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-    background: white;
-    min-width: 200px;
-    cursor: pointer;
-  }
-
-  .controls select:focus {
-    outline: none;
-    border-color: #4CAF50;
-  }
-
-  .stats-bar {
+  .header-center {
     display: flex;
-    justify-content: center;
-    gap: 40px;
-    padding: 16px 30px;
-    background: #f5f5f5;
-    border-bottom: 1px solid #e0e0e0;
-  }
-
-  .stat {
-    display: flex;
-    flex-direction: column;
     align-items: center;
   }
 
-  .stat-value {
-    font-size: 24px;
-    font-weight: 600;
-    color: #333;
-  }
-
-  .stat-label {
-    font-size: 12px;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .viz-container {
-    padding: 20px;
-    min-height: 600px;
+  .stats-inline {
     display: flex;
-    justify-content: center;
     align-items: center;
-  }
-
-  .loading, .error, .empty {
-    text-align: center;
-    padding: 60px;
-  }
-
-  .spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid #e0e0e0;
-    border-top-color: #4CAF50;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 16px;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  .loading p {
-    color: #666;
-    font-style: italic;
-  }
-
-  .error {
-    color: #c62828;
-  }
-
-  .error button {
-    margin-top: 16px;
-    padding: 10px 20px;
-    background: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-
-  .error button:hover {
-    background: #43A047;
-  }
-
-  .empty {
-    color: #666;
-  }
-
-  .legend {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: white;
-    padding: 16px 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 50;
-  }
-
-  .legend h4 {
-    margin: 0 0 12px 0;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #666;
-  }
-
-  .legend-items {
-    display: flex;
-    flex-direction: column;
     gap: 8px;
   }
 
-  .legend-item {
+  .stat-chip {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 12px;
-    color: #555;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #f5f5f3;
+    border-radius: 8px;
+    border: 1px solid #e8e8e5;
   }
 
-  .legend-color {
-    width: 20px;
-    height: 12px;
-    border-radius: 6px;
+  .stat-chip .material-symbols-rounded {
+    font-size: 16px;
+    color: #9a9a9a;
   }
 
-  .leaf-size-small {
-    width: 12px;
-    height: 8px;
-    background: hsl(100, 50%, 50%);
+  .stat-chip.highlight .material-symbols-rounded {
+    color: #059669;
   }
 
-  .leaf-size-large {
-    width: 24px;
-    height: 16px;
-    background: hsl(100, 50%, 50%);
+  .stat-chip.accent .material-symbols-rounded {
+    color: #059669;
+  }
+
+  .stat-chip .stat-value {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+
+  .stat-chip.accent .stat-value {
+    color: #059669;
+  }
+
+  .stat-chip .stat-label {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 11px;
+    color: #9a9a9a;
+    font-weight: 500;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .project-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f5f5f3;
+    padding: 4px 4px 4px 10px;
+    border-radius: 10px;
+    border: 1px solid #e8e8e5;
+  }
+
+  .selector-icon {
+    color: #7a7a7a;
+    font-size: 18px;
+  }
+
+  .project-selector select {
+    padding: 6px 28px 6px 6px;
+    background: transparent;
+    border: none;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a1a;
+    min-width: 160px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a7a7a' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+  }
+
+  .project-selector select:focus {
+    outline: none;
+  }
+
+  /* Main Content */
+  .grove-main {
+    flex: 1;
+    display: flex;
+    position: relative;
+  }
+
+  .grove-canvas {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+  }
+
+  /* Loading State */
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .loading-spinner {
+    color: #059669;
+  }
+
+  .spinning {
+    font-size: 48px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .loading-text {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 14px;
+    color: #7a7a7a;
+  }
+
+  /* Error State */
+  .error-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .error-icon {
+    font-size: 48px;
+    color: #dc2626;
+    opacity: 0.7;
+  }
+
+  .error-text {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 14px;
+    color: #dc2626;
+  }
+
+  .retry-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    background: #059669;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .retry-btn .material-symbols-rounded {
+    font-size: 18px;
+  }
+
+  .retry-btn:hover {
+    background: #047857;
+  }
+
+  /* Empty State */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .empty-icon {
+    font-size: 48px;
+    color: #9a9a9a;
+  }
+
+  .empty-state p {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 14px;
+    color: #7a7a7a;
   }
 </style>

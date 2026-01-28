@@ -12,27 +12,33 @@ Performs deep, discerning research on a single entity to form a comprehensive "w
 ## Architecture Overview
 
 ```
-                    ┌─────────────────────────────┐
-                    │     OPUS ORCHESTRATOR       │
-                    │  /research-entity skill     │
-                    └─────────────┬───────────────┘
-                                  │
-     ┌────────────────────────────┼────────────────────────────┐
-     │                            │                            │
-     ▼                            ▼                            ▼
-┌─────────────┐          ┌─────────────┐          ┌─────────────┐
-│ PHASE 1     │          │ PHASE 2     │          │ PHASE 3     │
-│ RECON       │────────▶ │ EXTRACTION  │────────▶ │ SYNTHESIS   │
-│ (Sonnet)    │          │ (Sonnet)    │          │ (Opus)      │
-└─────────────┘          └─────────────┘          └─────────────┘
-                                                        │
-                                                        ▼
-                                              ┌─────────────┐
-                                              │ PHASE 4     │
-                                              │ OUTPUT      │
-                                              │ (Haiku)     │
-                                              └─────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                   SEQUENTIAL EXECUTION                       │
+│            Claude executes directly (no subagents)           │
+└─────────────────────────────────────────────────────────────┘
+                              │
+     ┌────────────────────────┼────────────────────────┐
+     │                        │                        │
+     ▼                        ▼                        ▼
+┌─────────┐            ┌─────────┐            ┌─────────┐
+│ PHASE 1 │──────────▶ │ PHASE 2 │──────────▶ │ PHASE 3 │
+│ RECON   │            │ EXTRACT │            │ SYNTH   │
+└─────────┘            └─────────┘            └─────────┘
+     │                        │                        │
+     │   for each entity      │   for each schema      │
+     │   in batch             │   type needed          │
+     ▼                        ▼                        ▼
+ Load state            fetch → read → save         Identify
+ + plan URLs           screenshot visually         pillars
 ```
+
+**Why Sequential (No Subagents)?**
+- **Same quality**: Claude directly reads screenshots and extracts data
+- **More consistent**: Learns patterns across entities in a batch
+- **Zero failures**: No agent crashes or retries needed
+- **Simpler**: Direct CLI execution, no coordination overhead
+
+**Batch Processing**: Process multiple entities in one session for efficiency.
 
 ## What is a Pillar Assertion?
 
@@ -293,17 +299,33 @@ Include in the final output:
 ## Commands
 
 ```
+# Single entity research
 /research-entity <entity-name>           # Research entity by name
 /research-entity --id <entity-id>        # Research entity by ID
+
+# Batch processing (sequential, efficient)
+/research-entity batch <n>               # Research next N entities needing work
+/research-entity batch --category <cat>  # Batch research entities in category
+/research-entity batch --type <type>     # Batch research entities of type
+/research-entity batch --continue        # Continue from last batch position
+
+# Query commands
 /research-entity types                   # List entity types with counts
 /research-entity --type <type>           # List entities of a specific type
 /research-entity categories              # List discovery categories with counts
 /research-entity --category <category>   # List entities in a specific category
+
+# Help
 /research-entity help                    # Verbose overview with workflow explanation
 /research-entity commands                # Concise CLI command reference
 ```
 
-**Project Context**: The `types`, `--type`, `categories`, and `--category` commands require an active project. Set project context with `/research-project use <name>`.
+**Project Context**: The `types`, `--type`, `categories`, `--category`, and `batch` commands require an active project. Set project context with `/research-project use <name>`.
+
+**Batch Recommendations**:
+- Default batch size: 10 entities
+- Max recommended: 20 entities per session
+- Progress saved after each entity (can resume with `--continue`)
 
 ---
 
@@ -345,20 +367,27 @@ A pillar assertion is a claim where:
 
 ### Usage
 
+# Single entity
 /research-entity <entity-name>            # Deep research on entity
 /research-entity --id <entity-id>         # Research by ID
+
+# Batch processing (recommended for multiple entities)
+/research-entity batch 10                 # Research next 10 entities
+/research-entity batch --category ai_testing  # Batch by category
+/research-entity batch --continue         # Resume previous batch
+
+# Query commands
 /research-entity types                    # List entity types in project
 /research-entity --type tool              # List all tools in project
 /research-entity categories               # List discovery categories
 /research-entity --category ai_testing    # List entities in category
 
 Examples:
-  /research-entity Cursor
-  /research-entity --id cmjk123abc
+  /research-entity Cursor                 # Single entity
+  /research-entity batch 10               # Batch of 10
+  /research-entity batch --category ai_code_assistants
   /research-entity types
   /research-entity --type tool
-  /research-entity categories
-  /research-entity --category ai_code_assistants
 
 ### Output
 
@@ -382,13 +411,23 @@ Display a minimal, copy-paste ready command reference. Output EXACTLY this forma
 ```
 ## CLI Commands
 
-# Skill commands
+# Single entity research
 /research-entity <entity-name>
 /research-entity --id <entity-id>
+
+# Batch processing (sequential, efficient)
+/research-entity batch <n>
+/research-entity batch --category <category>
+/research-entity batch --type <type>
+/research-entity batch --continue
+
+# Query commands
 /research-entity types
 /research-entity --type <type>
 /research-entity categories
 /research-entity --category <category>
+
+# Help
 /research-entity help
 /research-entity commands
 
@@ -428,6 +467,124 @@ npm run cli -- logo:summary '{"projectId": "..."}'
 
 # Entity metadata (for buzz score)
 npm run cli -- entity:update '{"entityId": "...", "metadata": {"buzzScore": 0.75}}'
+```
+
+---
+
+### MODE: `batch <n>` or `batch --category <cat>` or `batch --type <type>`
+
+Batch research multiple entities sequentially. This is the **recommended approach** for systematic research.
+
+#### Why Batch?
+
+| Factor | Parallel Agents | Sequential Batch |
+|--------|-----------------|------------------|
+| Quality | Same model | Same model |
+| Consistency | Variable | High (learns patterns) |
+| Failures | Need retries | Zero (direct execution) |
+| Coordination | Complex | None |
+| Progress | All-or-nothing | Per-entity saves |
+
+#### Step 1: Get Project Context and Identify Entities
+
+```bash
+# Read active project
+cat .claude/context/active-project.json 2>/dev/null
+
+# Get entities needing research (0 extractions)
+npm run cli -- research:gaps '{"projectId": "PROJECT_ID"}'
+```
+
+**Entity Selection Priority:**
+1. `batch <n>`: Next N entities with 0 extractions (alphabetically)
+2. `batch --category <cat>`: Entities in category with fewest extractions
+3. `batch --type <type>`: Entities of type with fewest extractions
+4. `batch --continue`: Resume from saved position
+
+#### Step 2: Sequential Processing Loop
+
+For each entity in the batch:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ ENTITY: [1/10] Cursor                                   │
+├─────────────────────────────────────────────────────────┤
+│ 1. Load entity state                                    │
+│ 2. Identify schema gaps (pricing, features, etc.)       │
+│ 3. For each gap:                                        │
+│    a. extract:fetch URL                                 │
+│    b. Read screenshot visually                          │
+│    c. extract:save structured data                      │
+│ 4. Create key assertions                                │
+│ 5. Mark complete, save progress                         │
+├─────────────────────────────────────────────────────────┤
+│ ✓ Complete: 3 extractions, 12 assertions                │
+└─────────────────────────────────────────────────────────┘
+```
+
+#### Step 3: Progress Tracking
+
+After each entity, update batch progress file:
+
+```bash
+# Save progress to context file
+echo '{"lastEntity": "Cursor", "position": 3, "batchSize": 10, "completed": ["Entity1", "Entity2", "Cursor"]}' > .claude/context/batch-progress.json
+```
+
+#### Step 4: Batch Summary
+
+After all entities processed:
+
+```markdown
+## Batch Complete: 10/10 Entities
+
+| Entity | Extractions | Assertions | Status |
+|--------|-------------|------------|--------|
+| Cursor | 5 | 23 | ✓ Complete |
+| Copilot | 4 | 18 | ✓ Complete |
+| Codeium | 4 | 15 | ✓ Complete |
+| Tabnine | 5 | 20 | ✓ Complete |
+| ... | ... | ... | ... |
+
+### Totals
+- Extractions added: 42
+- Assertions added: 156
+- Time: ~30 minutes
+
+### Next Batch
+73 entities remaining. Run: /research-entity batch 10 --continue
+```
+
+#### Extraction Focus (Per Entity)
+
+For efficiency, focus on these schemas per entity:
+
+| Priority | Schema | Why |
+|----------|--------|-----|
+| **HIGH** | pricing | Budget decisions |
+| **HIGH** | features | Core capabilities |
+| **MEDIUM** | compliance | Federal viability |
+| **MEDIUM** | company | Background context |
+| **LOW** | integrations | Nice-to-have |
+| **LOW** | differentiators | Competitive analysis |
+
+**Minimum viable research**: pricing + features (2 extractions)
+**Full research**: All 6 schemas
+
+#### Error Handling in Batch
+
+If extraction fails for an entity:
+1. Log the error
+2. Mark entity as "partial" in progress file
+3. Continue to next entity
+4. Report failures in batch summary
+
+```markdown
+### Partial/Failed Entities
+| Entity | Issue | Action Needed |
+|--------|-------|---------------|
+| Codeium | 403 on pricing page | Try alternative URL |
+| Tabnine | No pricing page found | Manual research |
 ```
 
 ---
@@ -715,9 +872,11 @@ Follow this EXACT sequence when /research-entity is invoked with an entity:
 
 ---
 
-## PHASE 1: RECONNAISSANCE (Sonnet)
+## PHASE 1: RECONNAISSANCE
 
 **Goal**: Assess current research state, identify gaps, create research plan
+
+**Execution Model**: Claude directly loads entity state and plans extraction URLs.
 
 ### Step 1.1: Resolve Entity
 
@@ -802,9 +961,11 @@ Based on gaps, identify URLs to fetch:
 
 ---
 
-## PHASE 2: DEEP EXTRACTION (Sonnet + Haiku)
+## PHASE 2: DEEP EXTRACTION (Sequential)
 
 **Goal**: Fill research gaps using evidence-first protocol
+
+**Execution Model**: Claude directly executes CLI commands sequentially. No subagents spawned.
 
 ### Step 2.1: Execute Extractions
 
@@ -996,11 +1157,11 @@ npm run cli -- entity:update '{
 
 ---
 
-## PHASE 3: SYNTHESIS (Opus)
+## PHASE 3: SYNTHESIS
 
 **Goal**: Form world-view, identify pillar assertions
 
-**CRITICAL: This is the discernment phase. Opus reviews ALL assertions and selects the vital few.**
+**CRITICAL: This is the discernment phase. Claude reviews ALL assertions and selects the vital few.**
 
 ### Step 3.1: Load All Assertions
 
@@ -1057,7 +1218,7 @@ For each pillar assertion, document:
 
 ---
 
-## PHASE 4: OUTPUT (Haiku)
+## PHASE 4: OUTPUT
 
 **Goal**: Persist pillar designations, generate deliverables
 

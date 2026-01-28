@@ -7,5 +7,13 @@ export type * from './models/AssertionSource';
 export type * from './models/ResearchLog';
 export type * from './models/Screenshot';
 export type * from './models/Extraction';
+export type * from './models/ResearchSession';
+export type * from './models/ResearchTask';
+export type * from './models/DiscoverySource';
+export type * from './models/RawDiscovery';
+export type * from './models/DiscoveryCrawl';
+export type * from './models/DiscoveryTrend';
+export type * from './models/DiscoveryCategory';
+export type * from './models/ResearchDomain';
 export type * from './commonInputTypes';
 //# sourceMappingURL=models.d.ts.map

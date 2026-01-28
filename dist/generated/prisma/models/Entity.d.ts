@@ -7,8 +7,28 @@ import type * as Prisma from "../internal/prismaNamespace";
 export type EntityModel = runtime.Types.Result.DefaultSelection<Prisma.$EntityPayload>;
 export type AggregateEntity = {
     _count: EntityCountAggregateOutputType | null;
+    _avg: EntityAvgAggregateOutputType | null;
+    _sum: EntitySumAggregateOutputType | null;
     _min: EntityMinAggregateOutputType | null;
     _max: EntityMaxAggregateOutputType | null;
+};
+export type EntityAvgAggregateOutputType = {
+    githubStars: number | null;
+    githubForks: number | null;
+    githubWatchers: number | null;
+    githubOpenIssues: number | null;
+    githubContributors: number | null;
+    buzzScore: number | null;
+    buzzOverride: number | null;
+};
+export type EntitySumAggregateOutputType = {
+    githubStars: number | null;
+    githubForks: number | null;
+    githubWatchers: number | null;
+    githubOpenIssues: number | null;
+    githubContributors: number | null;
+    buzzScore: number | null;
+    buzzOverride: number | null;
 };
 export type EntityMinAggregateOutputType = {
     id: string | null;
@@ -18,6 +38,9 @@ export type EntityMinAggregateOutputType = {
     url: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
+    discoveryCategory: string | null;
+    categoryId: string | null;
+    domainId: string | null;
     logoUrl: string | null;
     logoPath: string | null;
     logoFormat: string | null;
@@ -25,6 +48,24 @@ export type EntityMinAggregateOutputType = {
     logoSourceUrl: string | null;
     logoFetchedAt: Date | null;
     logoVerified: boolean | null;
+    githubUrl: string | null;
+    githubOwner: string | null;
+    githubRepo: string | null;
+    githubStars: number | null;
+    githubForks: number | null;
+    githubWatchers: number | null;
+    githubOpenIssues: number | null;
+    githubContributors: number | null;
+    githubLastCommit: Date | null;
+    githubLastRelease: Date | null;
+    githubLanguage: string | null;
+    githubLicense: string | null;
+    githubCreatedAt: Date | null;
+    githubMetricsAt: Date | null;
+    buzzScore: number | null;
+    buzzCalculatedAt: Date | null;
+    buzzOverride: number | null;
+    buzzOverrideReason: string | null;
     projectId: string | null;
 };
 export type EntityMaxAggregateOutputType = {
@@ -35,6 +76,9 @@ export type EntityMaxAggregateOutputType = {
     url: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
+    discoveryCategory: string | null;
+    categoryId: string | null;
+    domainId: string | null;
     logoUrl: string | null;
     logoPath: string | null;
     logoFormat: string | null;
@@ -42,6 +86,24 @@ export type EntityMaxAggregateOutputType = {
     logoSourceUrl: string | null;
     logoFetchedAt: Date | null;
     logoVerified: boolean | null;
+    githubUrl: string | null;
+    githubOwner: string | null;
+    githubRepo: string | null;
+    githubStars: number | null;
+    githubForks: number | null;
+    githubWatchers: number | null;
+    githubOpenIssues: number | null;
+    githubContributors: number | null;
+    githubLastCommit: Date | null;
+    githubLastRelease: Date | null;
+    githubLanguage: string | null;
+    githubLicense: string | null;
+    githubCreatedAt: Date | null;
+    githubMetricsAt: Date | null;
+    buzzScore: number | null;
+    buzzCalculatedAt: Date | null;
+    buzzOverride: number | null;
+    buzzOverrideReason: string | null;
     projectId: string | null;
 };
 export type EntityCountAggregateOutputType = {
@@ -52,6 +114,9 @@ export type EntityCountAggregateOutputType = {
     url: number;
     createdAt: number;
     updatedAt: number;
+    discoveryCategory: number;
+    categoryId: number;
+    domainId: number;
     logoUrl: number;
     logoPath: number;
     logoFormat: number;
@@ -59,8 +124,45 @@ export type EntityCountAggregateOutputType = {
     logoSourceUrl: number;
     logoFetchedAt: number;
     logoVerified: number;
+    githubUrl: number;
+    githubOwner: number;
+    githubRepo: number;
+    githubStars: number;
+    githubForks: number;
+    githubWatchers: number;
+    githubOpenIssues: number;
+    githubContributors: number;
+    githubLastCommit: number;
+    githubLastRelease: number;
+    githubLanguage: number;
+    githubLicense: number;
+    githubCreatedAt: number;
+    githubMetricsAt: number;
+    buzzScore: number;
+    buzzComponents: number;
+    buzzCalculatedAt: number;
+    buzzOverride: number;
+    buzzOverrideReason: number;
     projectId: number;
     _all: number;
+};
+export type EntityAvgAggregateInputType = {
+    githubStars?: true;
+    githubForks?: true;
+    githubWatchers?: true;
+    githubOpenIssues?: true;
+    githubContributors?: true;
+    buzzScore?: true;
+    buzzOverride?: true;
+};
+export type EntitySumAggregateInputType = {
+    githubStars?: true;
+    githubForks?: true;
+    githubWatchers?: true;
+    githubOpenIssues?: true;
+    githubContributors?: true;
+    buzzScore?: true;
+    buzzOverride?: true;
 };
 export type EntityMinAggregateInputType = {
     id?: true;
@@ -70,6 +172,9 @@ export type EntityMinAggregateInputType = {
     url?: true;
     createdAt?: true;
     updatedAt?: true;
+    discoveryCategory?: true;
+    categoryId?: true;
+    domainId?: true;
     logoUrl?: true;
     logoPath?: true;
     logoFormat?: true;
@@ -77,6 +182,24 @@ export type EntityMinAggregateInputType = {
     logoSourceUrl?: true;
     logoFetchedAt?: true;
     logoVerified?: true;
+    githubUrl?: true;
+    githubOwner?: true;
+    githubRepo?: true;
+    githubStars?: true;
+    githubForks?: true;
+    githubWatchers?: true;
+    githubOpenIssues?: true;
+    githubContributors?: true;
+    githubLastCommit?: true;
+    githubLastRelease?: true;
+    githubLanguage?: true;
+    githubLicense?: true;
+    githubCreatedAt?: true;
+    githubMetricsAt?: true;
+    buzzScore?: true;
+    buzzCalculatedAt?: true;
+    buzzOverride?: true;
+    buzzOverrideReason?: true;
     projectId?: true;
 };
 export type EntityMaxAggregateInputType = {
@@ -87,6 +210,9 @@ export type EntityMaxAggregateInputType = {
     url?: true;
     createdAt?: true;
     updatedAt?: true;
+    discoveryCategory?: true;
+    categoryId?: true;
+    domainId?: true;
     logoUrl?: true;
     logoPath?: true;
     logoFormat?: true;
@@ -94,6 +220,24 @@ export type EntityMaxAggregateInputType = {
     logoSourceUrl?: true;
     logoFetchedAt?: true;
     logoVerified?: true;
+    githubUrl?: true;
+    githubOwner?: true;
+    githubRepo?: true;
+    githubStars?: true;
+    githubForks?: true;
+    githubWatchers?: true;
+    githubOpenIssues?: true;
+    githubContributors?: true;
+    githubLastCommit?: true;
+    githubLastRelease?: true;
+    githubLanguage?: true;
+    githubLicense?: true;
+    githubCreatedAt?: true;
+    githubMetricsAt?: true;
+    buzzScore?: true;
+    buzzCalculatedAt?: true;
+    buzzOverride?: true;
+    buzzOverrideReason?: true;
     projectId?: true;
 };
 export type EntityCountAggregateInputType = {
@@ -104,6 +248,9 @@ export type EntityCountAggregateInputType = {
     url?: true;
     createdAt?: true;
     updatedAt?: true;
+    discoveryCategory?: true;
+    categoryId?: true;
+    domainId?: true;
     logoUrl?: true;
     logoPath?: true;
     logoFormat?: true;
@@ -111,6 +258,25 @@ export type EntityCountAggregateInputType = {
     logoSourceUrl?: true;
     logoFetchedAt?: true;
     logoVerified?: true;
+    githubUrl?: true;
+    githubOwner?: true;
+    githubRepo?: true;
+    githubStars?: true;
+    githubForks?: true;
+    githubWatchers?: true;
+    githubOpenIssues?: true;
+    githubContributors?: true;
+    githubLastCommit?: true;
+    githubLastRelease?: true;
+    githubLanguage?: true;
+    githubLicense?: true;
+    githubCreatedAt?: true;
+    githubMetricsAt?: true;
+    buzzScore?: true;
+    buzzComponents?: true;
+    buzzCalculatedAt?: true;
+    buzzOverride?: true;
+    buzzOverrideReason?: true;
     projectId?: true;
     _all?: true;
 };
@@ -152,6 +318,18 @@ export type EntityAggregateArgs<ExtArgs extends runtime.Types.Extensions.Interna
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      *
+     * Select which fields to average
+    **/
+    _avg?: EntityAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: EntitySumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
      * Select which fields to find the minimum value
     **/
     _min?: EntityMinAggregateInputType;
@@ -173,6 +351,8 @@ export type EntityGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
     take?: number;
     skip?: number;
     _count?: EntityCountAggregateInputType | true;
+    _avg?: EntityAvgAggregateInputType;
+    _sum?: EntitySumAggregateInputType;
     _min?: EntityMinAggregateInputType;
     _max?: EntityMaxAggregateInputType;
 };
@@ -184,6 +364,9 @@ export type EntityGroupByOutputType = {
     url: string | null;
     createdAt: Date;
     updatedAt: Date;
+    discoveryCategory: string | null;
+    categoryId: string | null;
+    domainId: string | null;
     logoUrl: string | null;
     logoPath: string | null;
     logoFormat: string | null;
@@ -191,8 +374,29 @@ export type EntityGroupByOutputType = {
     logoSourceUrl: string | null;
     logoFetchedAt: Date | null;
     logoVerified: boolean;
+    githubUrl: string | null;
+    githubOwner: string | null;
+    githubRepo: string | null;
+    githubStars: number | null;
+    githubForks: number | null;
+    githubWatchers: number | null;
+    githubOpenIssues: number | null;
+    githubContributors: number | null;
+    githubLastCommit: Date | null;
+    githubLastRelease: Date | null;
+    githubLanguage: string | null;
+    githubLicense: string | null;
+    githubCreatedAt: Date | null;
+    githubMetricsAt: Date | null;
+    buzzScore: number | null;
+    buzzComponents: runtime.JsonValue | null;
+    buzzCalculatedAt: Date | null;
+    buzzOverride: number | null;
+    buzzOverrideReason: string | null;
     projectId: string;
     _count: EntityCountAggregateOutputType | null;
+    _avg: EntityAvgAggregateOutputType | null;
+    _sum: EntitySumAggregateOutputType | null;
     _min: EntityMinAggregateOutputType | null;
     _max: EntityMaxAggregateOutputType | null;
 };
@@ -210,6 +414,9 @@ export type EntityWhereInput = {
     url?: Prisma.StringNullableFilter<"Entity"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Entity"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Entity"> | Date | string;
+    discoveryCategory?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    categoryId?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    domainId?: Prisma.StringNullableFilter<"Entity"> | string | null;
     logoUrl?: Prisma.StringNullableFilter<"Entity"> | string | null;
     logoPath?: Prisma.StringNullableFilter<"Entity"> | string | null;
     logoFormat?: Prisma.StringNullableFilter<"Entity"> | string | null;
@@ -217,10 +424,32 @@ export type EntityWhereInput = {
     logoSourceUrl?: Prisma.StringNullableFilter<"Entity"> | string | null;
     logoFetchedAt?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
     logoVerified?: Prisma.BoolFilter<"Entity"> | boolean;
+    githubUrl?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubOwner?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubRepo?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubStars?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubForks?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubWatchers?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubOpenIssues?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubContributors?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubLastCommit?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    githubLastRelease?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    githubLanguage?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubLicense?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubCreatedAt?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    githubMetricsAt?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    buzzScore?: Prisma.FloatNullableFilter<"Entity"> | number | null;
+    buzzComponents?: Prisma.JsonNullableFilter<"Entity">;
+    buzzCalculatedAt?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    buzzOverride?: Prisma.FloatNullableFilter<"Entity"> | number | null;
+    buzzOverrideReason?: Prisma.StringNullableFilter<"Entity"> | string | null;
     projectId?: Prisma.StringFilter<"Entity"> | string;
+    category?: Prisma.XOR<Prisma.DiscoveryCategoryNullableScalarRelationFilter, Prisma.DiscoveryCategoryWhereInput> | null;
+    domain?: Prisma.XOR<Prisma.ResearchDomainNullableScalarRelationFilter, Prisma.ResearchDomainWhereInput> | null;
     project?: Prisma.XOR<Prisma.ResearchProjectScalarRelationFilter, Prisma.ResearchProjectWhereInput>;
     assertions?: Prisma.AssertionListRelationFilter;
     extractions?: Prisma.ExtractionListRelationFilter;
+    researchSessions?: Prisma.ResearchSessionListRelationFilter;
 };
 export type EntityOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -230,6 +459,9 @@ export type EntityOrderByWithRelationInput = {
     url?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    discoveryCategory?: Prisma.SortOrderInput | Prisma.SortOrder;
+    categoryId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    domainId?: Prisma.SortOrderInput | Prisma.SortOrder;
     logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     logoPath?: Prisma.SortOrderInput | Prisma.SortOrder;
     logoFormat?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -237,10 +469,32 @@ export type EntityOrderByWithRelationInput = {
     logoSourceUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     logoFetchedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     logoVerified?: Prisma.SortOrder;
+    githubUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubOwner?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubRepo?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubStars?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubForks?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubWatchers?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubOpenIssues?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubContributors?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubLastCommit?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubLastRelease?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubLanguage?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubLicense?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubCreatedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubMetricsAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    buzzScore?: Prisma.SortOrderInput | Prisma.SortOrder;
+    buzzComponents?: Prisma.SortOrderInput | Prisma.SortOrder;
+    buzzCalculatedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    buzzOverride?: Prisma.SortOrderInput | Prisma.SortOrder;
+    buzzOverrideReason?: Prisma.SortOrderInput | Prisma.SortOrder;
     projectId?: Prisma.SortOrder;
+    category?: Prisma.DiscoveryCategoryOrderByWithRelationInput;
+    domain?: Prisma.ResearchDomainOrderByWithRelationInput;
     project?: Prisma.ResearchProjectOrderByWithRelationInput;
     assertions?: Prisma.AssertionOrderByRelationAggregateInput;
     extractions?: Prisma.ExtractionOrderByRelationAggregateInput;
+    researchSessions?: Prisma.ResearchSessionOrderByRelationAggregateInput;
 };
 export type EntityWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -254,6 +508,9 @@ export type EntityWhereUniqueInput = Prisma.AtLeast<{
     url?: Prisma.StringNullableFilter<"Entity"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Entity"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Entity"> | Date | string;
+    discoveryCategory?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    categoryId?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    domainId?: Prisma.StringNullableFilter<"Entity"> | string | null;
     logoUrl?: Prisma.StringNullableFilter<"Entity"> | string | null;
     logoPath?: Prisma.StringNullableFilter<"Entity"> | string | null;
     logoFormat?: Prisma.StringNullableFilter<"Entity"> | string | null;
@@ -261,10 +518,32 @@ export type EntityWhereUniqueInput = Prisma.AtLeast<{
     logoSourceUrl?: Prisma.StringNullableFilter<"Entity"> | string | null;
     logoFetchedAt?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
     logoVerified?: Prisma.BoolFilter<"Entity"> | boolean;
+    githubUrl?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubOwner?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubRepo?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubStars?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubForks?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubWatchers?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubOpenIssues?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubContributors?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubLastCommit?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    githubLastRelease?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    githubLanguage?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubLicense?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubCreatedAt?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    githubMetricsAt?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    buzzScore?: Prisma.FloatNullableFilter<"Entity"> | number | null;
+    buzzComponents?: Prisma.JsonNullableFilter<"Entity">;
+    buzzCalculatedAt?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    buzzOverride?: Prisma.FloatNullableFilter<"Entity"> | number | null;
+    buzzOverrideReason?: Prisma.StringNullableFilter<"Entity"> | string | null;
     projectId?: Prisma.StringFilter<"Entity"> | string;
+    category?: Prisma.XOR<Prisma.DiscoveryCategoryNullableScalarRelationFilter, Prisma.DiscoveryCategoryWhereInput> | null;
+    domain?: Prisma.XOR<Prisma.ResearchDomainNullableScalarRelationFilter, Prisma.ResearchDomainWhereInput> | null;
     project?: Prisma.XOR<Prisma.ResearchProjectScalarRelationFilter, Prisma.ResearchProjectWhereInput>;
     assertions?: Prisma.AssertionListRelationFilter;
     extractions?: Prisma.ExtractionListRelationFilter;
+    researchSessions?: Prisma.ResearchSessionListRelationFilter;
 }, "id" | "projectId_name">;
 export type EntityOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -274,6 +553,9 @@ export type EntityOrderByWithAggregationInput = {
     url?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    discoveryCategory?: Prisma.SortOrderInput | Prisma.SortOrder;
+    categoryId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    domainId?: Prisma.SortOrderInput | Prisma.SortOrder;
     logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     logoPath?: Prisma.SortOrderInput | Prisma.SortOrder;
     logoFormat?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -281,10 +563,31 @@ export type EntityOrderByWithAggregationInput = {
     logoSourceUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     logoFetchedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     logoVerified?: Prisma.SortOrder;
+    githubUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubOwner?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubRepo?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubStars?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubForks?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubWatchers?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubOpenIssues?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubContributors?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubLastCommit?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubLastRelease?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubLanguage?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubLicense?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubCreatedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    githubMetricsAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    buzzScore?: Prisma.SortOrderInput | Prisma.SortOrder;
+    buzzComponents?: Prisma.SortOrderInput | Prisma.SortOrder;
+    buzzCalculatedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    buzzOverride?: Prisma.SortOrderInput | Prisma.SortOrder;
+    buzzOverrideReason?: Prisma.SortOrderInput | Prisma.SortOrder;
     projectId?: Prisma.SortOrder;
     _count?: Prisma.EntityCountOrderByAggregateInput;
+    _avg?: Prisma.EntityAvgOrderByAggregateInput;
     _max?: Prisma.EntityMaxOrderByAggregateInput;
     _min?: Prisma.EntityMinOrderByAggregateInput;
+    _sum?: Prisma.EntitySumOrderByAggregateInput;
 };
 export type EntityScalarWhereWithAggregatesInput = {
     AND?: Prisma.EntityScalarWhereWithAggregatesInput | Prisma.EntityScalarWhereWithAggregatesInput[];
@@ -297,6 +600,9 @@ export type EntityScalarWhereWithAggregatesInput = {
     url?: Prisma.StringNullableWithAggregatesFilter<"Entity"> | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Entity"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Entity"> | Date | string;
+    discoveryCategory?: Prisma.StringNullableWithAggregatesFilter<"Entity"> | string | null;
+    categoryId?: Prisma.StringNullableWithAggregatesFilter<"Entity"> | string | null;
+    domainId?: Prisma.StringNullableWithAggregatesFilter<"Entity"> | string | null;
     logoUrl?: Prisma.StringNullableWithAggregatesFilter<"Entity"> | string | null;
     logoPath?: Prisma.StringNullableWithAggregatesFilter<"Entity"> | string | null;
     logoFormat?: Prisma.StringNullableWithAggregatesFilter<"Entity"> | string | null;
@@ -304,6 +610,25 @@ export type EntityScalarWhereWithAggregatesInput = {
     logoSourceUrl?: Prisma.StringNullableWithAggregatesFilter<"Entity"> | string | null;
     logoFetchedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Entity"> | Date | string | null;
     logoVerified?: Prisma.BoolWithAggregatesFilter<"Entity"> | boolean;
+    githubUrl?: Prisma.StringNullableWithAggregatesFilter<"Entity"> | string | null;
+    githubOwner?: Prisma.StringNullableWithAggregatesFilter<"Entity"> | string | null;
+    githubRepo?: Prisma.StringNullableWithAggregatesFilter<"Entity"> | string | null;
+    githubStars?: Prisma.IntNullableWithAggregatesFilter<"Entity"> | number | null;
+    githubForks?: Prisma.IntNullableWithAggregatesFilter<"Entity"> | number | null;
+    githubWatchers?: Prisma.IntNullableWithAggregatesFilter<"Entity"> | number | null;
+    githubOpenIssues?: Prisma.IntNullableWithAggregatesFilter<"Entity"> | number | null;
+    githubContributors?: Prisma.IntNullableWithAggregatesFilter<"Entity"> | number | null;
+    githubLastCommit?: Prisma.DateTimeNullableWithAggregatesFilter<"Entity"> | Date | string | null;
+    githubLastRelease?: Prisma.DateTimeNullableWithAggregatesFilter<"Entity"> | Date | string | null;
+    githubLanguage?: Prisma.StringNullableWithAggregatesFilter<"Entity"> | string | null;
+    githubLicense?: Prisma.StringNullableWithAggregatesFilter<"Entity"> | string | null;
+    githubCreatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Entity"> | Date | string | null;
+    githubMetricsAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Entity"> | Date | string | null;
+    buzzScore?: Prisma.FloatNullableWithAggregatesFilter<"Entity"> | number | null;
+    buzzComponents?: Prisma.JsonNullableWithAggregatesFilter<"Entity">;
+    buzzCalculatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Entity"> | Date | string | null;
+    buzzOverride?: Prisma.FloatNullableWithAggregatesFilter<"Entity"> | number | null;
+    buzzOverrideReason?: Prisma.StringNullableWithAggregatesFilter<"Entity"> | string | null;
     projectId?: Prisma.StringWithAggregatesFilter<"Entity"> | string;
 };
 export type EntityCreateInput = {
@@ -314,6 +639,7 @@ export type EntityCreateInput = {
     url?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    discoveryCategory?: string | null;
     logoUrl?: string | null;
     logoPath?: string | null;
     logoFormat?: string | null;
@@ -321,9 +647,31 @@ export type EntityCreateInput = {
     logoSourceUrl?: string | null;
     logoFetchedAt?: Date | string | null;
     logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    category?: Prisma.DiscoveryCategoryCreateNestedOneWithoutEntitiesInput;
+    domain?: Prisma.ResearchDomainCreateNestedOneWithoutEntitiesInput;
     project: Prisma.ResearchProjectCreateNestedOneWithoutEntitiesInput;
     assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
     extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
 };
 export type EntityUncheckedCreateInput = {
     id?: string;
@@ -333,6 +681,9 @@ export type EntityUncheckedCreateInput = {
     url?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    categoryId?: string | null;
+    domainId?: string | null;
     logoUrl?: string | null;
     logoPath?: string | null;
     logoFormat?: string | null;
@@ -340,9 +691,29 @@ export type EntityUncheckedCreateInput = {
     logoSourceUrl?: string | null;
     logoFetchedAt?: Date | string | null;
     logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
     projectId: string;
     assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
     extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
 };
 export type EntityUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -352,6 +723,7 @@ export type EntityUpdateInput = {
     url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -359,9 +731,31 @@ export type EntityUpdateInput = {
     logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.DiscoveryCategoryUpdateOneWithoutEntitiesNestedInput;
+    domain?: Prisma.ResearchDomainUpdateOneWithoutEntitiesNestedInput;
     project?: Prisma.ResearchProjectUpdateOneRequiredWithoutEntitiesNestedInput;
     assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
     extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -371,6 +765,9 @@ export type EntityUncheckedUpdateInput = {
     url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -378,9 +775,29 @@ export type EntityUncheckedUpdateInput = {
     logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     projectId?: Prisma.StringFieldUpdateOperationsInput | string;
     assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
     extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
 };
 export type EntityCreateManyInput = {
     id?: string;
@@ -390,6 +807,9 @@ export type EntityCreateManyInput = {
     url?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    categoryId?: string | null;
+    domainId?: string | null;
     logoUrl?: string | null;
     logoPath?: string | null;
     logoFormat?: string | null;
@@ -397,6 +817,25 @@ export type EntityCreateManyInput = {
     logoSourceUrl?: string | null;
     logoFetchedAt?: Date | string | null;
     logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
     projectId: string;
 };
 export type EntityUpdateManyMutationInput = {
@@ -407,6 +846,7 @@ export type EntityUpdateManyMutationInput = {
     url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -414,6 +854,25 @@ export type EntityUpdateManyMutationInput = {
     logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
 };
 export type EntityUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -423,6 +882,9 @@ export type EntityUncheckedUpdateManyInput = {
     url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -430,6 +892,25 @@ export type EntityUncheckedUpdateManyInput = {
     logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     projectId?: Prisma.StringFieldUpdateOperationsInput | string;
 };
 export type EntityListRelationFilter = {
@@ -452,6 +933,9 @@ export type EntityCountOrderByAggregateInput = {
     url?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    discoveryCategory?: Prisma.SortOrder;
+    categoryId?: Prisma.SortOrder;
+    domainId?: Prisma.SortOrder;
     logoUrl?: Prisma.SortOrder;
     logoPath?: Prisma.SortOrder;
     logoFormat?: Prisma.SortOrder;
@@ -459,7 +943,35 @@ export type EntityCountOrderByAggregateInput = {
     logoSourceUrl?: Prisma.SortOrder;
     logoFetchedAt?: Prisma.SortOrder;
     logoVerified?: Prisma.SortOrder;
+    githubUrl?: Prisma.SortOrder;
+    githubOwner?: Prisma.SortOrder;
+    githubRepo?: Prisma.SortOrder;
+    githubStars?: Prisma.SortOrder;
+    githubForks?: Prisma.SortOrder;
+    githubWatchers?: Prisma.SortOrder;
+    githubOpenIssues?: Prisma.SortOrder;
+    githubContributors?: Prisma.SortOrder;
+    githubLastCommit?: Prisma.SortOrder;
+    githubLastRelease?: Prisma.SortOrder;
+    githubLanguage?: Prisma.SortOrder;
+    githubLicense?: Prisma.SortOrder;
+    githubCreatedAt?: Prisma.SortOrder;
+    githubMetricsAt?: Prisma.SortOrder;
+    buzzScore?: Prisma.SortOrder;
+    buzzComponents?: Prisma.SortOrder;
+    buzzCalculatedAt?: Prisma.SortOrder;
+    buzzOverride?: Prisma.SortOrder;
+    buzzOverrideReason?: Prisma.SortOrder;
     projectId?: Prisma.SortOrder;
+};
+export type EntityAvgOrderByAggregateInput = {
+    githubStars?: Prisma.SortOrder;
+    githubForks?: Prisma.SortOrder;
+    githubWatchers?: Prisma.SortOrder;
+    githubOpenIssues?: Prisma.SortOrder;
+    githubContributors?: Prisma.SortOrder;
+    buzzScore?: Prisma.SortOrder;
+    buzzOverride?: Prisma.SortOrder;
 };
 export type EntityMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -469,6 +981,9 @@ export type EntityMaxOrderByAggregateInput = {
     url?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    discoveryCategory?: Prisma.SortOrder;
+    categoryId?: Prisma.SortOrder;
+    domainId?: Prisma.SortOrder;
     logoUrl?: Prisma.SortOrder;
     logoPath?: Prisma.SortOrder;
     logoFormat?: Prisma.SortOrder;
@@ -476,6 +991,24 @@ export type EntityMaxOrderByAggregateInput = {
     logoSourceUrl?: Prisma.SortOrder;
     logoFetchedAt?: Prisma.SortOrder;
     logoVerified?: Prisma.SortOrder;
+    githubUrl?: Prisma.SortOrder;
+    githubOwner?: Prisma.SortOrder;
+    githubRepo?: Prisma.SortOrder;
+    githubStars?: Prisma.SortOrder;
+    githubForks?: Prisma.SortOrder;
+    githubWatchers?: Prisma.SortOrder;
+    githubOpenIssues?: Prisma.SortOrder;
+    githubContributors?: Prisma.SortOrder;
+    githubLastCommit?: Prisma.SortOrder;
+    githubLastRelease?: Prisma.SortOrder;
+    githubLanguage?: Prisma.SortOrder;
+    githubLicense?: Prisma.SortOrder;
+    githubCreatedAt?: Prisma.SortOrder;
+    githubMetricsAt?: Prisma.SortOrder;
+    buzzScore?: Prisma.SortOrder;
+    buzzCalculatedAt?: Prisma.SortOrder;
+    buzzOverride?: Prisma.SortOrder;
+    buzzOverrideReason?: Prisma.SortOrder;
     projectId?: Prisma.SortOrder;
 };
 export type EntityMinOrderByAggregateInput = {
@@ -486,6 +1019,9 @@ export type EntityMinOrderByAggregateInput = {
     url?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    discoveryCategory?: Prisma.SortOrder;
+    categoryId?: Prisma.SortOrder;
+    domainId?: Prisma.SortOrder;
     logoUrl?: Prisma.SortOrder;
     logoPath?: Prisma.SortOrder;
     logoFormat?: Prisma.SortOrder;
@@ -493,7 +1029,34 @@ export type EntityMinOrderByAggregateInput = {
     logoSourceUrl?: Prisma.SortOrder;
     logoFetchedAt?: Prisma.SortOrder;
     logoVerified?: Prisma.SortOrder;
+    githubUrl?: Prisma.SortOrder;
+    githubOwner?: Prisma.SortOrder;
+    githubRepo?: Prisma.SortOrder;
+    githubStars?: Prisma.SortOrder;
+    githubForks?: Prisma.SortOrder;
+    githubWatchers?: Prisma.SortOrder;
+    githubOpenIssues?: Prisma.SortOrder;
+    githubContributors?: Prisma.SortOrder;
+    githubLastCommit?: Prisma.SortOrder;
+    githubLastRelease?: Prisma.SortOrder;
+    githubLanguage?: Prisma.SortOrder;
+    githubLicense?: Prisma.SortOrder;
+    githubCreatedAt?: Prisma.SortOrder;
+    githubMetricsAt?: Prisma.SortOrder;
+    buzzScore?: Prisma.SortOrder;
+    buzzCalculatedAt?: Prisma.SortOrder;
+    buzzOverride?: Prisma.SortOrder;
+    buzzOverrideReason?: Prisma.SortOrder;
     projectId?: Prisma.SortOrder;
+};
+export type EntitySumOrderByAggregateInput = {
+    githubStars?: Prisma.SortOrder;
+    githubForks?: Prisma.SortOrder;
+    githubWatchers?: Prisma.SortOrder;
+    githubOpenIssues?: Prisma.SortOrder;
+    githubContributors?: Prisma.SortOrder;
+    buzzScore?: Prisma.SortOrder;
+    buzzOverride?: Prisma.SortOrder;
 };
 export type EntityScalarRelationFilter = {
     is?: Prisma.EntityWhereInput;
@@ -543,6 +1106,20 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
 export type BoolFieldUpdateOperationsInput = {
     set?: boolean;
 };
+export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null;
+    increment?: number;
+    decrement?: number;
+    multiply?: number;
+    divide?: number;
+};
+export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null;
+    increment?: number;
+    decrement?: number;
+    multiply?: number;
+    divide?: number;
+};
 export type EntityCreateNestedOneWithoutAssertionsInput = {
     create?: Prisma.XOR<Prisma.EntityCreateWithoutAssertionsInput, Prisma.EntityUncheckedCreateWithoutAssertionsInput>;
     connectOrCreate?: Prisma.EntityCreateOrConnectWithoutAssertionsInput;
@@ -567,6 +1144,94 @@ export type EntityUpdateOneRequiredWithoutExtractionsNestedInput = {
     connect?: Prisma.EntityWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.EntityUpdateToOneWithWhereWithoutExtractionsInput, Prisma.EntityUpdateWithoutExtractionsInput>, Prisma.EntityUncheckedUpdateWithoutExtractionsInput>;
 };
+export type EntityCreateNestedOneWithoutResearchSessionsInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutResearchSessionsInput, Prisma.EntityUncheckedCreateWithoutResearchSessionsInput>;
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutResearchSessionsInput;
+    connect?: Prisma.EntityWhereUniqueInput;
+};
+export type EntityUpdateOneRequiredWithoutResearchSessionsNestedInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutResearchSessionsInput, Prisma.EntityUncheckedCreateWithoutResearchSessionsInput>;
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutResearchSessionsInput;
+    upsert?: Prisma.EntityUpsertWithoutResearchSessionsInput;
+    connect?: Prisma.EntityWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.EntityUpdateToOneWithWhereWithoutResearchSessionsInput, Prisma.EntityUpdateWithoutResearchSessionsInput>, Prisma.EntityUncheckedUpdateWithoutResearchSessionsInput>;
+};
+export type EntityCreateNestedManyWithoutCategoryInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutCategoryInput, Prisma.EntityUncheckedCreateWithoutCategoryInput> | Prisma.EntityCreateWithoutCategoryInput[] | Prisma.EntityUncheckedCreateWithoutCategoryInput[];
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutCategoryInput | Prisma.EntityCreateOrConnectWithoutCategoryInput[];
+    createMany?: Prisma.EntityCreateManyCategoryInputEnvelope;
+    connect?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+};
+export type EntityUncheckedCreateNestedManyWithoutCategoryInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutCategoryInput, Prisma.EntityUncheckedCreateWithoutCategoryInput> | Prisma.EntityCreateWithoutCategoryInput[] | Prisma.EntityUncheckedCreateWithoutCategoryInput[];
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutCategoryInput | Prisma.EntityCreateOrConnectWithoutCategoryInput[];
+    createMany?: Prisma.EntityCreateManyCategoryInputEnvelope;
+    connect?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+};
+export type EntityUpdateManyWithoutCategoryNestedInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutCategoryInput, Prisma.EntityUncheckedCreateWithoutCategoryInput> | Prisma.EntityCreateWithoutCategoryInput[] | Prisma.EntityUncheckedCreateWithoutCategoryInput[];
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutCategoryInput | Prisma.EntityCreateOrConnectWithoutCategoryInput[];
+    upsert?: Prisma.EntityUpsertWithWhereUniqueWithoutCategoryInput | Prisma.EntityUpsertWithWhereUniqueWithoutCategoryInput[];
+    createMany?: Prisma.EntityCreateManyCategoryInputEnvelope;
+    set?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    disconnect?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    delete?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    connect?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    update?: Prisma.EntityUpdateWithWhereUniqueWithoutCategoryInput | Prisma.EntityUpdateWithWhereUniqueWithoutCategoryInput[];
+    updateMany?: Prisma.EntityUpdateManyWithWhereWithoutCategoryInput | Prisma.EntityUpdateManyWithWhereWithoutCategoryInput[];
+    deleteMany?: Prisma.EntityScalarWhereInput | Prisma.EntityScalarWhereInput[];
+};
+export type EntityUncheckedUpdateManyWithoutCategoryNestedInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutCategoryInput, Prisma.EntityUncheckedCreateWithoutCategoryInput> | Prisma.EntityCreateWithoutCategoryInput[] | Prisma.EntityUncheckedCreateWithoutCategoryInput[];
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutCategoryInput | Prisma.EntityCreateOrConnectWithoutCategoryInput[];
+    upsert?: Prisma.EntityUpsertWithWhereUniqueWithoutCategoryInput | Prisma.EntityUpsertWithWhereUniqueWithoutCategoryInput[];
+    createMany?: Prisma.EntityCreateManyCategoryInputEnvelope;
+    set?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    disconnect?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    delete?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    connect?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    update?: Prisma.EntityUpdateWithWhereUniqueWithoutCategoryInput | Prisma.EntityUpdateWithWhereUniqueWithoutCategoryInput[];
+    updateMany?: Prisma.EntityUpdateManyWithWhereWithoutCategoryInput | Prisma.EntityUpdateManyWithWhereWithoutCategoryInput[];
+    deleteMany?: Prisma.EntityScalarWhereInput | Prisma.EntityScalarWhereInput[];
+};
+export type EntityCreateNestedManyWithoutDomainInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutDomainInput, Prisma.EntityUncheckedCreateWithoutDomainInput> | Prisma.EntityCreateWithoutDomainInput[] | Prisma.EntityUncheckedCreateWithoutDomainInput[];
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutDomainInput | Prisma.EntityCreateOrConnectWithoutDomainInput[];
+    createMany?: Prisma.EntityCreateManyDomainInputEnvelope;
+    connect?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+};
+export type EntityUncheckedCreateNestedManyWithoutDomainInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutDomainInput, Prisma.EntityUncheckedCreateWithoutDomainInput> | Prisma.EntityCreateWithoutDomainInput[] | Prisma.EntityUncheckedCreateWithoutDomainInput[];
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutDomainInput | Prisma.EntityCreateOrConnectWithoutDomainInput[];
+    createMany?: Prisma.EntityCreateManyDomainInputEnvelope;
+    connect?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+};
+export type EntityUpdateManyWithoutDomainNestedInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutDomainInput, Prisma.EntityUncheckedCreateWithoutDomainInput> | Prisma.EntityCreateWithoutDomainInput[] | Prisma.EntityUncheckedCreateWithoutDomainInput[];
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutDomainInput | Prisma.EntityCreateOrConnectWithoutDomainInput[];
+    upsert?: Prisma.EntityUpsertWithWhereUniqueWithoutDomainInput | Prisma.EntityUpsertWithWhereUniqueWithoutDomainInput[];
+    createMany?: Prisma.EntityCreateManyDomainInputEnvelope;
+    set?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    disconnect?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    delete?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    connect?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    update?: Prisma.EntityUpdateWithWhereUniqueWithoutDomainInput | Prisma.EntityUpdateWithWhereUniqueWithoutDomainInput[];
+    updateMany?: Prisma.EntityUpdateManyWithWhereWithoutDomainInput | Prisma.EntityUpdateManyWithWhereWithoutDomainInput[];
+    deleteMany?: Prisma.EntityScalarWhereInput | Prisma.EntityScalarWhereInput[];
+};
+export type EntityUncheckedUpdateManyWithoutDomainNestedInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutDomainInput, Prisma.EntityUncheckedCreateWithoutDomainInput> | Prisma.EntityCreateWithoutDomainInput[] | Prisma.EntityUncheckedCreateWithoutDomainInput[];
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutDomainInput | Prisma.EntityCreateOrConnectWithoutDomainInput[];
+    upsert?: Prisma.EntityUpsertWithWhereUniqueWithoutDomainInput | Prisma.EntityUpsertWithWhereUniqueWithoutDomainInput[];
+    createMany?: Prisma.EntityCreateManyDomainInputEnvelope;
+    set?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    disconnect?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    delete?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    connect?: Prisma.EntityWhereUniqueInput | Prisma.EntityWhereUniqueInput[];
+    update?: Prisma.EntityUpdateWithWhereUniqueWithoutDomainInput | Prisma.EntityUpdateWithWhereUniqueWithoutDomainInput[];
+    updateMany?: Prisma.EntityUpdateManyWithWhereWithoutDomainInput | Prisma.EntityUpdateManyWithWhereWithoutDomainInput[];
+    deleteMany?: Prisma.EntityScalarWhereInput | Prisma.EntityScalarWhereInput[];
+};
 export type EntityCreateWithoutProjectInput = {
     id?: string;
     name: string;
@@ -575,6 +1240,7 @@ export type EntityCreateWithoutProjectInput = {
     url?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    discoveryCategory?: string | null;
     logoUrl?: string | null;
     logoPath?: string | null;
     logoFormat?: string | null;
@@ -582,8 +1248,30 @@ export type EntityCreateWithoutProjectInput = {
     logoSourceUrl?: string | null;
     logoFetchedAt?: Date | string | null;
     logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    category?: Prisma.DiscoveryCategoryCreateNestedOneWithoutEntitiesInput;
+    domain?: Prisma.ResearchDomainCreateNestedOneWithoutEntitiesInput;
     assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
     extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
 };
 export type EntityUncheckedCreateWithoutProjectInput = {
     id?: string;
@@ -593,6 +1281,9 @@ export type EntityUncheckedCreateWithoutProjectInput = {
     url?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    categoryId?: string | null;
+    domainId?: string | null;
     logoUrl?: string | null;
     logoPath?: string | null;
     logoFormat?: string | null;
@@ -600,8 +1291,28 @@ export type EntityUncheckedCreateWithoutProjectInput = {
     logoSourceUrl?: string | null;
     logoFetchedAt?: Date | string | null;
     logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
     assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
     extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
 };
 export type EntityCreateOrConnectWithoutProjectInput = {
     where: Prisma.EntityWhereUniqueInput;
@@ -635,6 +1346,9 @@ export type EntityScalarWhereInput = {
     url?: Prisma.StringNullableFilter<"Entity"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Entity"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Entity"> | Date | string;
+    discoveryCategory?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    categoryId?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    domainId?: Prisma.StringNullableFilter<"Entity"> | string | null;
     logoUrl?: Prisma.StringNullableFilter<"Entity"> | string | null;
     logoPath?: Prisma.StringNullableFilter<"Entity"> | string | null;
     logoFormat?: Prisma.StringNullableFilter<"Entity"> | string | null;
@@ -642,6 +1356,25 @@ export type EntityScalarWhereInput = {
     logoSourceUrl?: Prisma.StringNullableFilter<"Entity"> | string | null;
     logoFetchedAt?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
     logoVerified?: Prisma.BoolFilter<"Entity"> | boolean;
+    githubUrl?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubOwner?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubRepo?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubStars?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubForks?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubWatchers?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubOpenIssues?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubContributors?: Prisma.IntNullableFilter<"Entity"> | number | null;
+    githubLastCommit?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    githubLastRelease?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    githubLanguage?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubLicense?: Prisma.StringNullableFilter<"Entity"> | string | null;
+    githubCreatedAt?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    githubMetricsAt?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    buzzScore?: Prisma.FloatNullableFilter<"Entity"> | number | null;
+    buzzComponents?: Prisma.JsonNullableFilter<"Entity">;
+    buzzCalculatedAt?: Prisma.DateTimeNullableFilter<"Entity"> | Date | string | null;
+    buzzOverride?: Prisma.FloatNullableFilter<"Entity"> | number | null;
+    buzzOverrideReason?: Prisma.StringNullableFilter<"Entity"> | string | null;
     projectId?: Prisma.StringFilter<"Entity"> | string;
 };
 export type EntityCreateWithoutAssertionsInput = {
@@ -652,6 +1385,7 @@ export type EntityCreateWithoutAssertionsInput = {
     url?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    discoveryCategory?: string | null;
     logoUrl?: string | null;
     logoPath?: string | null;
     logoFormat?: string | null;
@@ -659,8 +1393,30 @@ export type EntityCreateWithoutAssertionsInput = {
     logoSourceUrl?: string | null;
     logoFetchedAt?: Date | string | null;
     logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    category?: Prisma.DiscoveryCategoryCreateNestedOneWithoutEntitiesInput;
+    domain?: Prisma.ResearchDomainCreateNestedOneWithoutEntitiesInput;
     project: Prisma.ResearchProjectCreateNestedOneWithoutEntitiesInput;
     extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
 };
 export type EntityUncheckedCreateWithoutAssertionsInput = {
     id?: string;
@@ -670,6 +1426,9 @@ export type EntityUncheckedCreateWithoutAssertionsInput = {
     url?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    categoryId?: string | null;
+    domainId?: string | null;
     logoUrl?: string | null;
     logoPath?: string | null;
     logoFormat?: string | null;
@@ -677,8 +1436,28 @@ export type EntityUncheckedCreateWithoutAssertionsInput = {
     logoSourceUrl?: string | null;
     logoFetchedAt?: Date | string | null;
     logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
     projectId: string;
     extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
 };
 export type EntityCreateOrConnectWithoutAssertionsInput = {
     where: Prisma.EntityWhereUniqueInput;
@@ -701,6 +1480,7 @@ export type EntityUpdateWithoutAssertionsInput = {
     url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -708,8 +1488,30 @@ export type EntityUpdateWithoutAssertionsInput = {
     logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.DiscoveryCategoryUpdateOneWithoutEntitiesNestedInput;
+    domain?: Prisma.ResearchDomainUpdateOneWithoutEntitiesNestedInput;
     project?: Prisma.ResearchProjectUpdateOneRequiredWithoutEntitiesNestedInput;
     extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateWithoutAssertionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -719,6 +1521,9 @@ export type EntityUncheckedUpdateWithoutAssertionsInput = {
     url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -726,8 +1531,28 @@ export type EntityUncheckedUpdateWithoutAssertionsInput = {
     logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     projectId?: Prisma.StringFieldUpdateOperationsInput | string;
     extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
 };
 export type EntityCreateWithoutExtractionsInput = {
     id?: string;
@@ -737,6 +1562,7 @@ export type EntityCreateWithoutExtractionsInput = {
     url?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    discoveryCategory?: string | null;
     logoUrl?: string | null;
     logoPath?: string | null;
     logoFormat?: string | null;
@@ -744,8 +1570,30 @@ export type EntityCreateWithoutExtractionsInput = {
     logoSourceUrl?: string | null;
     logoFetchedAt?: Date | string | null;
     logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    category?: Prisma.DiscoveryCategoryCreateNestedOneWithoutEntitiesInput;
+    domain?: Prisma.ResearchDomainCreateNestedOneWithoutEntitiesInput;
     project: Prisma.ResearchProjectCreateNestedOneWithoutEntitiesInput;
     assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
 };
 export type EntityUncheckedCreateWithoutExtractionsInput = {
     id?: string;
@@ -755,6 +1603,9 @@ export type EntityUncheckedCreateWithoutExtractionsInput = {
     url?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    categoryId?: string | null;
+    domainId?: string | null;
     logoUrl?: string | null;
     logoPath?: string | null;
     logoFormat?: string | null;
@@ -762,8 +1613,28 @@ export type EntityUncheckedCreateWithoutExtractionsInput = {
     logoSourceUrl?: string | null;
     logoFetchedAt?: Date | string | null;
     logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
     projectId: string;
     assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
 };
 export type EntityCreateOrConnectWithoutExtractionsInput = {
     where: Prisma.EntityWhereUniqueInput;
@@ -786,6 +1657,7 @@ export type EntityUpdateWithoutExtractionsInput = {
     url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -793,8 +1665,30 @@ export type EntityUpdateWithoutExtractionsInput = {
     logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.DiscoveryCategoryUpdateOneWithoutEntitiesNestedInput;
+    domain?: Prisma.ResearchDomainUpdateOneWithoutEntitiesNestedInput;
     project?: Prisma.ResearchProjectUpdateOneRequiredWithoutEntitiesNestedInput;
     assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateWithoutExtractionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -804,6 +1698,9 @@ export type EntityUncheckedUpdateWithoutExtractionsInput = {
     url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -811,8 +1708,411 @@ export type EntityUncheckedUpdateWithoutExtractionsInput = {
     logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     projectId?: Prisma.StringFieldUpdateOperationsInput | string;
     assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
+};
+export type EntityCreateWithoutResearchSessionsInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    category?: Prisma.DiscoveryCategoryCreateNestedOneWithoutEntitiesInput;
+    domain?: Prisma.ResearchDomainCreateNestedOneWithoutEntitiesInput;
+    project: Prisma.ResearchProjectCreateNestedOneWithoutEntitiesInput;
+    assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
+    extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
+};
+export type EntityUncheckedCreateWithoutResearchSessionsInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    categoryId?: string | null;
+    domainId?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    projectId: string;
+    assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
+    extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
+};
+export type EntityCreateOrConnectWithoutResearchSessionsInput = {
+    where: Prisma.EntityWhereUniqueInput;
+    create: Prisma.XOR<Prisma.EntityCreateWithoutResearchSessionsInput, Prisma.EntityUncheckedCreateWithoutResearchSessionsInput>;
+};
+export type EntityUpsertWithoutResearchSessionsInput = {
+    update: Prisma.XOR<Prisma.EntityUpdateWithoutResearchSessionsInput, Prisma.EntityUncheckedUpdateWithoutResearchSessionsInput>;
+    create: Prisma.XOR<Prisma.EntityCreateWithoutResearchSessionsInput, Prisma.EntityUncheckedCreateWithoutResearchSessionsInput>;
+    where?: Prisma.EntityWhereInput;
+};
+export type EntityUpdateToOneWithWhereWithoutResearchSessionsInput = {
+    where?: Prisma.EntityWhereInput;
+    data: Prisma.XOR<Prisma.EntityUpdateWithoutResearchSessionsInput, Prisma.EntityUncheckedUpdateWithoutResearchSessionsInput>;
+};
+export type EntityUpdateWithoutResearchSessionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.DiscoveryCategoryUpdateOneWithoutEntitiesNestedInput;
+    domain?: Prisma.ResearchDomainUpdateOneWithoutEntitiesNestedInput;
+    project?: Prisma.ResearchProjectUpdateOneRequiredWithoutEntitiesNestedInput;
+    assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
+    extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
+};
+export type EntityUncheckedUpdateWithoutResearchSessionsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    projectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
+    extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
+};
+export type EntityCreateWithoutCategoryInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    domain?: Prisma.ResearchDomainCreateNestedOneWithoutEntitiesInput;
+    project: Prisma.ResearchProjectCreateNestedOneWithoutEntitiesInput;
+    assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
+    extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
+};
+export type EntityUncheckedCreateWithoutCategoryInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    domainId?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    projectId: string;
+    assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
+    extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
+};
+export type EntityCreateOrConnectWithoutCategoryInput = {
+    where: Prisma.EntityWhereUniqueInput;
+    create: Prisma.XOR<Prisma.EntityCreateWithoutCategoryInput, Prisma.EntityUncheckedCreateWithoutCategoryInput>;
+};
+export type EntityCreateManyCategoryInputEnvelope = {
+    data: Prisma.EntityCreateManyCategoryInput | Prisma.EntityCreateManyCategoryInput[];
+    skipDuplicates?: boolean;
+};
+export type EntityUpsertWithWhereUniqueWithoutCategoryInput = {
+    where: Prisma.EntityWhereUniqueInput;
+    update: Prisma.XOR<Prisma.EntityUpdateWithoutCategoryInput, Prisma.EntityUncheckedUpdateWithoutCategoryInput>;
+    create: Prisma.XOR<Prisma.EntityCreateWithoutCategoryInput, Prisma.EntityUncheckedCreateWithoutCategoryInput>;
+};
+export type EntityUpdateWithWhereUniqueWithoutCategoryInput = {
+    where: Prisma.EntityWhereUniqueInput;
+    data: Prisma.XOR<Prisma.EntityUpdateWithoutCategoryInput, Prisma.EntityUncheckedUpdateWithoutCategoryInput>;
+};
+export type EntityUpdateManyWithWhereWithoutCategoryInput = {
+    where: Prisma.EntityScalarWhereInput;
+    data: Prisma.XOR<Prisma.EntityUpdateManyMutationInput, Prisma.EntityUncheckedUpdateManyWithoutCategoryInput>;
+};
+export type EntityCreateWithoutDomainInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    category?: Prisma.DiscoveryCategoryCreateNestedOneWithoutEntitiesInput;
+    project: Prisma.ResearchProjectCreateNestedOneWithoutEntitiesInput;
+    assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
+    extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
+};
+export type EntityUncheckedCreateWithoutDomainInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    categoryId?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    projectId: string;
+    assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
+    extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
+};
+export type EntityCreateOrConnectWithoutDomainInput = {
+    where: Prisma.EntityWhereUniqueInput;
+    create: Prisma.XOR<Prisma.EntityCreateWithoutDomainInput, Prisma.EntityUncheckedCreateWithoutDomainInput>;
+};
+export type EntityCreateManyDomainInputEnvelope = {
+    data: Prisma.EntityCreateManyDomainInput | Prisma.EntityCreateManyDomainInput[];
+    skipDuplicates?: boolean;
+};
+export type EntityUpsertWithWhereUniqueWithoutDomainInput = {
+    where: Prisma.EntityWhereUniqueInput;
+    update: Prisma.XOR<Prisma.EntityUpdateWithoutDomainInput, Prisma.EntityUncheckedUpdateWithoutDomainInput>;
+    create: Prisma.XOR<Prisma.EntityCreateWithoutDomainInput, Prisma.EntityUncheckedCreateWithoutDomainInput>;
+};
+export type EntityUpdateWithWhereUniqueWithoutDomainInput = {
+    where: Prisma.EntityWhereUniqueInput;
+    data: Prisma.XOR<Prisma.EntityUpdateWithoutDomainInput, Prisma.EntityUncheckedUpdateWithoutDomainInput>;
+};
+export type EntityUpdateManyWithWhereWithoutDomainInput = {
+    where: Prisma.EntityScalarWhereInput;
+    data: Prisma.XOR<Prisma.EntityUpdateManyMutationInput, Prisma.EntityUncheckedUpdateManyWithoutDomainInput>;
 };
 export type EntityCreateManyProjectInput = {
     id?: string;
@@ -822,6 +2122,9 @@ export type EntityCreateManyProjectInput = {
     url?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    categoryId?: string | null;
+    domainId?: string | null;
     logoUrl?: string | null;
     logoPath?: string | null;
     logoFormat?: string | null;
@@ -829,6 +2132,25 @@ export type EntityCreateManyProjectInput = {
     logoSourceUrl?: string | null;
     logoFetchedAt?: Date | string | null;
     logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
 };
 export type EntityUpdateWithoutProjectInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -838,6 +2160,7 @@ export type EntityUpdateWithoutProjectInput = {
     url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -845,8 +2168,30 @@ export type EntityUpdateWithoutProjectInput = {
     logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.DiscoveryCategoryUpdateOneWithoutEntitiesNestedInput;
+    domain?: Prisma.ResearchDomainUpdateOneWithoutEntitiesNestedInput;
     assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
     extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateWithoutProjectInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -856,6 +2201,9 @@ export type EntityUncheckedUpdateWithoutProjectInput = {
     url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -863,8 +2211,28 @@ export type EntityUncheckedUpdateWithoutProjectInput = {
     logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
     extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateManyWithoutProjectInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -874,6 +2242,9 @@ export type EntityUncheckedUpdateManyWithoutProjectInput = {
     url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -881,6 +2252,341 @@ export type EntityUncheckedUpdateManyWithoutProjectInput = {
     logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+};
+export type EntityCreateManyCategoryInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    domainId?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    projectId: string;
+};
+export type EntityUpdateWithoutCategoryInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    domain?: Prisma.ResearchDomainUpdateOneWithoutEntitiesNestedInput;
+    project?: Prisma.ResearchProjectUpdateOneRequiredWithoutEntitiesNestedInput;
+    assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
+    extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
+};
+export type EntityUncheckedUpdateWithoutCategoryInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    projectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
+    extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
+};
+export type EntityUncheckedUpdateManyWithoutCategoryInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    projectId?: Prisma.StringFieldUpdateOperationsInput | string;
+};
+export type EntityCreateManyDomainInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    categoryId?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    projectId: string;
+};
+export type EntityUpdateWithoutDomainInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.DiscoveryCategoryUpdateOneWithoutEntitiesNestedInput;
+    project?: Prisma.ResearchProjectUpdateOneRequiredWithoutEntitiesNestedInput;
+    assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
+    extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
+};
+export type EntityUncheckedUpdateWithoutDomainInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    projectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
+    extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
+};
+export type EntityUncheckedUpdateManyWithoutDomainInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    projectId?: Prisma.StringFieldUpdateOperationsInput | string;
 };
 /**
  * Count Type EntityCountOutputType
@@ -888,10 +2594,12 @@ export type EntityUncheckedUpdateManyWithoutProjectInput = {
 export type EntityCountOutputType = {
     assertions: number;
     extractions: number;
+    researchSessions: number;
 };
 export type EntityCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     assertions?: boolean | EntityCountOutputTypeCountAssertionsArgs;
     extractions?: boolean | EntityCountOutputTypeCountExtractionsArgs;
+    researchSessions?: boolean | EntityCountOutputTypeCountResearchSessionsArgs;
 };
 /**
  * EntityCountOutputType without action
@@ -914,6 +2622,12 @@ export type EntityCountOutputTypeCountAssertionsArgs<ExtArgs extends runtime.Typ
 export type EntityCountOutputTypeCountExtractionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.ExtractionWhereInput;
 };
+/**
+ * EntityCountOutputType without action
+ */
+export type EntityCountOutputTypeCountResearchSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ResearchSessionWhereInput;
+};
 export type EntitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     name?: boolean;
@@ -922,6 +2636,9 @@ export type EntitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     url?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    discoveryCategory?: boolean;
+    categoryId?: boolean;
+    domainId?: boolean;
     logoUrl?: boolean;
     logoPath?: boolean;
     logoFormat?: boolean;
@@ -929,10 +2646,32 @@ export type EntitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     logoSourceUrl?: boolean;
     logoFetchedAt?: boolean;
     logoVerified?: boolean;
+    githubUrl?: boolean;
+    githubOwner?: boolean;
+    githubRepo?: boolean;
+    githubStars?: boolean;
+    githubForks?: boolean;
+    githubWatchers?: boolean;
+    githubOpenIssues?: boolean;
+    githubContributors?: boolean;
+    githubLastCommit?: boolean;
+    githubLastRelease?: boolean;
+    githubLanguage?: boolean;
+    githubLicense?: boolean;
+    githubCreatedAt?: boolean;
+    githubMetricsAt?: boolean;
+    buzzScore?: boolean;
+    buzzComponents?: boolean;
+    buzzCalculatedAt?: boolean;
+    buzzOverride?: boolean;
+    buzzOverrideReason?: boolean;
     projectId?: boolean;
+    category?: boolean | Prisma.Entity$categoryArgs<ExtArgs>;
+    domain?: boolean | Prisma.Entity$domainArgs<ExtArgs>;
     project?: boolean | Prisma.ResearchProjectDefaultArgs<ExtArgs>;
     assertions?: boolean | Prisma.Entity$assertionsArgs<ExtArgs>;
     extractions?: boolean | Prisma.Entity$extractionsArgs<ExtArgs>;
+    researchSessions?: boolean | Prisma.Entity$researchSessionsArgs<ExtArgs>;
     _count?: boolean | Prisma.EntityCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["entity"]>;
 export type EntitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -943,6 +2682,9 @@ export type EntitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
     url?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    discoveryCategory?: boolean;
+    categoryId?: boolean;
+    domainId?: boolean;
     logoUrl?: boolean;
     logoPath?: boolean;
     logoFormat?: boolean;
@@ -950,7 +2692,28 @@ export type EntitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
     logoSourceUrl?: boolean;
     logoFetchedAt?: boolean;
     logoVerified?: boolean;
+    githubUrl?: boolean;
+    githubOwner?: boolean;
+    githubRepo?: boolean;
+    githubStars?: boolean;
+    githubForks?: boolean;
+    githubWatchers?: boolean;
+    githubOpenIssues?: boolean;
+    githubContributors?: boolean;
+    githubLastCommit?: boolean;
+    githubLastRelease?: boolean;
+    githubLanguage?: boolean;
+    githubLicense?: boolean;
+    githubCreatedAt?: boolean;
+    githubMetricsAt?: boolean;
+    buzzScore?: boolean;
+    buzzComponents?: boolean;
+    buzzCalculatedAt?: boolean;
+    buzzOverride?: boolean;
+    buzzOverrideReason?: boolean;
     projectId?: boolean;
+    category?: boolean | Prisma.Entity$categoryArgs<ExtArgs>;
+    domain?: boolean | Prisma.Entity$domainArgs<ExtArgs>;
     project?: boolean | Prisma.ResearchProjectDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["entity"]>;
 export type EntitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -961,6 +2724,9 @@ export type EntitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
     url?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    discoveryCategory?: boolean;
+    categoryId?: boolean;
+    domainId?: boolean;
     logoUrl?: boolean;
     logoPath?: boolean;
     logoFormat?: boolean;
@@ -968,7 +2734,28 @@ export type EntitySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
     logoSourceUrl?: boolean;
     logoFetchedAt?: boolean;
     logoVerified?: boolean;
+    githubUrl?: boolean;
+    githubOwner?: boolean;
+    githubRepo?: boolean;
+    githubStars?: boolean;
+    githubForks?: boolean;
+    githubWatchers?: boolean;
+    githubOpenIssues?: boolean;
+    githubContributors?: boolean;
+    githubLastCommit?: boolean;
+    githubLastRelease?: boolean;
+    githubLanguage?: boolean;
+    githubLicense?: boolean;
+    githubCreatedAt?: boolean;
+    githubMetricsAt?: boolean;
+    buzzScore?: boolean;
+    buzzComponents?: boolean;
+    buzzCalculatedAt?: boolean;
+    buzzOverride?: boolean;
+    buzzOverrideReason?: boolean;
     projectId?: boolean;
+    category?: boolean | Prisma.Entity$categoryArgs<ExtArgs>;
+    domain?: boolean | Prisma.Entity$domainArgs<ExtArgs>;
     project?: boolean | Prisma.ResearchProjectDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["entity"]>;
 export type EntitySelectScalar = {
@@ -979,6 +2766,9 @@ export type EntitySelectScalar = {
     url?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    discoveryCategory?: boolean;
+    categoryId?: boolean;
+    domainId?: boolean;
     logoUrl?: boolean;
     logoPath?: boolean;
     logoFormat?: boolean;
@@ -986,27 +2776,56 @@ export type EntitySelectScalar = {
     logoSourceUrl?: boolean;
     logoFetchedAt?: boolean;
     logoVerified?: boolean;
+    githubUrl?: boolean;
+    githubOwner?: boolean;
+    githubRepo?: boolean;
+    githubStars?: boolean;
+    githubForks?: boolean;
+    githubWatchers?: boolean;
+    githubOpenIssues?: boolean;
+    githubContributors?: boolean;
+    githubLastCommit?: boolean;
+    githubLastRelease?: boolean;
+    githubLanguage?: boolean;
+    githubLicense?: boolean;
+    githubCreatedAt?: boolean;
+    githubMetricsAt?: boolean;
+    buzzScore?: boolean;
+    buzzComponents?: boolean;
+    buzzCalculatedAt?: boolean;
+    buzzOverride?: boolean;
+    buzzOverrideReason?: boolean;
     projectId?: boolean;
 };
-export type EntityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "entityType" | "url" | "createdAt" | "updatedAt" | "logoUrl" | "logoPath" | "logoFormat" | "logoSvgContent" | "logoSourceUrl" | "logoFetchedAt" | "logoVerified" | "projectId", ExtArgs["result"]["entity"]>;
+export type EntityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "entityType" | "url" | "createdAt" | "updatedAt" | "discoveryCategory" | "categoryId" | "domainId" | "logoUrl" | "logoPath" | "logoFormat" | "logoSvgContent" | "logoSourceUrl" | "logoFetchedAt" | "logoVerified" | "githubUrl" | "githubOwner" | "githubRepo" | "githubStars" | "githubForks" | "githubWatchers" | "githubOpenIssues" | "githubContributors" | "githubLastCommit" | "githubLastRelease" | "githubLanguage" | "githubLicense" | "githubCreatedAt" | "githubMetricsAt" | "buzzScore" | "buzzComponents" | "buzzCalculatedAt" | "buzzOverride" | "buzzOverrideReason" | "projectId", ExtArgs["result"]["entity"]>;
 export type EntityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    category?: boolean | Prisma.Entity$categoryArgs<ExtArgs>;
+    domain?: boolean | Prisma.Entity$domainArgs<ExtArgs>;
     project?: boolean | Prisma.ResearchProjectDefaultArgs<ExtArgs>;
     assertions?: boolean | Prisma.Entity$assertionsArgs<ExtArgs>;
     extractions?: boolean | Prisma.Entity$extractionsArgs<ExtArgs>;
+    researchSessions?: boolean | Prisma.Entity$researchSessionsArgs<ExtArgs>;
     _count?: boolean | Prisma.EntityCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type EntityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    category?: boolean | Prisma.Entity$categoryArgs<ExtArgs>;
+    domain?: boolean | Prisma.Entity$domainArgs<ExtArgs>;
     project?: boolean | Prisma.ResearchProjectDefaultArgs<ExtArgs>;
 };
 export type EntityIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    category?: boolean | Prisma.Entity$categoryArgs<ExtArgs>;
+    domain?: boolean | Prisma.Entity$domainArgs<ExtArgs>;
     project?: boolean | Prisma.ResearchProjectDefaultArgs<ExtArgs>;
 };
 export type $EntityPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Entity";
     objects: {
+        category: Prisma.$DiscoveryCategoryPayload<ExtArgs> | null;
+        domain: Prisma.$ResearchDomainPayload<ExtArgs> | null;
         project: Prisma.$ResearchProjectPayload<ExtArgs>;
         assertions: Prisma.$AssertionPayload<ExtArgs>[];
         extractions: Prisma.$ExtractionPayload<ExtArgs>[];
+        researchSessions: Prisma.$ResearchSessionPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -1016,6 +2835,9 @@ export type $EntityPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
         url: string | null;
         createdAt: Date;
         updatedAt: Date;
+        discoveryCategory: string | null;
+        categoryId: string | null;
+        domainId: string | null;
         logoUrl: string | null;
         logoPath: string | null;
         logoFormat: string | null;
@@ -1023,6 +2845,25 @@ export type $EntityPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
         logoSourceUrl: string | null;
         logoFetchedAt: Date | null;
         logoVerified: boolean;
+        githubUrl: string | null;
+        githubOwner: string | null;
+        githubRepo: string | null;
+        githubStars: number | null;
+        githubForks: number | null;
+        githubWatchers: number | null;
+        githubOpenIssues: number | null;
+        githubContributors: number | null;
+        githubLastCommit: Date | null;
+        githubLastRelease: Date | null;
+        githubLanguage: string | null;
+        githubLicense: string | null;
+        githubCreatedAt: Date | null;
+        githubMetricsAt: Date | null;
+        buzzScore: number | null;
+        buzzComponents: runtime.JsonValue | null;
+        buzzCalculatedAt: Date | null;
+        buzzOverride: number | null;
+        buzzOverrideReason: string | null;
         projectId: string;
     }, ExtArgs["result"]["entity"]>;
     composites: {};
@@ -1353,9 +3194,12 @@ export interface EntityDelegate<ExtArgs extends runtime.Types.Extensions.Interna
  */
 export interface Prisma__EntityClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
+    category<T extends Prisma.Entity$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Entity$categoryArgs<ExtArgs>>): Prisma.Prisma__DiscoveryCategoryClient<runtime.Types.Result.GetResult<Prisma.$DiscoveryCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    domain<T extends Prisma.Entity$domainArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Entity$domainArgs<ExtArgs>>): Prisma.Prisma__ResearchDomainClient<runtime.Types.Result.GetResult<Prisma.$ResearchDomainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     project<T extends Prisma.ResearchProjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ResearchProjectDefaultArgs<ExtArgs>>): Prisma.Prisma__ResearchProjectClient<runtime.Types.Result.GetResult<Prisma.$ResearchProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     assertions<T extends Prisma.Entity$assertionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Entity$assertionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssertionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     extractions<T extends Prisma.Entity$extractionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Entity$extractionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExtractionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    researchSessions<T extends Prisma.Entity$researchSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Entity$researchSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ResearchSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1388,6 +3232,9 @@ export interface EntityFieldRefs {
     readonly url: Prisma.FieldRef<"Entity", 'String'>;
     readonly createdAt: Prisma.FieldRef<"Entity", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"Entity", 'DateTime'>;
+    readonly discoveryCategory: Prisma.FieldRef<"Entity", 'String'>;
+    readonly categoryId: Prisma.FieldRef<"Entity", 'String'>;
+    readonly domainId: Prisma.FieldRef<"Entity", 'String'>;
     readonly logoUrl: Prisma.FieldRef<"Entity", 'String'>;
     readonly logoPath: Prisma.FieldRef<"Entity", 'String'>;
     readonly logoFormat: Prisma.FieldRef<"Entity", 'String'>;
@@ -1395,6 +3242,25 @@ export interface EntityFieldRefs {
     readonly logoSourceUrl: Prisma.FieldRef<"Entity", 'String'>;
     readonly logoFetchedAt: Prisma.FieldRef<"Entity", 'DateTime'>;
     readonly logoVerified: Prisma.FieldRef<"Entity", 'Boolean'>;
+    readonly githubUrl: Prisma.FieldRef<"Entity", 'String'>;
+    readonly githubOwner: Prisma.FieldRef<"Entity", 'String'>;
+    readonly githubRepo: Prisma.FieldRef<"Entity", 'String'>;
+    readonly githubStars: Prisma.FieldRef<"Entity", 'Int'>;
+    readonly githubForks: Prisma.FieldRef<"Entity", 'Int'>;
+    readonly githubWatchers: Prisma.FieldRef<"Entity", 'Int'>;
+    readonly githubOpenIssues: Prisma.FieldRef<"Entity", 'Int'>;
+    readonly githubContributors: Prisma.FieldRef<"Entity", 'Int'>;
+    readonly githubLastCommit: Prisma.FieldRef<"Entity", 'DateTime'>;
+    readonly githubLastRelease: Prisma.FieldRef<"Entity", 'DateTime'>;
+    readonly githubLanguage: Prisma.FieldRef<"Entity", 'String'>;
+    readonly githubLicense: Prisma.FieldRef<"Entity", 'String'>;
+    readonly githubCreatedAt: Prisma.FieldRef<"Entity", 'DateTime'>;
+    readonly githubMetricsAt: Prisma.FieldRef<"Entity", 'DateTime'>;
+    readonly buzzScore: Prisma.FieldRef<"Entity", 'Float'>;
+    readonly buzzComponents: Prisma.FieldRef<"Entity", 'Json'>;
+    readonly buzzCalculatedAt: Prisma.FieldRef<"Entity", 'DateTime'>;
+    readonly buzzOverride: Prisma.FieldRef<"Entity", 'Float'>;
+    readonly buzzOverrideReason: Prisma.FieldRef<"Entity", 'String'>;
     readonly projectId: Prisma.FieldRef<"Entity", 'String'>;
 }
 /**
@@ -1775,6 +3641,42 @@ export type EntityDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
     limit?: number;
 };
 /**
+ * Entity.category
+ */
+export type Entity$categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DiscoveryCategory
+     */
+    select?: Prisma.DiscoveryCategorySelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DiscoveryCategory
+     */
+    omit?: Prisma.DiscoveryCategoryOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.DiscoveryCategoryInclude<ExtArgs> | null;
+    where?: Prisma.DiscoveryCategoryWhereInput;
+};
+/**
+ * Entity.domain
+ */
+export type Entity$domainArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResearchDomain
+     */
+    select?: Prisma.ResearchDomainSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ResearchDomain
+     */
+    omit?: Prisma.ResearchDomainOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ResearchDomainInclude<ExtArgs> | null;
+    where?: Prisma.ResearchDomainWhereInput;
+};
+/**
  * Entity.assertions
  */
 export type Entity$assertionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1819,6 +3721,29 @@ export type Entity$extractionsArgs<ExtArgs extends runtime.Types.Extensions.Inte
     take?: number;
     skip?: number;
     distinct?: Prisma.ExtractionScalarFieldEnum | Prisma.ExtractionScalarFieldEnum[];
+};
+/**
+ * Entity.researchSessions
+ */
+export type Entity$researchSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResearchSession
+     */
+    select?: Prisma.ResearchSessionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ResearchSession
+     */
+    omit?: Prisma.ResearchSessionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ResearchSessionInclude<ExtArgs> | null;
+    where?: Prisma.ResearchSessionWhereInput;
+    orderBy?: Prisma.ResearchSessionOrderByWithRelationInput | Prisma.ResearchSessionOrderByWithRelationInput[];
+    cursor?: Prisma.ResearchSessionWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ResearchSessionScalarFieldEnum | Prisma.ResearchSessionScalarFieldEnum[];
 };
 /**
  * Entity without action

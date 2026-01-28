@@ -430,6 +430,13 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
           { screenshot: args.screenshot as boolean, createAssertions: args.createAssertions as boolean }
         );
         break;
+      case 'extract:differentiators':
+        result = await tools.extractDifferentiators(
+          args.url as string,
+          args.entityId as string,
+          { screenshot: args.screenshot as boolean, createAssertions: args.createAssertions as boolean }
+        );
+        break;
       case 'extract:validate':
         result = await tools.validateUrl(args.url as string);
         break;
@@ -871,6 +878,60 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
         result = await tools.migrateFromLegacyCategories({ projectId: args.projectId as string, dryRun: args.dryRun as boolean });
         break;
 
+      // GitHub metrics commands
+      case 'github:fetch':
+        result = await tools.fetchEntityGitHubMetrics({
+          entityId: args.entityId as string,
+          githubUrl: args.githubUrl as string | undefined,
+        });
+        break;
+      case 'github:fetchProject':
+        result = await tools.fetchProjectGitHubMetrics({
+          projectId: args.projectId as string,
+          forceRefresh: args.forceRefresh as boolean | undefined,
+          maxAgeDays: args.maxAgeDays as number | undefined,
+        });
+        break;
+      case 'github:rank':
+        result = await tools.getEntitiesByGitHubStars({
+          projectId: args.projectId as string,
+          limit: args.limit as number | undefined,
+        });
+        break;
+
+      // Buzz score commands
+      case 'buzz:calculate':
+        result = await tools.calculateBuzzScore({
+          entityId: args.entityId as string,
+        });
+        break;
+      case 'buzz:calculateProject':
+        result = await tools.calculateProjectBuzzScores({
+          projectId: args.projectId as string,
+          forceRecalculate: args.forceRecalculate as boolean | undefined,
+        });
+        break;
+      case 'buzz:rank':
+        result = await tools.getEntitiesByBuzzScore({
+          projectId: args.projectId as string,
+          limit: args.limit as number | undefined,
+          minBuzz: args.minBuzz as number | undefined,
+          categoryId: args.categoryId as string | undefined,
+        });
+        break;
+      case 'buzz:override':
+        result = await tools.setBuzzOverride({
+          entityId: args.entityId as string,
+          buzzOverride: args.buzzOverride as number,
+          reason: args.reason as string,
+        });
+        break;
+      case 'buzz:clearOverride':
+        result = await tools.clearBuzzOverride({
+          entityId: args.entityId as string,
+        });
+        break;
+
       default:
         return { success: false, error: `Unknown command: ${command}` };
     }
@@ -896,7 +957,7 @@ async function main() {
         // Recommended: fetch + Claude reasoning + save workflow
         'extract:fetch', 'extract:cache', 'extract:save',
         // Automated (requires ANTHROPIC_API_KEY)
-        'extract:pricing', 'extract:features', 'extract:company', 'extract:compliance', 'extract:integrations',
+        'extract:pricing', 'extract:features', 'extract:company', 'extract:compliance', 'extract:integrations', 'extract:differentiators',
         'extract:validate', 'extract:list', 'extract:latest', 'extract:stale', 'extract:summary',
         // Standard commands
         'project:create', 'project:get', 'project:list', 'project:update', 'project:delete', 'project:find',

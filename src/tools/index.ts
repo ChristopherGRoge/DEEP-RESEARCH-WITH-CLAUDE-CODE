@@ -22,6 +22,8 @@ export * from './trend-detector';
 export * from './crawl-orchestrator';
 export * from './domains';
 export * from './categories';
+export * from './github';
+export * from './buzz';
 
 // Re-export Prisma client for direct access if needed
 export { prisma } from '../db/client';

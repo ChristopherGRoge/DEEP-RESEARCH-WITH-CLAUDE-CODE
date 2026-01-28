@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Research</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .landing-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-primary);
+        }
+
+        .landing-header {
+            padding: var(--space-xl) var(--space-xl) 0;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .brand-mark {
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            color: var(--text-tertiary);
+        }
+
+        .landing-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-2xl) var(--space-xl);
+            max-width: 840px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .hero-section {
+            width: 100%;
+            margin-bottom: var(--space-2xl);
+            text-align: center;
+        }
+
+        .hero-headline {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            margin-bottom: var(--space-md);
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .topic-section {
+            width: 100%;
+            margin-bottom: var(--space-2xl);
+        }
+
+        .topic-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: var(--space-md);
+        }
+
+        .topic-textarea {
+            width: 100%;
+            min-height: 160px;
+            padding: var(--space-lg);
+            font-family: var(--font-body);
+            font-size: 1.125rem;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            resize: vertical;
+            line-height: 1.6;
+            transition: all var(--transition-normal);
+        }
+
+        .topic-textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .topic-textarea:focus {
+            outline: none;
+            background: var(--bg-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .templates-section {
+            margin-top: var(--space-lg);
+        }
+
+        .templates-label {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .template-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+        }
+
+        .template-btn {
+            padding: var(--space-xs) var(--space-md);
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .template-btn:hover {
+            background: var(--border-light);
+            color: var(--text-primary);
+            border-color: var(--border-medium);
+        }
+
+        .researcher-section {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .researcher-input {
+            flex: 1;
+            padding: var(--space-md) var(--space-lg);
+            font-family: var(--font-body);
+            font-size: 0.9375rem;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            transition: all var(--transition-fast);
+        }
+
+        .researcher-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .researcher-input:focus {
+            outline: none;
+            background: var(--bg-primary);
+            border-color: var(--border-medium);
+        }
+
+        .begin-btn {
+            padding: var(--space-md) var(--space-2xl);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background: var(--accent-primary);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            white-space: nowrap;
+        }
+
+        .begin-btn:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(42, 42, 42, 0.15);
+        }
+
+        .begin-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .sessions-section {
+            width: 100%;
+            padding-top: var(--space-2xl);
+            border-top: 1px solid var(--border-light);
+        }
+
+        .sessions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .sessions-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .sessions-count {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .sessions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .session-card {
+            padding: var(--space-lg);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+
+        .session-card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .session-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-sm);
+        }
+
+        .session-card-title {
+            font-weight: 600;
+            font-size: 0.9375rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .session-badge {
+            font-size: 0.625rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 3px 8px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            margin-left: var(--space-sm);
+        }
+
+        .session-badge.researching {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .session-badge.paused {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .session-badge.completed {
+            background: var(--status-validated-bg);
+            color: var(--status-validated);
+        }
+
+        .session-card-meta {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .session-card-progress {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-sessions {
+            text-align: center;
+            padding: var(--space-2xl);
+            color: var(--text-tertiary);
+        }
+
+        .empty-sessions-icon {
+            margin-bottom: var(--space-md);
+            opacity: 0.4;
+        }
+
+        @media (max-width: 768px) {
+            .landing-main {
+                padding: var(--space-xl) var(--space-md);
+            }
+
+            .hero-headline {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .researcher-section {
+                flex-direction: column;
+            }
+
+            .begin-btn {
+                width: 100%;
+            }
+
+            .sessions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body x-data="researchLandingApp()" x-init="init()">
+    <div class="landing-page">
+        <header class="landing-header">
+            <div class="brand-mark">Deep Research</div>
+        </header>
+
+        <main class="landing-main">
+            <section class="hero-section">
+                <h1 class="hero-headline">Deep Research</h1>
+                <p class="hero-subtitle">
+                    Describe your research topic and let AI discover, analyze, and validate claims.
+                    Evidence-first research powered by structured extraction.
+                </p>
+            </section>
+
+            <section class="topic-section">
+                <label class="topic-label">Research Topic</label>
+                <textarea
+                    x-model="topic"
+                    class="topic-textarea"
+                    placeholder="Example: Evaluate AI coding assistants for federal government use. Need to understand pricing, compliance (FedRAMP, SOC2), deployment options (air-gapped), and competitive landscape."
+                    @input="saveDraft()"
+                ></textarea>
+
+                <div class="templates-section">
+                    <div class="templates-label">Quick Templates</div>
+                    <div class="template-buttons">
+                        <button class="template-btn" @click="applyTemplate('tools')">
+                            Compare tools for enterprise
+                        </button>
+                        <button class="template-btn" @click="applyTemplate('compliance')">
+                            Federal compliance assessment
+                        </button>
+                        <button class="template-btn" @click="applyTemplate('competitive')">
+                            Competitive landscape analysis
+                        </button>
+                        <button class="template-btn" @click="applyTemplate('vendor')">
+                            Vendor deep dive
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="researcher-section">
+                <input
+                    type="text"
+                    x-model="researcherName"
+                    @blur="saveResearcherName()"
+                    placeholder="Your name"
+                    class="researcher-input"
+                >
+                <button
+                    class="begin-btn"
+                    @click="beginResearch()"
+                    :disabled="!canBeginResearch()"
+                >
+                    Begin Research
+                </button>
+            </section>
+
+            <section class="sessions-section">
+                <div class="sessions-header">
+                    <h2 class="sessions-title">Recent Sessions</h2>
+                    <span class="sessions-count" x-text="sessions.length + ' session' + (sessions.length !== 1 ? 's' : '')"></span>
+                </div>
+
+                <template x-if="sessions.length === 0">
+                    <div class="empty-sessions">
+                        <div class="empty-sessions-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                        <p>No research sessions yet. Start one above.</p>
+                    </div>
+                </template>
+
+                <template x-if="sessions.length > 0">
+                    <div class="sessions-grid">
+                        <template x-for="session in sessions" :key="session.id">
+                            <a :href="'/research.html?session=' + session.id" class="session-card">
+                                <div class="session-card-header">
+                                    <div class="session-card-title" x-text="session.topic || 'Untitled Research'"></div>
+                                    <span
+                                        class="session-badge"
+                                        :class="session.status.toLowerCase()"
+                                        x-text="session.status.toLowerCase()"
+                                    ></span>
+                                </div>
+                                <div class="session-card-meta">
+                                    <span x-text="formatDate(session.createdAt)"></span>
+                                    <template x-if="session.projectName">
+                                        &middot; <span x-text="session.projectName"></span>
+                                    </template>
+                                </div>
+                                <div class="session-card-progress">
+                                    <template x-if="session.entitiesCount">
+                                        <span x-text="session.entitiesCount + ' entities'"></span>
+                                    </template>
+                                    <template x-if="session.assertionsCount">
+                                        &middot; <span x-text="session.assertionsCount + ' assertions'"></span>
+                                    </template>
+                                </div>
+                            </a>
+                        </template>
+                    </div>
+                </template>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function researchLandingApp() {
+            return {
+                topic: '',
+                researcherName: '',
+                sessions: [],
+                projects: [],
+
+                templates: {
+                    tools: 'Compare AI coding assistant tools for enterprise deployment. Focus on:\n- Pricing tiers and enterprise options\n- Compliance certifications (SOC2, FedRAMP)\n- Deployment models (cloud, self-hosted, air-gapped)\n- IDE integrations\n- Competitive positioning',
+                    compliance: 'Evaluate [TOOL/SERVICE] for federal government use. Assess:\n- FedRAMP authorization status\n- SOC2 Type II certification\n- Air-gapped deployment capability\n- Data sovereignty and ITAR compliance\n- Security audit history',
+                    competitive: 'Map the competitive landscape for [MARKET/CATEGORY]. Include:\n- Market leaders and emerging players\n- Pricing comparison across tiers\n- Feature differentiation matrix\n- Funding and growth indicators\n- Strategic positioning',
+                    vendor: 'Deep dive on [COMPANY/PRODUCT]. Research:\n- Product capabilities and limitations\n- Pricing structure and contract terms\n- Company background (funding, leadership, growth)\n- Customer segments and case studies\n- Technical architecture and integrations'
+                },
+
+                async init() {
+                    this.researcherName = localStorage.getItem('researcherName') || '';
+                    this.topic = localStorage.getItem('researchTopicDraft') || '';
+                    await this.loadSessions();
+                    await this.loadProjects();
+                },
+
+                async loadSessions() {
+                    try {
+                        const response = await fetch('/api/research/sessions');
+                        if (response.ok) {
+                            this.sessions = await response.json();
+                        }
+                    } catch (error) {
+                        console.error('Failed to load sessions:', error);
+                    }
+                },
+
+                async loadProjects() {
+                    try {
+                        const response = await fetch('/api/projects');
+                        if (response.ok) {
+                            this.projects = await response.json();
+                        }
+                    } catch (error) {
+                        console.error('Failed to load projects:', error);
+                    }
+                },
+
+                saveDraft() {
+                    localStorage.setItem('researchTopicDraft', this.topic);
+                },
+
+                saveResearcherName() {
+                    localStorage.setItem('researcherName', this.researcherName);
+                },
+
+                applyTemplate(key) {
+                    this.topic = this.templates[key];
+                    this.saveDraft();
+                },
+
+                canBeginResearch() {
+                    return this.topic.trim().length > 0 && this.researcherName.trim().length > 0;
+                },
+
+                beginResearch() {
+                    if (!this.canBeginResearch()) return;
+
+                    const params = new URLSearchParams({
+                        topic: this.topic,
+                        researcher: this.researcherName
+                    });
+
+                    window.location.href = `/research.html?${params.toString()}`;
+                },
+
+                formatDate(dateString) {
+                    const date = new Date(dateString);
+                    const now = new Date();
+                    const diff = now - date;
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+                    if (days === 0) return 'Today';
+                    if (days === 1) return 'Yesterday';
+                    if (days < 7) return `${days} days ago`;
+
+                    return date.toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+                    });
+                }
+            };
+        }
+    </script>
+</body>
+</html>

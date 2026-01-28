@@ -176,6 +176,7 @@ Use these `schemaType` values when saving extractions:
 - `company` - Founded, funding, headquarters, leadership, employee count
 - `compliance` - SOC2, FedRAMP, certifications, security features
 - `integrations` - APIs, SDKs, native integrations, partner ecosystem
+- `differentiators` - Competitive differentiation: unique features, market-leading features, gaps vs competitors
 
 ### Alternative: Automated Extraction (Requires ANTHROPIC_API_KEY)
 
@@ -196,6 +197,9 @@ npm run cli -- extract:compliance '{"url": "https://cursor.com/security", "entit
 
 # Extract integrations (APIs, SDKs, native integrations)
 npm run cli -- extract:integrations '{"url": "https://cursor.com/integrations", "entityId": "<id>"}'
+
+# Extract competitive differentiators (unique features, gaps vs competitors)
+npm run cli -- extract:differentiators '{"url": "https://cursor.com/vs-copilot", "entityId": "<id>"}'
 ```
 
 ### What Extraction Does
@@ -263,6 +267,87 @@ Save returns:
   "assertionsCreated": ["cmjk...", "cmjk..."]
 }
 ```
+
+---
+
+## DIFFERENTIATORS EXTRACTION - Competitive Analysis
+
+**USE THIS FOR COMPETITIVE POSITIONING.** The `differentiators` schema captures what makes an entity DIFFERENT from competitors, not just what it does.
+
+### Feature Categories
+
+| Category | Description | Auto-generated Assertion |
+|----------|-------------|--------------------------|
+| **uniqueFeatures** | Features ONLY this entity has | `UNIQUE DIFFERENTIATOR: [feature]` |
+| **leadingFeatures** | Features where entity is best-in-class | `MARKET LEADER: [feature]` |
+| **tableStakes** | Features everyone has (not differentiating) | *(none - tracked for context)* |
+| **laggingFeatures** | Features where competitors are better | `COMPETITIVE GAP: [feature]` |
+| **missingFeatures** | Features competitors have that entity lacks | `MISSING FEATURE: [feature]` |
+
+### Differentiators Schema Structure
+
+```json
+{
+  "uniqueFeatures": [
+    {
+      "name": "2M token context window",
+      "description": "Supports 2 million token context for entire codebase analysis",
+      "evidenceSource": "screenshots/2026-01/cursor-context.png",
+      "comparedTo": ["Copilot: 8k tokens", "Codeium: 128k tokens"]
+    }
+  ],
+  "leadingFeatures": [
+    {
+      "name": "Multi-file editing",
+      "description": "Edit multiple files simultaneously in one operation",
+      "comparedTo": ["Copilot: single file only"]
+    }
+  ],
+  "tableStakes": ["Code completion", "Chat interface", "VS Code integration"],
+  "laggingFeatures": [
+    {
+      "name": "Enterprise deployment",
+      "reason": "No self-hosted option available",
+      "competitors": ["Tabnine", "Codeium"]
+    }
+  ],
+  "missingFeatures": [
+    {
+      "name": "Air-gapped deployment",
+      "competitors": ["Tabnine", "Sourcegraph"],
+      "importance": "critical"
+    }
+  ],
+  "primaryCompetitors": ["GitHub Copilot", "Cursor", "Tabnine"],
+  "differentiationSummary": "Leads on context window size but lacks enterprise deployment flexibility"
+}
+```
+
+### Workflow
+
+```bash
+# 1. Fetch comparison/features pages
+npm run cli -- extract:fetch '{"url": "https://example.com/vs-copilot", "entityId": "<id>"}'
+npm run cli -- extract:fetch '{"url": "https://example.com/features", "entityId": "<id>"}'
+
+# 2. Claude analyzes screenshots and identifies differentiators
+
+# 3. Save differentiators extraction
+npm run cli -- extract:save '{
+  "entityId": "<id>",
+  "schemaType": "differentiators",
+  "url": "https://example.com/features",
+  "screenshotPath": "screenshots/...",
+  "data": { ... }
+}'
+```
+
+### Why Differentiators Matter
+
+Differentiation claims often become **pillar assertions** because:
+- They define **why choose this over alternatives**
+- They reveal **strategic gaps** (leader lacks common feature)
+- They directly impact **procurement decisions**
 
 ---
 

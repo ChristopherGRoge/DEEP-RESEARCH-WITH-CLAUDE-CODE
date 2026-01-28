@@ -60,9 +60,11 @@ async function executeCommand(command, args) {
             case 'project:list':
                 result = await tools.listProjects();
                 break;
-            case 'project:update':
-                result = await tools.updateProject(args.projectId, args);
+            case 'project:update': {
+                const { projectId, ...updateData } = args;
+                result = await tools.updateProject(projectId, updateData);
                 break;
+            }
             case 'project:delete':
                 result = await tools.deleteProject(args.projectId);
                 break;
@@ -85,14 +87,19 @@ async function executeCommand(command, args) {
             case 'entity:search':
                 result = await tools.searchEntities(args);
                 break;
-            case 'entity:update':
-                result = await tools.updateEntity(args.entityId, args);
+            case 'entity:update': {
+                const { entityId, ...updateData } = args;
+                result = await tools.updateEntity(entityId, updateData);
                 break;
+            }
             case 'entity:delete':
                 result = await tools.deleteEntity(args.entityId);
                 break;
             case 'entity:exists':
                 result = await tools.entityExists(args.projectId, args.name);
+                break;
+            case 'entity:categorize':
+                result = await tools.categorizeEntities(args);
                 break;
             // Assertion commands
             case 'assertion:create':
@@ -107,9 +114,11 @@ async function executeCommand(command, args) {
             case 'assertion:search':
                 result = await tools.searchAssertions(args);
                 break;
-            case 'assertion:update':
-                result = await tools.updateAssertion(args.assertionId, args);
+            case 'assertion:update': {
+                const { assertionId, ...updateData } = args;
+                result = await tools.updateAssertion(assertionId, updateData);
                 break;
+            }
             case 'assertion:validate':
                 result = await tools.validateAssertion(args.assertionId, args.validatedBy);
                 break;
@@ -153,6 +162,21 @@ async function executeCommand(command, args) {
             case 'assertion:findSimilar':
                 result = await tools.findSimilarAssertions(args.entityId, args.claim);
                 break;
+            case 'assertion:calculate-confidence':
+                result = await tools.calculateConfidence(args.assertionId);
+                break;
+            case 'assertion:set-confidence':
+                result = await tools.updateConfidence(args.assertionId, args.score, args.factors);
+                break;
+            case 'assertion:by-confidence':
+                result = await tools.getAssertionsByConfidence(args.entityId, args.minConfidence, args.maxConfidence);
+                break;
+            case 'assertion:low-confidence':
+                result = await tools.getLowConfidenceAssertions(args.projectId, args.threshold);
+                break;
+            case 'assertion:recalculate-confidence':
+                result = await tools.recalculateProjectConfidence(args.projectId);
+                break;
             // Source commands
             case 'source:create':
                 result = await tools.createSource(args);
@@ -172,9 +196,11 @@ async function executeCommand(command, args) {
             case 'source:link':
                 result = await tools.linkSourceToAssertion(args);
                 break;
-            case 'source:update':
-                result = await tools.updateSource(args.sourceId, args);
+            case 'source:update': {
+                const { sourceId, ...updateData } = args;
+                result = await tools.updateSource(sourceId, updateData);
                 break;
+            }
             case 'source:validate':
                 result = await tools.validateSource(args.sourceId, args.validatedBy);
                 break;
@@ -324,6 +350,18 @@ async function executeCommand(command, args) {
                 result = await tools.getLogoInline(args.entityId);
                 break;
             // ============================================
+            // RSS CRAWLER - Automated entity discovery from feeds
+            // ============================================
+            case 'rss:crawl':
+                result = await tools.crawlRSSFeed(args);
+                break;
+            case 'rss:save':
+                result = await tools.saveDiscoveries(args.discoveries);
+                break;
+            case 'rss:stats':
+                result = await tools.getCrawlStats(args.projectId);
+                break;
+            // ============================================
             // VALIDATION DASHBOARD - Human-in-the-loop review
             // ============================================
             case 'validation:generate':
@@ -362,6 +400,9 @@ async function executeCommand(command, args) {
             case 'extract:integrations':
                 result = await tools.extractIntegrations(args.url, args.entityId, { screenshot: args.screenshot, createAssertions: args.createAssertions });
                 break;
+            case 'extract:differentiators':
+                result = await tools.extractDifferentiators(args.url, args.entityId, { screenshot: args.screenshot, createAssertions: args.createAssertions });
+                break;
             case 'extract:validate':
                 result = await tools.validateUrl(args.url);
                 break;
@@ -376,6 +417,413 @@ async function executeCommand(command, args) {
                 break;
             case 'extract:summary':
                 result = await tools.getExtractionSummary(args.projectId);
+                break;
+            // ============================================
+            // CRAWLERS - Web discovery tools
+            // ============================================
+            case 'crawl:hn':
+                result = await tools.crawlHackerNews(args);
+                break;
+            case 'crawl:hn-persist':
+                result = await tools.crawlAndPersist(args);
+                break;
+            case 'crawl:show-hn':
+                result = await tools.crawlShowHN(args.projectId, args.limit);
+                break;
+            case 'crawl:top-ai':
+                result = await tools.crawlTopAIStories(args.projectId, args.limit);
+                break;
+            // ============================================
+            // EVIDENCE VALIDATION - Evidence quality and integrity
+            // ============================================
+            case 'evidence:conflicts':
+                result = await tools.findConflictingEvidence(args);
+                break;
+            case 'evidence:crossref':
+                result = await tools.crossReferenceEvidence(args);
+                break;
+            case 'evidence:freshness':
+                result = await tools.checkEvidenceFreshness(args);
+                break;
+            case 'evidence:validate-chain':
+                result = await tools.validateEvidenceChain(args);
+                break;
+            case 'evidence:confidence':
+                result = await tools.calculateEvidenceConfidence(args);
+                break;
+            // ============================================
+            // ORCHESTRATOR COMMANDS - Spawn and manage subagents
+            // ============================================
+            case 'orchestrate:spawn':
+                result = await tools.spawnSubagent(args);
+                break;
+            case 'orchestrate:status':
+                result = tools.getSubagentStatus(args.taskId);
+                break;
+            case 'orchestrate:list':
+                result = tools.listAllSubagents(args);
+                break;
+            case 'orchestrate:active':
+                result = tools.listActiveSubagents();
+                break;
+            case 'orchestrate:cancel':
+                result = tools.cancelSubagent(args.taskId);
+                break;
+            case 'orchestrate:send':
+                tools.sendInputToSubagent(args.taskId, args.message);
+                result = { success: true, message: 'Input sent to subagent' };
+                break;
+            case 'orchestrate:cleanup':
+                result = tools.cleanupOldTasks(args.olderThanHours);
+                break;
+            // Convenience spawners
+            case 'orchestrate:haiku':
+                result = await tools.spawnHaikuAgent(args.taskType, args.prompt, args);
+                break;
+            case 'orchestrate:sonnet':
+                result = await tools.spawnSonnetAgent(args.taskType, args.prompt, args);
+                break;
+            case 'orchestrate:opus':
+                result = await tools.spawnOpusAgent(args.taskType, args.prompt, args);
+                break;
+            // Synchronous spawners (wait for completion)
+            case 'orchestrate:run':
+                result = await tools.spawnSubagentSync({
+                    taskType: args.taskType || 'custom',
+                    prompt: args.prompt,
+                    model: args.model,
+                    entityId: args.entityId,
+                    timeout: args.timeout,
+                });
+                break;
+            case 'orchestrate:run-haiku':
+                result = await tools.spawnSubagentSync({
+                    taskType: args.taskType || 'custom',
+                    prompt: args.prompt,
+                    model: 'haiku',
+                    entityId: args.entityId,
+                    timeout: args.timeout,
+                });
+                break;
+            case 'orchestrate:run-sonnet':
+                result = await tools.spawnSubagentSync({
+                    taskType: args.taskType || 'custom',
+                    prompt: args.prompt,
+                    model: 'sonnet',
+                    entityId: args.entityId,
+                    timeout: args.timeout,
+                });
+                break;
+            // ============================================
+            // REDDIT CRAWLER - Community research
+            // ============================================
+            case 'crawler:reddit':
+                result = await tools.crawlSubreddit(args, args.crawlSessionId || 'manual');
+                break;
+            case 'crawler:reddit-multi':
+                result = await tools.crawlMultipleSubreddits(args.configs, args.crawlSessionId || 'manual');
+                break;
+            case 'crawler:reddit-comments':
+                result = await tools.fetchPostComments(args.permalink, args.limit);
+                break;
+            case 'crawler:reddit-aggregate':
+                result = tools.aggregateRedditDiscoveries(args.results);
+                break;
+            // ============================================
+            // DISCOVERY SOURCE REGISTRY - Source management
+            // ============================================
+            case 'discovery:source:create':
+                result = await tools.createDiscoverySource(args);
+                break;
+            case 'discovery:source:get':
+                result = await tools.getDiscoverySource(args.sourceId);
+                break;
+            case 'discovery:source:update':
+                result = await tools.updateDiscoverySource(args.sourceId, args);
+                break;
+            case 'discovery:source:delete':
+                result = await tools.deleteDiscoverySource(args.sourceId);
+                break;
+            case 'discovery:source:list':
+                result = await tools.listDiscoverySources(args);
+                break;
+            case 'discovery:source:byType':
+                result = await tools.getDiscoverySourcesByType(args.sourceType);
+                break;
+            case 'discovery:source:stale':
+                result = await tools.getStaleSources(args.maxAgeHours);
+                break;
+            case 'discovery:source:stats':
+                result = await tools.getSourceStats();
+                break;
+            case 'discovery:source:markCrawled':
+                result = await tools.markSourceCrawled(args.sourceId, args.success, args.error);
+                break;
+            case 'discovery:source:updateMetrics':
+                result = await tools.updateSourceMetrics(args.sourceId, args);
+                break;
+            case 'discovery:source:seed':
+                result = await tools.seedDefaultSources();
+                break;
+            // ============================================
+            // DISCOVERY CRAWL ORCHESTRATOR - Coordinate crawls
+            // ============================================
+            case 'discovery:crawl:start':
+                result = await tools.startDiscoveryCrawl(args);
+                break;
+            case 'discovery:crawl:status':
+                result = await tools.getCrawlStatus(args.crawlId);
+                break;
+            case 'discovery:crawl:pause':
+                result = await tools.pauseCrawl(args.crawlId);
+                break;
+            case 'discovery:crawl:resume':
+                result = await tools.resumeCrawl(args.crawlId);
+                break;
+            case 'discovery:crawl:cancel':
+                result = await tools.cancelCrawl(args.crawlId);
+                break;
+            case 'discovery:crawl:history':
+                result = await tools.getCrawlHistory(args.projectId, args.limit);
+                break;
+            case 'discovery:crawl:due':
+                result = await tools.getSourcesDueForCrawl();
+                break;
+            case 'discovery:crawl:scheduled':
+                result = await tools.runScheduledCrawl(args.projectId);
+                break;
+            // ============================================
+            // DISCOVERY PROCESSOR - Deduplication and entity resolution
+            // ============================================
+            case 'discovery:process:one':
+                result = await tools.processRawDiscovery(args.projectId, args.rawDiscoveryId);
+                break;
+            case 'discovery:process:pending':
+                result = await tools.processPendingDiscoveries(args.projectId, args.limit);
+                break;
+            case 'discovery:process:match':
+                result = await tools.findMatchingEntity(args.projectId, args.name, args.urls || [], args.description);
+                break;
+            case 'discovery:process:save':
+                result = await tools.saveRawDiscovery(args);
+                break;
+            case 'discovery:process:getPending':
+                result = await tools.getPendingDiscoveries(args.projectId, args.limit);
+                break;
+            case 'discovery:process:search':
+                result = await tools.searchDiscoveries(args.query, args);
+                break;
+            case 'discovery:process:stats':
+                result = await tools.getDiscoveryStats(args.projectId);
+                break;
+            // ============================================
+            // CRITICALITY SCORING - Prioritize assertions
+            // ============================================
+            case 'discovery:criticality:calculate':
+                result = await tools.calculateCriticality(args.assertionId, args.weights);
+                break;
+            case 'discovery:criticality:scoreEntity':
+                result = await tools.scoreEntityAssertions(args.entityId, args.weights);
+                break;
+            case 'discovery:criticality:scoreProject':
+                result = await tools.scoreProjectAssertions(args.projectId, args.weights);
+                break;
+            case 'discovery:criticality:byLevel':
+                result = await tools.getAssertionsByCriticality(args.projectId, args.level, args.limit);
+                break;
+            case 'discovery:criticality:needingValidation':
+                result = await tools.getCriticalAssertionsNeedingValidation(args.projectId);
+                break;
+            case 'discovery:criticality:summary':
+                result = await tools.getCriticalitySummary(args.projectId);
+                break;
+            // ============================================
+            // TREND DETECTION - Pattern analysis
+            // ============================================
+            case 'discovery:trends:detect':
+                result = await tools.detectTrends(args.projectId, args);
+                break;
+            case 'discovery:trends:list':
+                result = await tools.listTrends(args.projectId, args);
+                break;
+            case 'discovery:trends:details':
+                result = await tools.getTrendDetails(args.trendId);
+                break;
+            case 'discovery:trends:entities':
+                result = await tools.getTrendingEntities(args.projectId, args.limit);
+                break;
+            case 'discovery:trends:report':
+                result = await tools.generateTrendReport(args.projectId);
+                break;
+            case 'discovery:trends:export':
+                result = await tools.exportTrendsMarkdown(args.projectId);
+                break;
+            // ============================================
+            // GITHUB CRAWLER - Awesome lists and trending
+            // ============================================
+            case 'crawler:github-awesome':
+                result = await tools.crawlAwesomeList(args, args.crawlSessionId || 'manual');
+                break;
+            case 'crawler:github-trending':
+                result = await tools.crawlGitHubTrending(args, args.crawlSessionId || 'manual');
+                break;
+            case 'crawler:github-diff':
+                result = await tools.diffAwesomeList(args.oldEntries, args.newEntries);
+                break;
+            // ============================================
+            // NITTER/X CRAWLER - Twitter/X via Nitter
+            // ============================================
+            case 'crawler:nitter':
+                result = await tools.crawlAccount(args);
+                break;
+            case 'crawler:nitter-search':
+                result = await tools.crawlSearch(args);
+                break;
+            // ============================================
+            // RESEARCH DOMAIN COMMANDS - Domain-driven research
+            // ============================================
+            case 'domain:create':
+                result = await tools.createDomain(args);
+                break;
+            case 'domain:get':
+                result = await tools.getDomain((args.domainId || args.name || args.identifier));
+                break;
+            case 'domain:list':
+                result = await tools.listDomains();
+                break;
+            case 'domain:update': {
+                const { domainId, ...domainUpdateData } = args;
+                result = await tools.updateDomain(domainId, domainUpdateData);
+                break;
+            }
+            case 'domain:delete':
+                result = await tools.deleteDomain(args.domainId);
+                break;
+            case 'domain:find':
+                result = await tools.findDomainByName(args.name);
+                break;
+            case 'domain:entities':
+                result = await tools.getDomainEntities(args.domainId, { limit: args.limit, offset: args.offset });
+                break;
+            case 'domain:summary':
+                result = await tools.getDomainSummary(args.domainId);
+                break;
+            case 'domain:updateStats':
+                result = await tools.updateDomainDiscoveryStats(args.domainId);
+                break;
+            // ============================================
+            // DISCOVERY CATEGORY COMMANDS - LLM-based classification
+            // ============================================
+            case 'category:create':
+                result = await tools.createCategory(args);
+                break;
+            case 'category:get':
+                result = await tools.getCategory(args.categoryId);
+                break;
+            case 'category:getByName':
+                result = await tools.getCategoryByName(args.name);
+                break;
+            case 'category:list':
+                result = await tools.listCategories();
+                break;
+            case 'category:update': {
+                const { categoryId, ...categoryUpdateData } = args;
+                result = await tools.updateCategory(categoryId, categoryUpdateData);
+                break;
+            }
+            case 'category:delete':
+                result = await tools.deleteCategory(args.categoryId);
+                break;
+            // Category analysis
+            case 'category:entities':
+                result = await tools.getCategoryWithEntities(args.categoryId, { limit: args.limit, offset: args.offset });
+                break;
+            case 'category:summary':
+                result = await tools.getCategorySummary(args.categoryId);
+                break;
+            case 'category:updateStats':
+                result = await tools.updateCategoryStats(args.categoryId);
+                break;
+            case 'category:updateAllStats':
+                result = await tools.updateAllCategoryStats();
+                break;
+            // Classification
+            case 'category:prompt':
+                result = await tools.buildClassificationPrompt(args.entityName, args.description);
+                break;
+            case 'category:context':
+                result = await tools.getClassificationContext(args.entityId);
+                break;
+            case 'category:apply':
+                result = await tools.applyClassification(args.entityId, args.classification);
+                break;
+            case 'category:explain':
+                result = await tools.explainClassification(args.entityId);
+                break;
+            case 'category:unclassified':
+                result = await tools.getUnclassifiedEntities(args.projectId, args.limit);
+                break;
+            case 'category:preview':
+                result = await tools.getReclassificationPreview(args);
+                break;
+            // Seeding and migration
+            case 'category:seed':
+                result = await tools.seedCategories();
+                break;
+            case 'category:migrate':
+                result = await tools.migrateFromLegacyCategories({ projectId: args.projectId, dryRun: args.dryRun });
+                break;
+            // GitHub metrics commands
+            case 'github:fetch':
+                result = await tools.fetchEntityGitHubMetrics({
+                    entityId: args.entityId,
+                    githubUrl: args.githubUrl,
+                });
+                break;
+            case 'github:fetchProject':
+                result = await tools.fetchProjectGitHubMetrics({
+                    projectId: args.projectId,
+                    forceRefresh: args.forceRefresh,
+                    maxAgeDays: args.maxAgeDays,
+                });
+                break;
+            case 'github:rank':
+                result = await tools.getEntitiesByGitHubStars({
+                    projectId: args.projectId,
+                    limit: args.limit,
+                });
+                break;
+            // Buzz score commands
+            case 'buzz:calculate':
+                result = await tools.calculateBuzzScore({
+                    entityId: args.entityId,
+                });
+                break;
+            case 'buzz:calculateProject':
+                result = await tools.calculateProjectBuzzScores({
+                    projectId: args.projectId,
+                    forceRecalculate: args.forceRecalculate,
+                });
+                break;
+            case 'buzz:rank':
+                result = await tools.getEntitiesByBuzzScore({
+                    projectId: args.projectId,
+                    limit: args.limit,
+                    minBuzz: args.minBuzz,
+                    categoryId: args.categoryId,
+                });
+                break;
+            case 'buzz:override':
+                result = await tools.setBuzzOverride({
+                    entityId: args.entityId,
+                    buzzOverride: args.buzzOverride,
+                    reason: args.reason,
+                });
+                break;
+            case 'buzz:clearOverride':
+                result = await tools.clearBuzzOverride({
+                    entityId: args.entityId,
+                });
                 break;
             default:
                 return { success: false, error: `Unknown command: ${command}` };
@@ -400,13 +848,14 @@ async function main() {
                 // Recommended: fetch + Claude reasoning + save workflow
                 'extract:fetch', 'extract:cache', 'extract:save',
                 // Automated (requires ANTHROPIC_API_KEY)
-                'extract:pricing', 'extract:features', 'extract:company', 'extract:compliance', 'extract:integrations',
+                'extract:pricing', 'extract:features', 'extract:company', 'extract:compliance', 'extract:integrations', 'extract:differentiators',
                 'extract:validate', 'extract:list', 'extract:latest', 'extract:stale', 'extract:summary',
                 // Standard commands
                 'project:create', 'project:get', 'project:list', 'project:update', 'project:delete', 'project:find',
                 'entity:create', 'entity:get', 'entity:find', 'entity:list', 'entity:search', 'entity:update', 'entity:delete', 'entity:exists',
                 'assertion:create', 'assertion:get', 'assertion:list', 'assertion:search', 'assertion:update', 'assertion:validate', 'assertion:reject', 'assertion:delete', 'assertion:addReasoning', 'assertion:findSimilar',
                 'assertion:setCriticality', 'assertion:markCited', 'assertion:pendingValidation', 'assertion:rejectedForReresearch', 'assertion:supersede',
+                'assertion:calculate-confidence', 'assertion:set-confidence', 'assertion:by-confidence', 'assertion:low-confidence', 'assertion:recalculate-confidence',
                 'source:create', 'source:get', 'source:find', 'source:list', 'source:search', 'source:link', 'source:update', 'source:validate', 'source:reject', 'source:delete', 'source:byType',
                 'search:global', 'search:summary', 'search:pending', 'search:activity', 'search:noAssertions', 'search:noSources',
                 // Research planning
@@ -421,6 +870,40 @@ async function main() {
                 'logo:search', 'logo:verify', 'logo:download', 'logo:save', 'logo:fetch', 'logo:missing', 'logo:summary', 'logo:validate', 'logo:clear', 'logo:inline',
                 // Validation dashboard
                 'validation:generate',
+                // Evidence validation
+                'evidence:conflicts', 'evidence:crossref', 'evidence:freshness', 'evidence:validate-chain', 'evidence:confidence',
+                // Orchestrator - Spawn and manage subagents
+                'orchestrate:spawn', 'orchestrate:status', 'orchestrate:list', 'orchestrate:active', 'orchestrate:cancel', 'orchestrate:send', 'orchestrate:cleanup',
+                'orchestrate:haiku', 'orchestrate:sonnet', 'orchestrate:opus',
+                'orchestrate:run', 'orchestrate:run-haiku', 'orchestrate:run-sonnet',
+                // Reddit crawler - Community research
+                'crawler:reddit', 'crawler:reddit-multi', 'crawler:reddit-comments', 'crawler:reddit-aggregate',
+                // Discovery Source Registry - Source management
+                'discovery:source:create', 'discovery:source:get', 'discovery:source:update', 'discovery:source:delete', 'discovery:source:list',
+                'discovery:source:byType', 'discovery:source:stale', 'discovery:source:stats', 'discovery:source:markCrawled', 'discovery:source:updateMetrics', 'discovery:source:seed',
+                // Discovery Crawl Orchestrator
+                'discovery:crawl:start', 'discovery:crawl:status', 'discovery:crawl:pause', 'discovery:crawl:resume', 'discovery:crawl:cancel',
+                'discovery:crawl:history', 'discovery:crawl:due', 'discovery:crawl:scheduled',
+                // Discovery Processor (deduplication)
+                'discovery:process:one', 'discovery:process:pending', 'discovery:process:match', 'discovery:process:save',
+                'discovery:process:getPending', 'discovery:process:search', 'discovery:process:stats',
+                // Criticality Scoring
+                'discovery:criticality:calculate', 'discovery:criticality:scoreEntity', 'discovery:criticality:scoreProject',
+                'discovery:criticality:byLevel', 'discovery:criticality:needingValidation', 'discovery:criticality:summary',
+                // Trend Detection
+                'discovery:trends:detect', 'discovery:trends:list', 'discovery:trends:details', 'discovery:trends:entities',
+                'discovery:trends:report', 'discovery:trends:export',
+                // GitHub Crawler
+                'crawler:github-awesome', 'crawler:github-trending', 'crawler:github-diff',
+                // Nitter/X Crawler
+                'crawler:nitter', 'crawler:nitter-search',
+                // Research Domains - Domain-driven research
+                'domain:create', 'domain:get', 'domain:list', 'domain:update', 'domain:delete', 'domain:find', 'domain:entities', 'domain:summary', 'domain:updateStats',
+                // Discovery Categories - LLM-based classification
+                'category:create', 'category:get', 'category:getByName', 'category:list', 'category:update', 'category:delete',
+                'category:entities', 'category:summary', 'category:updateStats', 'category:updateAllStats',
+                'category:prompt', 'category:context', 'category:apply', 'category:explain', 'category:unclassified', 'category:preview',
+                'category:seed', 'category:migrate',
             ],
         }));
         process.exit(1);

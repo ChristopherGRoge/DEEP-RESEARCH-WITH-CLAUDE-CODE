@@ -48,7 +48,10 @@ const node_ws_1 = require("@hono/node-ws");
 const cors_1 = require("hono/cors");
 const logger_1 = require("hono/logger");
 const api_1 = __importDefault(require("./routes/api"));
+const research_api_1 = __importDefault(require("./routes/research-api"));
+const discovery_api_1 = require("./routes/discovery-api");
 const websocket_1 = require("./routes/websocket");
+const research_websocket_1 = require("./routes/research-websocket");
 const auth_1 = require("./middleware/auth");
 const app = new hono_1.Hono();
 // Middleware
@@ -56,10 +59,13 @@ app.use('*', (0, cors_1.cors)());
 app.use('*', (0, logger_1.logger)());
 // API routes
 app.route('/api', api_1.default);
+app.route('/api/research', research_api_1.default);
+app.route('/api/discovery', discovery_api_1.discoveryApi);
 // WebSocket setup for Node.js
 const { injectWebSocket, upgradeWebSocket } = (0, node_ws_1.createNodeWebSocket)({ app });
-// WebSocket endpoint
+// WebSocket endpoints
 app.get('/ws/validation', upgradeWebSocket((0, websocket_1.createWebSocketHandler)()));
+app.get('/ws/research', upgradeWebSocket((0, research_websocket_1.createResearchWebSocketHandler)()));
 // Serve evidence screenshots
 app.use('/evidence/*', (0, serve_static_1.serveStatic)({
     root: './',
@@ -70,21 +76,51 @@ app.use('/screenshots/*', (0, serve_static_1.serveStatic)({
     root: './',
     rewriteRequestPath: (path) => path,
 }));
-// Static files (serve frontend)
-app.use('/*', (0, serve_static_1.serveStatic)({
-    root: './src/server/public',
-    rewriteRequestPath: (path) => path,
-}));
-// Fallback to index.html for SPA routing
+// ============================================
+// Explicit routes (MUST come before static handlers)
+// ============================================
+// Serve Svelte app at root (or fallback to Alpine.js landing page)
 app.get('/', async (c) => {
+    const fs = await Promise.resolve().then(() => __importStar(require('fs/promises')));
+    const pathModule = await Promise.resolve().then(() => __importStar(require('path')));
+    // Try Svelte build first
+    try {
+        const svelteHtml = await fs.readFile(pathModule.join(process.cwd(), 'src/server/public/dist/index.html'), 'utf-8');
+        return c.html(svelteHtml);
+    }
+    catch {
+        // Fallback to Alpine.js landing page
+        try {
+            const html = await fs.readFile(pathModule.join(process.cwd(), 'src/server/public/index-new.html'), 'utf-8');
+            return c.html(html);
+        }
+        catch (error) {
+            return c.text('Frontend not found. Run: cd frontend && npm install && npm run build', 404);
+        }
+    }
+});
+// Serve legacy validation UI at /validate
+app.get('/validate', async (c) => {
     try {
         const fs = await Promise.resolve().then(() => __importStar(require('fs/promises')));
-        const path = await Promise.resolve().then(() => __importStar(require('path')));
-        const html = await fs.readFile(path.join(process.cwd(), 'src/server/public/index.html'), 'utf-8');
+        const pathModule = await Promise.resolve().then(() => __importStar(require('path')));
+        const html = await fs.readFile(pathModule.join(process.cwd(), 'src/server/public/index.html'), 'utf-8');
         return c.html(html);
     }
     catch (error) {
-        return c.text('Frontend not found. Please ensure src/server/public/index.html exists.', 404);
+        return c.text('Validation UI not found. Please ensure src/server/public/index.html exists.', 404);
+    }
+});
+// Serve legacy research UI at /research-legacy
+app.get('/research-legacy', async (c) => {
+    try {
+        const fs = await Promise.resolve().then(() => __importStar(require('fs/promises')));
+        const pathModule = await Promise.resolve().then(() => __importStar(require('path')));
+        const html = await fs.readFile(pathModule.join(process.cwd(), 'src/server/public/research.html'), 'utf-8');
+        return c.html(html);
+    }
+    catch (error) {
+        return c.text('Research UI not found.', 404);
     }
 });
 // Health check
@@ -97,16 +133,32 @@ app.get('/health', (c) => {
         timestamp: new Date().toISOString(),
     });
 });
+// ============================================
+// Static file handlers (after explicit routes)
+// ============================================
+// Serve Svelte app assets
+app.use('/assets/*', (0, serve_static_1.serveStatic)({
+    root: './src/server/public/dist',
+    rewriteRequestPath: (path) => path,
+}));
+// Static files (serve legacy frontend files)
+app.use('/*', (0, serve_static_1.serveStatic)({
+    root: './src/server/public',
+    rewriteRequestPath: (path) => path,
+}));
 // Start server
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 console.log(`
-╔══════════════════════════════════════════════════════════════╗
-║                  Validation Server Starting                   ║
-╠══════════════════════════════════════════════════════════════╣
-║  URL:       http://localhost:${PORT}                            ║
-║  API:       http://localhost:${PORT}/api                        ║
-║  WebSocket: ws://localhost:${PORT}/ws/validation                ║
-╚══════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════════╗
+║           Deep Research Server Starting                         ║
+╠════════════════════════════════════════════════════════════════╣
+║  URL:            http://localhost:${PORT}                          ║
+║  Discovery API:  http://localhost:${PORT}/api/discovery            ║
+║  Research API:   http://localhost:${PORT}/api/research             ║
+║  Validation API: http://localhost:${PORT}/api                      ║
+║  Research WS:    ws://localhost:${PORT}/ws/research                ║
+║  Validation WS:  ws://localhost:${PORT}/ws/validation              ║
+╚════════════════════════════════════════════════════════════════╝
 `);
 // Check auth status
 const authStatus = (0, auth_1.getAuthStatus)();

@@ -17,28 +17,113 @@ A research domain defines:
 ## Commands
 
 ```
-/research-domain create <name>   # Create a new domain (interactive)
-/research-domain list            # List all domains
-/research-domain show <name>     # Show domain details
+/research-domain create <name>                      # Create a new domain (interactive)
+/research-domain create <name> --context "..."      # Create with natural language context (fewer questions)
+/research-domain list                               # List all domains
+/research-domain show <name>                        # Show domain details
+/research-domain help                               # Verbose overview with workflow explanation
+/research-domain commands                           # Concise CLI command reference
 ```
 
 ---
 
 ## EXECUTION PROTOCOL
 
-### MODE: `create <name>`
+### MODE: `help`
+
+Display a comprehensive overview. Output EXACTLY this format:
+
+```
+## Research Domain Skill
+
+Manages research domains - configurable definitions of what to discover and how to find it.
+
+### What is a Research Domain?
+
+A domain defines:
+- **What to find**: Entity types (tool, framework, platform), inclusion/exclusion criteria
+- **How to find it**: Known leaders for "[X] alternatives" searches, topics to explore
+- **How to evaluate**: Scoring dimensions for discovered entities
+
+### Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `/research-domain create <name>` | Create a new domain interactively |
+| `/research-domain create <name> --context "..."` | Create with natural language context |
+| `/research-domain list` | List all existing domains |
+| `/research-domain show <name>` | Show details for a specific domain |
+| `/research-domain help` | This help message |
+| `/research-domain commands` | Concise CLI command list |
+
+### Workflow
+
+**Interactive:**
+1. Create a domain: `/research-domain create AI-Testing-Tools`
+2. Answer questions about problem space, entity types, known leaders, topics
+3. Run discovery: `/research-discover AI-Testing-Tools`
+
+**With Context (fewer questions):**
+1. Create with context: `/research-domain create Agentic-SDLC --context "Gen-AI tools that replace or enhance traditional SDLC tools"`
+2. Claude infers description, inclusion/exclusion criteria from your context
+3. Only asks for entity types, known leaders, topics (if not inferrable)
+4. Run discovery: `/research-discover Agentic-SDLC`
+
+### Related Skills
+
+- `/research-discover <domain>` - Discover entities (requires domain argument)
+- `/research` - Deep research on specific entities
+- `/research-to-deck` - Generate presentations from research
+```
+
+---
+
+### MODE: `commands`
+
+Display a minimal, copy-paste ready command reference. Output EXACTLY this format:
+
+```
+## CLI Commands
+
+# Skill commands
+/research-domain create <name>
+/research-domain create <name> --context "natural language description of the domain"
+/research-domain list
+/research-domain show <name>
+/research-domain help
+/research-domain commands
+
+# Database CLI
+npm run cli -- domain:create '{"name": "...", "description": "...", "entityTypes": ["tool"], "knownLeaders": [], "relevantTopics": []}'
+npm run cli -- domain:get '{"name": "..."}'
+npm run cli -- domain:list
+npm run cli -- domain:find '{"name": "..."}'
+npm run cli -- domain:update '{"domainId": "...", "fieldToUpdate": "value"}'
+npm run cli -- domain:delete '{"domainId": "..."}'
+npm run cli -- domain:entities '{"domainId": "..."}'
+npm run cli -- domain:summary '{"domainId": "..."}'
+npm run cli -- domain:updateStats '{"domainId": "..."}'
+```
+
+---
+
+### MODE: `create <name>` or `create <name> --context "..."`
 
 Follow this sequence when creating a domain:
 
 #### Step 1: Parse Arguments
 
-Extract domain name from the invocation args. The name should be kebab-case (e.g., "Agentic-SDLC-Tools").
+Extract from invocation args:
+- **Domain name**: First token after `create` (should be kebab-case, e.g., "Agentic-SDLC-Tools")
+- **Context** (optional): Text following `--context` flag
 
 If no name provided:
 ```
 ERROR: Domain name required.
 Usage: /research-domain create <domain-name>
+       /research-domain create <domain-name> --context "description of the domain"
 Example: /research-domain create AI-Testing-Tools
+         /research-domain create Agentic-SDLC --context "Gen-AI tools that replace traditional SDLC tools"
 ```
 
 #### Step 2: Check for Existing Domain
@@ -49,9 +134,46 @@ npm run cli -- domain:find '{"name": "DOMAIN_NAME"}'
 
 If domain exists, show current definition and ask if user wants to update it.
 
-#### Step 3: Gather Domain Definition (Interactive)
+#### Step 3: Gather Domain Definition
 
-Use **AskUserQuestion** to gather domain parameters:
+**If `--context` was provided:**
+
+Claude uses the natural language context to infer:
+- `description` - Directly from context
+- `inclusionCriteria` - What qualifies based on context
+- `exclusionCriteria` - What doesn't fit based on context
+- `searchHints` - How to search based on context
+
+Then only ask questions for fields that cannot be reliably inferred:
+
+**Question 1: Entity Types** (if not clear from context)
+```
+What types of entities should be discovered?
+
+Options (multi-select):
+- Tools (software products)
+- Frameworks (development frameworks)
+- Platforms (hosted services)
+- Concepts (architectural patterns)
+```
+
+**Question 2: Known Leaders** (always ask - hard to infer)
+```
+Name 2-4 known tools/leaders in this space (for "[X] alternatives" searches):
+
+[Free text input]
+```
+
+**Question 3: Key Topics** (if not clear from context)
+```
+What topics should be explored? (comma-separated)
+
+[Free text input]
+```
+
+**If NO `--context` provided (fully interactive):**
+
+Use **AskUserQuestion** to gather all domain parameters:
 
 **Question 1: Problem Space**
 ```
@@ -257,7 +379,9 @@ interface ResearchDomain {
 
 ---
 
-## EXAMPLE: Creating a Domain
+## EXAMPLES
+
+### Example 1: Interactive Creation (no --context)
 
 ```
 User: /research-domain create GenAI-Observability
@@ -290,6 +414,40 @@ Claude: Creating domain with these parameters...
 
 ## Next Steps
 Run `/research-discover GenAI-Observability` to discover entities.
+```
+
+### Example 2: Creation with --context (fewer questions)
+
+```
+User: /research-domain create Agentic-SDLC --context "Gen-AI tools which promise to replace, enhance or re-imagine tools that today drive software delivery using traditional technologies"
+
+Claude: I'll create a research domain for Agentic-SDLC using your context.
+
+From your context, I've inferred:
+- Description: Gen-AI tools that replace, enhance, or re-imagine traditional software delivery tools
+- Inclusion: AI/ML-powered tools targeting SDLC phases (coding, testing, deployment, monitoring)
+- Exclusion: Traditional tools without AI capabilities, pure infrastructure tools
+
+[AskUserQuestion: What entity types?]
+User: Tools, Platforms
+
+[AskUserQuestion: Known leaders in this space?]
+User: GitHub Copilot, Cursor, Tabnine, Vercel v0
+
+Claude: Creating domain with these parameters...
+
+[Runs domain:create CLI command]
+
+✓ Domain "Agentic-SDLC" created successfully.
+
+## Domain Summary
+- Description: Gen-AI tools that replace, enhance, or re-imagine traditional software delivery tools
+- Entity Types: tool, platform
+- Known Leaders: GitHub Copilot, Cursor, Tabnine, Vercel v0
+- Topics: AI code generation, automated testing, intelligent deployment, AI-assisted debugging
+
+## Next Steps
+Run `/research-discover Agentic-SDLC` to discover entities.
 ```
 
 ---

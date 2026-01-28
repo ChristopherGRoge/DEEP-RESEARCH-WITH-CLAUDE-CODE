@@ -15,9 +15,15 @@ export type AggregateAssertion = {
 };
 export type AssertionAvgAggregateOutputType = {
     confidence: number | null;
+    mentionCount: number | null;
+    sourceSpread: number | null;
+    criticalityScore: number | null;
 };
 export type AssertionSumAggregateOutputType = {
     confidence: number | null;
+    mentionCount: number | null;
+    sourceSpread: number | null;
+    criticalityScore: number | null;
 };
 export type AssertionMinAggregateOutputType = {
     id: string | null;
@@ -25,6 +31,7 @@ export type AssertionMinAggregateOutputType = {
     status: $Enums.AssertionStatus | null;
     category: string | null;
     confidence: number | null;
+    lastValidatedAt: Date | null;
     criticality: $Enums.AssertionCriticality | null;
     createdAt: Date | null;
     updatedAt: Date | null;
@@ -38,6 +45,11 @@ export type AssertionMinAggregateOutputType = {
     partiallyValidated: boolean | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
+    discoverySourceId: string | null;
+    firstDiscoveredAt: Date | null;
+    mentionCount: number | null;
+    sourceSpread: number | null;
+    criticalityScore: number | null;
     entityId: string | null;
 };
 export type AssertionMaxAggregateOutputType = {
@@ -46,6 +58,7 @@ export type AssertionMaxAggregateOutputType = {
     status: $Enums.AssertionStatus | null;
     category: string | null;
     confidence: number | null;
+    lastValidatedAt: Date | null;
     criticality: $Enums.AssertionCriticality | null;
     createdAt: Date | null;
     updatedAt: Date | null;
@@ -59,6 +72,11 @@ export type AssertionMaxAggregateOutputType = {
     partiallyValidated: boolean | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
+    discoverySourceId: string | null;
+    firstDiscoveredAt: Date | null;
+    mentionCount: number | null;
+    sourceSpread: number | null;
+    criticalityScore: number | null;
     entityId: string | null;
 };
 export type AssertionCountAggregateOutputType = {
@@ -67,6 +85,9 @@ export type AssertionCountAggregateOutputType = {
     status: number;
     category: number;
     confidence: number;
+    confidenceFactors: number;
+    lastValidatedAt: number;
+    validationHistory: number;
     criticality: number;
     createdAt: number;
     updatedAt: number;
@@ -83,14 +104,26 @@ export type AssertionCountAggregateOutputType = {
     evidenceChain: number;
     evidenceDescription: number;
     evidenceScreenshotPath: number;
+    discoverySourceId: number;
+    firstDiscoveredAt: number;
+    mentionCount: number;
+    sourceSpread: number;
+    criticalityScore: number;
+    criticalityFactors: number;
     entityId: number;
     _all: number;
 };
 export type AssertionAvgAggregateInputType = {
     confidence?: true;
+    mentionCount?: true;
+    sourceSpread?: true;
+    criticalityScore?: true;
 };
 export type AssertionSumAggregateInputType = {
     confidence?: true;
+    mentionCount?: true;
+    sourceSpread?: true;
+    criticalityScore?: true;
 };
 export type AssertionMinAggregateInputType = {
     id?: true;
@@ -98,6 +131,7 @@ export type AssertionMinAggregateInputType = {
     status?: true;
     category?: true;
     confidence?: true;
+    lastValidatedAt?: true;
     criticality?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -111,6 +145,11 @@ export type AssertionMinAggregateInputType = {
     partiallyValidated?: true;
     evidenceDescription?: true;
     evidenceScreenshotPath?: true;
+    discoverySourceId?: true;
+    firstDiscoveredAt?: true;
+    mentionCount?: true;
+    sourceSpread?: true;
+    criticalityScore?: true;
     entityId?: true;
 };
 export type AssertionMaxAggregateInputType = {
@@ -119,6 +158,7 @@ export type AssertionMaxAggregateInputType = {
     status?: true;
     category?: true;
     confidence?: true;
+    lastValidatedAt?: true;
     criticality?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -132,6 +172,11 @@ export type AssertionMaxAggregateInputType = {
     partiallyValidated?: true;
     evidenceDescription?: true;
     evidenceScreenshotPath?: true;
+    discoverySourceId?: true;
+    firstDiscoveredAt?: true;
+    mentionCount?: true;
+    sourceSpread?: true;
+    criticalityScore?: true;
     entityId?: true;
 };
 export type AssertionCountAggregateInputType = {
@@ -140,6 +185,9 @@ export type AssertionCountAggregateInputType = {
     status?: true;
     category?: true;
     confidence?: true;
+    confidenceFactors?: true;
+    lastValidatedAt?: true;
+    validationHistory?: true;
     criticality?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -156,6 +204,12 @@ export type AssertionCountAggregateInputType = {
     evidenceChain?: true;
     evidenceDescription?: true;
     evidenceScreenshotPath?: true;
+    discoverySourceId?: true;
+    firstDiscoveredAt?: true;
+    mentionCount?: true;
+    sourceSpread?: true;
+    criticalityScore?: true;
+    criticalityFactors?: true;
     entityId?: true;
     _all?: true;
 };
@@ -241,6 +295,9 @@ export type AssertionGroupByOutputType = {
     status: $Enums.AssertionStatus;
     category: string | null;
     confidence: number | null;
+    confidenceFactors: runtime.JsonValue | null;
+    lastValidatedAt: Date | null;
+    validationHistory: runtime.JsonValue | null;
     criticality: $Enums.AssertionCriticality;
     createdAt: Date;
     updatedAt: Date;
@@ -257,6 +314,12 @@ export type AssertionGroupByOutputType = {
     evidenceChain: runtime.JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
+    discoverySourceId: string | null;
+    firstDiscoveredAt: Date | null;
+    mentionCount: number;
+    sourceSpread: number;
+    criticalityScore: number | null;
+    criticalityFactors: runtime.JsonValue | null;
     entityId: string;
     _count: AssertionCountAggregateOutputType | null;
     _avg: AssertionAvgAggregateOutputType | null;
@@ -276,6 +339,9 @@ export type AssertionWhereInput = {
     status?: Prisma.EnumAssertionStatusFilter<"Assertion"> | $Enums.AssertionStatus;
     category?: Prisma.StringNullableFilter<"Assertion"> | string | null;
     confidence?: Prisma.FloatNullableFilter<"Assertion"> | number | null;
+    confidenceFactors?: Prisma.JsonNullableFilter<"Assertion">;
+    lastValidatedAt?: Prisma.DateTimeNullableFilter<"Assertion"> | Date | string | null;
+    validationHistory?: Prisma.JsonNullableFilter<"Assertion">;
     criticality?: Prisma.EnumAssertionCriticalityFilter<"Assertion"> | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeFilter<"Assertion"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Assertion"> | Date | string;
@@ -292,6 +358,12 @@ export type AssertionWhereInput = {
     evidenceChain?: Prisma.JsonNullableFilter<"Assertion">;
     evidenceDescription?: Prisma.StringNullableFilter<"Assertion"> | string | null;
     evidenceScreenshotPath?: Prisma.StringNullableFilter<"Assertion"> | string | null;
+    discoverySourceId?: Prisma.StringNullableFilter<"Assertion"> | string | null;
+    firstDiscoveredAt?: Prisma.DateTimeNullableFilter<"Assertion"> | Date | string | null;
+    mentionCount?: Prisma.IntFilter<"Assertion"> | number;
+    sourceSpread?: Prisma.IntFilter<"Assertion"> | number;
+    criticalityScore?: Prisma.FloatNullableFilter<"Assertion"> | number | null;
+    criticalityFactors?: Prisma.JsonNullableFilter<"Assertion">;
     entityId?: Prisma.StringFilter<"Assertion"> | string;
     entity?: Prisma.XOR<Prisma.EntityScalarRelationFilter, Prisma.EntityWhereInput>;
     reasoning?: Prisma.ReasoningListRelationFilter;
@@ -303,6 +375,9 @@ export type AssertionOrderByWithRelationInput = {
     status?: Prisma.SortOrder;
     category?: Prisma.SortOrderInput | Prisma.SortOrder;
     confidence?: Prisma.SortOrderInput | Prisma.SortOrder;
+    confidenceFactors?: Prisma.SortOrderInput | Prisma.SortOrder;
+    lastValidatedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    validationHistory?: Prisma.SortOrderInput | Prisma.SortOrder;
     criticality?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -319,6 +394,12 @@ export type AssertionOrderByWithRelationInput = {
     evidenceChain?: Prisma.SortOrderInput | Prisma.SortOrder;
     evidenceDescription?: Prisma.SortOrderInput | Prisma.SortOrder;
     evidenceScreenshotPath?: Prisma.SortOrderInput | Prisma.SortOrder;
+    discoverySourceId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    firstDiscoveredAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    mentionCount?: Prisma.SortOrder;
+    sourceSpread?: Prisma.SortOrder;
+    criticalityScore?: Prisma.SortOrderInput | Prisma.SortOrder;
+    criticalityFactors?: Prisma.SortOrderInput | Prisma.SortOrder;
     entityId?: Prisma.SortOrder;
     entity?: Prisma.EntityOrderByWithRelationInput;
     reasoning?: Prisma.ReasoningOrderByRelationAggregateInput;
@@ -333,6 +414,9 @@ export type AssertionWhereUniqueInput = Prisma.AtLeast<{
     status?: Prisma.EnumAssertionStatusFilter<"Assertion"> | $Enums.AssertionStatus;
     category?: Prisma.StringNullableFilter<"Assertion"> | string | null;
     confidence?: Prisma.FloatNullableFilter<"Assertion"> | number | null;
+    confidenceFactors?: Prisma.JsonNullableFilter<"Assertion">;
+    lastValidatedAt?: Prisma.DateTimeNullableFilter<"Assertion"> | Date | string | null;
+    validationHistory?: Prisma.JsonNullableFilter<"Assertion">;
     criticality?: Prisma.EnumAssertionCriticalityFilter<"Assertion"> | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeFilter<"Assertion"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Assertion"> | Date | string;
@@ -349,6 +433,12 @@ export type AssertionWhereUniqueInput = Prisma.AtLeast<{
     evidenceChain?: Prisma.JsonNullableFilter<"Assertion">;
     evidenceDescription?: Prisma.StringNullableFilter<"Assertion"> | string | null;
     evidenceScreenshotPath?: Prisma.StringNullableFilter<"Assertion"> | string | null;
+    discoverySourceId?: Prisma.StringNullableFilter<"Assertion"> | string | null;
+    firstDiscoveredAt?: Prisma.DateTimeNullableFilter<"Assertion"> | Date | string | null;
+    mentionCount?: Prisma.IntFilter<"Assertion"> | number;
+    sourceSpread?: Prisma.IntFilter<"Assertion"> | number;
+    criticalityScore?: Prisma.FloatNullableFilter<"Assertion"> | number | null;
+    criticalityFactors?: Prisma.JsonNullableFilter<"Assertion">;
     entityId?: Prisma.StringFilter<"Assertion"> | string;
     entity?: Prisma.XOR<Prisma.EntityScalarRelationFilter, Prisma.EntityWhereInput>;
     reasoning?: Prisma.ReasoningListRelationFilter;
@@ -360,6 +450,9 @@ export type AssertionOrderByWithAggregationInput = {
     status?: Prisma.SortOrder;
     category?: Prisma.SortOrderInput | Prisma.SortOrder;
     confidence?: Prisma.SortOrderInput | Prisma.SortOrder;
+    confidenceFactors?: Prisma.SortOrderInput | Prisma.SortOrder;
+    lastValidatedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    validationHistory?: Prisma.SortOrderInput | Prisma.SortOrder;
     criticality?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -376,6 +469,12 @@ export type AssertionOrderByWithAggregationInput = {
     evidenceChain?: Prisma.SortOrderInput | Prisma.SortOrder;
     evidenceDescription?: Prisma.SortOrderInput | Prisma.SortOrder;
     evidenceScreenshotPath?: Prisma.SortOrderInput | Prisma.SortOrder;
+    discoverySourceId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    firstDiscoveredAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    mentionCount?: Prisma.SortOrder;
+    sourceSpread?: Prisma.SortOrder;
+    criticalityScore?: Prisma.SortOrderInput | Prisma.SortOrder;
+    criticalityFactors?: Prisma.SortOrderInput | Prisma.SortOrder;
     entityId?: Prisma.SortOrder;
     _count?: Prisma.AssertionCountOrderByAggregateInput;
     _avg?: Prisma.AssertionAvgOrderByAggregateInput;
@@ -392,6 +491,9 @@ export type AssertionScalarWhereWithAggregatesInput = {
     status?: Prisma.EnumAssertionStatusWithAggregatesFilter<"Assertion"> | $Enums.AssertionStatus;
     category?: Prisma.StringNullableWithAggregatesFilter<"Assertion"> | string | null;
     confidence?: Prisma.FloatNullableWithAggregatesFilter<"Assertion"> | number | null;
+    confidenceFactors?: Prisma.JsonNullableWithAggregatesFilter<"Assertion">;
+    lastValidatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Assertion"> | Date | string | null;
+    validationHistory?: Prisma.JsonNullableWithAggregatesFilter<"Assertion">;
     criticality?: Prisma.EnumAssertionCriticalityWithAggregatesFilter<"Assertion"> | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Assertion"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Assertion"> | Date | string;
@@ -408,6 +510,12 @@ export type AssertionScalarWhereWithAggregatesInput = {
     evidenceChain?: Prisma.JsonNullableWithAggregatesFilter<"Assertion">;
     evidenceDescription?: Prisma.StringNullableWithAggregatesFilter<"Assertion"> | string | null;
     evidenceScreenshotPath?: Prisma.StringNullableWithAggregatesFilter<"Assertion"> | string | null;
+    discoverySourceId?: Prisma.StringNullableWithAggregatesFilter<"Assertion"> | string | null;
+    firstDiscoveredAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Assertion"> | Date | string | null;
+    mentionCount?: Prisma.IntWithAggregatesFilter<"Assertion"> | number;
+    sourceSpread?: Prisma.IntWithAggregatesFilter<"Assertion"> | number;
+    criticalityScore?: Prisma.FloatNullableWithAggregatesFilter<"Assertion"> | number | null;
+    criticalityFactors?: Prisma.JsonNullableWithAggregatesFilter<"Assertion">;
     entityId?: Prisma.StringWithAggregatesFilter<"Assertion"> | string;
 };
 export type AssertionCreateInput = {
@@ -416,6 +524,9 @@ export type AssertionCreateInput = {
     status?: $Enums.AssertionStatus;
     category?: string | null;
     confidence?: number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: $Enums.AssertionCriticality;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -432,6 +543,12 @@ export type AssertionCreateInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
+    discoverySourceId?: string | null;
+    firstDiscoveredAt?: Date | string | null;
+    mentionCount?: number;
+    sourceSpread?: number;
+    criticalityScore?: number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity: Prisma.EntityCreateNestedOneWithoutAssertionsInput;
     reasoning?: Prisma.ReasoningCreateNestedManyWithoutAssertionInput;
     sources?: Prisma.AssertionSourceCreateNestedManyWithoutAssertionInput;
@@ -442,6 +559,9 @@ export type AssertionUncheckedCreateInput = {
     status?: $Enums.AssertionStatus;
     category?: string | null;
     confidence?: number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: $Enums.AssertionCriticality;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -458,6 +578,12 @@ export type AssertionUncheckedCreateInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
+    discoverySourceId?: string | null;
+    firstDiscoveredAt?: Date | string | null;
+    mentionCount?: number;
+    sourceSpread?: number;
+    criticalityScore?: number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entityId: string;
     reasoning?: Prisma.ReasoningUncheckedCreateNestedManyWithoutAssertionInput;
     sources?: Prisma.AssertionSourceUncheckedCreateNestedManyWithoutAssertionInput;
@@ -468,6 +594,9 @@ export type AssertionUpdateInput = {
     status?: Prisma.EnumAssertionStatusFieldUpdateOperationsInput | $Enums.AssertionStatus;
     category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: Prisma.EnumAssertionCriticalityFieldUpdateOperationsInput | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -484,6 +613,12 @@ export type AssertionUpdateInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    discoverySourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    firstDiscoveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    mentionCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    sourceSpread?: Prisma.IntFieldUpdateOperationsInput | number;
+    criticalityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity?: Prisma.EntityUpdateOneRequiredWithoutAssertionsNestedInput;
     reasoning?: Prisma.ReasoningUpdateManyWithoutAssertionNestedInput;
     sources?: Prisma.AssertionSourceUpdateManyWithoutAssertionNestedInput;
@@ -494,6 +629,9 @@ export type AssertionUncheckedUpdateInput = {
     status?: Prisma.EnumAssertionStatusFieldUpdateOperationsInput | $Enums.AssertionStatus;
     category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: Prisma.EnumAssertionCriticalityFieldUpdateOperationsInput | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -510,6 +648,12 @@ export type AssertionUncheckedUpdateInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    discoverySourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    firstDiscoveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    mentionCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    sourceSpread?: Prisma.IntFieldUpdateOperationsInput | number;
+    criticalityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entityId?: Prisma.StringFieldUpdateOperationsInput | string;
     reasoning?: Prisma.ReasoningUncheckedUpdateManyWithoutAssertionNestedInput;
     sources?: Prisma.AssertionSourceUncheckedUpdateManyWithoutAssertionNestedInput;
@@ -520,6 +664,9 @@ export type AssertionCreateManyInput = {
     status?: $Enums.AssertionStatus;
     category?: string | null;
     confidence?: number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: $Enums.AssertionCriticality;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -536,6 +683,12 @@ export type AssertionCreateManyInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
+    discoverySourceId?: string | null;
+    firstDiscoveredAt?: Date | string | null;
+    mentionCount?: number;
+    sourceSpread?: number;
+    criticalityScore?: number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entityId: string;
 };
 export type AssertionUpdateManyMutationInput = {
@@ -544,6 +697,9 @@ export type AssertionUpdateManyMutationInput = {
     status?: Prisma.EnumAssertionStatusFieldUpdateOperationsInput | $Enums.AssertionStatus;
     category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: Prisma.EnumAssertionCriticalityFieldUpdateOperationsInput | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -560,6 +716,12 @@ export type AssertionUpdateManyMutationInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    discoverySourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    firstDiscoveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    mentionCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    sourceSpread?: Prisma.IntFieldUpdateOperationsInput | number;
+    criticalityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type AssertionUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -567,6 +729,9 @@ export type AssertionUncheckedUpdateManyInput = {
     status?: Prisma.EnumAssertionStatusFieldUpdateOperationsInput | $Enums.AssertionStatus;
     category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: Prisma.EnumAssertionCriticalityFieldUpdateOperationsInput | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -583,6 +748,12 @@ export type AssertionUncheckedUpdateManyInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    discoverySourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    firstDiscoveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    mentionCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    sourceSpread?: Prisma.IntFieldUpdateOperationsInput | number;
+    criticalityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entityId?: Prisma.StringFieldUpdateOperationsInput | string;
 };
 export type AssertionListRelationFilter = {
@@ -606,6 +777,9 @@ export type AssertionCountOrderByAggregateInput = {
     status?: Prisma.SortOrder;
     category?: Prisma.SortOrder;
     confidence?: Prisma.SortOrder;
+    confidenceFactors?: Prisma.SortOrder;
+    lastValidatedAt?: Prisma.SortOrder;
+    validationHistory?: Prisma.SortOrder;
     criticality?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -622,10 +796,19 @@ export type AssertionCountOrderByAggregateInput = {
     evidenceChain?: Prisma.SortOrder;
     evidenceDescription?: Prisma.SortOrder;
     evidenceScreenshotPath?: Prisma.SortOrder;
+    discoverySourceId?: Prisma.SortOrder;
+    firstDiscoveredAt?: Prisma.SortOrder;
+    mentionCount?: Prisma.SortOrder;
+    sourceSpread?: Prisma.SortOrder;
+    criticalityScore?: Prisma.SortOrder;
+    criticalityFactors?: Prisma.SortOrder;
     entityId?: Prisma.SortOrder;
 };
 export type AssertionAvgOrderByAggregateInput = {
     confidence?: Prisma.SortOrder;
+    mentionCount?: Prisma.SortOrder;
+    sourceSpread?: Prisma.SortOrder;
+    criticalityScore?: Prisma.SortOrder;
 };
 export type AssertionMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -633,6 +816,7 @@ export type AssertionMaxOrderByAggregateInput = {
     status?: Prisma.SortOrder;
     category?: Prisma.SortOrder;
     confidence?: Prisma.SortOrder;
+    lastValidatedAt?: Prisma.SortOrder;
     criticality?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -646,6 +830,11 @@ export type AssertionMaxOrderByAggregateInput = {
     partiallyValidated?: Prisma.SortOrder;
     evidenceDescription?: Prisma.SortOrder;
     evidenceScreenshotPath?: Prisma.SortOrder;
+    discoverySourceId?: Prisma.SortOrder;
+    firstDiscoveredAt?: Prisma.SortOrder;
+    mentionCount?: Prisma.SortOrder;
+    sourceSpread?: Prisma.SortOrder;
+    criticalityScore?: Prisma.SortOrder;
     entityId?: Prisma.SortOrder;
 };
 export type AssertionMinOrderByAggregateInput = {
@@ -654,6 +843,7 @@ export type AssertionMinOrderByAggregateInput = {
     status?: Prisma.SortOrder;
     category?: Prisma.SortOrder;
     confidence?: Prisma.SortOrder;
+    lastValidatedAt?: Prisma.SortOrder;
     criticality?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -667,10 +857,18 @@ export type AssertionMinOrderByAggregateInput = {
     partiallyValidated?: Prisma.SortOrder;
     evidenceDescription?: Prisma.SortOrder;
     evidenceScreenshotPath?: Prisma.SortOrder;
+    discoverySourceId?: Prisma.SortOrder;
+    firstDiscoveredAt?: Prisma.SortOrder;
+    mentionCount?: Prisma.SortOrder;
+    sourceSpread?: Prisma.SortOrder;
+    criticalityScore?: Prisma.SortOrder;
     entityId?: Prisma.SortOrder;
 };
 export type AssertionSumOrderByAggregateInput = {
     confidence?: Prisma.SortOrder;
+    mentionCount?: Prisma.SortOrder;
+    sourceSpread?: Prisma.SortOrder;
+    criticalityScore?: Prisma.SortOrder;
 };
 export type AssertionScalarRelationFilter = {
     is?: Prisma.AssertionWhereInput;
@@ -720,19 +918,19 @@ export type AssertionCreateevidenceScreenshotsInput = {
 export type EnumAssertionStatusFieldUpdateOperationsInput = {
     set?: $Enums.AssertionStatus;
 };
-export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null;
-    increment?: number;
-    decrement?: number;
-    multiply?: number;
-    divide?: number;
-};
 export type EnumAssertionCriticalityFieldUpdateOperationsInput = {
     set?: $Enums.AssertionCriticality;
 };
 export type AssertionUpdateevidenceScreenshotsInput = {
     set?: string[];
     push?: string | string[];
+};
+export type IntFieldUpdateOperationsInput = {
+    set?: number;
+    increment?: number;
+    decrement?: number;
+    multiply?: number;
+    divide?: number;
 };
 export type AssertionCreateNestedOneWithoutReasoningInput = {
     create?: Prisma.XOR<Prisma.AssertionCreateWithoutReasoningInput, Prisma.AssertionUncheckedCreateWithoutReasoningInput>;
@@ -764,6 +962,9 @@ export type AssertionCreateWithoutEntityInput = {
     status?: $Enums.AssertionStatus;
     category?: string | null;
     confidence?: number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: $Enums.AssertionCriticality;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -780,6 +981,12 @@ export type AssertionCreateWithoutEntityInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
+    discoverySourceId?: string | null;
+    firstDiscoveredAt?: Date | string | null;
+    mentionCount?: number;
+    sourceSpread?: number;
+    criticalityScore?: number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     reasoning?: Prisma.ReasoningCreateNestedManyWithoutAssertionInput;
     sources?: Prisma.AssertionSourceCreateNestedManyWithoutAssertionInput;
 };
@@ -789,6 +996,9 @@ export type AssertionUncheckedCreateWithoutEntityInput = {
     status?: $Enums.AssertionStatus;
     category?: string | null;
     confidence?: number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: $Enums.AssertionCriticality;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -805,6 +1015,12 @@ export type AssertionUncheckedCreateWithoutEntityInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
+    discoverySourceId?: string | null;
+    firstDiscoveredAt?: Date | string | null;
+    mentionCount?: number;
+    sourceSpread?: number;
+    criticalityScore?: number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     reasoning?: Prisma.ReasoningUncheckedCreateNestedManyWithoutAssertionInput;
     sources?: Prisma.AssertionSourceUncheckedCreateNestedManyWithoutAssertionInput;
 };
@@ -838,6 +1054,9 @@ export type AssertionScalarWhereInput = {
     status?: Prisma.EnumAssertionStatusFilter<"Assertion"> | $Enums.AssertionStatus;
     category?: Prisma.StringNullableFilter<"Assertion"> | string | null;
     confidence?: Prisma.FloatNullableFilter<"Assertion"> | number | null;
+    confidenceFactors?: Prisma.JsonNullableFilter<"Assertion">;
+    lastValidatedAt?: Prisma.DateTimeNullableFilter<"Assertion"> | Date | string | null;
+    validationHistory?: Prisma.JsonNullableFilter<"Assertion">;
     criticality?: Prisma.EnumAssertionCriticalityFilter<"Assertion"> | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeFilter<"Assertion"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Assertion"> | Date | string;
@@ -854,6 +1073,12 @@ export type AssertionScalarWhereInput = {
     evidenceChain?: Prisma.JsonNullableFilter<"Assertion">;
     evidenceDescription?: Prisma.StringNullableFilter<"Assertion"> | string | null;
     evidenceScreenshotPath?: Prisma.StringNullableFilter<"Assertion"> | string | null;
+    discoverySourceId?: Prisma.StringNullableFilter<"Assertion"> | string | null;
+    firstDiscoveredAt?: Prisma.DateTimeNullableFilter<"Assertion"> | Date | string | null;
+    mentionCount?: Prisma.IntFilter<"Assertion"> | number;
+    sourceSpread?: Prisma.IntFilter<"Assertion"> | number;
+    criticalityScore?: Prisma.FloatNullableFilter<"Assertion"> | number | null;
+    criticalityFactors?: Prisma.JsonNullableFilter<"Assertion">;
     entityId?: Prisma.StringFilter<"Assertion"> | string;
 };
 export type AssertionCreateWithoutReasoningInput = {
@@ -862,6 +1087,9 @@ export type AssertionCreateWithoutReasoningInput = {
     status?: $Enums.AssertionStatus;
     category?: string | null;
     confidence?: number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: $Enums.AssertionCriticality;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -878,6 +1106,12 @@ export type AssertionCreateWithoutReasoningInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
+    discoverySourceId?: string | null;
+    firstDiscoveredAt?: Date | string | null;
+    mentionCount?: number;
+    sourceSpread?: number;
+    criticalityScore?: number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity: Prisma.EntityCreateNestedOneWithoutAssertionsInput;
     sources?: Prisma.AssertionSourceCreateNestedManyWithoutAssertionInput;
 };
@@ -887,6 +1121,9 @@ export type AssertionUncheckedCreateWithoutReasoningInput = {
     status?: $Enums.AssertionStatus;
     category?: string | null;
     confidence?: number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: $Enums.AssertionCriticality;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -903,6 +1140,12 @@ export type AssertionUncheckedCreateWithoutReasoningInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
+    discoverySourceId?: string | null;
+    firstDiscoveredAt?: Date | string | null;
+    mentionCount?: number;
+    sourceSpread?: number;
+    criticalityScore?: number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entityId: string;
     sources?: Prisma.AssertionSourceUncheckedCreateNestedManyWithoutAssertionInput;
 };
@@ -925,6 +1168,9 @@ export type AssertionUpdateWithoutReasoningInput = {
     status?: Prisma.EnumAssertionStatusFieldUpdateOperationsInput | $Enums.AssertionStatus;
     category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: Prisma.EnumAssertionCriticalityFieldUpdateOperationsInput | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -941,6 +1187,12 @@ export type AssertionUpdateWithoutReasoningInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    discoverySourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    firstDiscoveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    mentionCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    sourceSpread?: Prisma.IntFieldUpdateOperationsInput | number;
+    criticalityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity?: Prisma.EntityUpdateOneRequiredWithoutAssertionsNestedInput;
     sources?: Prisma.AssertionSourceUpdateManyWithoutAssertionNestedInput;
 };
@@ -950,6 +1202,9 @@ export type AssertionUncheckedUpdateWithoutReasoningInput = {
     status?: Prisma.EnumAssertionStatusFieldUpdateOperationsInput | $Enums.AssertionStatus;
     category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: Prisma.EnumAssertionCriticalityFieldUpdateOperationsInput | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -966,6 +1221,12 @@ export type AssertionUncheckedUpdateWithoutReasoningInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    discoverySourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    firstDiscoveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    mentionCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    sourceSpread?: Prisma.IntFieldUpdateOperationsInput | number;
+    criticalityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entityId?: Prisma.StringFieldUpdateOperationsInput | string;
     sources?: Prisma.AssertionSourceUncheckedUpdateManyWithoutAssertionNestedInput;
 };
@@ -975,6 +1236,9 @@ export type AssertionCreateWithoutSourcesInput = {
     status?: $Enums.AssertionStatus;
     category?: string | null;
     confidence?: number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: $Enums.AssertionCriticality;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -991,6 +1255,12 @@ export type AssertionCreateWithoutSourcesInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
+    discoverySourceId?: string | null;
+    firstDiscoveredAt?: Date | string | null;
+    mentionCount?: number;
+    sourceSpread?: number;
+    criticalityScore?: number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity: Prisma.EntityCreateNestedOneWithoutAssertionsInput;
     reasoning?: Prisma.ReasoningCreateNestedManyWithoutAssertionInput;
 };
@@ -1000,6 +1270,9 @@ export type AssertionUncheckedCreateWithoutSourcesInput = {
     status?: $Enums.AssertionStatus;
     category?: string | null;
     confidence?: number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: $Enums.AssertionCriticality;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1016,6 +1289,12 @@ export type AssertionUncheckedCreateWithoutSourcesInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
+    discoverySourceId?: string | null;
+    firstDiscoveredAt?: Date | string | null;
+    mentionCount?: number;
+    sourceSpread?: number;
+    criticalityScore?: number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entityId: string;
     reasoning?: Prisma.ReasoningUncheckedCreateNestedManyWithoutAssertionInput;
 };
@@ -1038,6 +1317,9 @@ export type AssertionUpdateWithoutSourcesInput = {
     status?: Prisma.EnumAssertionStatusFieldUpdateOperationsInput | $Enums.AssertionStatus;
     category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: Prisma.EnumAssertionCriticalityFieldUpdateOperationsInput | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1054,6 +1336,12 @@ export type AssertionUpdateWithoutSourcesInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    discoverySourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    firstDiscoveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    mentionCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    sourceSpread?: Prisma.IntFieldUpdateOperationsInput | number;
+    criticalityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity?: Prisma.EntityUpdateOneRequiredWithoutAssertionsNestedInput;
     reasoning?: Prisma.ReasoningUpdateManyWithoutAssertionNestedInput;
 };
@@ -1063,6 +1351,9 @@ export type AssertionUncheckedUpdateWithoutSourcesInput = {
     status?: Prisma.EnumAssertionStatusFieldUpdateOperationsInput | $Enums.AssertionStatus;
     category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: Prisma.EnumAssertionCriticalityFieldUpdateOperationsInput | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1079,6 +1370,12 @@ export type AssertionUncheckedUpdateWithoutSourcesInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    discoverySourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    firstDiscoveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    mentionCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    sourceSpread?: Prisma.IntFieldUpdateOperationsInput | number;
+    criticalityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entityId?: Prisma.StringFieldUpdateOperationsInput | string;
     reasoning?: Prisma.ReasoningUncheckedUpdateManyWithoutAssertionNestedInput;
 };
@@ -1088,6 +1385,9 @@ export type AssertionCreateManyEntityInput = {
     status?: $Enums.AssertionStatus;
     category?: string | null;
     confidence?: number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: $Enums.AssertionCriticality;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -1104,6 +1404,12 @@ export type AssertionCreateManyEntityInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
+    discoverySourceId?: string | null;
+    firstDiscoveredAt?: Date | string | null;
+    mentionCount?: number;
+    sourceSpread?: number;
+    criticalityScore?: number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type AssertionUpdateWithoutEntityInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1111,6 +1417,9 @@ export type AssertionUpdateWithoutEntityInput = {
     status?: Prisma.EnumAssertionStatusFieldUpdateOperationsInput | $Enums.AssertionStatus;
     category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: Prisma.EnumAssertionCriticalityFieldUpdateOperationsInput | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1127,6 +1436,12 @@ export type AssertionUpdateWithoutEntityInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    discoverySourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    firstDiscoveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    mentionCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    sourceSpread?: Prisma.IntFieldUpdateOperationsInput | number;
+    criticalityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     reasoning?: Prisma.ReasoningUpdateManyWithoutAssertionNestedInput;
     sources?: Prisma.AssertionSourceUpdateManyWithoutAssertionNestedInput;
 };
@@ -1136,6 +1451,9 @@ export type AssertionUncheckedUpdateWithoutEntityInput = {
     status?: Prisma.EnumAssertionStatusFieldUpdateOperationsInput | $Enums.AssertionStatus;
     category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: Prisma.EnumAssertionCriticalityFieldUpdateOperationsInput | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1152,6 +1470,12 @@ export type AssertionUncheckedUpdateWithoutEntityInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    discoverySourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    firstDiscoveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    mentionCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    sourceSpread?: Prisma.IntFieldUpdateOperationsInput | number;
+    criticalityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     reasoning?: Prisma.ReasoningUncheckedUpdateManyWithoutAssertionNestedInput;
     sources?: Prisma.AssertionSourceUncheckedUpdateManyWithoutAssertionNestedInput;
 };
@@ -1161,6 +1485,9 @@ export type AssertionUncheckedUpdateManyWithoutEntityInput = {
     status?: Prisma.EnumAssertionStatusFieldUpdateOperationsInput | $Enums.AssertionStatus;
     category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     criticality?: Prisma.EnumAssertionCriticalityFieldUpdateOperationsInput | $Enums.AssertionCriticality;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1177,6 +1504,12 @@ export type AssertionUncheckedUpdateManyWithoutEntityInput = {
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    discoverySourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    firstDiscoveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    mentionCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    sourceSpread?: Prisma.IntFieldUpdateOperationsInput | number;
+    criticalityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 /**
  * Count Type AssertionCountOutputType
@@ -1216,6 +1549,9 @@ export type AssertionSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
     status?: boolean;
     category?: boolean;
     confidence?: boolean;
+    confidenceFactors?: boolean;
+    lastValidatedAt?: boolean;
+    validationHistory?: boolean;
     criticality?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -1232,6 +1568,12 @@ export type AssertionSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
     evidenceChain?: boolean;
     evidenceDescription?: boolean;
     evidenceScreenshotPath?: boolean;
+    discoverySourceId?: boolean;
+    firstDiscoveredAt?: boolean;
+    mentionCount?: boolean;
+    sourceSpread?: boolean;
+    criticalityScore?: boolean;
+    criticalityFactors?: boolean;
     entityId?: boolean;
     entity?: boolean | Prisma.EntityDefaultArgs<ExtArgs>;
     reasoning?: boolean | Prisma.Assertion$reasoningArgs<ExtArgs>;
@@ -1244,6 +1586,9 @@ export type AssertionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
     status?: boolean;
     category?: boolean;
     confidence?: boolean;
+    confidenceFactors?: boolean;
+    lastValidatedAt?: boolean;
+    validationHistory?: boolean;
     criticality?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -1260,6 +1605,12 @@ export type AssertionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
     evidenceChain?: boolean;
     evidenceDescription?: boolean;
     evidenceScreenshotPath?: boolean;
+    discoverySourceId?: boolean;
+    firstDiscoveredAt?: boolean;
+    mentionCount?: boolean;
+    sourceSpread?: boolean;
+    criticalityScore?: boolean;
+    criticalityFactors?: boolean;
     entityId?: boolean;
     entity?: boolean | Prisma.EntityDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["assertion"]>;
@@ -1269,6 +1620,9 @@ export type AssertionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
     status?: boolean;
     category?: boolean;
     confidence?: boolean;
+    confidenceFactors?: boolean;
+    lastValidatedAt?: boolean;
+    validationHistory?: boolean;
     criticality?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -1285,6 +1639,12 @@ export type AssertionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
     evidenceChain?: boolean;
     evidenceDescription?: boolean;
     evidenceScreenshotPath?: boolean;
+    discoverySourceId?: boolean;
+    firstDiscoveredAt?: boolean;
+    mentionCount?: boolean;
+    sourceSpread?: boolean;
+    criticalityScore?: boolean;
+    criticalityFactors?: boolean;
     entityId?: boolean;
     entity?: boolean | Prisma.EntityDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["assertion"]>;
@@ -1294,6 +1654,9 @@ export type AssertionSelectScalar = {
     status?: boolean;
     category?: boolean;
     confidence?: boolean;
+    confidenceFactors?: boolean;
+    lastValidatedAt?: boolean;
+    validationHistory?: boolean;
     criticality?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -1310,9 +1673,15 @@ export type AssertionSelectScalar = {
     evidenceChain?: boolean;
     evidenceDescription?: boolean;
     evidenceScreenshotPath?: boolean;
+    discoverySourceId?: boolean;
+    firstDiscoveredAt?: boolean;
+    mentionCount?: boolean;
+    sourceSpread?: boolean;
+    criticalityScore?: boolean;
+    criticalityFactors?: boolean;
     entityId?: boolean;
 };
-export type AssertionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "claim" | "status" | "category" | "confidence" | "criticality" | "createdAt" | "updatedAt" | "validatedAt" | "validatedBy" | "citedInConclusion" | "conclusionContext" | "rejectionReason" | "supersededBy" | "humanResponse" | "validationNotes" | "partiallyValidated" | "evidenceScreenshots" | "evidenceChain" | "evidenceDescription" | "evidenceScreenshotPath" | "entityId", ExtArgs["result"]["assertion"]>;
+export type AssertionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "claim" | "status" | "category" | "confidence" | "confidenceFactors" | "lastValidatedAt" | "validationHistory" | "criticality" | "createdAt" | "updatedAt" | "validatedAt" | "validatedBy" | "citedInConclusion" | "conclusionContext" | "rejectionReason" | "supersededBy" | "humanResponse" | "validationNotes" | "partiallyValidated" | "evidenceScreenshots" | "evidenceChain" | "evidenceDescription" | "evidenceScreenshotPath" | "discoverySourceId" | "firstDiscoveredAt" | "mentionCount" | "sourceSpread" | "criticalityScore" | "criticalityFactors" | "entityId", ExtArgs["result"]["assertion"]>;
 export type AssertionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     entity?: boolean | Prisma.EntityDefaultArgs<ExtArgs>;
     reasoning?: boolean | Prisma.Assertion$reasoningArgs<ExtArgs>;
@@ -1338,6 +1707,9 @@ export type $AssertionPayload<ExtArgs extends runtime.Types.Extensions.InternalA
         status: $Enums.AssertionStatus;
         category: string | null;
         confidence: number | null;
+        confidenceFactors: runtime.JsonValue | null;
+        lastValidatedAt: Date | null;
+        validationHistory: runtime.JsonValue | null;
         criticality: $Enums.AssertionCriticality;
         createdAt: Date;
         updatedAt: Date;
@@ -1354,6 +1726,12 @@ export type $AssertionPayload<ExtArgs extends runtime.Types.Extensions.InternalA
         evidenceChain: runtime.JsonValue | null;
         evidenceDescription: string | null;
         evidenceScreenshotPath: string | null;
+        discoverySourceId: string | null;
+        firstDiscoveredAt: Date | null;
+        mentionCount: number;
+        sourceSpread: number;
+        criticalityScore: number | null;
+        criticalityFactors: runtime.JsonValue | null;
         entityId: string;
     }, ExtArgs["result"]["assertion"]>;
     composites: {};
@@ -1717,6 +2095,9 @@ export interface AssertionFieldRefs {
     readonly status: Prisma.FieldRef<"Assertion", 'AssertionStatus'>;
     readonly category: Prisma.FieldRef<"Assertion", 'String'>;
     readonly confidence: Prisma.FieldRef<"Assertion", 'Float'>;
+    readonly confidenceFactors: Prisma.FieldRef<"Assertion", 'Json'>;
+    readonly lastValidatedAt: Prisma.FieldRef<"Assertion", 'DateTime'>;
+    readonly validationHistory: Prisma.FieldRef<"Assertion", 'Json'>;
     readonly criticality: Prisma.FieldRef<"Assertion", 'AssertionCriticality'>;
     readonly createdAt: Prisma.FieldRef<"Assertion", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"Assertion", 'DateTime'>;
@@ -1733,6 +2114,12 @@ export interface AssertionFieldRefs {
     readonly evidenceChain: Prisma.FieldRef<"Assertion", 'Json'>;
     readonly evidenceDescription: Prisma.FieldRef<"Assertion", 'String'>;
     readonly evidenceScreenshotPath: Prisma.FieldRef<"Assertion", 'String'>;
+    readonly discoverySourceId: Prisma.FieldRef<"Assertion", 'String'>;
+    readonly firstDiscoveredAt: Prisma.FieldRef<"Assertion", 'DateTime'>;
+    readonly mentionCount: Prisma.FieldRef<"Assertion", 'Int'>;
+    readonly sourceSpread: Prisma.FieldRef<"Assertion", 'Int'>;
+    readonly criticalityScore: Prisma.FieldRef<"Assertion", 'Float'>;
+    readonly criticalityFactors: Prisma.FieldRef<"Assertion", 'Json'>;
     readonly entityId: Prisma.FieldRef<"Assertion", 'String'>;
 }
 /**

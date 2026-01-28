@@ -177,6 +177,25 @@ export declare function getCategoryWithEntities(categoryId: string, options?: {
         logoSourceUrl: string | null;
         logoFetchedAt: Date | null;
         logoVerified: boolean;
+        githubUrl: string | null;
+        githubOwner: string | null;
+        githubRepo: string | null;
+        githubStars: number | null;
+        githubForks: number | null;
+        githubWatchers: number | null;
+        githubOpenIssues: number | null;
+        githubContributors: number | null;
+        githubLastCommit: Date | null;
+        githubLastRelease: Date | null;
+        githubLanguage: string | null;
+        githubLicense: string | null;
+        githubCreatedAt: Date | null;
+        githubMetricsAt: Date | null;
+        buzzScore: number | null;
+        buzzComponents: import("@prisma/client/runtime/client").JsonValue | null;
+        buzzCalculatedAt: Date | null;
+        buzzOverride: number | null;
+        buzzOverrideReason: string | null;
     })[];
     _count: {
         entities: number;

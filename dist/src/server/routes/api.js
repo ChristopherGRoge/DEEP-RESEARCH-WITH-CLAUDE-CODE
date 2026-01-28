@@ -146,6 +146,7 @@ api.get('/assertions/pending', async (c) => {
     });
 });
 // Get assertions grouped by project for sidebar (all statuses)
+// When projectId is specified, groups by entity within that project
 api.get('/assertions/by-project', async (c) => {
     const projectId = c.req.query('projectId');
     const where = {};
@@ -168,7 +169,40 @@ api.get('/assertions/by-project', async (c) => {
             { createdAt: 'desc' },
         ],
     });
-    // Group by project
+    // When projectId is specified, group by entity within the project
+    if (projectId) {
+        const byEntity = new Map();
+        for (const assertion of assertions) {
+            const entityId = assertion.entity.id;
+            const entityName = assertion.entity.name;
+            if (!byEntity.has(entityId)) {
+                byEntity.set(entityId, {
+                    entityId,
+                    entityName,
+                    projectId: assertion.entity.project.id,
+                    projectName: assertion.entity.project.name,
+                    assertions: [],
+                });
+            }
+            byEntity.get(entityId).assertions.push({
+                id: assertion.id,
+                claim: assertion.claim,
+                category: assertion.category,
+                criticality: assertion.criticality,
+                status: assertion.status,
+                entityId: assertion.entity.id,
+                entityName: assertion.entity.name,
+            });
+        }
+        // Sort entities by name
+        const sortedEntities = Array.from(byEntity.values()).sort((a, b) => a.entityName.localeCompare(b.entityName));
+        return c.json({
+            success: true,
+            data: sortedEntities,
+            groupedBy: 'entity',
+        });
+    }
+    // When no projectId, group by project (original behavior)
     const byProject = new Map();
     for (const assertion of assertions) {
         const projId = assertion.entity.project.id;
@@ -185,7 +219,7 @@ api.get('/assertions/by-project', async (c) => {
             claim: assertion.claim,
             category: assertion.category,
             criticality: assertion.criticality,
-            status: assertion.status, // Include status for UI
+            status: assertion.status,
             entityId: assertion.entity.id,
             entityName: assertion.entity.name,
         });
@@ -193,6 +227,7 @@ api.get('/assertions/by-project', async (c) => {
     return c.json({
         success: true,
         data: Array.from(byProject.values()),
+        groupedBy: 'project',
     });
 });
 api.get('/assertions/:id', async (c) => {
@@ -723,6 +758,119 @@ api.get('/entities', async (c) => {
     const entities = await tools.listEntities(projectId);
     return c.json({ success: true, data: entities });
 });
+// Get entities grouped by discoveryCategory for tree visualization
+// Discovery categories: ai_code_assistants, ai_code_review, ai_debugging, ai_testing,
+//                       ai_documentation, ai_security, ai_devops, ai_analytics, genai_concepts
+api.get('/entities/tree/:projectId', async (c) => {
+    const projectId = c.req.param('projectId');
+    const groupBy = c.req.query('groupBy') || 'discoveryCategory'; // or 'entityType'
+    // Get project info
+    const project = await tools.getProject(projectId);
+    if (!project) {
+        return c.json({ success: false, error: 'Project not found' }, 404);
+    }
+    // Get all entities with assertion counts
+    const entities = await tools.prisma.entity.findMany({
+        where: { projectId },
+        include: {
+            _count: {
+                select: { assertions: true },
+            },
+            assertions: {
+                select: {
+                    status: true,
+                },
+            },
+        },
+    });
+    // Group by the specified field (default: discoveryCategory)
+    const grouped = new Map();
+    // Define nice display names for discovery categories
+    const categoryDisplayNames = {
+        ai_code_assistants: 'Code Assistants',
+        ai_code_review: 'Code Review',
+        ai_debugging: 'Debugging',
+        ai_testing: 'Testing',
+        ai_documentation: 'Documentation',
+        ai_security: 'Security',
+        ai_devops: 'DevOps',
+        ai_analytics: 'Analytics',
+        genai_concepts: 'GenAI Concepts',
+    };
+    for (const entity of entities) {
+        const groupKey = groupBy === 'entityType'
+            ? (entity.entityType || 'uncategorized')
+            : (entity.discoveryCategory || 'uncategorized');
+        if (!grouped.has(groupKey)) {
+            grouped.set(groupKey, []);
+        }
+        // Calculate evidence ratio (validated / total)
+        const totalAssertions = entity._count.assertions;
+        const validatedCount = entity.assertions.filter(a => a.status === 'EVIDENCE').length;
+        const evidenceRatio = totalAssertions > 0 ? validatedCount / totalAssertions : 0;
+        grouped.get(groupKey).push({
+            id: entity.id,
+            name: entity.name,
+            url: entity.url,
+            entityType: entity.entityType,
+            discoveryCategory: entity.discoveryCategory,
+            logoUrl: entity.logoUrl,
+            logoSvgContent: entity.logoSvgContent,
+            assertionCount: totalAssertions,
+            evidenceRatio,
+        });
+    }
+    // Sort categories by a logical order (discovery categories first, then alphabetically)
+    const categoryOrder = [
+        'ai_code_assistants', 'ai_code_review', 'ai_debugging', 'ai_testing',
+        'ai_documentation', 'ai_security', 'ai_devops', 'ai_analytics', 'genai_concepts'
+    ];
+    const sortedEntries = Array.from(grouped.entries()).sort(([a], [b]) => {
+        const aIndex = categoryOrder.indexOf(a);
+        const bIndex = categoryOrder.indexOf(b);
+        if (aIndex >= 0 && bIndex >= 0)
+            return aIndex - bIndex;
+        if (aIndex >= 0)
+            return -1;
+        if (bIndex >= 0)
+            return 1;
+        return a.localeCompare(b);
+    });
+    // Build tree structure for D3 - categories as root nodes (no project parent)
+    const treeData = {
+        name: project.name,
+        type: 'project',
+        children: sortedEntries.map(([key, entities]) => ({
+            name: categoryDisplayNames[key] || key,
+            key: key, // Original key for filtering
+            type: 'category',
+            children: entities.map(e => ({
+                name: e.name,
+                type: 'entity',
+                id: e.id,
+                url: e.url,
+                entityType: e.entityType,
+                discoveryCategory: e.discoveryCategory,
+                logoUrl: e.logoUrl,
+                logoSvgContent: e.logoSvgContent,
+                assertionCount: e.assertionCount,
+                evidenceRatio: e.evidenceRatio,
+            })),
+        })),
+    };
+    // Also return available entity types for slicer/filter UI
+    const entityTypes = [...new Set(entities.map(e => e.entityType).filter(Boolean))];
+    return c.json({
+        success: true,
+        data: treeData,
+        meta: {
+            groupBy,
+            entityTypes,
+            totalEntities: entities.length,
+            categoriesCount: grouped.size,
+        }
+    });
+});
 api.get('/entities/:id', async (c) => {
     const entityId = c.req.param('id');
     const entity = await tools.getEntity(entityId);
@@ -730,6 +878,17 @@ api.get('/entities/:id', async (c) => {
         return c.json({ success: false, error: 'Entity not found' }, 404);
     }
     return c.json({ success: true, data: entity });
+});
+// ============================================
+// Extractions
+// ============================================
+api.get('/extractions', async (c) => {
+    const entityId = c.req.query('entityId');
+    if (!entityId) {
+        return c.json({ success: false, error: 'entityId query parameter is required' }, 400);
+    }
+    const extractions = await tools.getExtractions(entityId);
+    return c.json({ success: true, data: extractions });
 });
 // ============================================
 // Search

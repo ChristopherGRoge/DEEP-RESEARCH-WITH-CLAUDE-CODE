@@ -210,6 +210,94 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get extraction(): Prisma.ExtractionDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    /**
+     * `prisma.researchSession`: Exposes CRUD operations for the **ResearchSession** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ResearchSessions
+      * const researchSessions = await prisma.researchSession.findMany()
+      * ```
+      */
+    get researchSession(): Prisma.ResearchSessionDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.researchTask`: Exposes CRUD operations for the **ResearchTask** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ResearchTasks
+      * const researchTasks = await prisma.researchTask.findMany()
+      * ```
+      */
+    get researchTask(): Prisma.ResearchTaskDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.discoverySource`: Exposes CRUD operations for the **DiscoverySource** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more DiscoverySources
+      * const discoverySources = await prisma.discoverySource.findMany()
+      * ```
+      */
+    get discoverySource(): Prisma.DiscoverySourceDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.rawDiscovery`: Exposes CRUD operations for the **RawDiscovery** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more RawDiscoveries
+      * const rawDiscoveries = await prisma.rawDiscovery.findMany()
+      * ```
+      */
+    get rawDiscovery(): Prisma.RawDiscoveryDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.discoveryCrawl`: Exposes CRUD operations for the **DiscoveryCrawl** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more DiscoveryCrawls
+      * const discoveryCrawls = await prisma.discoveryCrawl.findMany()
+      * ```
+      */
+    get discoveryCrawl(): Prisma.DiscoveryCrawlDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.discoveryTrend`: Exposes CRUD operations for the **DiscoveryTrend** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more DiscoveryTrends
+      * const discoveryTrends = await prisma.discoveryTrend.findMany()
+      * ```
+      */
+    get discoveryTrend(): Prisma.DiscoveryTrendDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.discoveryCategory`: Exposes CRUD operations for the **DiscoveryCategory** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more DiscoveryCategories
+      * const discoveryCategories = await prisma.discoveryCategory.findMany()
+      * ```
+      */
+    get discoveryCategory(): Prisma.DiscoveryCategoryDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.researchDomain`: Exposes CRUD operations for the **ResearchDomain** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ResearchDomains
+      * const researchDomains = await prisma.researchDomain.findMany()
+      * ```
+      */
+    get researchDomain(): Prisma.ResearchDomainDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
 }
 export declare function getPrismaClientClass(): PrismaClientConstructor;
 //# sourceMappingURL=class.d.ts.map

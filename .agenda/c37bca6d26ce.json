@@ -1,0 +1,26 @@
+{
+  "id": "c37bca6d26ce",
+  "name": "Validate Claude Code Pillars",
+  "projectId": "cmkmuy06l0000potui26vfjjd",
+  "projectName": "Agentic SDLC Research",
+  "taskType": "assertion:validate",
+  "createdAt": "2026-01-22T17:18:25.391Z",
+  "updatedAt": "2026-01-22T17:18:25.391Z",
+  "items": [
+    {
+      "entityId": "cmkmw5ubx0000ertui9r82mzi",
+      "entityName": "Claude Code",
+      "entityUrl": "https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview",
+      "status": "pending"
+    }
+  ],
+  "currentIndex": 0,
+  "stats": {
+    "total": 1,
+    "pending": 1,
+    "inProgress": 0,
+    "completed": 0,
+    "skipped": 0,
+    "failed": 0
+  }
+}

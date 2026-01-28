@@ -504,13 +504,6 @@ export type SourceScalarRelationFilter = {
 export type EnumSourceStatusFieldUpdateOperationsInput = {
     set?: $Enums.SourceStatus;
 };
-export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null;
-    increment?: number;
-    decrement?: number;
-    multiply?: number;
-    divide?: number;
-};
 export type SourceCreateNestedOneWithoutAssertionsInput = {
     create?: Prisma.XOR<Prisma.SourceCreateWithoutAssertionsInput, Prisma.SourceUncheckedCreateWithoutAssertionsInput>;
     connectOrCreate?: Prisma.SourceCreateOrConnectWithoutAssertionsInput;

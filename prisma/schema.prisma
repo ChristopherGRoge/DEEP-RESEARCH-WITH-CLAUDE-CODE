@@ -130,6 +130,29 @@ model Entity {
   logoFetchedAt  DateTime? // When logo was last fetched/verified
   logoVerified   Boolean   @default(false) // Human-verified as correct logo
 
+  // GitHub metrics (auto-populated from GitHub API)
+  githubUrl          String?   // GitHub repository URL
+  githubOwner        String?   // Owner (org or user)
+  githubRepo         String?   // Repository name
+  githubStars        Int?      // Stargazer count
+  githubForks        Int?      // Fork count
+  githubWatchers     Int?      // Watcher count
+  githubOpenIssues   Int?      // Open issue count
+  githubContributors Int?      // Contributor count (top 100)
+  githubLastCommit   DateTime? // Most recent commit date
+  githubLastRelease  DateTime? // Most recent release date
+  githubLanguage     String?   // Primary language
+  githubLicense      String?   // License type (MIT, Apache-2.0, etc.)
+  githubCreatedAt    DateTime? // Repo creation date
+  githubMetricsAt    DateTime? // When metrics were last fetched
+
+  // Buzz score (composite metric for stack-ranking)
+  buzzScore          Float?    // Composite score 0.0-1.0
+  buzzComponents     Json?     // Breakdown: {marketPresence, devActivity, funding, mentions, research}
+  buzzCalculatedAt   DateTime? // When buzz was last calculated
+  buzzOverride       Float?    // Manual override (researcher can hint buzz)
+  buzzOverrideReason String?   // Why manual override was set
+
   projectId   String
   project     ResearchProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
 

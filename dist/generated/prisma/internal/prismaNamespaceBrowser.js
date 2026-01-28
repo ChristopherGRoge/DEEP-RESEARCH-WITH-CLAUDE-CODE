@@ -48,7 +48,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.ExtractionScalarFieldEnum = exports.ScreenshotScalarFieldEnum = exports.ResearchLogScalarFieldEnum = exports.AssertionSourceScalarFieldEnum = exports.SourceScalarFieldEnum = exports.ReasoningScalarFieldEnum = exports.AssertionScalarFieldEnum = exports.EntityScalarFieldEnum = exports.ResearchProjectScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.ResearchDomainScalarFieldEnum = exports.DiscoveryCategoryScalarFieldEnum = exports.DiscoveryTrendScalarFieldEnum = exports.DiscoveryCrawlScalarFieldEnum = exports.RawDiscoveryScalarFieldEnum = exports.DiscoverySourceScalarFieldEnum = exports.ResearchTaskScalarFieldEnum = exports.ResearchSessionScalarFieldEnum = exports.ExtractionScalarFieldEnum = exports.ScreenshotScalarFieldEnum = exports.ResearchLogScalarFieldEnum = exports.AssertionSourceScalarFieldEnum = exports.SourceScalarFieldEnum = exports.ReasoningScalarFieldEnum = exports.AssertionScalarFieldEnum = exports.EntityScalarFieldEnum = exports.ResearchProjectScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -83,7 +83,15 @@ exports.ModelName = {
     AssertionSource: 'AssertionSource',
     ResearchLog: 'ResearchLog',
     Screenshot: 'Screenshot',
-    Extraction: 'Extraction'
+    Extraction: 'Extraction',
+    ResearchSession: 'ResearchSession',
+    ResearchTask: 'ResearchTask',
+    DiscoverySource: 'DiscoverySource',
+    RawDiscovery: 'RawDiscovery',
+    DiscoveryCrawl: 'DiscoveryCrawl',
+    DiscoveryTrend: 'DiscoveryTrend',
+    DiscoveryCategory: 'DiscoveryCategory',
+    ResearchDomain: 'ResearchDomain'
 };
 /*
  * Enums
@@ -111,6 +119,9 @@ exports.EntityScalarFieldEnum = {
     url: 'url',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
+    discoveryCategory: 'discoveryCategory',
+    categoryId: 'categoryId',
+    domainId: 'domainId',
     logoUrl: 'logoUrl',
     logoPath: 'logoPath',
     logoFormat: 'logoFormat',
@@ -118,6 +129,25 @@ exports.EntityScalarFieldEnum = {
     logoSourceUrl: 'logoSourceUrl',
     logoFetchedAt: 'logoFetchedAt',
     logoVerified: 'logoVerified',
+    githubUrl: 'githubUrl',
+    githubOwner: 'githubOwner',
+    githubRepo: 'githubRepo',
+    githubStars: 'githubStars',
+    githubForks: 'githubForks',
+    githubWatchers: 'githubWatchers',
+    githubOpenIssues: 'githubOpenIssues',
+    githubContributors: 'githubContributors',
+    githubLastCommit: 'githubLastCommit',
+    githubLastRelease: 'githubLastRelease',
+    githubLanguage: 'githubLanguage',
+    githubLicense: 'githubLicense',
+    githubCreatedAt: 'githubCreatedAt',
+    githubMetricsAt: 'githubMetricsAt',
+    buzzScore: 'buzzScore',
+    buzzComponents: 'buzzComponents',
+    buzzCalculatedAt: 'buzzCalculatedAt',
+    buzzOverride: 'buzzOverride',
+    buzzOverrideReason: 'buzzOverrideReason',
     projectId: 'projectId'
 };
 exports.AssertionScalarFieldEnum = {
@@ -126,6 +156,9 @@ exports.AssertionScalarFieldEnum = {
     status: 'status',
     category: 'category',
     confidence: 'confidence',
+    confidenceFactors: 'confidenceFactors',
+    lastValidatedAt: 'lastValidatedAt',
+    validationHistory: 'validationHistory',
     criticality: 'criticality',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -142,6 +175,12 @@ exports.AssertionScalarFieldEnum = {
     evidenceChain: 'evidenceChain',
     evidenceDescription: 'evidenceDescription',
     evidenceScreenshotPath: 'evidenceScreenshotPath',
+    discoverySourceId: 'discoverySourceId',
+    firstDiscoveredAt: 'firstDiscoveredAt',
+    mentionCount: 'mentionCount',
+    sourceSpread: 'sourceSpread',
+    criticalityScore: 'criticalityScore',
+    criticalityFactors: 'criticalityFactors',
     entityId: 'entityId'
 };
 exports.ReasoningScalarFieldEnum = {
@@ -209,6 +248,153 @@ exports.ExtractionScalarFieldEnum = {
     sourceId: 'sourceId',
     screenshotId: 'screenshotId',
     assertionIds: 'assertionIds'
+};
+exports.ResearchSessionScalarFieldEnum = {
+    id: 'id',
+    entityId: 'entityId',
+    projectId: 'projectId',
+    researcherName: 'researcherName',
+    status: 'status',
+    createdAt: 'createdAt',
+    startedAt: 'startedAt',
+    completedAt: 'completedAt',
+    pausedAt: 'pausedAt',
+    categories: 'categories',
+    mode: 'mode',
+    config: 'config',
+    overallProgress: 'overallProgress',
+    totalTasks: 'totalTasks',
+    completedTasks: 'completedTasks',
+    failedTasks: 'failedTasks',
+    totalAssertions: 'totalAssertions',
+    totalScreenshots: 'totalScreenshots',
+    totalExtractions: 'totalExtractions'
+};
+exports.ResearchTaskScalarFieldEnum = {
+    id: 'id',
+    sessionId: 'sessionId',
+    category: 'category',
+    status: 'status',
+    agentId: 'agentId',
+    startedAt: 'startedAt',
+    completedAt: 'completedAt',
+    error: 'error',
+    progress: 'progress',
+    results: 'results'
+};
+exports.DiscoverySourceScalarFieldEnum = {
+    id: 'id',
+    name: 'name',
+    url: 'url',
+    sourceType: 'sourceType',
+    category: 'category',
+    crawlStrategy: 'crawlStrategy',
+    crawlFrequency: 'crawlFrequency',
+    crawlDepth: 'crawlDepth',
+    selectors: 'selectors',
+    feedUrl: 'feedUrl',
+    apiEndpoint: 'apiEndpoint',
+    lastCrawledAt: 'lastCrawledAt',
+    lastSuccessAt: 'lastSuccessAt',
+    lastError: 'lastError',
+    consecutiveErrors: 'consecutiveErrors',
+    isActive: 'isActive',
+    discoveriesCount: 'discoveriesCount',
+    validatedCount: 'validatedCount',
+    hitRate: 'hitRate',
+    avgNoveltyScore: 'avgNoveltyScore',
+    description: 'description',
+    tags: 'tags',
+    priority: 'priority',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.RawDiscoveryScalarFieldEnum = {
+    id: 'id',
+    sourceId: 'sourceId',
+    mentionedName: 'mentionedName',
+    briefDescription: 'briefDescription',
+    discoveryUrl: 'discoveryUrl',
+    contextSnippet: 'contextSnippet',
+    extractedLinks: 'extractedLinks',
+    releaseVersion: 'releaseVersion',
+    releaseDate: 'releaseDate',
+    keywords: 'keywords',
+    discoveredAt: 'discoveredAt',
+    crawlSessionId: 'crawlSessionId',
+    processed: 'processed',
+    matchedEntityId: 'matchedEntityId',
+    createdEntityId: 'createdEntityId',
+    noveltyScore: 'noveltyScore',
+    relevanceScore: 'relevanceScore'
+};
+exports.DiscoveryCrawlScalarFieldEnum = {
+    id: 'id',
+    projectId: 'projectId',
+    sourceIds: 'sourceIds',
+    researchFocus: 'researchFocus',
+    startedAt: 'startedAt',
+    completedAt: 'completedAt',
+    pausedAt: 'pausedAt',
+    status: 'status',
+    sourcesTotal: 'sourcesTotal',
+    sourcesComplete: 'sourcesComplete',
+    sourcesFailed: 'sourcesFailed',
+    discoveriesFound: 'discoveriesFound',
+    entitiesCreated: 'entitiesCreated',
+    entitiesUpdated: 'entitiesUpdated',
+    trendsDetected: 'trendsDetected',
+    checkpoint: 'checkpoint'
+};
+exports.DiscoveryTrendScalarFieldEnum = {
+    id: 'id',
+    projectId: 'projectId',
+    name: 'name',
+    description: 'description',
+    category: 'category',
+    mentionCount: 'mentionCount',
+    entityCount: 'entityCount',
+    sourceSpread: 'sourceSpread',
+    velocity: 'velocity',
+    firstSeenAt: 'firstSeenAt',
+    lastSeenAt: 'lastSeenAt',
+    peakAt: 'peakAt',
+    entityIds: 'entityIds',
+    keywords: 'keywords',
+    trendScore: 'trendScore',
+    emergingScore: 'emergingScore',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.DiscoveryCategoryScalarFieldEnum = {
+    id: 'id',
+    name: 'name',
+    displayName: 'displayName',
+    description: 'description',
+    inclusionCriteria: 'inclusionCriteria',
+    exclusionCriteria: 'exclusionCriteria',
+    exemplarEntities: 'exemplarEntities',
+    antiExemplars: 'antiExemplars',
+    entityCount: 'entityCount',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.ResearchDomainScalarFieldEnum = {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    entityTypes: 'entityTypes',
+    inclusionCriteria: 'inclusionCriteria',
+    exclusionCriteria: 'exclusionCriteria',
+    searchHints: 'searchHints',
+    knownLeaders: 'knownLeaders',
+    relevantTopics: 'relevantTopics',
+    evaluationDimensions: 'evaluationDimensions',
+    lastDiscoveryAt: 'lastDiscoveryAt',
+    entityCount: 'entityCount',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    createdBy: 'createdBy'
 };
 exports.SortOrder = {
     asc: 'asc',

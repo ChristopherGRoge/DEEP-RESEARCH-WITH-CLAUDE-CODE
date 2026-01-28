@@ -82,11 +82,14 @@ export declare function getPendingValidation(projectId?: string): Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        category: string | null;
         entityId: string;
         claim: string;
         status: AssertionStatus;
-        category: string | null;
         confidence: number | null;
+        confidenceFactors: import("@prisma/client/runtime/client").JsonValue | null;
+        lastValidatedAt: Date | null;
+        validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
         criticality: import("../../generated/prisma/enums").AssertionCriticality;
         validatedAt: Date | null;
         validatedBy: string | null;
@@ -101,6 +104,12 @@ export declare function getPendingValidation(projectId?: string): Promise<{
         evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
         evidenceDescription: string | null;
         evidenceScreenshotPath: string | null;
+        discoverySourceId: string | null;
+        firstDiscoveredAt: Date | null;
+        mentionCount: number;
+        sourceSpread: number;
+        criticalityScore: number | null;
+        criticalityFactors: import("@prisma/client/runtime/client").JsonValue | null;
     })[];
     sources: ({
         _count: {
@@ -145,6 +154,9 @@ export declare function getEntitiesWithoutAssertions(projectId: string): Promise
     projectId: string;
     entityType: string | null;
     url: string | null;
+    discoveryCategory: string | null;
+    categoryId: string | null;
+    domainId: string | null;
     logoUrl: string | null;
     logoPath: string | null;
     logoFormat: string | null;
@@ -152,6 +164,25 @@ export declare function getEntitiesWithoutAssertions(projectId: string): Promise
     logoSourceUrl: string | null;
     logoFetchedAt: Date | null;
     logoVerified: boolean;
+    githubUrl: string | null;
+    githubOwner: string | null;
+    githubRepo: string | null;
+    githubStars: number | null;
+    githubForks: number | null;
+    githubWatchers: number | null;
+    githubOpenIssues: number | null;
+    githubContributors: number | null;
+    githubLastCommit: Date | null;
+    githubLastRelease: Date | null;
+    githubLanguage: string | null;
+    githubLicense: string | null;
+    githubCreatedAt: Date | null;
+    githubMetricsAt: Date | null;
+    buzzScore: number | null;
+    buzzComponents: import("@prisma/client/runtime/client").JsonValue | null;
+    buzzCalculatedAt: Date | null;
+    buzzOverride: number | null;
+    buzzOverrideReason: string | null;
 }[]>;
 /**
  * Get assertions without sources
@@ -165,11 +196,14 @@ export declare function getAssertionsWithoutSources(projectId?: string): Promise
     id: string;
     createdAt: Date;
     updatedAt: Date;
+    category: string | null;
     entityId: string;
     claim: string;
     status: AssertionStatus;
-    category: string | null;
     confidence: number | null;
+    confidenceFactors: import("@prisma/client/runtime/client").JsonValue | null;
+    lastValidatedAt: Date | null;
+    validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: import("../../generated/prisma/enums").AssertionCriticality;
     validatedAt: Date | null;
     validatedBy: string | null;
@@ -184,6 +218,12 @@ export declare function getAssertionsWithoutSources(projectId?: string): Promise
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
+    discoverySourceId: string | null;
+    firstDiscoveredAt: Date | null;
+    mentionCount: number;
+    sourceSpread: number;
+    criticalityScore: number | null;
+    criticalityFactors: import("@prisma/client/runtime/client").JsonValue | null;
 })[]>;
 export interface EntityGap {
     id: string;

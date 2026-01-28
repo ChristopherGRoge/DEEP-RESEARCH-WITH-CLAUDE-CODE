@@ -28,6 +28,18 @@ __exportStar(require("./diff"), exports);
 __exportStar(require("./agenda"), exports);
 __exportStar(require("./logos"), exports);
 __exportStar(require("./validation-dashboard"), exports);
+__exportStar(require("./orchestrator"), exports);
+__exportStar(require("./evidence-validator"), exports);
+__exportStar(require("./criticality-scorer"), exports);
+__exportStar(require("./crawlers"), exports);
+__exportStar(require("./discovery-sources"), exports);
+__exportStar(require("./discovery-processor"), exports);
+__exportStar(require("./trend-detector"), exports);
+__exportStar(require("./crawl-orchestrator"), exports);
+__exportStar(require("./domains"), exports);
+__exportStar(require("./categories"), exports);
+__exportStar(require("./github"), exports);
+__exportStar(require("./buzz"), exports);
 // Re-export Prisma client for direct access if needed
 var client_1 = require("../db/client");
 Object.defineProperty(exports, "prisma", { enumerable: true, get: function () { return client_1.prisma; } });

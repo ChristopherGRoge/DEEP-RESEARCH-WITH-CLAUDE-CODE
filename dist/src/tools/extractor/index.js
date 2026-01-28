@@ -63,6 +63,7 @@ exports.extractFeatures = extractFeatures;
 exports.extractCompany = extractCompany;
 exports.extractCompliance = extractCompliance;
 exports.extractIntegrations = extractIntegrations;
+exports.extractDifferentiators = extractDifferentiators;
 exports.generateAssertionsFromData = generateAssertionsFromData;
 exports.getExtractions = getExtractions;
 exports.getLatestExtraction = getLatestExtraction;
@@ -447,6 +448,9 @@ async function extractCompliance(url, entityId, options = {}) {
 async function extractIntegrations(url, entityId, options = {}) {
     return extract({ url, entityId, schemaType: 'integrations', ...options });
 }
+async function extractDifferentiators(url, entityId, options = {}) {
+    return extract({ url, entityId, schemaType: 'differentiators', ...options });
+}
 // ============================================
 // ASSERTION GENERATION (Exported for use by saveExtraction)
 // ============================================
@@ -468,6 +472,9 @@ async function generateAssertionsFromData(entityId, schemaType, data, sourceUrl)
                 break;
             case 'integrations':
                 assertionIds.push(...await generateIntegrationAssertions(entityId, data, sourceUrl));
+                break;
+            case 'differentiators':
+                assertionIds.push(...await generateDifferentiatorAssertions(entityId, data, sourceUrl));
                 break;
         }
     }
@@ -635,6 +642,86 @@ async function generateIntegrationAssertions(entityId, integrations, sourceUrl) 
             entityId,
             claim: `SDK available for: ${integrations.sdkLanguages.join(', ')}`,
             category: 'integration',
+            sourceUrl,
+        });
+        if (assertion)
+            ids.push(assertion.id);
+    }
+    return ids;
+}
+async function generateDifferentiatorAssertions(entityId, differentiators, sourceUrl) {
+    const ids = [];
+    // Create assertions for unique features (true differentiators)
+    for (const feature of differentiators.uniqueFeatures || []) {
+        const comparison = feature.comparedTo?.length
+            ? ` (competitors: ${feature.comparedTo.join('; ')})`
+            : '';
+        const assertion = await (0, assertions_1.createAssertion)({
+            entityId,
+            claim: `UNIQUE DIFFERENTIATOR: ${feature.name} - ${feature.description}${comparison}`,
+            category: 'differentiator',
+            sourceUrl,
+        });
+        if (assertion)
+            ids.push(assertion.id);
+    }
+    // Create assertions for leading features (best-in-class)
+    for (const feature of differentiators.leadingFeatures || []) {
+        const comparison = feature.comparedTo?.length
+            ? ` (vs ${feature.comparedTo.join('; ')})`
+            : '';
+        const assertion = await (0, assertions_1.createAssertion)({
+            entityId,
+            claim: `MARKET LEADER: ${feature.name} - ${feature.description}${comparison}`,
+            category: 'differentiator',
+            sourceUrl,
+        });
+        if (assertion)
+            ids.push(assertion.id);
+    }
+    // Create assertions for lagging features (competitive weakness)
+    for (const feature of differentiators.laggingFeatures || []) {
+        const competitors = feature.competitors?.length
+            ? ` (better at: ${feature.competitors.join(', ')})`
+            : '';
+        const assertion = await (0, assertions_1.createAssertion)({
+            entityId,
+            claim: `COMPETITIVE GAP: ${feature.name} - ${feature.reason}${competitors}`,
+            category: 'limitation',
+            sourceUrl,
+        });
+        if (assertion)
+            ids.push(assertion.id);
+    }
+    // Create assertions for missing features
+    for (const feature of differentiators.missingFeatures || []) {
+        const importance = feature.importance ? ` [${feature.importance}]` : '';
+        const assertion = await (0, assertions_1.createAssertion)({
+            entityId,
+            claim: `MISSING FEATURE${importance}: ${feature.name} - available in ${feature.competitors.join(', ')}`,
+            category: 'limitation',
+            sourceUrl,
+        });
+        if (assertion)
+            ids.push(assertion.id);
+    }
+    // Create summary assertion
+    if (differentiators.differentiationSummary) {
+        const assertion = await (0, assertions_1.createAssertion)({
+            entityId,
+            claim: `Differentiation summary: ${differentiators.differentiationSummary}`,
+            category: 'comparison',
+            sourceUrl,
+        });
+        if (assertion)
+            ids.push(assertion.id);
+    }
+    // Create primary competitors assertion
+    if (differentiators.primaryCompetitors?.length) {
+        const assertion = await (0, assertions_1.createAssertion)({
+            entityId,
+            claim: `Primary competitors: ${differentiators.primaryCompetitors.join(', ')}`,
+            category: 'comparison',
             sourceUrl,
         });
         if (assertion)

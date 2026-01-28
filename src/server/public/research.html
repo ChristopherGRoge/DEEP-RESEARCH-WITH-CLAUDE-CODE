@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Research</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body x-data="researchApp()" x-init="init()" class="research-page">
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-brand">
+            <a href="/" class="back-link" title="Back to Validation">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </a>
+            <span class="brand-text">Deep Research</span>
+        </div>
+
+        <div class="header-stats">
+            <template x-if="activeSession">
+                <div class="session-stats">
+                    <div class="stat-item">
+                        <span class="stat-value" x-text="sessionProgress.completedTasks"></span>
+                        <span class="stat-label">/ <span x-text="sessionProgress.totalTasks"></span> Tasks</span>
+                    </div>
+                    <span class="stat-divider"></span>
+                    <div class="stat-item">
+                        <span class="stat-value" x-text="sessionProgress.totalAssertions"></span>
+                        <span class="stat-label">Assertions</span>
+                    </div>
+                    <span class="stat-divider"></span>
+                    <div class="stat-item">
+                        <span class="stat-value" x-text="sessionProgress.totalScreenshots"></span>
+                        <span class="stat-label">Screenshots</span>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <div class="header-right">
+            <div class="connection-dot" :class="wsConnected ? 'connected' : 'disconnected'" :title="wsConnected ? 'Connected' : 'Disconnected'"></div>
+            <input
+                type="text"
+                x-model="researcherName"
+                placeholder="Researcher name"
+                class="validator-input"
+                @blur="localStorage.setItem('researcherName', researcherName)"
+            >
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <main class="main research-main">
+        <!-- Sidebar: Entity Selection & Task List -->
+        <aside class="sidebar research-sidebar">
+            <!-- Entity Selection -->
+            <div class="sidebar-header">
+                <select x-model="selectedProject" @change="loadEntities()" class="project-select">
+                    <option value="">Select Project</option>
+                    <template x-for="project in projects" :key="project.id">
+                        <option :value="project.id" x-text="project.name"></option>
+                    </template>
+                </select>
+            </div>
+
+            <!-- Entity List -->
+            <div class="entity-list" x-show="selectedProject && !activeSession">
+                <div class="list-header">
+                    <span class="list-title">Select Entity to Research</span>
+                    <span class="list-count" x-text="entities.length + ' entities'"></span>
+                </div>
+
+                <template x-if="entities.length === 0 && selectedProject">
+                    <div class="empty-sidebar">
+                        <p>No entities in this project</p>
+                    </div>
+                </template>
+
+                <div class="entity-items">
+                    <template x-for="entity in entities" :key="entity.id">
+                        <button
+                            class="entity-item"
+                            :class="{ selected: selectedEntity?.id === entity.id }"
+                            @click="selectEntity(entity)"
+                        >
+                            <span class="entity-name" x-text="entity.name"></span>
+                            <span class="entity-type" x-text="entity.entityType"></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Task List (when session is active) -->
+            <div class="task-list" x-show="activeSession">
+                <div class="list-header">
+                    <span class="list-title">Research Tasks</span>
+                    <span class="session-status" :class="sessionStatus" x-text="formatStatus(sessionStatus)"></span>
+                </div>
+
+                <div class="task-items">
+                    <template x-for="task in tasks" :key="task.id">
+                        <div class="task-item" :class="task.status.toLowerCase()">
+                            <div class="task-header">
+                                <span class="task-status-icon" :class="task.status.toLowerCase()">
+                                    <template x-if="task.status === 'PENDING'">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                        </svg>
+                                    </template>
+                                    <template x-if="task.status === 'IN_PROGRESS'">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinning">
+                                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                                        </svg>
+                                    </template>
+                                    <template x-if="task.status === 'COMPLETED'">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                            <path d="M20 6L9 17l-5-5"/>
+                                        </svg>
+                                    </template>
+                                    <template x-if="task.status === 'FAILED'">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M18 6L6 18M6 6l12 12"/>
+                                        </svg>
+                                    </template>
+                                </span>
+                                <span class="task-category" x-text="formatCategory(task.category)"></span>
+                            </div>
+
+                            <template x-if="task.progress">
+                                <div class="task-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" :style="'width: ' + (task.progress.percentComplete || 0) + '%'"></div>
+                                    </div>
+                                    <span class="progress-stage" x-text="task.progress.stageDescription || task.progress.stage"></span>
+                                </div>
+                            </template>
+
+                            <template x-if="task.status === 'FAILED' && task.error">
+                                <div class="task-error">
+                                    <span x-text="task.error"></span>
+                                    <button class="btn-retry" @click="retryTask(task.id)">Retry</button>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <section class="content research-content">
+            <!-- Empty State: No Entity Selected -->
+            <template x-if="!selectedEntity && !activeSession">
+                <div class="empty-content">
+                    <div class="empty-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="M21 21l-4.35-4.35"/>
+                        </svg>
+                    </div>
+                    <h2>Start Deep Research</h2>
+                    <p>Select a project and entity to begin automated research</p>
+                </div>
+            </template>
+
+            <!-- Entity Selected: Configuration -->
+            <template x-if="selectedEntity && !activeSession">
+                <div class="research-config">
+                    <div class="config-header">
+                        <h2 x-text="selectedEntity.name"></h2>
+                        <a :href="selectedEntity.url" target="_blank" class="entity-url" x-text="selectedEntity.url"></a>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>Research Categories</h3>
+                        <p class="config-description">Select which categories to research for this entity</p>
+
+                        <div class="category-grid">
+                            <label class="category-option" :class="{ selected: selectedCategories.includes('pricing') }">
+                                <input type="checkbox" value="pricing" x-model="selectedCategories">
+                                <span class="category-icon">$</span>
+                                <span class="category-name">Pricing</span>
+                                <span class="category-desc">Tiers, prices, features per tier</span>
+                            </label>
+
+                            <label class="category-option" :class="{ selected: selectedCategories.includes('features') }">
+                                <input type="checkbox" value="features" x-model="selectedCategories">
+                                <span class="category-icon">*</span>
+                                <span class="category-name">Features</span>
+                                <span class="category-desc">Product capabilities, highlights</span>
+                            </label>
+
+                            <label class="category-option" :class="{ selected: selectedCategories.includes('company') }">
+                                <input type="checkbox" value="company" x-model="selectedCategories">
+                                <span class="category-icon">B</span>
+                                <span class="category-name">Company</span>
+                                <span class="category-desc">Founded, funding, leadership</span>
+                            </label>
+
+                            <label class="category-option" :class="{ selected: selectedCategories.includes('compliance') }">
+                                <input type="checkbox" value="compliance" x-model="selectedCategories">
+                                <span class="category-icon">S</span>
+                                <span class="category-name">Compliance</span>
+                                <span class="category-desc">SOC2, FedRAMP, certifications</span>
+                            </label>
+
+                            <label class="category-option" :class="{ selected: selectedCategories.includes('integrations') }">
+                                <input type="checkbox" value="integrations" x-model="selectedCategories">
+                                <span class="category-icon">+</span>
+                                <span class="category-name">Integrations</span>
+                                <span class="category-desc">APIs, SDKs, partners</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>Execution Mode</h3>
+                        <div class="mode-options">
+                            <label class="mode-option" :class="{ selected: executionMode === 'sequential' }">
+                                <input type="radio" value="sequential" x-model="executionMode">
+                                <span class="mode-name">Sequential</span>
+                                <span class="mode-desc">One category at a time (recommended)</span>
+                            </label>
+                            <label class="mode-option" :class="{ selected: executionMode === 'parallel' }">
+                                <input type="radio" value="parallel" x-model="executionMode">
+                                <span class="mode-name">Parallel</span>
+                                <span class="mode-desc">All categories simultaneously (faster)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="config-actions">
+                        <button
+                            class="btn-start-research"
+                            @click="startResearch()"
+                            :disabled="!researcherName || selectedCategories.length === 0 || !authStatus.valid"
+                        >
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="5 3 19 12 5 21 5 3"/>
+                            </svg>
+                            Start Research
+                        </button>
+
+                        <template x-if="!researcherName">
+                            <p class="config-warning">Enter your name to begin</p>
+                        </template>
+                        <template x-if="!authStatus.valid">
+                            <p class="config-warning">Authentication required. Run `claude login` or set ANTHROPIC_API_KEY</p>
+                        </template>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Active Research Session -->
+            <template x-if="activeSession">
+                <div class="research-session">
+                    <!-- Session Header -->
+                    <div class="session-header">
+                        <div class="session-info">
+                            <h2 x-text="selectedEntity?.name || 'Research Session'"></h2>
+                            <span class="session-id">Session: <span x-text="activeSession.substring(0, 8)"></span>...</span>
+                        </div>
+                        <div class="session-controls">
+                            <template x-if="sessionStatus === 'RESEARCHING'">
+                                <button class="btn-control pause" @click="pauseSession()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="6" y="4" width="4" height="16"/>
+                                        <rect x="14" y="4" width="4" height="16"/>
+                                    </svg>
+                                    Pause
+                                </button>
+                            </template>
+                            <template x-if="sessionStatus === 'PAUSED'">
+                                <button class="btn-control resume" @click="resumeSession()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon points="5 3 19 12 5 21 5 3"/>
+                                    </svg>
+                                    Resume
+                                </button>
+                            </template>
+                            <button class="btn-control cancel" @click="cancelSession()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Progress Overview -->
+                    <div class="progress-overview">
+                        <div class="overall-progress">
+                            <div class="progress-ring" :style="'--progress: ' + (sessionProgress.overallPercent || 0)">
+                                <span class="progress-percent" x-text="(sessionProgress.overallPercent || 0) + '%'"></span>
+                            </div>
+                            <div class="progress-details">
+                                <span class="progress-label">Overall Progress</span>
+                                <span class="progress-summary">
+                                    <span x-text="sessionProgress.completedTasks"></span> of <span x-text="sessionProgress.totalTasks"></span> tasks complete
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Activity Feed -->
+                    <div class="activity-feed" x-ref="activityFeed">
+                        <div class="feed-header">
+                            <span class="feed-title">Activity</span>
+                        </div>
+
+                        <div class="feed-items">
+                            <template x-for="(item, index) in activityLog" :key="index">
+                                <div class="feed-item" :class="item.type">
+                                    <span class="feed-time" x-text="formatTime(item.timestamp)"></span>
+                                    <span class="feed-icon" :class="item.type">
+                                        <template x-if="item.type === 'screenshot'">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                                <path d="M21 15l-5-5L5 21"/>
+                                            </svg>
+                                        </template>
+                                        <template x-if="item.type === 'extraction'">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                                <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                                            </svg>
+                                        </template>
+                                        <template x-if="item.type === 'assertion'">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M20 6L9 17l-5-5"/>
+                                            </svg>
+                                        </template>
+                                        <template x-if="item.type === 'message'">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                            </svg>
+                                        </template>
+                                        <template x-if="item.type === 'task'">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                                <path d="M22 4L12 14.01l-3-3"/>
+                                            </svg>
+                                        </template>
+                                        <template x-if="item.type === 'error'">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M12 8v4M12 16h.01"/>
+                                            </svg>
+                                        </template>
+                                    </span>
+                                    <div class="feed-content">
+                                        <span class="feed-message" x-text="item.message"></span>
+                                        <template x-if="item.details">
+                                            <span class="feed-details" x-text="item.details"></span>
+                                        </template>
+                                        <template x-if="item.screenshotPath">
+                                            <a :href="'/' + item.screenshotPath" target="_blank" class="feed-link">View screenshot</a>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <template x-if="activityLog.length === 0">
+                                <div class="feed-empty">
+                                    <p>Waiting for research to begin...</p>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Coordinator Chat (collapsible) -->
+                    <div class="coordinator-chat" :class="{ collapsed: chatCollapsed }">
+                        <button class="chat-toggle" @click="chatCollapsed = !chatCollapsed">
+                            <span class="chat-toggle-label">Coordinator Messages</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :class="{ rotated: !chatCollapsed }">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+
+                        <div class="chat-content" x-show="!chatCollapsed" x-collapse>
+                            <div class="chat-messages" x-ref="chatMessages">
+                                <template x-for="(msg, index) in coordinatorMessages" :key="index">
+                                    <div class="chat-message" :class="msg.role">
+                                        <div class="message-content" x-html="formatMessage(msg.content)"></div>
+                                    </div>
+                                </template>
+
+                                <template x-if="isStreaming">
+                                    <div class="chat-message assistant streaming">
+                                        <div class="message-content">
+                                            <span x-text="currentStreamText"></span>
+                                            <span class="cursor"></span>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div class="chat-input">
+                                <input
+                                    type="text"
+                                    x-model="userMessage"
+                                    @keydown.enter="sendMessage()"
+                                    placeholder="Send message to coordinator..."
+                                    :disabled="sessionStatus !== 'RESEARCHING'"
+                                >
+                                <button @click="sendMessage()" :disabled="!userMessage.trim() || sessionStatus !== 'RESEARCHING'">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Session Complete -->
+                    <template x-if="sessionStatus === 'COMPLETED'">
+                        <div class="session-complete">
+                            <div class="complete-icon">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                    <path d="M22 4L12 14.01l-3-3"/>
+                                </svg>
+                            </div>
+                            <h3>Research Complete</h3>
+                            <div class="complete-stats">
+                                <div class="stat">
+                                    <span class="stat-value" x-text="sessionProgress.totalAssertions"></span>
+                                    <span class="stat-label">Assertions</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value" x-text="sessionProgress.totalScreenshots"></span>
+                                    <span class="stat-label">Screenshots</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value" x-text="sessionProgress.totalExtractions"></span>
+                                    <span class="stat-label">Extractions</span>
+                                </div>
+                            </div>
+                            <div class="complete-actions">
+                                <a :href="'/'" class="btn-validate">Validate Assertions</a>
+                                <button class="btn-new-research" @click="resetSession()">New Research</button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </section>
+    </main>
+
+    <script src="/research-app.js"></script>
+</body>
+</html>
