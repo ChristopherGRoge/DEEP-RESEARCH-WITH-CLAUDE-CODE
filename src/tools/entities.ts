@@ -106,7 +106,7 @@ export async function findEntityByName(projectId: string, name: string) {
       projectId,
       name: {
         equals: name,
-        mode: 'insensitive',
+        
       },
     },
     include: {
@@ -147,8 +147,8 @@ export async function searchEntities(input: SearchEntitiesInput) {
 
   if (input.query) {
     where.OR = [
-      { name: { contains: input.query, mode: 'insensitive' } },
-      { description: { contains: input.query, mode: 'insensitive' } },
+      { name: { contains: input.query } },
+      { description: { contains: input.query } },
     ];
   }
 
@@ -213,7 +213,7 @@ export async function entityExists(projectId: string, name: string): Promise<boo
       projectId,
       name: {
         equals: name,
-        mode: 'insensitive',
+        
       },
     },
   });

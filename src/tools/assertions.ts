@@ -175,7 +175,7 @@ export async function searchAssertions(input: SearchAssertionsInput) {
   }
 
   if (input.query) {
-    where.claim = { contains: input.query, mode: 'insensitive' };
+    where.claim = { contains: input.query };
   }
 
   if (input.category) {
@@ -562,7 +562,7 @@ export async function findSimilarAssertions(entityId: string, claim: string) {
       entityId,
       claim: {
         contains: claim.split(' ').slice(0, 3).join(' '),
-        mode: 'insensitive',
+        
       },
     },
     include: {

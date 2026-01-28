@@ -116,7 +116,7 @@ export async function findProjectByName(name: string) {
     where: {
       name: {
         equals: name,
-        mode: 'insensitive',
+        
       },
     },
     include: {

@@ -427,7 +427,7 @@ export async function saveDiscoveries(discoveries: RawDiscoveryInput[]): Promise
           projectId: discovery.projectId,
           name: {
             equals: discovery.mentionedName,
-            mode: 'insensitive',
+            
           },
         },
       });

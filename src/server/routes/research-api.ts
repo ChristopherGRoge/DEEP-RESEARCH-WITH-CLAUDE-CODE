@@ -1000,7 +1000,7 @@ researchApi.get('/pending-evidence', async (c) => {
     const where: any = {
       humanResponse: {
         contains: 'evidence requested',
-        mode: 'insensitive',
+        
       },
       status: AssertionStatus.CLAIM,
     };

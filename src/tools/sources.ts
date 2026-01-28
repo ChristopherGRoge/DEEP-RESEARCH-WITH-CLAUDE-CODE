@@ -112,9 +112,9 @@ export async function searchSources(query: string) {
   return prisma.source.findMany({
     where: {
       OR: [
-        { url: { contains: query, mode: 'insensitive' } },
-        { title: { contains: query, mode: 'insensitive' } },
-        { description: { contains: query, mode: 'insensitive' } },
+        { url: { contains: query } },
+        { title: { contains: query } },
+        { description: { contains: query } },
       ],
     },
     include: {

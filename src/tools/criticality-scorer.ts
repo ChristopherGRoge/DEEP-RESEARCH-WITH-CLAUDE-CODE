@@ -274,7 +274,7 @@ async function calculateNovelty(entityId: string, claimText: string): Promise<nu
       entityId,
       claim: {
         contains: keywords[0],
-        mode: 'insensitive',
+        
       },
       status: { not: 'REJECTED' },
     },

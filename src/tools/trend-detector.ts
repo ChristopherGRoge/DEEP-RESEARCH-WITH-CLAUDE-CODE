@@ -552,8 +552,8 @@ export async function getTrendDetails(trendId: string): Promise<{
       assertions: {
         where: {
           OR: [
-            { claim: { contains: trend.name, mode: 'insensitive' as const } },
-            ...trend.keywords.map(k => ({ claim: { contains: k, mode: 'insensitive' as const } }))
+            { claim: { contains: trend.name } },
+            ...trend.keywords.map(k => ({ claim: { contains: k } }))
           ]
         },
         take: 5,
@@ -567,7 +567,7 @@ export async function getTrendDetails(trendId: string): Promise<{
     where: {
       matchedEntityId: { in: trend.entityIds },
       OR: [
-        { mentionedName: { contains: trend.name, mode: 'insensitive' as const } },
+        { mentionedName: { contains: trend.name } },
         ...trend.keywords.map(k => ({ keywords: { has: k } }))
       ]
     },

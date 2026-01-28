@@ -50,8 +50,8 @@ export async function globalSearch(input: GlobalSearchInput) {
       where: {
         ...projectFilter,
         OR: [
-          { name: { contains: input.query, mode: 'insensitive' } },
-          { description: { contains: input.query, mode: 'insensitive' } },
+          { name: { contains: input.query } },
+          { description: { contains: input.query } },
         ],
       },
       include: {
@@ -65,7 +65,7 @@ export async function globalSearch(input: GlobalSearchInput) {
   // Search assertions
   if (input.includeAssertions !== false) {
     const assertionWhere: any = {
-      claim: { contains: input.query, mode: 'insensitive' },
+      claim: { contains: input.query },
     };
 
     if (input.projectId) {
@@ -87,9 +87,9 @@ export async function globalSearch(input: GlobalSearchInput) {
     results.sources = await prisma.source.findMany({
       where: {
         OR: [
-          { url: { contains: input.query, mode: 'insensitive' } },
-          { title: { contains: input.query, mode: 'insensitive' } },
-          { description: { contains: input.query, mode: 'insensitive' } },
+          { url: { contains: input.query } },
+          { title: { contains: input.query } },
+          { description: { contains: input.query } },
         ],
       },
       include: {

@@ -8,7 +8,6 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
 }
 
 // ============================================
@@ -193,7 +192,7 @@ model Assertion {
   humanResponse      String?  // Researcher's written response/interpretation
   validationNotes    Json?    // Array of {role: "human"|"agent", content: string, timestamp: Date}
   partiallyValidated Boolean  @default(false) // Some claims verified, others need work
-  evidenceScreenshots String[] // Paths to screenshots uploaded as validation evidence (legacy)
+  evidenceScreenshots Json? // Paths to screenshots uploaded as validation evidence (legacy) - stored as JSON array
 
   // Evidence-first research fields - screenshots as primary evidence
   evidenceChain      Json?    // Array of {screenshotPath, description, capturedAt} - agent-captured evidence
@@ -339,7 +338,7 @@ model Extraction {
   screenshot    Screenshot? @relation(fields: [screenshotId], references: [id])
 
   // Auto-generated assertions from this extraction
-  assertionIds  String[] // IDs of assertions created from this extraction
+  assertionIds  Json? // IDs of assertions created from this extraction - stored as JSON array
 
   @@index([entityId, schemaType])
   @@index([status])
@@ -382,7 +381,7 @@ model ResearchSession {
   pausedAt            DateTime?
 
   // Research configuration
-  categories          String[] // e.g., ["pricing", "features", "compliance"]
+  categories          Json? // e.g., ["pricing", "features", "compliance"] - stored as JSON array
   mode                String   // "sequential" or "parallel"
   config              Json?    // Full ResearchSessionConfig object
 
@@ -466,7 +465,7 @@ model DiscoverySource {
 
   // Metadata
   description     String?
-  tags            String[]
+  tags            Json? // stored as JSON array
   priority        Int       @default(50)
 
   discoveries     RawDiscovery[]
@@ -493,10 +492,10 @@ model RawDiscovery {
   contextSnippet  String?
 
   // Extracted metadata
-  extractedLinks  String[]
+  extractedLinks  Json? // stored as JSON array
   releaseVersion  String?
   releaseDate     DateTime?
-  keywords        String[]
+  keywords        Json? // stored as JSON array
 
   // Discovery metadata
   discoveredAt    DateTime @default(now())
@@ -523,7 +522,7 @@ model DiscoveryCrawl {
   projectId       String?
 
   // Scope
-  sourceIds       String[]
+  sourceIds       Json? // stored as JSON array
   researchFocus   String?
 
   // Timing
@@ -572,8 +571,8 @@ model DiscoveryTrend {
   peakAt          DateTime?
 
   // Related data
-  entityIds       String[]
-  keywords        String[]
+  entityIds       Json? // stored as JSON array
+  keywords        Json? // stored as JSON array
 
   // Scoring
   trendScore      Float?
@@ -602,8 +601,8 @@ model DiscoveryCategory {
   // Classification guidance for LLM
   inclusionCriteria  String?    // What qualifies an entity for this category
   exclusionCriteria  String?    // What disqualifies an entity
-  exemplarEntities   String[]           // Example entities that belong here
-  antiExemplars      String[]           // Entities that might seem to fit but don't
+  exemplarEntities   Json?           // Example entities that belong here - stored as JSON array
+  antiExemplars      Json?           // Entities that might seem to fit but don't - stored as JSON array
 
   // Metadata
   entityCount Int       @default(0)
@@ -627,14 +626,14 @@ model ResearchDomain {
   description         String   // What this domain covers
 
   // What to find
-  entityTypes         String[] // ["tool", "framework", "platform"]
+  entityTypes         Json? // ["tool", "framework", "platform"] - stored as JSON array
   inclusionCriteria   String?  // Markdown: what qualifies an entity
   exclusionCriteria   String?  // Markdown: what disqualifies
 
   // How to find it (Claude uses these to generate queries)
   searchHints         String?  // Guidance for query generation
-  knownLeaders        String[] // Known tools for "[X] alternatives" searches
-  relevantTopics      String[] // Topics to explore
+  knownLeaders        Json? // Known tools for "[X] alternatives" searches - stored as JSON array
+  relevantTopics      Json? // Topics to explore - stored as JSON array
 
   // How to evaluate (for scoring discovered entities)
   evaluationDimensions Json?   // [{name: "differentiation", weight: 0.3}, ...]

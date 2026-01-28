@@ -370,7 +370,7 @@ export async function crossReferenceEvidence(input: CrossReferenceInput): Promis
   const where: any = {
     claim: {
       contains: claim.split(' ').slice(0, 5).join(' '), // Search by first 5 words
-      mode: 'insensitive',
+      
     },
   };
 

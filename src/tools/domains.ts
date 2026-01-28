@@ -154,7 +154,7 @@ export async function findDomainByName(name: string) {
     where: {
       name: {
         equals: name,
-        mode: 'insensitive',
+        
       },
     },
     include: {

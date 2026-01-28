@@ -131,7 +131,7 @@ const createEntityTool = (sessionId: string, sessionManager: DiscoverySessionMan
         let entity = await prisma.entity.findFirst({
           where: {
             projectId: session.projectId,
-            name: { equals: args.name, mode: 'insensitive' },
+            name: { equals: args.name },
           },
         });
 

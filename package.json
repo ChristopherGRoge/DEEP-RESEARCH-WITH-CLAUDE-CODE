@@ -7,7 +7,7 @@
   "scripts": {
     "setup": "bash install.sh",
     "build": "tsc",
-    "cli": "ts-node src/cli.ts",
+    "cli": "ts-node --transpile-only src/cli.ts",
     "server": "ts-node src/server/index.ts",
     "server:dev": "nodemon --watch src/server -e ts,tsx --exec ts-node src/server/index.ts",
     "frontend:install": "cd frontend && npm install",
@@ -54,6 +54,8 @@
     "@anthropic-ai/sdk": "^0.39.0",
     "@hono/node-server": "^1.19.7",
     "@hono/node-ws": "^1.2.0",
+    "@libsql/client": "^0.17.0",
+    "@prisma/adapter-libsql": "^7.3.0",
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "dotenv": "^17.2.3",
