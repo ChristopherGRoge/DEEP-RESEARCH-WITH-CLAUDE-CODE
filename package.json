@@ -5,6 +5,7 @@
   "main": "dist/tools/index.js",
   "types": "dist/tools/index.d.ts",
   "scripts": {
+    "setup": "bash install.sh",
     "build": "tsc",
     "cli": "ts-node src/cli.ts",
     "server": "ts-node src/server/index.ts",

@@ -5,18 +5,77 @@ A framework for conducting structured research on tools, platforms, and technolo
 
 ---
 
+## Prerequisites
+
+**PostgreSQL 14+ must be installed locally.**
+
+### macOS (Homebrew)
+```bash
+brew install postgresql@16
+brew services start postgresql@16
+
+# Configure to use port 5433 (to avoid conflicts)
+# Edit: /opt/homebrew/var/postgresql@16/postgresql.conf (Apple Silicon)
+# Or:   /usr/local/var/postgresql@16/postgresql.conf (Intel)
+# Set: port = 5433
+brew services restart postgresql@16
+```
+
+### Ubuntu/Debian
+```bash
+sudo apt update && sudo apt install postgresql postgresql-contrib
+
+# Configure to use port 5433
+sudo sed -i "s/^port = 5432/port = 5433/" /etc/postgresql/*/main/postgresql.conf
+sudo systemctl restart postgresql
+```
+
+### RHEL/Fedora
+```bash
+sudo dnf install postgresql-server postgresql-contrib
+sudo postgresql-setup --initdb
+
+# Configure port and start
+sudo sed -i "s/^#port = 5432/port = 5433/" /var/lib/pgsql/data/postgresql.conf
+sudo systemctl start postgresql
+```
+
+---
+
 ## Quick Start
 
-### 1. Start the Database
+### 1. Clone and Setup
 
 ```bash
-# Start PostgreSQL container (port 5433)
+git clone <repo-url>
+cd 00-TOOLS-RESEARCH
+
+# Run setup (creates user, database, runs migrations)
+./install.sh
+```
+
+The setup script will:
+- Verify PostgreSQL is running on port 5433
+- Create database user `researcher`
+- Create database `deep_research`
+- Run Prisma migrations
+- Optionally restore from the latest backup
+
+### 2. After Git Pull
+
+```bash
+git pull
+./install.sh  # Safe to run multiple times - idempotent
+```
+
+This ensures your database schema is up to date with any new migrations.
+
+### Alternative: Docker Setup
+
+If you prefer Docker:
+
+```bash
 npm run docker:up
-
-# Verify it's running
-docker ps | grep research-db
-
-# Run migrations (first time only)
 npm run db:migrate
 ```
 
@@ -297,20 +356,30 @@ at docs/RESEARCH-TEMPLATES/DISCOVERY. Summarize all entities found.
 ## Database Management
 
 ```bash
-# Start database
-npm run docker:up
+# Initial setup (or after git pull)
+./install.sh
 
-# Stop database
-npm run docker:down
+# Manual backup
+npm run db:backup
+
+# Restore from backup
+npm run db:restore backups/backup-YYYYMMDD-HHMMSS.sql.gz
 
 # Open visual browser (Prisma Studio)
 npm run db:studio
 
+# Run migrations manually
+npm run db:migrate
+
 # Reset database (CAUTION: destroys all data)
 npm run db:reset
+```
 
-# Run migrations
-npm run db:migrate
+### Docker Alternative
+
+```bash
+npm run docker:up   # Start container
+npm run docker:down # Stop container
 ```
 
 ---
@@ -382,23 +451,60 @@ Agent-collected claims are CLAIM status for a reason. Verify before promoting to
 
 ## Troubleshooting
 
-### Database won't start
+### PostgreSQL not running on port 5433
+
+```bash
+# Check if postgres is running
+pg_isready -p 5433
+
+# Check which port PostgreSQL is using
+psql -U postgres -c "SHOW port;"
+
+# macOS: check service
+brew services list | grep postgresql
+```
+
+### Cannot create user (permission denied)
+
+```bash
+# On Linux, try using sudo
+sudo -u postgres createuser -P researcher
+# Enter password: research_dev_2024
+
+sudo -u postgres createdb -O researcher deep_research
+```
+
+### Connection refused
+
+Verify PostgreSQL is configured for password authentication:
+
+```bash
+# Check pg_hba.conf allows password auth for localhost
+# Add this line if missing:
+# host    all    all    127.0.0.1/32    md5
+```
+
+### CLI returns error
+
+```bash
+# Verify database exists and is accessible
+psql -h localhost -p 5433 -U researcher -d deep_research -c "SELECT 1"
+
+# Check .env has correct DATABASE_URL
+cat .env
+
+# Re-run setup
+./install.sh
+```
+
+### Docker alternative (if local postgres unavailable)
+
 ```bash
 # Check if port 5433 is in use
 lsof -i :5433
 
-# Remove old container and restart
-docker rm -f research-db
+# Start Docker container
 npm run docker:up
-```
-
-### CLI returns error
-```bash
-# Check database is running
-docker ps | grep research-db
-
-# Re-run migrations
-npm run db:migrate
 ```
 
 ### Can't find project/entity
@@ -424,8 +530,8 @@ npm run cli -- project:find '{"name": "partial name"}'
 ## Example Research Session
 
 ```bash
-# 1. Start database
-npm run docker:up
+# 1. Setup (first time or after git pull)
+./install.sh
 
 # 2. Create project
 npm run cli -- project:create '{

@@ -5,11 +5,8 @@ This project provides a persistent research database for Claude Code subagents t
 ## Quick Start
 
 ```bash
-# Start the PostgreSQL database
-npm run docker:up
-
-# Run database migrations (if needed)
-npm run db:migrate
+# Setup database (first time or after git pull)
+./install.sh
 
 # Use the CLI to interact with the database
 npm run cli -- <command> '<json-args>'
@@ -1242,11 +1239,8 @@ Common categories for assertions:
 ## Database Management
 
 ```bash
-# Start PostgreSQL container
-npm run docker:up
-
-# Stop PostgreSQL container
-npm run docker:down
+# Initial setup (creates user, database, runs migrations)
+./install.sh
 
 # Run migrations
 npm run db:migrate
@@ -1256,6 +1250,17 @@ npm run db:reset
 
 # Open Prisma Studio (visual database browser)
 npm run db:studio
+
+# Backup and restore
+npm run db:backup
+npm run db:restore backups/backup-YYYYMMDD-HHMMSS.sql.gz
+```
+
+### Docker Alternative (optional)
+
+```bash
+npm run docker:up   # Start container
+npm run docker:down # Stop container
 ```
 
 ## Response Format

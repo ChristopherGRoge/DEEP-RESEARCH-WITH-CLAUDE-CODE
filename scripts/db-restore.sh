@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+# Configuration
+DB_NAME="deep_research"
+DB_USER="researcher"
+DB_PASS="research_dev_2024"
+DB_PORT="5433"
+DB_HOST="localhost"
+
 if [ -z "$1" ]; then
     echo "Usage: $0 <backup-file.sql.gz>"
     echo "Available backups:"
@@ -23,9 +30,9 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 echo "Dropping existing schema..."
-docker exec -i research-db psql -U researcher -d deep_research -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+PGPASSWORD=$DB_PASS psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_NAME -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
 
 echo "Restoring from backup..."
-gunzip -c "$BACKUP_FILE" | docker exec -i research-db psql -U researcher -d deep_research
+gunzip -c "$BACKUP_FILE" | PGPASSWORD=$DB_PASS psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_NAME
 
 echo "Restored from: $BACKUP_FILE"
