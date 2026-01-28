@@ -4,7 +4,7 @@ set -e
 # SQLite Restore Script
 # Replaces the database file from a backup
 
-DB_PATH="prisma/research.db"
+DB_PATH="research.db"
 
 if [ -z "$1" ]; then
     echo "Usage: $0 <backup-file.db.gz>"

@@ -4,7 +4,7 @@ set -e
 # SQLite Backup Script
 # Simply copies the database file
 
-DB_PATH="prisma/research.db"
+DB_PATH="research.db"
 BACKUP_DIR="backups"
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 BACKUP_FILE="$BACKUP_DIR/backup-$TIMESTAMP.db"
