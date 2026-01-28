@@ -202,6 +202,12 @@
     </div>
 
     <div class="header-right">
+      <a href="#/grove" class="grove-link" title="View Research Grove">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2v6m0 4v10M7 8h10M4 14h16"/>
+        </svg>
+        Grove
+      </a>
       <ConnectionStatus status={wsState.connectionStatus} />
     </div>
   </header>
@@ -530,6 +536,28 @@
     display: flex;
     align-items: center;
     gap: 16px;
+  }
+
+  .grove-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #dcfce7;
+    border-radius: 6px;
+    color: #166534;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.15s ease;
+  }
+
+  .grove-link:hover {
+    background: #bbf7d0;
+  }
+
+  .grove-link svg {
+    stroke: #166534;
   }
 
   /* Main Layout */

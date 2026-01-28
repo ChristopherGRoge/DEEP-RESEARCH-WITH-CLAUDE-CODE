@@ -203,7 +203,7 @@
 
   function navigateToValidation() {
     // Navigate to validation page
-    window.location.href = '/validate';
+    window.location.hash = '#/validate';
   }
 
   async function createProject() {
@@ -251,6 +251,8 @@
   <!-- Header -->
   <header class="discovery-header">
     <div class="header-left">
+      <a href="#/" class="home-btn" title="Back to Home">Home</a>
+      <span class="header-divider">|</span>
       <h1>Discovery Control Tower</h1>
       <p class="subtitle">Monitor sources, track discoveries, detect trends</p>
     </div>
@@ -271,6 +273,9 @@
       </button>
       <button class="btn-secondary" onclick={navigateToValidation}>
         Validation Mode
+      </button>
+      <button class="btn-secondary grove-btn" onclick={() => window.location.hash = '#/grove'}>
+        Grove
       </button>
     </div>
   </header>
@@ -467,6 +472,44 @@
     font-size: 0.875rem;
     color: var(--color-text-secondary, #666);
     margin: 0.25rem 0 0 0;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .home-btn {
+    padding: 0.375rem 0.75rem;
+    background: #f5f5f3;
+    border-radius: 6px;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.15s ease;
+  }
+
+  .home-btn:hover {
+    background: #e8e8e5;
+    color: #1a1a1a;
+  }
+
+  .header-divider {
+    color: #e5e5e5;
+    font-weight: 300;
+  }
+
+  .grove-btn {
+    background: #dcfce7;
+    border-color: #86efac;
+    color: #166534;
+  }
+
+  .grove-btn:hover {
+    background: #bbf7d0;
   }
 
   .header-right {

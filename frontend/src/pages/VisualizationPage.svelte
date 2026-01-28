@@ -131,6 +131,10 @@
 <div class="grove-page">
   <header class="grove-header">
     <div class="header-left">
+      <a href="#/" class="home-link" title="Back to Home">
+        <span class="material-symbols-rounded">home</span>
+      </a>
+      <div class="nav-divider"></div>
       <div class="logo-mark">
         <span class="material-symbols-rounded logo-icon">account_tree</span>
       </div>
@@ -266,6 +270,34 @@
     display: flex;
     align-items: center;
     gap: 12px;
+  }
+
+  .home-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: #f5f5f3;
+    border-radius: 8px;
+    color: #7a7a7a;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .home-link:hover {
+    background: #e8e8e5;
+    color: #1a1a1a;
+  }
+
+  .home-link .material-symbols-rounded {
+    font-size: 20px;
+  }
+
+  .nav-divider {
+    width: 1px;
+    height: 24px;
+    background: #e8e8e5;
   }
 
   .logo-mark {

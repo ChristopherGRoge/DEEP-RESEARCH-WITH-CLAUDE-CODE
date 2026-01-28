@@ -63,8 +63,13 @@
     <ResearchPage />
   {:else if currentRoute === 'validate'}
     <div class="placeholder">
+      <div class="placeholder-nav">
+        <a href="#/" class="placeholder-link">Home</a>
+        <span class="placeholder-divider">|</span>
+        <a href="#/grove" class="placeholder-link grove">Grove</a>
+      </div>
       <h1>Validation</h1>
-      <p>Validation coming soon</p>
+      <p>Validation dashboard coming soon</p>
     </div>
   {:else if currentRoute === 'grove'}
     <VisualizationPage />
@@ -89,5 +94,41 @@
     font-size: 3.2em;
     line-height: 1.1;
     color: #646cff;
+  }
+
+  .placeholder-nav {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .placeholder-link {
+    padding: 0.5rem 1rem;
+    background: #f5f5f3;
+    border-radius: 6px;
+    color: #666;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.15s ease;
+  }
+
+  .placeholder-link:hover {
+    background: #e8e8e5;
+    color: #1a1a1a;
+  }
+
+  .placeholder-link.grove {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .placeholder-link.grove:hover {
+    background: #bbf7d0;
+  }
+
+  .placeholder-divider {
+    color: #e5e5e5;
+    align-self: center;
   }
 </style>

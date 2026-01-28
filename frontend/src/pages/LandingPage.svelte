@@ -152,11 +152,19 @@
         </div>
         <span class="nav-arrow">→</span>
       </a>
-      <a href="/validate" class="nav-link">
+      <a href="#/validate" class="nav-link">
         <span class="nav-icon">✅</span>
         <div class="nav-content">
           <span class="nav-title">Validation Dashboard</span>
           <span class="nav-desc">Review and validate assertions</span>
+        </div>
+        <span class="nav-arrow">→</span>
+      </a>
+      <a href="#/grove" class="nav-link grove-link">
+        <span class="nav-icon">🌳</span>
+        <div class="nav-content">
+          <span class="nav-title">Research Grove</span>
+          <span class="nav-desc">Explore entity knowledge graph visualization</span>
         </div>
         <span class="nav-arrow">→</span>
       </a>
@@ -435,6 +443,15 @@
   .nav-link:hover .nav-arrow {
     transform: translateX(4px);
     opacity: 1;
+  }
+
+  .grove-link {
+    background: rgba(34, 197, 94, 0.2);
+    border-color: rgba(34, 197, 94, 0.4);
+  }
+
+  .grove-link:hover {
+    background: rgba(34, 197, 94, 0.35);
   }
 
   /* Responsive */
