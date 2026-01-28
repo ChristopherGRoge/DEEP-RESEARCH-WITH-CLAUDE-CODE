@@ -26,6 +26,39 @@ print_warn() { echo -e "${YELLOW}WARNING:${NC} $1"; }
 print_error() { echo -e "${RED}ERROR:${NC} $1"; }
 
 # ============================================
+# Step 0: Handle Homebrew PostgreSQL on macOS
+# ============================================
+# Homebrew's postgresql@16 is "keg-only" and not in PATH by default
+# We need to find and add it to PATH before checking prerequisites
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # Check common Homebrew PostgreSQL locations
+    # Apple Silicon (M1/M2/M3)
+    if [ -d "/opt/homebrew/opt/postgresql@16/bin" ]; then
+        export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
+        print_step "Found Homebrew PostgreSQL 16 (Apple Silicon)"
+    # Intel Mac
+    elif [ -d "/usr/local/opt/postgresql@16/bin" ]; then
+        export PATH="/usr/local/opt/postgresql@16/bin:$PATH"
+        print_step "Found Homebrew PostgreSQL 16 (Intel)"
+    # Try postgresql@15 as fallback
+    elif [ -d "/opt/homebrew/opt/postgresql@15/bin" ]; then
+        export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+        print_step "Found Homebrew PostgreSQL 15 (Apple Silicon)"
+    elif [ -d "/usr/local/opt/postgresql@15/bin" ]; then
+        export PATH="/usr/local/opt/postgresql@15/bin:$PATH"
+        print_step "Found Homebrew PostgreSQL 15 (Intel)"
+    # Try unversioned postgresql
+    elif [ -d "/opt/homebrew/opt/postgresql/bin" ]; then
+        export PATH="/opt/homebrew/opt/postgresql/bin:$PATH"
+        print_step "Found Homebrew PostgreSQL (Apple Silicon)"
+    elif [ -d "/usr/local/opt/postgresql/bin" ]; then
+        export PATH="/usr/local/opt/postgresql/bin:$PATH"
+        print_step "Found Homebrew PostgreSQL (Intel)"
+    fi
+fi
+
+# ============================================
 # Step 1: Check Prerequisites
 # ============================================
 print_step "Checking prerequisites..."
@@ -39,6 +72,15 @@ if ! command -v psql &> /dev/null; then
     echo "  macOS (Homebrew):"
     echo "    brew install postgresql@16"
     echo "    brew services start postgresql@16"
+    echo ""
+    echo "    IMPORTANT: Homebrew's postgresql@16 is 'keg-only' and not in PATH."
+    echo "    Add this to your ~/.zshrc (or ~/.bash_profile):"
+    echo ""
+    echo "      export PATH=\"/opt/homebrew/opt/postgresql@16/bin:\$PATH\"  # Apple Silicon"
+    echo "      # OR"
+    echo "      export PATH=\"/usr/local/opt/postgresql@16/bin:\$PATH\"     # Intel Mac"
+    echo ""
+    echo "    Then restart your terminal or run: source ~/.zshrc"
     echo ""
     echo "  Ubuntu/Debian:"
     echo "    sudo apt update && sudo apt install postgresql postgresql-contrib"
