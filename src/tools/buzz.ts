@@ -66,13 +66,23 @@ function normalizeContributors(contributors: number | null): number {
 }
 
 /**
- * Parse employee count string to normalized score
+ * Parse employee count string/number to normalized score
  * "1-10" = 0.2, "11-50" = 0.3, "51-200" = 0.5, "201-1000" = 0.7, "1000+" = 0.9
  */
-function normalizeEmployeeCount(employeeCount: string | null): number {
-  if (!employeeCount) return 0;
+function normalizeEmployeeCount(employeeCount: string | number | null): number {
+  if (employeeCount === null || employeeCount === undefined) return 0;
 
-  const lower = employeeCount.toLowerCase();
+  // Handle numeric values directly
+  if (typeof employeeCount === 'number') {
+    if (employeeCount >= 1000) return 0.9;
+    if (employeeCount >= 200) return 0.7;
+    if (employeeCount >= 50) return 0.5;
+    if (employeeCount >= 10) return 0.3;
+    return 0.2;
+  }
+
+  // Handle string values
+  const lower = String(employeeCount).toLowerCase();
 
   if (lower.includes('1000') || lower.includes('1k')) return 0.9;
   if (lower.includes('500') || lower.includes('201-')) return 0.7;
@@ -80,8 +90,8 @@ function normalizeEmployeeCount(employeeCount: string | null): number {
   if (lower.includes('50') || lower.includes('11-')) return 0.3;
   if (lower.includes('10') || lower.includes('1-')) return 0.2;
 
-  // Try to parse number
-  const match = employeeCount.match(/(\d+)/);
+  // Try to parse number from string
+  const match = lower.match(/(\d+)/);
   if (match) {
     const num = parseInt(match[1], 10);
     if (num >= 1000) return 0.9;

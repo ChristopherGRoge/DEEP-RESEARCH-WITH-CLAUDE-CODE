@@ -103,6 +103,21 @@ app.get('/research-legacy', async (c) => {
   }
 });
 
+// Serve entity research page at /entity/:id
+app.get('/entity/:id', async (c) => {
+  try {
+    const fs = await import('fs/promises');
+    const pathModule = await import('path');
+    const html = await fs.readFile(
+      pathModule.join(process.cwd(), 'src/server/public/entity.html'),
+      'utf-8'
+    );
+    return c.html(html);
+  } catch (error) {
+    return c.text('Entity page not found. Please ensure src/server/public/entity.html exists.', 404);
+  }
+});
+
 // Health check
 app.get('/health', (c) => {
   const auth = getAuthStatus();

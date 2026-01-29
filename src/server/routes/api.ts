@@ -983,6 +983,226 @@ api.get('/entities/:id', async (c) => {
   return c.json({ success: true, data: entity });
 });
 
+// Get full entity research data for the entity research page
+api.get('/entities/:id/full', async (c) => {
+  const entityId = c.req.param('id');
+
+  // Get entity with full data
+  const entity = await tools.prisma.entity.findUnique({
+    where: { id: entityId },
+    include: {
+      project: {
+        select: { id: true, name: true },
+      },
+      category: {
+        select: { id: true, name: true, displayName: true },
+      },
+      domain: {
+        select: { id: true, name: true, description: true },
+      },
+      assertions: {
+        include: {
+          sources: {
+            include: {
+              source: true,
+            },
+          },
+          reasoning: true,
+        },
+        orderBy: [
+          { criticality: 'asc' },
+          { status: 'asc' },
+          { createdAt: 'desc' },
+        ],
+      },
+      extractions: {
+        include: {
+          source: true,
+          screenshot: true,
+        },
+        orderBy: { extractedAt: 'desc' },
+      },
+      researchSessions: {
+        include: {
+          tasks: {
+            orderBy: { startedAt: 'desc' },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 10,
+      },
+    },
+  });
+
+  if (!entity) {
+    return c.json({ success: false, error: 'Entity not found' }, 404);
+  }
+
+  // Group extractions by schema type (latest per type)
+  const extractionsByType: Record<string, any> = {};
+  const allExtractions: any[] = [];
+
+  for (const extraction of entity.extractions) {
+    allExtractions.push(extraction);
+    if (!extractionsByType[extraction.schemaType]) {
+      extractionsByType[extraction.schemaType] = extraction;
+    }
+  }
+
+  // Collect all evidence screenshots
+  const evidenceGallery: { path: string; description?: string; assertionId?: string; claim?: string }[] = [];
+
+  for (const assertion of entity.assertions) {
+    // Primary evidence screenshot
+    if (assertion.evidenceScreenshotPath) {
+      evidenceGallery.push({
+        path: assertion.evidenceScreenshotPath,
+        description: assertion.evidenceDescription || undefined,
+        assertionId: assertion.id,
+        claim: assertion.claim,
+      });
+    }
+
+    // Evidence chain screenshots
+    if (assertion.evidenceChain && Array.isArray(assertion.evidenceChain)) {
+      for (const item of assertion.evidenceChain as any[]) {
+        if (item.screenshotPath) {
+          evidenceGallery.push({
+            path: item.screenshotPath,
+            description: item.description,
+            assertionId: assertion.id,
+            claim: assertion.claim,
+          });
+        }
+      }
+    }
+
+    // Legacy validation screenshots
+    if (assertion.evidenceScreenshots && Array.isArray(assertion.evidenceScreenshots)) {
+      for (const screenshotPath of assertion.evidenceScreenshots as string[]) {
+        evidenceGallery.push({
+          path: screenshotPath,
+          assertionId: assertion.id,
+          claim: assertion.claim,
+        });
+      }
+    }
+  }
+
+  // Add extraction screenshots
+  for (const extraction of entity.extractions) {
+    if (extraction.screenshot?.filePath) {
+      evidenceGallery.push({
+        path: extraction.screenshot.filePath,
+        description: `${extraction.schemaType} extraction from ${extraction.source?.url || 'unknown source'}`,
+      });
+    }
+  }
+
+  // Calculate summary stats
+  const totalAssertions = entity.assertions.length;
+  const validatedAssertions = entity.assertions.filter(a => a.status === 'EVIDENCE').length;
+  const pendingAssertions = entity.assertions.filter(a => a.status === 'CLAIM').length;
+  const rejectedAssertions = entity.assertions.filter(a => a.status === 'REJECTED').length;
+
+  // Group assertions by category
+  const assertionsByCategory: Record<string, any[]> = {};
+  for (const assertion of entity.assertions) {
+    const cat = assertion.category || 'uncategorized';
+    if (!assertionsByCategory[cat]) {
+      assertionsByCategory[cat] = [];
+    }
+    assertionsByCategory[cat].push(assertion);
+  }
+
+  // Calculate criticality breakdown
+  const criticalityBreakdown = {
+    critical: entity.assertions.filter(a => a.criticality === 'CRITICAL').length,
+    high: entity.assertions.filter(a => a.criticality === 'HIGH').length,
+    medium: entity.assertions.filter(a => a.criticality === 'MEDIUM').length,
+    low: entity.assertions.filter(a => a.criticality === 'LOW').length,
+  };
+
+  return c.json({
+    success: true,
+    data: {
+      // Entity metadata
+      id: entity.id,
+      name: entity.name,
+      description: entity.description,
+      entityType: entity.entityType,
+      url: entity.url,
+      logoUrl: entity.logoUrl,
+      logoSvgContent: entity.logoSvgContent,
+      logoPath: entity.logoPath,
+      logoFormat: entity.logoFormat,
+      discoveryCategory: entity.discoveryCategory,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+
+      // Relationships
+      project: entity.project,
+      category: entity.category,
+      domain: entity.domain,
+
+      // GitHub metrics
+      github: entity.githubUrl ? {
+        url: entity.githubUrl,
+        owner: entity.githubOwner,
+        repo: entity.githubRepo,
+        stars: entity.githubStars,
+        forks: entity.githubForks,
+        watchers: entity.githubWatchers,
+        openIssues: entity.githubOpenIssues,
+        contributors: entity.githubContributors,
+        lastCommit: entity.githubLastCommit,
+        lastRelease: entity.githubLastRelease,
+        language: entity.githubLanguage,
+        license: entity.githubLicense,
+        createdAt: entity.githubCreatedAt,
+        metricsAt: entity.githubMetricsAt,
+      } : null,
+
+      // Buzz score
+      buzz: entity.buzzScore !== null ? {
+        score: entity.buzzScore,
+        components: entity.buzzComponents,
+        calculatedAt: entity.buzzCalculatedAt,
+        override: entity.buzzOverride,
+        overrideReason: entity.buzzOverrideReason,
+      } : null,
+
+      // Extractions
+      extractionsByType,
+      allExtractions,
+
+      // Assertions
+      assertions: entity.assertions,
+      assertionsByCategory,
+
+      // Evidence
+      evidenceGallery,
+
+      // Research sessions
+      researchSessions: entity.researchSessions,
+
+      // Summary stats
+      stats: {
+        totalAssertions,
+        validatedAssertions,
+        pendingAssertions,
+        rejectedAssertions,
+        validationRate: totalAssertions > 0 ? Math.round((validatedAssertions / totalAssertions) * 100) : 0,
+        totalExtractions: entity.extractions.length,
+        extractionTypes: Object.keys(extractionsByType),
+        evidenceCount: evidenceGallery.length,
+        sessionsCount: entity.researchSessions.length,
+        criticalityBreakdown,
+      },
+    },
+  });
+});
+
 // ============================================
 // Extractions
 // ============================================

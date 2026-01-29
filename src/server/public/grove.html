@@ -437,6 +437,46 @@
             stroke: var(--status-pending);
         }
 
+        /* Buzz score styling - higher buzz = more prominent */
+        .node-entity.high-buzz circle {
+            fill: var(--bg-surface);
+            stroke-width: 2.5px;
+            filter: drop-shadow(0 0 8px var(--accent-glow));
+        }
+
+        .node-entity.high-buzz.validated circle {
+            stroke: var(--status-validated);
+            filter: drop-shadow(0 0 10px rgba(133, 153, 0, 0.4));
+        }
+
+        .node-entity.medium-buzz circle {
+            fill: var(--bg-elevated);
+            stroke-width: 2px;
+        }
+
+        .node-entity.high-buzz text {
+            fill: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Buzz indicator badge */
+        .buzz-indicator {
+            font-family: var(--font-mono);
+            pointer-events: none;
+        }
+
+        /* Ring guide circles */
+        .ring-guide {
+            pointer-events: none;
+        }
+
+        /* Ring labels */
+        .ring-label {
+            pointer-events: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
         /* =====================================================
            DETAIL PANEL
            ===================================================== */
@@ -826,6 +866,47 @@
             color: var(--accent-bright);
         }
 
+        .tooltip-buzz {
+            margin-top: var(--space-sm);
+            padding-top: var(--space-sm);
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 11px;
+        }
+
+        .tooltip-buzz .buzz-label {
+            color: var(--text-secondary);
+        }
+
+        .tooltip-buzz .buzz-value {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-elevated);
+        }
+
+        .tooltip-buzz .buzz-value.high {
+            color: var(--status-validated);
+            background: rgba(133, 153, 0, 0.2);
+        }
+
+        .tooltip-buzz .buzz-value.medium {
+            color: var(--status-pending);
+            background: rgba(181, 137, 0, 0.2);
+        }
+
+        .tooltip-buzz .buzz-value.low {
+            color: var(--text-secondary);
+        }
+
+        .tooltip-buzz .buzz-tier {
+            color: var(--text-tertiary);
+            font-style: italic;
+        }
+
         /* =====================================================
            LOADING & EMPTY STATES
            ===================================================== */
@@ -980,6 +1061,18 @@
                             <line x1="6" y1="6" x2="18" y2="18"/>
                         </svg>
                     </button>
+                </div>
+
+                <!-- View Full Research Link -->
+                <div id="panel-full-research" style="padding: var(--space-sm) var(--space-lg); background: var(--bg-surface); border-bottom: 1px solid var(--border-subtle); display: none;">
+                    <a id="full-research-link" href="#" style="display: flex; align-items: center; gap: var(--space-xs); font-size: 13px; color: var(--accent-primary); text-decoration: none; font-weight: 500;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        View Full Research
+                    </a>
                 </div>
 
                 <div class="panel-stats" id="panel-stats">
@@ -1346,8 +1439,31 @@
         }
 
         // =====================================================
-        // VISUALIZATION - ENTITIES
+        // VISUALIZATION - ENTITIES (Concentric Ring Layout)
         // =====================================================
+
+        /**
+         * Calculate entity radius in concentric ring layout based on buzz score
+         * Higher buzz = outer rings, lower buzz = inner rings
+         */
+        function getEntityRingRadius(buzzScore, minRadius, maxRadius, ringCount) {
+            // Normalize buzz score to 0-1 range
+            const normalizedBuzz = Math.max(0, Math.min(1, buzzScore || 0));
+            // Map to ring index (0 = innermost, ringCount-1 = outermost)
+            const ringIndex = Math.floor(normalizedBuzz * ringCount * 0.999);
+            // Calculate radius for this ring
+            const ringSpacing = (maxRadius - minRadius) / (ringCount - 1 || 1);
+            return minRadius + (ringIndex * ringSpacing);
+        }
+
+        /**
+         * Get bubble size based on buzz score
+         */
+        function getEntityBubbleSize(buzzScore, assertionCount) {
+            const baseSizeFromAssertions = Math.max(12, Math.min(20, 10 + Math.sqrt(assertionCount || 0) * 2));
+            const buzzMultiplier = 1 + (buzzScore || 0) * 0.8; // 1.0 to 1.8x based on buzz
+            return Math.min(35, baseSizeFromAssertions * buzzMultiplier);
+        }
 
         function renderEntities(category) {
             if (!category || !category.children) return;
@@ -1358,7 +1474,11 @@
             const height = dom.canvas.clientHeight;
             const centerX = width / 2;
             const centerY = height / 2;
-            const radius = Math.min(width, height) * 0.38;
+
+            // Ring configuration
+            const minRadius = Math.min(width, height) * 0.15;  // Inner ring
+            const maxRadius = Math.min(width, height) * 0.42;  // Outer ring
+            const ringCount = 5;  // Number of concentric rings
 
             const svg = d3.select('#grove-canvas')
                 .append('svg')
@@ -1368,10 +1488,54 @@
             const g = svg.append('g')
                 .attr('transform', `translate(${centerX}, ${centerY})`);
 
-            const entities = category.children;
-            const angleStep = (2 * Math.PI) / Math.max(entities.length, 1);
+            // Draw ring guides (subtle background circles)
+            for (let i = 0; i < ringCount; i++) {
+                const ringRadius = minRadius + ((maxRadius - minRadius) / (ringCount - 1)) * i;
+                g.append('circle')
+                    .attr('class', 'ring-guide')
+                    .attr('r', ringRadius)
+                    .style('fill', 'none')
+                    .style('stroke', 'var(--border-light)')
+                    .style('stroke-width', 1)
+                    .style('stroke-dasharray', '4,4')
+                    .style('opacity', 0.5);
+            }
 
-            // Draw links
+            const entities = category.children;
+
+            // Group entities by ring based on buzz score
+            const ringGroups = new Map();
+            for (let i = 0; i < ringCount; i++) {
+                ringGroups.set(i, []);
+            }
+
+            entities.forEach(entity => {
+                const buzzScore = entity.buzzScore || 0;
+                const ringIndex = Math.floor(Math.max(0, Math.min(0.999, buzzScore)) * ringCount);
+                ringGroups.get(ringIndex).push(entity);
+            });
+
+            // Calculate positions for each entity within its ring
+            const entityPositions = new Map();
+            ringGroups.forEach((ringEntities, ringIndex) => {
+                const ringRadius = minRadius + ((maxRadius - minRadius) / (ringCount - 1 || 1)) * ringIndex;
+                const angleStep = (2 * Math.PI) / Math.max(ringEntities.length, 1);
+                // Add offset per ring to prevent alignment
+                const ringOffset = ringIndex * (Math.PI / ringCount);
+
+                ringEntities.forEach((entity, i) => {
+                    const angle = i * angleStep - Math.PI / 2 + ringOffset;
+                    entityPositions.set(entity.id, {
+                        x: ringRadius * Math.cos(angle),
+                        y: ringRadius * Math.sin(angle),
+                        angle: angle,
+                        radius: ringRadius,
+                        ringIndex: ringIndex
+                    });
+                });
+            });
+
+            // Draw links from center to each entity
             g.selectAll('.link')
                 .data(entities)
                 .enter()
@@ -1379,8 +1543,13 @@
                 .attr('class', 'link')
                 .attr('x1', 0)
                 .attr('y1', 0)
-                .attr('x2', (d, i) => radius * Math.cos(i * angleStep - Math.PI / 2))
-                .attr('y2', (d, i) => radius * Math.sin(i * angleStep - Math.PI / 2));
+                .attr('x2', d => entityPositions.get(d.id)?.x || 0)
+                .attr('y2', d => entityPositions.get(d.id)?.y || 0)
+                .style('opacity', d => {
+                    // Fade links for inner ring entities
+                    const pos = entityPositions.get(d.id);
+                    return pos ? 0.3 + (pos.ringIndex / ringCount) * 0.5 : 0.3;
+                });
 
             // Center node (category)
             const center = g.append('g')
@@ -1417,47 +1586,76 @@
                 .append('g')
                 .attr('class', d => {
                     const ratio = d.evidenceRatio || 0;
+                    const buzzClass = (d.buzzScore || 0) > 0.7 ? 'high-buzz' : (d.buzzScore || 0) > 0.4 ? 'medium-buzz' : '';
                     const status = ratio > 0.5 ? 'validated' : ratio > 0 ? 'pending' : '';
-                    return `node node-entity ${status}`;
+                    return `node node-entity ${status} ${buzzClass}`;
                 })
-                .attr('transform', (d, i) => {
-                    const x = radius * Math.cos(i * angleStep - Math.PI / 2);
-                    const y = radius * Math.sin(i * angleStep - Math.PI / 2);
-                    return `translate(${x}, ${y})`;
+                .attr('transform', d => {
+                    const pos = entityPositions.get(d.id);
+                    return pos ? `translate(${pos.x}, ${pos.y})` : 'translate(0, 0)';
                 })
                 .style('cursor', 'pointer')
                 .on('click', (event, d) => selectEntity(d.id, d))
                 .on('mouseenter', (event, d) => showTooltip(event, d, 'entity'))
                 .on('mouseleave', hideTooltip);
 
-            // Entity circles
+            // Entity circles - size based on buzz score
             nodes.append('circle')
-                .attr('r', d => {
-                    const count = d.assertionCount || 0;
-                    return Math.max(14, Math.min(28, 12 + Math.sqrt(count) * 2.5));
-                });
+                .attr('r', d => getEntityBubbleSize(d.buzzScore, d.assertionCount))
+                .style('stroke-width', d => (d.buzzScore || 0) > 0.6 ? 2.5 : 1.5);
+
+            // Buzz score indicator (small badge for high-buzz entities)
+            nodes.filter(d => (d.buzzScore || 0) > 0.5)
+                .append('text')
+                .attr('class', 'buzz-indicator')
+                .attr('text-anchor', 'middle')
+                .attr('dy', d => -getEntityBubbleSize(d.buzzScore, d.assertionCount) - 4)
+                .style('font-size', '9px')
+                .style('font-weight', '600')
+                .style('fill', 'var(--status-validated)')
+                .text(d => Math.round((d.buzzScore || 0) * 100));
 
             // Entity labels
             nodes.append('text')
-                .attr('text-anchor', (d, i) => {
-                    const angle = i * angleStep - Math.PI / 2;
-                    return Math.cos(angle) > 0.2 ? 'start' : Math.cos(angle) < -0.2 ? 'end' : 'middle';
+                .attr('text-anchor', d => {
+                    const pos = entityPositions.get(d.id);
+                    if (!pos) return 'middle';
+                    return Math.cos(pos.angle) > 0.2 ? 'start' : Math.cos(pos.angle) < -0.2 ? 'end' : 'middle';
                 })
-                .attr('dx', (d, i) => {
-                    const angle = i * angleStep - Math.PI / 2;
-                    const r = Math.max(14, Math.min(28, 12 + Math.sqrt(d.assertionCount || 0) * 2.5));
-                    return Math.cos(angle) > 0.2 ? r + 8 : Math.cos(angle) < -0.2 ? -r - 8 : 0;
+                .attr('dx', d => {
+                    const pos = entityPositions.get(d.id);
+                    if (!pos) return 0;
+                    const r = getEntityBubbleSize(d.buzzScore, d.assertionCount);
+                    return Math.cos(pos.angle) > 0.2 ? r + 8 : Math.cos(pos.angle) < -0.2 ? -r - 8 : 0;
                 })
-                .attr('dy', (d, i) => {
-                    const angle = i * angleStep - Math.PI / 2;
-                    const r = Math.max(14, Math.min(28, 12 + Math.sqrt(d.assertionCount || 0) * 2.5));
-                    if (Math.abs(Math.cos(angle)) <= 0.2) {
-                        return Math.sin(angle) > 0 ? r + 16 : -r - 6;
+                .attr('dy', d => {
+                    const pos = entityPositions.get(d.id);
+                    if (!pos) return 4;
+                    const r = getEntityBubbleSize(d.buzzScore, d.assertionCount);
+                    if (Math.abs(Math.cos(pos.angle)) <= 0.2) {
+                        return Math.sin(pos.angle) > 0 ? r + 16 : -r - 6;
                     }
                     return 4;
                 })
-                .style('font-size', '11px')
+                .style('font-size', d => (d.buzzScore || 0) > 0.6 ? '12px' : '11px')
+                .style('font-weight', d => (d.buzzScore || 0) > 0.6 ? '500' : '400')
                 .text(d => d.name.length > 18 ? d.name.substring(0, 15) + '...' : d.name);
+
+            // Add ring labels
+            const ringLabels = ['Low Buzz', '', 'Medium', '', 'High Buzz'];
+            [0, 2, 4].forEach(i => {
+                if (ringLabels[i]) {
+                    const labelRadius = minRadius + ((maxRadius - minRadius) / (ringCount - 1)) * i;
+                    g.append('text')
+                        .attr('class', 'ring-label')
+                        .attr('x', labelRadius + 5)
+                        .attr('y', 4)
+                        .style('font-size', '9px')
+                        .style('fill', 'var(--text-muted)')
+                        .style('font-style', 'italic')
+                        .text(ringLabels[i]);
+                }
+            });
         }
 
         // =====================================================
@@ -1467,8 +1665,9 @@
         function showDetailPanel(entity) {
             const panel = dom.detailPanel;
 
-            // Entity header
-            document.getElementById('entity-name').textContent = entity.name;
+            // Entity header with link to full research page
+            const entityNameEl = document.getElementById('entity-name');
+            entityNameEl.innerHTML = `<a href="/entity/${entity.id}" style="color: inherit; text-decoration: none;" title="View full research">${entity.name}</a>`;
 
             const logoEl = document.getElementById('entity-logo');
             if (entity.logoUrl || entity.logoSvgContent) {
@@ -1489,6 +1688,12 @@
             } else {
                 urlEl.style.display = 'none';
             }
+
+            // Show full research link
+            const fullResearchContainer = document.getElementById('panel-full-research');
+            const fullResearchLink = document.getElementById('full-research-link');
+            fullResearchLink.href = `/entity/${entity.id}`;
+            fullResearchContainer.style.display = 'block';
 
             // Stats
             const assertions = entity.assertions || [];
@@ -1596,6 +1801,9 @@
                 `;
             } else if (type === 'entity') {
                 const validated = Math.round((data.evidenceRatio || 0) * 100);
+                const buzzScore = data.buzzScore || 0;
+                const buzzPercent = Math.round(buzzScore * 100);
+                const buzzLabel = buzzScore > 0.7 ? 'High' : buzzScore > 0.4 ? 'Medium' : buzzScore > 0 ? 'Low' : 'N/A';
                 tooltip.innerHTML = `
                     <div class="tooltip-title">${data.name}</div>
                     <div class="tooltip-meta">${data.entityType || 'Entity'}</div>
@@ -1603,6 +1811,13 @@
                         <span class="tooltip-stat"><span class="value">${data.assertionCount || 0}</span> assertions</span>
                         <span class="tooltip-stat"><span class="value">${validated}%</span> validated</span>
                     </div>
+                    ${buzzScore > 0 ? `
+                    <div class="tooltip-buzz">
+                        <span class="buzz-label">Buzz:</span>
+                        <span class="buzz-value ${buzzLabel.toLowerCase()}">${buzzPercent}</span>
+                        <span class="buzz-tier">${buzzLabel}</span>
+                    </div>
+                    ` : ''}
                 `;
             }
 

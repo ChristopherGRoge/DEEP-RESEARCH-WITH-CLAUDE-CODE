@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entity Research | Deep Research</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        /* Entity Page Specific Styles */
+        .entity-page {
+            min-height: 100vh;
+            background: var(--bg-primary);
+        }
+
+        .entity-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-light);
+            padding: var(--space-md) var(--space-lg);
+        }
+
+        .entity-header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .entity-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 0.875rem;
+        }
+
+        .breadcrumb-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        .breadcrumb-link:hover {
+            color: var(--text-primary);
+        }
+
+        .breadcrumb-sep {
+            color: var(--text-muted);
+        }
+
+        .breadcrumb-current {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .entity-hero {
+            background: var(--bg-secondary);
+            padding: var(--space-xl) var(--space-lg);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .entity-hero-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: var(--space-xl);
+        }
+
+        .entity-hero-logo {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-primary);
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .entity-hero-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .entity-hero-logo svg {
+            max-width: 60px;
+            max-height: 60px;
+        }
+
+        .entity-hero-logo .placeholder {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-tertiary);
+        }
+
+        .entity-hero-info {
+            flex: 1;
+        }
+
+        .entity-hero-name {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 var(--space-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .entity-type-badge {
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 4px 10px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--space-sm);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .entity-hero-url {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-md);
+        }
+
+        .entity-hero-url:hover {
+            color: var(--status-in-progress);
+            text-decoration: underline;
+        }
+
+        .entity-hero-description {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        .entity-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+
+        .entity-stat-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: var(--space-md);
+            text-align: center;
+        }
+
+        .entity-stat-card.accent {
+            border-color: var(--status-validated);
+            background: var(--status-validated-bg);
+        }
+
+        .entity-stat-value {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .entity-stat-card.accent .entity-stat-value {
+            color: var(--status-validated);
+        }
+
+        .entity-stat-label {
+            font-size: 0.6875rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: var(--space-xs);
+        }
+
+        /* Tabs */
+        .entity-tabs-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        .entity-tabs {
+            display: flex;
+            gap: var(--space-xs);
+            border-bottom: 1px solid var(--border-light);
+            padding-top: var(--space-md);
+            overflow-x: auto;
+        }
+
+        .entity-tab {
+            padding: var(--space-sm) var(--space-lg);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--transition-fast);
+        }
+
+        .entity-tab:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+
+        .entity-tab.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--text-primary);
+        }
+
+        .entity-tab-badge {
+            font-family: var(--font-mono);
+            font-size: 0.6875rem;
+            background: var(--bg-tertiary);
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: var(--space-xs);
+        }
+
+        .tab-panel {
+            padding: var(--space-xl) 0;
+        }
+
+        .tab-panel[x-show="false"] {
+            display: none;
+        }
+
+        /* Overview Tab */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .overview-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: var(--space-lg);
+        }
+
+        .overview-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-md);
+        }
+
+        .overview-card-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .github-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
+        }
+
+        .github-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .github-stat-value {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .github-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        .buzz-score-display {
+            text-align: center;
+            padding: var(--space-lg);
+        }
+
+        .buzz-score-value {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--status-validated);
+        }
+
+        .buzz-score-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: var(--space-sm);
+        }
+
+        .buzz-components {
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--border-light);
+        }
+
+        .buzz-component {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--space-xs) 0;
+            font-size: 0.8125rem;
+        }
+
+        .buzz-component-name {
+            color: var(--text-secondary);
+        }
+
+        .buzz-component-value {
+            font-family: var(--font-mono);
+            color: var(--text-primary);
+        }
+
+        /* Extractions Tab */
+        .extractions-grid {
+            display: grid;
+            gap: var(--space-lg);
+        }
+
+        .extraction-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .extraction-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-md) var(--space-lg);
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .extraction-type {
+            font-weight: 600;
+            color: var(--text-primary);
+            text-transform: capitalize;
+        }
+
+        .extraction-meta {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        .extraction-card-content {
+            padding: var(--space-lg);
+        }
+
+        .extraction-data {
+            font-family: var(--font-mono);
+            font-size: 0.8125rem;
+            background: var(--bg-primary);
+            padding: var(--space-md);
+            border-radius: 6px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: var(--text-secondary);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .extraction-source {
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--border-light);
+            font-size: 0.8125rem;
+        }
+
+        .extraction-source-label {
+            color: var(--text-tertiary);
+        }
+
+        .extraction-source-url {
+            color: var(--status-in-progress);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .extraction-source-url:hover {
+            text-decoration: underline;
+        }
+
+        /* Pricing extraction specific */
+        .pricing-tiers {
+            display: grid;
+            gap: var(--space-md);
+        }
+
+        .pricing-tier {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: var(--space-md);
+        }
+
+        .pricing-tier-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .pricing-tier-price {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--status-validated);
+        }
+
+        .pricing-tier-cycle {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+        }
+
+        .pricing-tier-features {
+            margin-top: var(--space-sm);
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        /* Assertions Tab */
+        .assertions-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .assertion-full-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: var(--space-lg);
+        }
+
+        .assertion-full-card.validated {
+            border-left: 3px solid var(--status-validated);
+        }
+
+        .assertion-full-card.pending {
+            border-left: 3px solid var(--status-pending);
+        }
+
+        .assertion-full-card.rejected {
+            border-left: 3px solid var(--status-rejected);
+        }
+
+        .assertion-full-header {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .assertion-full-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .assertion-full-status.EVIDENCE { background: var(--status-validated); }
+        .assertion-full-status.CLAIM { background: var(--status-pending); }
+        .assertion-full-status.REJECTED { background: var(--status-rejected); }
+
+        .assertion-full-claim {
+            flex: 1;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .assertion-full-badges {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .assertion-badge {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .badge-category {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+
+        .badge-criticality.CRITICAL { background: rgba(220, 50, 47, 0.15); color: var(--criticality-critical); }
+        .badge-criticality.HIGH { background: rgba(203, 75, 22, 0.15); color: var(--criticality-high); }
+        .badge-criticality.MEDIUM { background: rgba(38, 139, 210, 0.15); color: var(--criticality-medium); }
+        .badge-criticality.LOW { background: var(--bg-tertiary); color: var(--criticality-low); }
+
+        .badge-status.EVIDENCE { background: var(--status-validated-bg); color: var(--status-validated); }
+        .badge-status.CLAIM { background: rgba(181, 137, 0, 0.15); color: var(--status-pending); }
+        .badge-status.REJECTED { background: var(--status-rejected-bg); color: var(--status-rejected); }
+
+        .assertion-full-evidence {
+            margin-top: var(--space-md);
+            padding: var(--space-md);
+            background: var(--bg-primary);
+            border-radius: 8px;
+        }
+
+        .evidence-label {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--status-validated);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .evidence-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .evidence-screenshot-thumb {
+            margin-top: var(--space-sm);
+            max-width: 300px;
+            border-radius: 6px;
+            border: 1px solid var(--border-light);
+            cursor: pointer;
+            transition: transform var(--transition-fast);
+        }
+
+        .evidence-screenshot-thumb:hover {
+            transform: scale(1.02);
+        }
+
+        .assertion-full-sources {
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--border-light);
+        }
+
+        .sources-label {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .source-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .source-item:last-child {
+            border-bottom: none;
+        }
+
+        .source-grade-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .source-grade-dot.DIRECT_EVIDENCE { background: var(--status-validated); }
+        .source-grade-dot.STRONG_SUPPORT { background: #2aa198; }
+        .source-grade-dot.PARTIAL_SUPPORT { background: var(--status-pending); }
+        .source-grade-dot.WEAK_SUPPORT { background: #cb4b16; }
+        .source-grade-dot.NOT_RELEVANT { background: var(--text-muted); }
+        .source-grade-dot.MISLEADING { background: var(--status-rejected); }
+        .source-grade-dot.ungraded { background: transparent; border: 1.5px solid var(--border-medium); }
+
+        .source-content {
+            flex: 1;
+        }
+
+        .source-url-link {
+            font-size: 0.8125rem;
+            color: var(--status-in-progress);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .source-url-link:hover {
+            text-decoration: underline;
+        }
+
+        .source-quote {
+            font-size: 0.8125rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-top: var(--space-xs);
+            padding-left: var(--space-sm);
+            border-left: 2px solid var(--border-light);
+        }
+
+        .source-grade-badge {
+            font-size: 0.625rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: var(--space-xs);
+            display: inline-block;
+        }
+
+        /* Evidence Tab */
+        .evidence-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .evidence-gallery-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .evidence-gallery-item:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .evidence-gallery-img {
+            width: 100%;
+            aspect-ratio: 16/10;
+            object-fit: cover;
+            display: block;
+        }
+
+        .evidence-gallery-caption {
+            padding: var(--space-sm) var(--space-md);
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            max-height: 60px;
+            overflow: hidden;
+        }
+
+        /* History Tab */
+        .session-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .session-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: var(--space-lg);
+        }
+
+        .session-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-md);
+        }
+
+        .session-date {
+            font-family: var(--font-mono);
+            font-size: 0.8125rem;
+            color: var(--text-tertiary);
+        }
+
+        .session-status-badge {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .session-status-badge.COMPLETED {
+            background: var(--status-validated-bg);
+            color: var(--status-validated);
+        }
+
+        .session-status-badge.RESEARCHING {
+            background: rgba(38, 139, 210, 0.15);
+            color: var(--status-in-progress);
+        }
+
+        .session-status-badge.FAILED {
+            background: var(--status-rejected-bg);
+            color: var(--status-rejected);
+        }
+
+        .session-stats {
+            display: flex;
+            gap: var(--space-lg);
+        }
+
+        .session-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .session-stat-value {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .session-stat-label {
+            font-size: 0.6875rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+        }
+
+        .session-tasks {
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--border-light);
+        }
+
+        .session-task {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-xs) 0;
+            font-size: 0.8125rem;
+        }
+
+        .session-task-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.625rem;
+        }
+
+        .session-task-icon.COMPLETED {
+            background: var(--status-validated-bg);
+            color: var(--status-validated);
+        }
+
+        .session-task-icon.IN_PROGRESS {
+            background: rgba(38, 139, 210, 0.15);
+            color: var(--status-in-progress);
+        }
+
+        .session-task-icon.PENDING {
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+        }
+
+        .session-task-icon.FAILED {
+            background: var(--status-rejected-bg);
+            color: var(--status-rejected);
+        }
+
+        /* Empty states */
+        .empty-tab {
+            text-align: center;
+            padding: var(--space-2xl);
+            color: var(--text-tertiary);
+        }
+
+        .empty-tab-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto var(--space-lg);
+            opacity: 0.4;
+        }
+
+        .empty-tab-title {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: var(--space-lg);
+            right: var(--space-lg);
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Loading */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            gap: var(--space-md);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-light);
+            border-top-color: var(--status-validated);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .entity-hero-inner {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+
+            .entity-hero-name {
+                font-size: 1.5rem;
+                flex-wrap: wrap;
+            }
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .entity-tabs {
+                padding: var(--space-sm) 0;
+            }
+
+            .entity-tab {
+                padding: var(--space-sm) var(--space-md);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="entity-page" x-data="entityPage()" x-init="init()">
+        <!-- Header with breadcrumb -->
+        <header class="entity-header">
+            <div class="entity-header-inner">
+                <nav class="entity-breadcrumb">
+                    <a href="/" class="breadcrumb-link">Grove</a>
+                    <span class="breadcrumb-sep">/</span>
+                    <a :href="'/?project=' + entity?.project?.id" class="breadcrumb-link" x-text="entity?.project?.name || 'Project'"></a>
+                    <span class="breadcrumb-sep">/</span>
+                    <template x-if="entity?.discoveryCategory">
+                        <span>
+                            <span class="breadcrumb-link" x-text="formatCategory(entity.discoveryCategory)"></span>
+                            <span class="breadcrumb-sep">/</span>
+                        </span>
+                    </template>
+                    <span class="breadcrumb-current" x-text="entity?.name || 'Entity'"></span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Loading state -->
+        <template x-if="loading">
+            <div class="loading-container">
+                <div class="spinner"></div>
+                <p>Loading entity data...</p>
+            </div>
+        </template>
+
+        <!-- Error state -->
+        <template x-if="error">
+            <div class="empty-tab">
+                <div class="empty-tab-title">Error loading entity</div>
+                <p x-text="error"></p>
+                <a href="/" style="color: var(--status-in-progress);">Return to Grove</a>
+            </div>
+        </template>
+
+        <!-- Main content -->
+        <template x-if="!loading && !error && entity">
+            <div>
+                <!-- Hero section -->
+                <section class="entity-hero">
+                    <div class="entity-hero-inner">
+                        <div class="entity-hero-logo">
+                            <template x-if="entity.logoSvgContent">
+                                <div x-html="entity.logoSvgContent"></div>
+                            </template>
+                            <template x-if="!entity.logoSvgContent && entity.logoUrl">
+                                <img :src="entity.logoUrl" :alt="entity.name + ' logo'">
+                            </template>
+                            <template x-if="!entity.logoSvgContent && !entity.logoUrl">
+                                <span class="placeholder" x-text="entity.name.charAt(0)"></span>
+                            </template>
+                        </div>
+                        <div class="entity-hero-info">
+                            <h1 class="entity-hero-name">
+                                <span x-text="entity.name"></span>
+                                <span class="entity-type-badge" x-text="entity.entityType || 'entity'" x-show="entity.entityType"></span>
+                            </h1>
+                            <a :href="entity.url" target="_blank" class="entity-hero-url" x-show="entity.url">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                    <polyline points="15 3 21 3 21 9"/>
+                                    <line x1="10" y1="14" x2="21" y2="3"/>
+                                </svg>
+                                <span x-text="formatUrl(entity.url)"></span>
+                            </a>
+                            <p class="entity-hero-description" x-text="entity.description" x-show="entity.description"></p>
+
+                            <div class="entity-stats-grid">
+                                <div class="entity-stat-card">
+                                    <div class="entity-stat-value" x-text="stats.totalAssertions"></div>
+                                    <div class="entity-stat-label">Assertions</div>
+                                </div>
+                                <div class="entity-stat-card accent">
+                                    <div class="entity-stat-value" x-text="stats.validationRate + '%'"></div>
+                                    <div class="entity-stat-label">Validated</div>
+                                </div>
+                                <div class="entity-stat-card">
+                                    <div class="entity-stat-value" x-text="stats.totalExtractions"></div>
+                                    <div class="entity-stat-label">Extractions</div>
+                                </div>
+                                <div class="entity-stat-card">
+                                    <div class="entity-stat-value" x-text="stats.evidenceCount"></div>
+                                    <div class="entity-stat-label">Evidence</div>
+                                </div>
+                                <template x-if="entity.buzz">
+                                    <div class="entity-stat-card">
+                                        <div class="entity-stat-value" x-text="(entity.buzz.score * 100).toFixed(0)"></div>
+                                        <div class="entity-stat-label">Buzz Score</div>
+                                    </div>
+                                </template>
+                                <template x-if="entity.github">
+                                    <div class="entity-stat-card">
+                                        <div class="entity-stat-value" x-text="formatNumber(entity.github.stars)"></div>
+                                        <div class="entity-stat-label">GitHub Stars</div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tabs -->
+                <div class="entity-tabs-container">
+                    <div class="entity-tabs">
+                        <button class="entity-tab" :class="{ active: activeTab === 'overview' }" @click="activeTab = 'overview'">
+                            Overview
+                        </button>
+                        <button class="entity-tab" :class="{ active: activeTab === 'extractions' }" @click="activeTab = 'extractions'">
+                            Extractions
+                            <span class="entity-tab-badge" x-text="stats.totalExtractions"></span>
+                        </button>
+                        <button class="entity-tab" :class="{ active: activeTab === 'assertions' }" @click="activeTab = 'assertions'">
+                            Assertions
+                            <span class="entity-tab-badge" x-text="stats.totalAssertions"></span>
+                        </button>
+                        <button class="entity-tab" :class="{ active: activeTab === 'evidence' }" @click="activeTab = 'evidence'">
+                            Evidence
+                            <span class="entity-tab-badge" x-text="stats.evidenceCount"></span>
+                        </button>
+                        <button class="entity-tab" :class="{ active: activeTab === 'history' }" @click="activeTab = 'history'">
+                            History
+                            <span class="entity-tab-badge" x-text="stats.sessionsCount"></span>
+                        </button>
+                    </div>
+
+                    <!-- Overview Tab -->
+                    <div class="tab-panel" x-show="activeTab === 'overview'">
+                        <div class="overview-grid">
+                            <!-- GitHub Card -->
+                            <template x-if="entity.github">
+                                <div class="overview-card">
+                                    <div class="overview-card-header">
+                                        <span class="overview-card-title">GitHub Metrics</span>
+                                        <a :href="entity.github.url" target="_blank" style="color: var(--status-in-progress); font-size: 0.8125rem;">View Repo</a>
+                                    </div>
+                                    <div class="github-stats-grid">
+                                        <div class="github-stat">
+                                            <span class="github-stat-value" x-text="formatNumber(entity.github.stars)"></span>
+                                            <span class="github-stat-label">Stars</span>
+                                        </div>
+                                        <div class="github-stat">
+                                            <span class="github-stat-value" x-text="formatNumber(entity.github.forks)"></span>
+                                            <span class="github-stat-label">Forks</span>
+                                        </div>
+                                        <div class="github-stat">
+                                            <span class="github-stat-value" x-text="formatNumber(entity.github.watchers)"></span>
+                                            <span class="github-stat-label">Watchers</span>
+                                        </div>
+                                        <div class="github-stat">
+                                            <span class="github-stat-value" x-text="formatNumber(entity.github.openIssues)"></span>
+                                            <span class="github-stat-label">Open Issues</span>
+                                        </div>
+                                        <div class="github-stat" x-show="entity.github.contributors">
+                                            <span class="github-stat-value" x-text="formatNumber(entity.github.contributors)"></span>
+                                            <span class="github-stat-label">Contributors</span>
+                                        </div>
+                                        <div class="github-stat" x-show="entity.github.language">
+                                            <span class="github-stat-value" x-text="entity.github.language"></span>
+                                            <span class="github-stat-label">Language</span>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--border-light); font-size: 0.8125rem; color: var(--text-tertiary);">
+                                        <template x-if="entity.github.lastCommit">
+                                            <div>Last commit: <span x-text="formatDate(entity.github.lastCommit)"></span></div>
+                                        </template>
+                                        <template x-if="entity.github.license">
+                                            <div>License: <span x-text="entity.github.license"></span></div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- Buzz Score Card -->
+                            <template x-if="entity.buzz">
+                                <div class="overview-card">
+                                    <div class="overview-card-header">
+                                        <span class="overview-card-title">Buzz Score</span>
+                                    </div>
+                                    <div class="buzz-score-display">
+                                        <div class="buzz-score-value" x-text="(entity.buzz.score * 100).toFixed(0)"></div>
+                                        <div class="buzz-score-label">Composite Market Score</div>
+                                    </div>
+                                    <template x-if="entity.buzz.components">
+                                        <div class="buzz-components">
+                                            <template x-for="(value, key) in entity.buzz.components" :key="key">
+                                                <div class="buzz-component">
+                                                    <span class="buzz-component-name" x-text="formatBuzzComponent(key)"></span>
+                                                    <span class="buzz-component-value" x-text="typeof value === 'number' ? (value * 100).toFixed(0) : value"></span>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+
+                            <!-- Category/Domain Card -->
+                            <div class="overview-card">
+                                <div class="overview-card-header">
+                                    <span class="overview-card-title">Classification</span>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+                                    <div x-show="entity.discoveryCategory">
+                                        <div style="font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: var(--space-xs);">Discovery Category</div>
+                                        <div style="font-weight: 500; color: var(--text-primary);" x-text="formatCategory(entity.discoveryCategory)"></div>
+                                    </div>
+                                    <div x-show="entity.category">
+                                        <div style="font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: var(--space-xs);">LLM Category</div>
+                                        <div style="font-weight: 500; color: var(--text-primary);" x-text="entity.category?.displayName"></div>
+                                    </div>
+                                    <div x-show="entity.domain">
+                                        <div style="font-size: 0.75rem; color: var(--text-tertiary); margin-bottom: var(--space-xs);">Research Domain</div>
+                                        <div style="font-weight: 500; color: var(--text-primary);" x-text="entity.domain?.name"></div>
+                                        <div style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: var(--space-xs);" x-text="entity.domain?.description"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Criticality Breakdown -->
+                            <div class="overview-card">
+                                <div class="overview-card-header">
+                                    <span class="overview-card-title">Assertion Criticality</span>
+                                </div>
+                                <div class="github-stats-grid">
+                                    <div class="github-stat">
+                                        <span class="github-stat-value" style="color: var(--criticality-critical);" x-text="stats.criticalityBreakdown?.critical || 0"></span>
+                                        <span class="github-stat-label">Critical</span>
+                                    </div>
+                                    <div class="github-stat">
+                                        <span class="github-stat-value" style="color: var(--criticality-high);" x-text="stats.criticalityBreakdown?.high || 0"></span>
+                                        <span class="github-stat-label">High</span>
+                                    </div>
+                                    <div class="github-stat">
+                                        <span class="github-stat-value" style="color: var(--criticality-medium);" x-text="stats.criticalityBreakdown?.medium || 0"></span>
+                                        <span class="github-stat-label">Medium</span>
+                                    </div>
+                                    <div class="github-stat">
+                                        <span class="github-stat-value" style="color: var(--criticality-low);" x-text="stats.criticalityBreakdown?.low || 0"></span>
+                                        <span class="github-stat-label">Low</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Extractions Tab -->
+                    <div class="tab-panel" x-show="activeTab === 'extractions'">
+                        <template x-if="Object.keys(extractionsByType).length === 0">
+                            <div class="empty-tab">
+                                <svg class="empty-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                </svg>
+                                <div class="empty-tab-title">No extractions yet</div>
+                                <p>Run extract commands to populate structured data</p>
+                            </div>
+                        </template>
+                        <div class="extractions-grid">
+                            <template x-for="(extraction, type) in extractionsByType" :key="type">
+                                <div class="extraction-card">
+                                    <div class="extraction-card-header">
+                                        <span class="extraction-type" x-text="type"></span>
+                                        <span class="extraction-meta" x-text="formatDate(extraction.extractedAt)"></span>
+                                    </div>
+                                    <div class="extraction-card-content">
+                                        <!-- Special rendering for pricing -->
+                                        <template x-if="type === 'pricing' && extraction.data?.tiers">
+                                            <div class="pricing-tiers">
+                                                <template x-for="tier in extraction.data.tiers" :key="tier.name">
+                                                    <div class="pricing-tier">
+                                                        <div class="pricing-tier-name" x-text="tier.name"></div>
+                                                        <div>
+                                                            <span class="pricing-tier-price" x-text="tier.price === 0 ? 'Free' : '$' + tier.price"></span>
+                                                            <span class="pricing-tier-cycle" x-text="tier.billingCycle ? '/' + tier.billingCycle : ''"></span>
+                                                        </div>
+                                                        <div class="pricing-tier-features" x-show="tier.features">
+                                                            <template x-for="feature in tier.features?.slice(0, 3)" :key="feature">
+                                                                <div x-text="'• ' + feature"></div>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <!-- Default JSON rendering -->
+                                        <template x-if="!(type === 'pricing' && extraction.data?.tiers)">
+                                            <pre class="extraction-data" x-text="JSON.stringify(extraction.data, null, 2)"></pre>
+                                        </template>
+                                        <div class="extraction-source" x-show="extraction.source?.url">
+                                            <span class="extraction-source-label">Source: </span>
+                                            <a :href="extraction.source?.url" target="_blank" class="extraction-source-url" x-text="extraction.source?.url"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Assertions Tab -->
+                    <div class="tab-panel" x-show="activeTab === 'assertions'">
+                        <template x-if="assertions.length === 0">
+                            <div class="empty-tab">
+                                <svg class="empty-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <div class="empty-tab-title">No assertions yet</div>
+                                <p>Research this entity to gather claims</p>
+                            </div>
+                        </template>
+                        <div class="assertions-list">
+                            <template x-for="assertion in assertions" :key="assertion.id">
+                                <div class="assertion-full-card" :class="assertion.status.toLowerCase()">
+                                    <div class="assertion-full-header">
+                                        <div class="assertion-full-status" :class="assertion.status"></div>
+                                        <div class="assertion-full-claim" x-text="assertion.claim"></div>
+                                        <div class="assertion-full-badges">
+                                            <span class="assertion-badge badge-category" x-text="assertion.category || 'general'" x-show="assertion.category"></span>
+                                            <span class="assertion-badge badge-criticality" :class="assertion.criticality" x-text="assertion.criticality"></span>
+                                            <span class="assertion-badge badge-status" :class="assertion.status" x-text="assertion.status"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Evidence -->
+                                    <template x-if="assertion.evidenceDescription || assertion.evidenceScreenshotPath">
+                                        <div class="assertion-full-evidence">
+                                            <div class="evidence-label">Primary Evidence</div>
+                                            <div class="evidence-description" x-text="assertion.evidenceDescription" x-show="assertion.evidenceDescription"></div>
+                                            <template x-if="assertion.evidenceScreenshotPath">
+                                                <img :src="'/' + assertion.evidenceScreenshotPath" class="evidence-screenshot-thumb" @click="openLightbox('/' + assertion.evidenceScreenshotPath)">
+                                            </template>
+                                        </div>
+                                    </template>
+
+                                    <!-- Evidence Chain -->
+                                    <template x-if="assertion.evidenceChain && assertion.evidenceChain.length > 0">
+                                        <div class="assertion-full-evidence" style="margin-top: var(--space-sm);">
+                                            <div class="evidence-label">Evidence Chain (<span x-text="assertion.evidenceChain.length"></span>)</div>
+                                            <template x-for="(item, idx) in assertion.evidenceChain" :key="idx">
+                                                <div style="margin-top: var(--space-sm); padding: var(--space-sm); background: var(--bg-secondary); border-radius: 6px;">
+                                                    <div class="evidence-description" x-text="item.description"></div>
+                                                    <template x-if="item.screenshotPath">
+                                                        <img :src="'/' + item.screenshotPath" class="evidence-screenshot-thumb" style="max-width: 200px; margin-top: var(--space-xs);" @click="openLightbox('/' + item.screenshotPath)">
+                                                    </template>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+
+                                    <!-- Sources -->
+                                    <template x-if="assertion.sources && assertion.sources.length > 0">
+                                        <div class="assertion-full-sources">
+                                            <div class="sources-label">Sources (<span x-text="assertion.sources.length"></span>)</div>
+                                            <template x-for="src in assertion.sources" :key="src.id">
+                                                <div class="source-item">
+                                                    <div class="source-grade-dot" :class="src.relevanceGrade || 'ungraded'"></div>
+                                                    <div class="source-content">
+                                                        <a :href="src.source?.url" target="_blank" class="source-url-link" x-text="src.source?.url"></a>
+                                                        <div class="source-quote" x-text="src.quote" x-show="src.quote"></div>
+                                                        <template x-if="src.relevanceGrade">
+                                                            <span class="source-grade-badge" :class="'grade-badge ' + src.relevanceGrade.toLowerCase().replace('_', '-')" x-text="src.relevanceGrade.replace('_', ' ')"></span>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+
+                                    <!-- Reasoning -->
+                                    <template x-if="assertion.reasoning && assertion.reasoning.length > 0">
+                                        <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--border-light);">
+                                            <div class="sources-label">Reasoning</div>
+                                            <template x-for="r in assertion.reasoning" :key="r.id">
+                                                <div style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; margin-top: var(--space-xs);" x-text="r.content"></div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Evidence Tab -->
+                    <div class="tab-panel" x-show="activeTab === 'evidence'">
+                        <template x-if="evidenceGallery.length === 0">
+                            <div class="empty-tab">
+                                <svg class="empty-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                                    <polyline points="21 15 16 10 5 21"/>
+                                </svg>
+                                <div class="empty-tab-title">No evidence screenshots</div>
+                                <p>Screenshots captured during research will appear here</p>
+                            </div>
+                        </template>
+                        <div class="evidence-gallery-grid">
+                            <template x-for="(item, idx) in evidenceGallery" :key="idx">
+                                <div class="evidence-gallery-item" @click="openLightbox('/' + item.path)">
+                                    <img :src="'/' + item.path" class="evidence-gallery-img" :alt="item.description || 'Evidence screenshot'">
+                                    <div class="evidence-gallery-caption" x-text="item.description || item.claim || 'Screenshot'"></div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- History Tab -->
+                    <div class="tab-panel" x-show="activeTab === 'history'">
+                        <template x-if="researchSessions.length === 0">
+                            <div class="empty-tab">
+                                <svg class="empty-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                                <div class="empty-tab-title">No research sessions</div>
+                                <p>Past research sessions will appear here</p>
+                            </div>
+                        </template>
+                        <div class="session-timeline">
+                            <template x-for="session in researchSessions" :key="session.id">
+                                <div class="session-card">
+                                    <div class="session-card-header">
+                                        <span class="session-date" x-text="formatDate(session.createdAt)"></span>
+                                        <span class="session-status-badge" :class="session.status" x-text="session.status"></span>
+                                    </div>
+                                    <div class="session-stats">
+                                        <div class="session-stat">
+                                            <span class="session-stat-value" x-text="session.totalAssertions || 0"></span>
+                                            <span class="session-stat-label">Assertions</span>
+                                        </div>
+                                        <div class="session-stat">
+                                            <span class="session-stat-value" x-text="session.totalExtractions || 0"></span>
+                                            <span class="session-stat-label">Extractions</span>
+                                        </div>
+                                        <div class="session-stat">
+                                            <span class="session-stat-value" x-text="session.totalScreenshots || 0"></span>
+                                            <span class="session-stat-label">Screenshots</span>
+                                        </div>
+                                    </div>
+                                    <template x-if="session.tasks && session.tasks.length > 0">
+                                        <div class="session-tasks">
+                                            <template x-for="task in session.tasks.slice(0, 5)" :key="task.id">
+                                                <div class="session-task">
+                                                    <div class="session-task-icon" :class="task.status">
+                                                        <template x-if="task.status === 'COMPLETED'">&#10003;</template>
+                                                        <template x-if="task.status === 'FAILED'">&#10007;</template>
+                                                        <template x-if="task.status === 'IN_PROGRESS'">&#8635;</template>
+                                                        <template x-if="task.status === 'PENDING'">&#8226;</template>
+                                                    </div>
+                                                    <span x-text="task.category" style="text-transform: capitalize;"></span>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Lightbox -->
+        <div class="lightbox" x-show="lightboxImage" @click="lightboxImage = null" x-cloak>
+            <button class="lightbox-close" @click.stop="lightboxImage = null">&times;</button>
+            <img :src="lightboxImage" @click.stop>
+        </div>
+    </div>
+
+    <script>
+        function entityPage() {
+            return {
+                loading: true,
+                error: null,
+                entity: null,
+                stats: {},
+                extractionsByType: {},
+                assertions: [],
+                evidenceGallery: [],
+                researchSessions: [],
+                activeTab: 'overview',
+                lightboxImage: null,
+
+                async init() {
+                    // Get entity ID from URL
+                    const pathParts = window.location.pathname.split('/');
+                    const entityId = pathParts[pathParts.length - 1];
+
+                    if (!entityId) {
+                        this.error = 'No entity ID provided';
+                        this.loading = false;
+                        return;
+                    }
+
+                    try {
+                        const res = await fetch(`/api/entities/${entityId}/full`);
+                        const data = await res.json();
+
+                        if (!data.success) {
+                            throw new Error(data.error || 'Failed to load entity');
+                        }
+
+                        this.entity = data.data;
+                        this.stats = data.data.stats;
+                        this.extractionsByType = data.data.extractionsByType || {};
+                        this.assertions = data.data.assertions || [];
+                        this.evidenceGallery = data.data.evidenceGallery || [];
+                        this.researchSessions = data.data.researchSessions || [];
+
+                        // Update page title
+                        document.title = `${this.entity.name} | Deep Research`;
+
+                    } catch (err) {
+                        console.error('Failed to load entity:', err);
+                        this.error = err.message;
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                formatUrl(url) {
+                    if (!url) return '';
+                    try {
+                        return new URL(url).hostname;
+                    } catch {
+                        return url;
+                    }
+                },
+
+                formatCategory(cat) {
+                    if (!cat) return '';
+                    return cat
+                        .replace(/_/g, ' ')
+                        .replace(/\bai\b/gi, 'AI')
+                        .replace(/\bgenai\b/gi, 'GenAI')
+                        .split(' ')
+                        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+                        .join(' ');
+                },
+
+                formatNumber(num) {
+                    if (num === null || num === undefined) return '-';
+                    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+                    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+                    return num.toString();
+                },
+
+                formatDate(dateStr) {
+                    if (!dateStr) return '-';
+                    const date = new Date(dateStr);
+                    return date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+                },
+
+                formatBuzzComponent(key) {
+                    return key
+                        .replace(/([A-Z])/g, ' $1')
+                        .replace(/^./, s => s.toUpperCase())
+                        .trim();
+                },
+
+                openLightbox(src) {
+                    this.lightboxImage = src;
+                }
+            };
+        }
+    </script>
+</body>
+</html>
