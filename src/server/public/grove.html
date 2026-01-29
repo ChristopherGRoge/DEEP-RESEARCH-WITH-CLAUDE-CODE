@@ -438,18 +438,18 @@
         }
 
         /* Buzz score styling - higher buzz = more prominent */
-        .node-entity.high-buzz circle {
+        .node-entity.high-buzz circle.entity-bg {
             fill: var(--bg-surface);
             stroke-width: 2.5px;
             filter: drop-shadow(0 0 8px var(--accent-glow));
         }
 
-        .node-entity.high-buzz.validated circle {
+        .node-entity.high-buzz.validated circle.entity-bg {
             stroke: var(--status-validated);
             filter: drop-shadow(0 0 10px rgba(133, 153, 0, 0.4));
         }
 
-        .node-entity.medium-buzz circle {
+        .node-entity.medium-buzz circle.entity-bg {
             fill: var(--bg-elevated);
             stroke-width: 2px;
         }
@@ -457,6 +457,27 @@
         .node-entity.high-buzz text {
             fill: var(--text-primary);
             font-weight: 500;
+        }
+
+        /* Entity with logo styling */
+        .node-entity.has-logo circle.entity-bg {
+            fill: white;
+        }
+
+        .node-entity.has-logo.validated circle.entity-bg {
+            stroke: var(--status-validated);
+        }
+
+        .entity-logo-img {
+            pointer-events: none;
+        }
+
+        .entity-logo-svg {
+            pointer-events: none;
+        }
+
+        .entity-initial {
+            pointer-events: none;
         }
 
         /* Buzz indicator badge */
@@ -1579,6 +1600,9 @@
                     .text(words.slice(1).join(' '));
             }
 
+            // Create defs for clip paths
+            const defs = svg.append('defs');
+
             // Entity nodes
             const nodes = g.selectAll('.node-entity')
                 .data(entities)
@@ -1588,7 +1612,8 @@
                     const ratio = d.evidenceRatio || 0;
                     const buzzClass = (d.buzzScore || 0) > 0.7 ? 'high-buzz' : (d.buzzScore || 0) > 0.4 ? 'medium-buzz' : '';
                     const status = ratio > 0.5 ? 'validated' : ratio > 0 ? 'pending' : '';
-                    return `node node-entity ${status} ${buzzClass}`;
+                    const hasLogo = d.logoUrl || d.logoSvgContent ? 'has-logo' : '';
+                    return `node node-entity ${status} ${buzzClass} ${hasLogo}`;
                 })
                 .attr('transform', d => {
                     const pos = entityPositions.get(d.id);
@@ -1599,10 +1624,72 @@
                 .on('mouseenter', (event, d) => showTooltip(event, d, 'entity'))
                 .on('mouseleave', hideTooltip);
 
+            // Add clip paths for each entity with a logo
+            nodes.each(function(d) {
+                if (d.logoUrl || d.logoSvgContent) {
+                    const r = getEntityBubbleSize(d.buzzScore, d.assertionCount);
+                    defs.append('clipPath')
+                        .attr('id', `clip-${d.id}`)
+                        .append('circle')
+                        .attr('r', r - 2); // Slightly smaller to show border
+                }
+            });
+
             // Entity circles - size based on buzz score
             nodes.append('circle')
+                .attr('class', 'entity-bg')
                 .attr('r', d => getEntityBubbleSize(d.buzzScore, d.assertionCount))
                 .style('stroke-width', d => (d.buzzScore || 0) > 0.6 ? 2.5 : 1.5);
+
+            // Add logo images for entities with logoUrl (not SVG)
+            nodes.filter(d => d.logoUrl && !d.logoSvgContent)
+                .append('image')
+                .attr('class', 'entity-logo-img')
+                .attr('xlink:href', d => d.logoUrl)
+                .attr('x', d => -getEntityBubbleSize(d.buzzScore, d.assertionCount) + 2)
+                .attr('y', d => -getEntityBubbleSize(d.buzzScore, d.assertionCount) + 2)
+                .attr('width', d => (getEntityBubbleSize(d.buzzScore, d.assertionCount) - 2) * 2)
+                .attr('height', d => (getEntityBubbleSize(d.buzzScore, d.assertionCount) - 2) * 2)
+                .attr('clip-path', d => `url(#clip-${d.id})`)
+                .attr('preserveAspectRatio', 'xMidYMid slice');
+
+            // Add SVG logos for entities with logoSvgContent
+            nodes.filter(d => d.logoSvgContent)
+                .append('foreignObject')
+                .attr('class', 'entity-logo-svg')
+                .attr('x', d => -getEntityBubbleSize(d.buzzScore, d.assertionCount) + 4)
+                .attr('y', d => -getEntityBubbleSize(d.buzzScore, d.assertionCount) + 4)
+                .attr('width', d => (getEntityBubbleSize(d.buzzScore, d.assertionCount) - 4) * 2)
+                .attr('height', d => (getEntityBubbleSize(d.buzzScore, d.assertionCount) - 4) * 2)
+                .attr('clip-path', d => `url(#clip-${d.id})`)
+                .append('xhtml:div')
+                .style('width', '100%')
+                .style('height', '100%')
+                .style('display', 'flex')
+                .style('align-items', 'center')
+                .style('justify-content', 'center')
+                .style('overflow', 'hidden')
+                .style('border-radius', '50%')
+                .html(d => {
+                    // Clean up the SVG to fit in the container
+                    let svg = d.logoSvgContent;
+                    // Remove fixed width/height to make it responsive
+                    svg = svg.replace(/width="[^"]*"/g, 'width="100%"');
+                    svg = svg.replace(/height="[^"]*"/g, 'height="100%"');
+                    return `<div style="width: 80%; height: 80%; display: flex; align-items: center; justify-content: center;">${svg}</div>`;
+                });
+
+            // Add initials for entities WITHOUT logos
+            nodes.filter(d => !d.logoUrl && !d.logoSvgContent)
+                .append('text')
+                .attr('class', 'entity-initial')
+                .attr('text-anchor', 'middle')
+                .attr('dy', '0.35em')
+                .style('font-size', d => Math.max(10, getEntityBubbleSize(d.buzzScore, d.assertionCount) * 0.6) + 'px')
+                .style('font-weight', '600')
+                .style('fill', 'var(--text-tertiary)')
+                .style('pointer-events', 'none')
+                .text(d => d.name.charAt(0).toUpperCase());
 
             // Buzz score indicator (small badge for high-buzz entities)
             nodes.filter(d => (d.buzzScore || 0) > 0.5)

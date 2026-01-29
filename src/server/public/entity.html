@@ -555,13 +555,16 @@
             margin-top: var(--space-sm);
             max-width: 300px;
             border-radius: 6px;
-            border: 1px solid var(--border-light);
-            cursor: pointer;
-            transition: transform var(--transition-fast);
+            border: 2px solid var(--border-light);
+            cursor: zoom-in;
+            transition: all var(--transition-fast);
+            position: relative;
         }
 
         .evidence-screenshot-thumb:hover {
             transform: scale(1.02);
+            border-color: var(--status-in-progress);
+            box-shadow: 0 4px 12px rgba(38, 139, 210, 0.2);
         }
 
         .assertion-full-sources {
@@ -650,23 +653,24 @@
 
         .evidence-gallery-item {
             background: var(--bg-secondary);
-            border: 1px solid var(--border-light);
+            border: 2px solid var(--border-light);
             border-radius: 8px;
             overflow: hidden;
-            cursor: pointer;
+            cursor: zoom-in;
             transition: all var(--transition-fast);
         }
 
         .evidence-gallery-item:hover {
-            border-color: var(--border-medium);
+            border-color: var(--status-in-progress);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 16px rgba(38, 139, 210, 0.15);
         }
 
         .evidence-gallery-img {
             width: 100%;
             aspect-ratio: 16/10;
             object-fit: cover;
+            object-position: top;
             display: block;
         }
 
@@ -817,32 +821,43 @@
             margin-bottom: var(--space-sm);
         }
 
-        /* Lightbox */
+        /* Lightbox - Enhanced for long screenshots */
         .lightbox {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 1000;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            overflow-y: auto;
+            padding: var(--space-xl);
             cursor: zoom-out;
         }
 
+        .lightbox-content {
+            position: relative;
+            max-width: 95vw;
+            margin: auto;
+        }
+
         .lightbox img {
-            max-width: 90vw;
-            max-height: 90vh;
-            object-fit: contain;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            cursor: default;
+            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.5);
         }
 
         .lightbox-close {
-            position: absolute;
+            position: fixed;
             top: var(--space-lg);
             right: var(--space-lg);
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             color: white;
             font-size: 1.5rem;
@@ -850,10 +865,290 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 1001;
+            transition: all var(--transition-fast);
         }
 
         .lightbox-close:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
+        }
+
+        .lightbox-hint {
+            position: fixed;
+            bottom: var(--space-lg);
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8125rem;
+            z-index: 1001;
+        }
+
+        /* Features extraction styling */
+        .features-grid {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .feature-category {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: var(--space-md);
+        }
+
+        .feature-category-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+            font-size: 0.9375rem;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .feature-item {
+            display: flex;
+            gap: var(--space-sm);
+            padding: var(--space-xs) 0;
+        }
+
+        .feature-item.highlight {
+            background: rgba(133, 153, 0, 0.1);
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: 4px;
+            margin: 0 calc(-1 * var(--space-sm));
+        }
+
+        .feature-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            min-width: 120px;
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Company extraction styling */
+        .company-grid {
+            display: grid;
+            gap: var(--space-md);
+        }
+
+        .company-section {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: var(--space-md);
+        }
+
+        .company-section-title {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .company-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .company-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            margin-top: var(--space-sm);
+        }
+
+        .company-meta-item {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        .company-meta-item strong {
+            color: var(--text-primary);
+        }
+
+        .founder-card {
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .founder-card:last-child {
+            border-bottom: none;
+        }
+
+        .founder-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .founder-role {
+            font-size: 0.8125rem;
+            color: var(--status-validated);
+        }
+
+        .founder-bg {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            margin-top: var(--space-xs);
+        }
+
+        .milestone-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .milestone-list li {
+            padding: var(--space-xs) 0;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            border-left: 2px solid var(--border-light);
+            padding-left: var(--space-sm);
+            margin-left: var(--space-xs);
+        }
+
+        /* Compliance extraction styling */
+        .compliance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .compliance-badge {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .compliance-badge.active {
+            border-left: 3px solid var(--status-validated);
+        }
+
+        .compliance-badge.inactive {
+            opacity: 0.5;
+        }
+
+        .compliance-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .compliance-icon.check {
+            background: var(--status-validated-bg);
+            color: var(--status-validated);
+        }
+
+        .compliance-icon.x {
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+        }
+
+        .compliance-info {
+            flex: 1;
+        }
+
+        .compliance-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .compliance-detail {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .compliance-section {
+            grid-column: 1 / -1;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: var(--space-md);
+        }
+
+        .compliance-section-title {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .security-features-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+        }
+
+        .security-feature-tag {
+            background: var(--bg-secondary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Integrations extraction styling */
+        .integrations-grid {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .integration-section {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: var(--space-md);
+        }
+
+        .integration-section-title {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .integration-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+        }
+
+        .integration-tag {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8125rem;
+        }
+
+        .integration-tag .name {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .integration-tag .type {
+            color: var(--text-tertiary);
+            font-size: 0.6875rem;
+            margin-left: var(--space-xs);
         }
 
         /* Loading */
@@ -1171,7 +1466,7 @@
                                         <span class="extraction-meta" x-text="formatDate(extraction.extractedAt)"></span>
                                     </div>
                                     <div class="extraction-card-content">
-                                        <!-- Special rendering for pricing -->
+                                        <!-- Pricing rendering -->
                                         <template x-if="type === 'pricing' && extraction.data?.tiers">
                                             <div class="pricing-tiers">
                                                 <template x-for="tier in extraction.data.tiers" :key="tier.name">
@@ -1190,10 +1485,198 @@
                                                 </template>
                                             </div>
                                         </template>
-                                        <!-- Default JSON rendering -->
-                                        <template x-if="!(type === 'pricing' && extraction.data?.tiers)">
+
+                                        <!-- Features rendering -->
+                                        <template x-if="type === 'features' && extraction.data?.categories">
+                                            <div class="features-grid">
+                                                <template x-for="category in extraction.data.categories" :key="category.name">
+                                                    <div class="feature-category">
+                                                        <div class="feature-category-name" x-text="category.name"></div>
+                                                        <div class="feature-list">
+                                                            <template x-for="feature in category.features" :key="feature.name">
+                                                                <div class="feature-item" :class="{ highlight: feature.isHighlight }">
+                                                                    <span class="feature-name" x-text="feature.name"></span>
+                                                                    <span class="feature-desc" x-text="feature.description"></span>
+                                                                </div>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+
+                                        <!-- Company rendering -->
+                                        <template x-if="type === 'company' && extraction.data">
+                                            <div class="company-grid">
+                                                <div class="company-section">
+                                                    <div class="company-name" x-text="extraction.data.name || entity.name"></div>
+                                                    <div class="company-meta">
+                                                        <span class="company-meta-item" x-show="extraction.data.founded"><strong>Founded:</strong> <span x-text="extraction.data.founded"></span></span>
+                                                        <span class="company-meta-item" x-show="extraction.data.headquarters"><strong>HQ:</strong> <span x-text="extraction.data.headquarters"></span></span>
+                                                        <span class="company-meta-item" x-show="extraction.data.employeeCount"><strong>Employees:</strong> <span x-text="extraction.data.employeeCount"></span></span>
+                                                        <span class="company-meta-item" x-show="extraction.data.totalFunding"><strong>Funding:</strong> <span x-text="extraction.data.totalFunding"></span></span>
+                                                    </div>
+                                                    <p style="margin-top: var(--space-sm); font-size: 0.875rem; color: var(--text-secondary);" x-text="extraction.data.mission" x-show="extraction.data.mission"></p>
+                                                </div>
+                                                <template x-if="extraction.data.founders?.length">
+                                                    <div class="company-section">
+                                                        <div class="company-section-title">Founders</div>
+                                                        <template x-for="founder in extraction.data.founders" :key="founder.name">
+                                                            <div class="founder-card">
+                                                                <div class="founder-name" x-text="founder.name"></div>
+                                                                <div class="founder-role" x-text="founder.role"></div>
+                                                                <div class="founder-bg" x-text="founder.background" x-show="founder.background"></div>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </template>
+                                                <template x-if="extraction.data.milestones?.length">
+                                                    <div class="company-section">
+                                                        <div class="company-section-title">Milestones</div>
+                                                        <ul class="milestone-list">
+                                                            <template x-for="milestone in extraction.data.milestones" :key="milestone">
+                                                                <li x-text="milestone"></li>
+                                                            </template>
+                                                        </ul>
+                                                    </div>
+                                                </template>
+                                                <template x-if="extraction.data.keyInvestors?.length">
+                                                    <div class="company-section">
+                                                        <div class="company-section-title">Key Investors</div>
+                                                        <div style="font-size: 0.875rem; color: var(--text-secondary);" x-text="extraction.data.keyInvestors.join(', ')"></div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+
+                                        <!-- Compliance rendering -->
+                                        <template x-if="type === 'compliance' && extraction.data">
+                                            <div class="compliance-grid">
+                                                <div class="compliance-badge" :class="extraction.data.soc2 ? 'active' : 'inactive'">
+                                                    <div class="compliance-icon" :class="extraction.data.soc2 ? 'check' : 'x'" x-text="extraction.data.soc2 ? '✓' : '✗'"></div>
+                                                    <div class="compliance-info">
+                                                        <div class="compliance-name">SOC 2</div>
+                                                        <div class="compliance-detail" x-text="extraction.data.soc2Type || (extraction.data.soc2 ? 'Certified' : 'Not certified')"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="compliance-badge" :class="extraction.data.hipaa ? 'active' : 'inactive'">
+                                                    <div class="compliance-icon" :class="extraction.data.hipaa ? 'check' : 'x'" x-text="extraction.data.hipaa ? '✓' : '✗'"></div>
+                                                    <div class="compliance-info">
+                                                        <div class="compliance-name">HIPAA</div>
+                                                        <div class="compliance-detail" x-text="extraction.data.hipaa ? 'Compliant' : 'Not compliant'"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="compliance-badge" :class="extraction.data.gdpr ? 'active' : 'inactive'">
+                                                    <div class="compliance-icon" :class="extraction.data.gdpr ? 'check' : 'x'" x-text="extraction.data.gdpr ? '✓' : '✗'"></div>
+                                                    <div class="compliance-info">
+                                                        <div class="compliance-name">GDPR</div>
+                                                        <div class="compliance-detail" x-text="extraction.data.gdpr ? 'Compliant' : 'Not compliant'"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="compliance-badge" :class="extraction.data.fedRampStatus === 'Authorized' ? 'active' : 'inactive'">
+                                                    <div class="compliance-icon" :class="extraction.data.fedRampStatus === 'Authorized' ? 'check' : 'x'" x-text="extraction.data.fedRampStatus === 'Authorized' ? '✓' : '✗'"></div>
+                                                    <div class="compliance-info">
+                                                        <div class="compliance-name">FedRAMP</div>
+                                                        <div class="compliance-detail" x-text="extraction.data.fedRampStatus + (extraction.data.fedRampLevel ? ' (' + extraction.data.fedRampLevel + ')' : '')"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="compliance-badge" :class="extraction.data.iso27001 ? 'active' : 'inactive'">
+                                                    <div class="compliance-icon" :class="extraction.data.iso27001 ? 'check' : 'x'" x-text="extraction.data.iso27001 ? '✓' : '✗'"></div>
+                                                    <div class="compliance-info">
+                                                        <div class="compliance-name">ISO 27001</div>
+                                                        <div class="compliance-detail" x-text="extraction.data.iso27001 ? 'Certified' : 'Not certified'"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="compliance-badge" :class="extraction.data.sso ? 'active' : 'inactive'">
+                                                    <div class="compliance-icon" :class="extraction.data.sso ? 'check' : 'x'" x-text="extraction.data.sso ? '✓' : '✗'"></div>
+                                                    <div class="compliance-info">
+                                                        <div class="compliance-name">SSO</div>
+                                                        <div class="compliance-detail" x-text="extraction.data.ssoProviders?.slice(0,2).join(', ') || (extraction.data.sso ? 'Supported' : 'Not supported')"></div>
+                                                    </div>
+                                                </div>
+                                                <template x-if="extraction.data.securityFeatures?.length">
+                                                    <div class="compliance-section">
+                                                        <div class="compliance-section-title">Security Features</div>
+                                                        <div class="security-features-list">
+                                                            <template x-for="feature in extraction.data.securityFeatures.slice(0, 8)" :key="feature">
+                                                                <span class="security-feature-tag" x-text="feature"></span>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                                <template x-if="extraction.data.deploymentModels?.length">
+                                                    <div class="compliance-section">
+                                                        <div class="compliance-section-title">Deployment Options</div>
+                                                        <div class="security-features-list">
+                                                            <template x-for="model in extraction.data.deploymentModels" :key="model">
+                                                                <span class="security-feature-tag" x-text="model"></span>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+
+                                        <!-- Integrations rendering -->
+                                        <template x-if="type === 'integrations' && extraction.data">
+                                            <div class="integrations-grid">
+                                                <template x-if="extraction.data.nativeIntegrations?.length">
+                                                    <div class="integration-section">
+                                                        <div class="integration-section-title">Native Integrations</div>
+                                                        <div class="integration-tags">
+                                                            <template x-for="integration in extraction.data.nativeIntegrations" :key="integration.name">
+                                                                <div class="integration-tag">
+                                                                    <span class="name" x-text="integration.name"></span>
+                                                                    <span class="type" x-text="integration.type?.replace(/_/g, ' ')"></span>
+                                                                </div>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                                <template x-if="extraction.data.devToolIntegrations?.length">
+                                                    <div class="integration-section">
+                                                        <div class="integration-section-title">Dev Tool Integrations</div>
+                                                        <div class="integration-tags">
+                                                            <template x-for="integration in extraction.data.devToolIntegrations" :key="integration.name">
+                                                                <div class="integration-tag">
+                                                                    <span class="name" x-text="integration.name"></span>
+                                                                    <span class="type" x-text="integration.type?.replace(/_/g, ' ')"></span>
+                                                                </div>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                                <template x-if="extraction.data.apiProtocols?.length">
+                                                    <div class="integration-section">
+                                                        <div class="integration-section-title">API Protocols</div>
+                                                        <div class="integration-tags">
+                                                            <template x-for="protocol in extraction.data.apiProtocols" :key="protocol">
+                                                                <div class="integration-tag">
+                                                                    <span class="name" x-text="protocol"></span>
+                                                                </div>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                                <template x-if="extraction.data.notes">
+                                                    <div class="integration-section">
+                                                        <div class="integration-section-title">Notes</div>
+                                                        <p style="font-size: 0.875rem; color: var(--text-secondary);" x-text="extraction.data.notes"></p>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+
+                                        <!-- Default JSON rendering for unknown types -->
+                                        <template x-if="!['pricing', 'features', 'company', 'compliance', 'integrations'].includes(type) ||
+                                                        (type === 'pricing' && !extraction.data?.tiers) ||
+                                                        (type === 'features' && !extraction.data?.categories) ||
+                                                        (type === 'company' && !extraction.data) ||
+                                                        (type === 'compliance' && !extraction.data) ||
+                                                        (type === 'integrations' && !extraction.data)">
                                             <pre class="extraction-data" x-text="JSON.stringify(extraction.data, null, 2)"></pre>
                                         </template>
+
                                         <div class="extraction-source" x-show="extraction.source?.url">
                                             <span class="extraction-source-label">Source: </span>
                                             <a :href="extraction.source?.url" target="_blank" class="extraction-source-url" x-text="extraction.source?.url"></a>
@@ -1366,10 +1849,13 @@
             </div>
         </template>
 
-        <!-- Lightbox -->
-        <div class="lightbox" x-show="lightboxImage" @click="lightboxImage = null" x-cloak>
+        <!-- Lightbox - Enhanced for long screenshots -->
+        <div class="lightbox" x-show="lightboxImage" @click="lightboxImage = null" @keydown.escape.window="lightboxImage = null" x-cloak>
             <button class="lightbox-close" @click.stop="lightboxImage = null">&times;</button>
-            <img :src="lightboxImage" @click.stop>
+            <div class="lightbox-content" @click.stop>
+                <img :src="lightboxImage" :alt="'Evidence screenshot'">
+            </div>
+            <div class="lightbox-hint">Scroll to view full image &bull; Click outside or press ESC to close</div>
         </div>
     </div>
 
