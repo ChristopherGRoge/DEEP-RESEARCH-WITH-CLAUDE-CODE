@@ -43,6 +43,8 @@ Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts li
 
 ### Color & Theme
 
+**Prefer light themes by default.** Light themes with warm backgrounds (cream, ivory, paper-like tones) create professional, readable interfaces. Draw inspiration from Solarized Light: warm cream backgrounds (#fdf6e3), muted content colors, and purposeful accent colors from a cohesive palette.
+
 Commit to a cohesive aesthetic. Use CSS variables for consistency. Dominant colors with sharp accents outperform timid, evenly-distributed palettes.
 
 ### Motion
@@ -63,11 +65,12 @@ Create atmosphere and depth rather than defaulting to solid colors. Add contextu
 
 **NEVER use generic AI-generated aesthetics** like:
 - Overused font families (Inter, Roboto, Arial, system fonts)
-- Cliched color schemes (particularly purple gradients on white backgrounds)
+- Cliched color schemes (particularly purple gradients, neon accents, dark mode with cyan/purple)
 - Predictable layouts and component patterns
 - Cookie-cutter design that lacks context-specific character
+- Defaulting to dark themes (prefer light themes unless specifically requested)
 
-Interpret creatively and make unexpected choices that feel genuinely designed for the context. No design should be the same. Vary between light and dark themes, different fonts, different aesthetics. **NEVER converge on common choices** (Space Grotesk, for example) across generations.
+Interpret creatively and make unexpected choices that feel genuinely designed for the context. No design should be the same. **Default to light themes** with warm, inviting palettes inspired by Solarized Light, classic editorial design, or refined paper aesthetics. Dark themes should only be used when explicitly requested or when the context clearly demands it (e.g., code editors, media players, night-mode apps). **NEVER converge on common choices** (Space Grotesk, for example) across generations.
 
 ---
 

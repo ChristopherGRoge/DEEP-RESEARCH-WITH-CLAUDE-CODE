@@ -1,6 +1,7 @@
 /* ==========================================================================
-   Assertion Validation - Swiss Editorial Design
-   Clean, typography-focused interface for research validation
+   Deep Research - Solarized Light Inspired
+   Clean, typography-focused interface with warm, paper-like tones
+   Color palette inspired by Ethan Schoonover's Solarized Light theme
    ========================================================================== */
 
 /* CSS Reset */
@@ -17,34 +18,34 @@
     --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'JetBrains Mono', Consolas, monospace;
 
-    /* Colors - Warm, paper-like palette */
-    --bg-primary: #FDFBF7;
-    --bg-secondary: #F7F5F0;
-    --bg-tertiary: #EFECE6;
+    /* Colors - Solarized Light inspired palette */
+    --bg-primary: #fdf6e3;      /* base3 - main background */
+    --bg-secondary: #eee8d5;    /* base2 - secondary background */
+    --bg-tertiary: #e4ddc8;     /* slightly darker for depth */
 
-    --text-primary: #1a1a1a;
-    --text-secondary: #5c5c5c;
-    --text-tertiary: #8a8a8a;
-    --text-muted: #b0b0b0;
+    --text-primary: #586e75;    /* base01 - emphasized content */
+    --text-secondary: #657b83;  /* base00 - body text */
+    --text-tertiary: #839496;   /* base0 - subtle text */
+    --text-muted: #93a1a1;      /* base1 - comments, muted */
 
-    --border-light: #e8e5de;
-    --border-medium: #d4d0c8;
+    --border-light: #d9d2bf;    /* warm border */
+    --border-medium: #c9c2af;   /* stronger border */
 
-    /* Accent Colors - Muted, purposeful */
-    --accent-primary: #2d2d2d;
-    --accent-hover: #1a1a1a;
+    /* Accent Colors - Solarized accents */
+    --accent-primary: #073642;  /* base02 - dark accent */
+    --accent-hover: #002b36;    /* base03 - darkest */
 
-    --status-validated: #2d6a4f;
-    --status-validated-bg: #d8f3dc;
-    --status-rejected: #9d4444;
-    --status-rejected-bg: #ffe5e5;
-    --status-pending: #e9c46a;
-    --status-in-progress: #457b9d;
+    --status-validated: #859900;   /* solarized green */
+    --status-validated-bg: #e8edcc;
+    --status-rejected: #dc322f;    /* solarized red */
+    --status-rejected-bg: #fbe8e7;
+    --status-pending: #b58900;     /* solarized yellow */
+    --status-in-progress: #268bd2; /* solarized blue */
 
-    --criticality-critical: #c1121f;
-    --criticality-high: #e07a18;
-    --criticality-medium: #457b9d;
-    --criticality-low: #8a8a8a;
+    --criticality-critical: #dc322f; /* solarized red */
+    --criticality-high: #cb4b16;     /* solarized orange */
+    --criticality-medium: #268bd2;   /* solarized blue */
+    --criticality-low: #839496;      /* base0 */
 
     /* Spacing */
     --space-xs: 4px;
@@ -474,17 +475,17 @@ body.sidebar-collapsed .content {
 }
 
 .assertion-criticality.critical {
-    background: #fef2f2;
+    background: #f9e9e8;
     color: var(--criticality-critical);
 }
 
 .assertion-criticality.high {
-    background: #fff7ed;
+    background: #f9efe8;
     color: var(--criticality-high);
 }
 
 .assertion-criticality.medium {
-    background: #f0f9ff;
+    background: #e8f0f4;
     color: var(--criticality-medium);
 }
 
@@ -658,17 +659,17 @@ body.sidebar-collapsed .content {
 }
 
 .criticality-tag.critical {
-    background: #fef2f2;
+    background: #f9e9e8;
     color: var(--criticality-critical);
 }
 
 .criticality-tag.high {
-    background: #fff7ed;
+    background: #f9efe8;
     color: var(--criticality-high);
 }
 
 .criticality-tag.medium {
-    background: #f0f9ff;
+    background: #e8f0f4;
     color: var(--criticality-medium);
 }
 
@@ -797,8 +798,8 @@ body.sidebar-collapsed .content {
 }
 
 .source-badge.researcher {
-    background: #e3f2fd;
-    color: #1565c0;
+    background: #d3e8f0;
+    color: #268bd2; /* solarized blue */
 }
 
 .source-url {
@@ -858,23 +859,23 @@ body.sidebar-collapsed .content {
 }
 
 .grade-badge.direct-evidence {
-    background: #d4edda;
-    color: #155724;
+    background: #e4edc8;
+    color: #5c7800;
 }
 
 .grade-badge.strong-support {
-    background: #d1ecf1;
-    color: #0c5460;
+    background: #d6eae8;
+    color: #1f7c74;
 }
 
 .grade-badge.partial-support {
-    background: #fff3cd;
-    color: #856404;
+    background: #f5ecc8;
+    color: #8c6e00;
 }
 
 .grade-badge.weak-support {
-    background: #f8d7da;
-    color: #721c24;
+    background: #f5d0cf;
+    color: #a62825;
 }
 
 .grade-badge.not-relevant {
@@ -883,8 +884,8 @@ body.sidebar-collapsed .content {
 }
 
 .grade-badge.misleading {
-    background: #f5c6cb;
-    color: #721c24;
+    background: #f5d0cf;
+    color: #a62825;
 }
 
 /* Source Grading Controls */
@@ -937,20 +938,20 @@ body.sidebar-collapsed .content {
 }
 
 .grade-btn.direct.active {
-    background: #28a745;
+    background: #859900; /* solarized green */
 }
 
 .grade-btn.strong.active {
-    background: #17a2b8;
+    background: #2aa198; /* solarized cyan */
 }
 
 .grade-btn.partial.active {
-    background: #ffc107;
-    color: #212529;
+    background: #b58900; /* solarized yellow */
+    color: #fdf6e3;
 }
 
 .grade-btn.weak.active {
-    background: #fd7e14;
+    background: #cb4b16; /* solarized orange */
 }
 
 .grade-btn.not-relevant.active {
@@ -1582,7 +1583,7 @@ body.sidebar-collapsed .content {
 }
 
 .btn-action.reject:not(:disabled):hover {
-    background: #ffcdcd;
+    background: #f5d0cf;
 }
 
 .btn-action.validate {
@@ -1591,7 +1592,7 @@ body.sidebar-collapsed .content {
 }
 
 .btn-action.validate:not(:disabled):hover {
-    background: #245840;
+    background: #6d8c00;
 }
 
 /* ==========================================================================
@@ -1600,7 +1601,7 @@ body.sidebar-collapsed .content {
 .ai-assessment-panel {
     margin-top: var(--space-lg);
     padding: var(--space-md);
-    background: #fafafa;
+    background: #f8f3e6;
     border: 1px solid var(--border-light);
     border-left: 3px solid var(--status-in-progress);
     border-radius: 8px;
@@ -1624,23 +1625,23 @@ body.sidebar-collapsed .content {
 }
 
 .assessment-verdict.likely-valid {
-    background: #22c55e;
-    color: white;
+    background: #859900; /* solarized green */
+    color: #fdf6e3;
 }
 
 .assessment-verdict.needs-verification {
-    background: #f59e0b;
-    color: #1a1a1a;
+    background: #b58900; /* solarized yellow */
+    color: #fdf6e3;
 }
 
 .assessment-verdict.likely-invalid {
-    background: #ef4444;
-    color: white;
+    background: #dc322f; /* solarized red */
+    color: #fdf6e3;
 }
 
 .assessment-verdict.insufficient-evidence {
-    background: #6b7280;
-    color: white;
+    background: #657b83; /* solarized base00 */
+    color: #fdf6e3;
 }
 
 .assessment-confidence {
@@ -1768,19 +1769,19 @@ body.sidebar-collapsed .content {
     align-items: center;
     gap: var(--space-sm);
     padding: var(--space-sm) var(--space-md);
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    border: 2px solid #f59e0b;
+    background: linear-gradient(135deg, #f5edd6 0%, #eee3c0 100%);
+    border: 2px solid #b58900; /* solarized yellow */
     border-radius: 8px;
     cursor: pointer;
     text-align: left;
     transition: all var(--transition-fast);
-    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.15);
+    box-shadow: 0 2px 4px rgba(181, 137, 0, 0.15);
 }
 
 .btn-investigate-gap:hover:not(:disabled) {
-    background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
-    border-color: #d97706;
-    box-shadow: 0 4px 8px rgba(245, 158, 11, 0.25);
+    background: linear-gradient(135deg, #eee3c0 0%, #e5d9a8 100%);
+    border-color: #9a7400;
+    box-shadow: 0 4px 8px rgba(181, 137, 0, 0.25);
     transform: translateY(-1px);
 }
 
@@ -1789,20 +1790,20 @@ body.sidebar-collapsed .content {
 }
 
 .btn-investigate-gap.investigating {
-    background: #e0f2fe;
-    border-color: #0ea5e9;
+    background: #d3e8f0;
+    border-color: #268bd2; /* solarized blue */
     opacity: 0.8;
 }
 
 .btn-investigate-gap.resolved {
-    background: #d1fae5;
-    border-color: #10b981;
+    background: #e8edcc;
+    border-color: #859900; /* solarized green */
     opacity: 0.7;
 }
 
 .btn-investigate-gap.no-evidence {
-    background: #fef2f2;
-    border-color: #ef4444;
+    background: #fbe8e7;
+    border-color: #dc322f; /* solarized red */
     opacity: 0.7;
 }
 
@@ -2087,13 +2088,13 @@ body.sidebar-collapsed .content {
 }
 
 .session-status.RESEARCHING {
-    background: #dbeafe;
-    color: #1d4ed8;
+    background: #d3e8f0;
+    color: #268bd2;
 }
 
 .session-status.PAUSED {
-    background: #fef3c7;
-    color: #b45309;
+    background: #f5edd6;
+    color: #b58900;
 }
 
 .session-status.COMPLETED {
@@ -2185,7 +2186,7 @@ body.sidebar-collapsed .content {
 
 .task-item.in_progress {
     border-color: var(--status-in-progress);
-    background: #f0f9ff;
+    background: #e8f0f4;
 }
 
 .task-item.completed {
@@ -2286,7 +2287,7 @@ body.sidebar-collapsed .content {
 }
 
 .btn-retry:hover {
-    background: #862c2c;
+    background: #b02a28;
 }
 
 /* Research Content */
@@ -2464,7 +2465,7 @@ body.sidebar-collapsed .content {
 }
 
 .btn-start-research:hover:not(:disabled) {
-    background: #245840;
+    background: #6d8c00;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(45, 106, 79, 0.3);
 }
@@ -2528,21 +2529,21 @@ body.sidebar-collapsed .content {
 }
 
 .btn-control.pause {
-    background: #fef3c7;
-    color: #b45309;
+    background: #f5edd6;
+    color: #b58900;
 }
 
 .btn-control.pause:hover {
-    background: #fde68a;
+    background: #eee3c0;
 }
 
 .btn-control.resume {
-    background: #dbeafe;
-    color: #1d4ed8;
+    background: #d3e8f0;
+    color: #268bd2;
 }
 
 .btn-control.resume:hover {
-    background: #bfdbfe;
+    background: #c0dde8;
 }
 
 .btn-control.cancel {
@@ -2678,13 +2679,13 @@ body.sidebar-collapsed .content {
 }
 
 .feed-icon.screenshot {
-    background: #dbeafe;
-    color: #2563eb;
+    background: #d3e8f0;
+    color: #268bd2;
 }
 
 .feed-icon.extraction {
-    background: #fef3c7;
-    color: #d97706;
+    background: #f5edd6;
+    color: #cb4b16;
 }
 
 .feed-icon.assertion {
@@ -2698,8 +2699,8 @@ body.sidebar-collapsed .content {
 }
 
 .feed-icon.task {
-    background: #e0e7ff;
-    color: #4338ca;
+    background: #dde4ed;
+    color: #6c71c4;
 }
 
 .feed-icon.error {
@@ -2941,7 +2942,7 @@ body.sidebar-collapsed .content {
 }
 
 .btn-validate:hover {
-    background: #245840;
+    background: #6d8c00;
 }
 
 .btn-new-research {
@@ -3107,7 +3108,7 @@ body.sidebar-collapsed .content {
 }
 
 .btn-begin-research:hover:not(:disabled) {
-    background: #245840;
+    background: #6d8c00;
     transform: translateY(-2px);
     box-shadow: 0 4px 16px rgba(45, 106, 79, 0.25);
 }
@@ -3208,8 +3209,8 @@ body.sidebar-collapsed .content {
 }
 
 .session-card-status.reviewing {
-    background: #fef3c7;
-    color: #b45309;
+    background: #f5edd6;
+    color: #b58900;
 }
 
 .session-card-stats {
