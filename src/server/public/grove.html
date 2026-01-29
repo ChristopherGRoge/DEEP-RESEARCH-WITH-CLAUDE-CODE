@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Grove | Deep Research Observatory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        /* =====================================================
+           RESEARCH GROVE - OBSERVATORY CONSOLE
+           A sophisticated research command center
+           ===================================================== */
+
+        :root {
+            /* Core palette - deep space */
+            --bg-void: #050810;
+            --bg-deep: #0a0e1a;
+            --bg-surface: #111827;
+            --bg-elevated: #1f2937;
+            --bg-hover: #374151;
+
+            /* Borders & lines */
+            --border-subtle: rgba(75, 85, 99, 0.3);
+            --border-medium: rgba(75, 85, 99, 0.5);
+            --border-bright: rgba(16, 185, 129, 0.3);
+
+            /* Text hierarchy */
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --text-tertiary: #6b7280;
+            --text-muted: #4b5563;
+
+            /* Accent - Emerald observatory */
+            --accent-primary: #10b981;
+            --accent-glow: rgba(16, 185, 129, 0.15);
+            --accent-bright: #34d399;
+            --accent-dim: #059669;
+
+            /* Status colors */
+            --status-validated: #10b981;
+            --status-pending: #f59e0b;
+            --status-rejected: #ef4444;
+            --status-claim: #6366f1;
+
+            /* Category colors */
+            --cat-code: #8b5cf6;
+            --cat-review: #ec4899;
+            --cat-debug: #f97316;
+            --cat-test: #14b8a6;
+            --cat-docs: #06b6d4;
+            --cat-security: #ef4444;
+            --cat-devops: #3b82f6;
+            --cat-analytics: #a855f7;
+            --cat-genai: #10b981;
+
+            /* Typography */
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+            /* Spacing scale */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+
+            /* Radii */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-full: 9999px;
+
+            /* Transitions */
+            --transition-fast: 150ms ease;
+            --transition-normal: 250ms ease;
+            --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* Layout */
+            --header-height: 64px;
+            --breadcrumb-height: 44px;
+            --panel-width: 480px;
+        }
+
+        /* Reset & Base */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: var(--font-display);
+            background: var(--bg-void);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Background atmosphere */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.08), transparent),
+                radial-gradient(ellipse 60% 40% at 80% 100%, rgba(99, 102, 241, 0.05), transparent);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* =====================================================
+           LAYOUT STRUCTURE
+           ===================================================== */
+
+        .grove-app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
+        .grove-header {
+            height: var(--header-height);
+            background: var(--bg-deep);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-lg);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 100;
+        }
+
+        .grove-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            opacity: 0.3;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-dim));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .logo-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: white;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-text span {
+            color: var(--accent-primary);
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 28px;
+            background: var(--border-subtle);
+        }
+
+        .project-selector {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .project-selector:hover {
+            border-color: var(--border-medium);
+            background: var(--bg-elevated);
+        }
+
+        .project-selector select {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            padding-right: var(--space-md);
+            min-width: 180px;
+        }
+
+        .project-selector select:focus {
+            outline: none;
+        }
+
+        .project-selector select option {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .stat-chip {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-sm);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-full);
+            font-size: 12px;
+        }
+
+        .stat-chip .value {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stat-chip .label {
+            color: var(--text-tertiary);
+            font-size: 11px;
+        }
+
+        .stat-chip.accent {
+            border-color: var(--border-bright);
+            background: var(--accent-glow);
+        }
+
+        .stat-chip.accent .value {
+            color: var(--accent-bright);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        /* =====================================================
+           BREADCRUMB
+           ===================================================== */
+
+        .breadcrumb {
+            height: var(--breadcrumb-height);
+            background: var(--bg-deep);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            padding: 0 var(--space-lg);
+            gap: var(--space-sm);
+            flex-shrink: 0;
+        }
+
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-sm);
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-family: var(--font-display);
+        }
+
+        .breadcrumb-item:hover {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+        }
+
+        .breadcrumb-item.active {
+            background: var(--accent-glow);
+            border-color: var(--border-bright);
+            color: var(--accent-bright);
+        }
+
+        .breadcrumb-separator {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           MAIN WORKSPACE
+           ===================================================== */
+
+        .workspace {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .canvas-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #grove-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        #grove-canvas svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* =====================================================
+           D3 VISUALIZATION STYLES
+           ===================================================== */
+
+        .node {
+            cursor: pointer;
+        }
+
+        .node circle {
+            stroke-width: 2px;
+            transition: all var(--transition-fast);
+        }
+
+        .node:hover circle {
+            stroke-width: 3px;
+            filter: brightness(1.2) drop-shadow(0 0 8px currentColor);
+        }
+
+        .node text {
+            font-family: var(--font-display);
+            fill: var(--text-primary);
+            font-size: 12px;
+            pointer-events: none;
+        }
+
+        .node .count-badge {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 600;
+            fill: var(--text-primary);
+        }
+
+        .link {
+            fill: none;
+            stroke: var(--border-subtle);
+            stroke-width: 1.5px;
+            opacity: 0.6;
+        }
+
+        /* Center node */
+        .node-center circle {
+            fill: var(--accent-dim);
+            stroke: var(--accent-primary);
+        }
+
+        /* Category nodes */
+        .node-category circle {
+            stroke-width: 2.5px;
+        }
+
+        .node-category[data-category="ai_code_assistants"] circle { fill: var(--cat-code); stroke: var(--cat-code); }
+        .node-category[data-category="ai_code_review"] circle { fill: var(--cat-review); stroke: var(--cat-review); }
+        .node-category[data-category="ai_debugging"] circle { fill: var(--cat-debug); stroke: var(--cat-debug); }
+        .node-category[data-category="ai_testing"] circle { fill: var(--cat-test); stroke: var(--cat-test); }
+        .node-category[data-category="ai_documentation"] circle { fill: var(--cat-docs); stroke: var(--cat-docs); }
+        .node-category[data-category="ai_security"] circle { fill: var(--cat-security); stroke: var(--cat-security); }
+        .node-category[data-category="ai_devops"] circle { fill: var(--cat-devops); stroke: var(--cat-devops); }
+        .node-category[data-category="ai_analytics"] circle { fill: var(--cat-analytics); stroke: var(--cat-analytics); }
+        .node-category[data-category="genai_concepts"] circle { fill: var(--cat-genai); stroke: var(--cat-genai); }
+
+        /* Entity nodes */
+        .node-entity circle {
+            fill: var(--bg-elevated);
+            stroke: var(--text-tertiary);
+        }
+
+        .node-entity.validated circle {
+            stroke: var(--status-validated);
+        }
+
+        .node-entity.pending circle {
+            stroke: var(--status-pending);
+        }
+
+        /* =====================================================
+           DETAIL PANEL
+           ===================================================== */
+
+        .detail-panel {
+            width: var(--panel-width);
+            background: var(--bg-deep);
+            border-left: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform var(--transition-slow);
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 50;
+            overflow: hidden;
+        }
+
+        .detail-panel.open {
+            transform: translateX(0);
+        }
+
+        .detail-panel::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(180deg, var(--accent-primary), transparent);
+            opacity: 0.5;
+        }
+
+        .panel-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+            flex-shrink: 0;
+        }
+
+        .entity-logo {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .entity-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .entity-logo .placeholder {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-tertiary);
+        }
+
+        .entity-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .entity-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .entity-url {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-tertiary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .entity-url:hover {
+            color: var(--accent-bright);
+        }
+
+        .panel-close {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-fast);
+            flex-shrink: 0;
+        }
+
+        .panel-close:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .panel-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .panel-stat {
+            text-align: center;
+            padding: var(--space-sm);
+        }
+
+        .panel-stat .value {
+            font-family: var(--font-mono);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .panel-stat .label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: var(--space-xs);
+        }
+
+        .panel-stat.accent .value {
+            color: var(--accent-bright);
+        }
+
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-lg);
+        }
+
+        /* Scrollbar styling */
+        .panel-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .panel-content::-webkit-scrollbar-track {
+            background: var(--bg-surface);
+        }
+
+        .panel-content::-webkit-scrollbar-thumb {
+            background: var(--border-medium);
+            border-radius: 3px;
+        }
+
+        .panel-content::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* =====================================================
+           ASSERTIONS LIST
+           ===================================================== */
+
+        .assertions-section {
+            margin-bottom: var(--space-xl);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-md);
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        .section-count {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-tertiary);
+            background: var(--bg-surface);
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+        }
+
+        .assertion-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        .assertion-group-header {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-sm);
+            padding-bottom: var(--space-xs);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .assertion-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-sm);
+            transition: var(--transition-fast);
+        }
+
+        .assertion-card:hover {
+            border-color: var(--border-medium);
+            background: var(--bg-elevated);
+        }
+
+        .assertion-header {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-sm);
+        }
+
+        .assertion-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .assertion-status.evidence { background: var(--status-validated); }
+        .assertion-status.claim { background: var(--status-pending); }
+        .assertion-status.rejected { background: var(--status-rejected); }
+
+        .assertion-claim {
+            font-size: 14px;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .assertion-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .assertion-badge {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 500;
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            text-transform: uppercase;
+        }
+
+        .badge-criticality {
+            background: var(--bg-elevated);
+            color: var(--text-tertiary);
+        }
+
+        .badge-criticality.critical { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+        .badge-criticality.high { background: rgba(249, 115, 22, 0.2); color: #fdba74; }
+        .badge-criticality.medium { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+        .badge-criticality.low { background: rgba(75, 85, 99, 0.2); color: #9ca3af; }
+
+        .badge-status {
+            background: var(--bg-elevated);
+        }
+
+        .badge-status.evidence { background: rgba(16, 185, 129, 0.2); color: var(--status-validated); }
+        .badge-status.claim { background: rgba(245, 158, 11, 0.2); color: var(--status-pending); }
+        .badge-status.rejected { background: rgba(239, 68, 68, 0.2); color: var(--status-rejected); }
+
+        /* Evidence section */
+        .evidence-section {
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .evidence-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-sm);
+        }
+
+        .evidence-icon {
+            width: 16px;
+            height: 16px;
+            color: var(--text-tertiary);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .evidence-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .evidence-screenshot {
+            margin-top: var(--space-sm);
+            background: var(--bg-elevated);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .evidence-screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* =====================================================
+           TOOLTIP
+           ===================================================== */
+
+        .tooltip {
+            position: fixed;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            max-width: 280px;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity var(--transition-fast), transform var(--transition-fast);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .tooltip.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tooltip-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: var(--space-xs);
+        }
+
+        .tooltip-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .tooltip-stats {
+            display: flex;
+            gap: var(--space-md);
+            margin-top: var(--space-sm);
+            padding-top: var(--space-sm);
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .tooltip-stat {
+            font-family: var(--font-mono);
+            font-size: 11px;
+        }
+
+        .tooltip-stat .value {
+            color: var(--accent-bright);
+        }
+
+        /* =====================================================
+           LOADING & EMPTY STATES
+           ===================================================== */
+
+        .loading-state,
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            gap: var(--space-md);
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-subtle);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-icon {
+            width: 64px;
+            height: 64px;
+            color: var(--text-muted);
+        }
+
+        /* =====================================================
+           UTILITIES
+           ===================================================== */
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .text-mono {
+            font-family: var(--font-mono);
+        }
+
+        .text-accent {
+            color: var(--accent-primary);
+        }
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 1024px) {
+            .header-center {
+                display: none;
+            }
+
+            .detail-panel {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grove-app">
+        <!-- Header -->
+        <header class="grove-header">
+            <div class="header-left">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
+                            <path d="M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">Research<span>Grove</span></div>
+                </div>
+
+                <div class="header-divider"></div>
+
+                <div class="project-selector">
+                    <select id="project-select">
+                        <option value="">Loading projects...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="header-center" id="header-stats">
+                <!-- Stats populated by JS -->
+            </div>
+
+            <div class="header-right">
+                <div class="stat-chip accent">
+                    <span class="value" id="coverage-value">--</span>
+                    <span class="label">Coverage</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb" id="breadcrumb">
+            <button class="breadcrumb-item active" data-level="project">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                </svg>
+                <span>All Categories</span>
+            </button>
+        </nav>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            <div class="canvas-container">
+                <div id="grove-canvas">
+                    <div class="loading-state" id="loading-state">
+                        <div class="spinner"></div>
+                        <p>Loading research data...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Panel -->
+            <aside class="detail-panel" id="detail-panel">
+                <div class="panel-header">
+                    <div class="entity-logo" id="entity-logo">
+                        <span class="placeholder">?</span>
+                    </div>
+                    <div class="entity-info">
+                        <h2 class="entity-name" id="entity-name">Entity Name</h2>
+                        <a class="entity-url" id="entity-url" href="#" target="_blank">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                <polyline points="15 3 21 3 21 9"/>
+                                <line x1="10" y1="14" x2="21" y2="3"/>
+                            </svg>
+                            <span>--</span>
+                        </a>
+                    </div>
+                    <button class="panel-close" id="panel-close" aria-label="Close panel">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="panel-stats" id="panel-stats">
+                    <div class="panel-stat">
+                        <div class="value" id="stat-assertions">--</div>
+                        <div class="label">Assertions</div>
+                    </div>
+                    <div class="panel-stat accent">
+                        <div class="value" id="stat-validated">--</div>
+                        <div class="label">Validated</div>
+                    </div>
+                    <div class="panel-stat">
+                        <div class="value" id="stat-pending">--</div>
+                        <div class="label">Pending</div>
+                    </div>
+                </div>
+
+                <div class="panel-content" id="panel-content">
+                    <!-- Assertions loaded by JS -->
+                </div>
+            </aside>
+        </main>
+
+        <!-- Tooltip -->
+        <div class="tooltip" id="tooltip"></div>
+    </div>
+
+    <script>
+        // =====================================================
+        // RESEARCH GROVE - APPLICATION
+        // =====================================================
+
+        const state = {
+            projects: [],
+            selectedProjectId: null,
+            treeData: null,
+            currentLevel: 'project', // 'project', 'category', 'entity'
+            selectedCategory: null,
+            selectedEntity: null
+        };
+
+        const dom = {
+            projectSelect: document.getElementById('project-select'),
+            headerStats: document.getElementById('header-stats'),
+            coverageValue: document.getElementById('coverage-value'),
+            breadcrumb: document.getElementById('breadcrumb'),
+            canvas: document.getElementById('grove-canvas'),
+            loadingState: document.getElementById('loading-state'),
+            detailPanel: document.getElementById('detail-panel'),
+            panelClose: document.getElementById('panel-close'),
+            tooltip: document.getElementById('tooltip')
+        };
+
+        // =====================================================
+        // INITIALIZATION
+        // =====================================================
+
+        async function init() {
+            await loadProjects();
+            setupEventListeners();
+        }
+
+        function setupEventListeners() {
+            dom.projectSelect.addEventListener('change', (e) => {
+                if (e.target.value) {
+                    state.selectedProjectId = e.target.value;
+                    loadTreeData(e.target.value);
+                }
+            });
+
+            dom.panelClose.addEventListener('click', closeDetailPanel);
+
+            // Close panel on escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeDetailPanel();
+            });
+        }
+
+        // =====================================================
+        // DATA LOADING
+        // =====================================================
+
+        async function loadProjects() {
+            try {
+                const res = await fetch('/api/projects');
+                const data = await res.json();
+
+                if (data.success && data.data.length > 0) {
+                    state.projects = data.data;
+                    populateProjectSelect();
+
+                    // Auto-select first project
+                    state.selectedProjectId = data.data[0].id;
+                    dom.projectSelect.value = state.selectedProjectId;
+                    await loadTreeData(state.selectedProjectId);
+                }
+            } catch (err) {
+                console.error('Failed to load projects:', err);
+                showError('Failed to load projects');
+            }
+        }
+
+        function populateProjectSelect() {
+            dom.projectSelect.innerHTML = state.projects.map(p =>
+                `<option value="${p.id}">${p.name}</option>`
+            ).join('');
+        }
+
+        async function loadTreeData(projectId) {
+            showLoading();
+
+            try {
+                const res = await fetch(`/api/entities/tree/${projectId}`);
+                const data = await res.json();
+
+                if (data.success) {
+                    state.treeData = data.data;
+                    state.currentLevel = 'project';
+                    state.selectedCategory = null;
+                    updateStats();
+                    updateBreadcrumb();
+                    renderCategories();
+                }
+            } catch (err) {
+                console.error('Failed to load tree data:', err);
+                showError('Failed to load visualization data');
+            }
+        }
+
+        async function loadEntityDetails(entityId) {
+            try {
+                const res = await fetch(`/api/entities/${entityId}`);
+                const data = await res.json();
+
+                if (data.success) {
+                    state.selectedEntity = data.data;
+                    showDetailPanel(data.data);
+                }
+            } catch (err) {
+                console.error('Failed to load entity:', err);
+            }
+        }
+
+        // =====================================================
+        // UI UPDATES
+        // =====================================================
+
+        function showLoading() {
+            dom.canvas.innerHTML = `
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Loading research data...</p>
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            dom.canvas.innerHTML = `
+                <div class="empty-state">
+                    <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        function updateStats() {
+            if (!state.treeData || !state.treeData.children) return;
+
+            let totalEntities = 0;
+            let totalAssertions = 0;
+            let totalValidated = 0;
+
+            for (const category of state.treeData.children) {
+                if (category.children) {
+                    totalEntities += category.children.length;
+                    for (const entity of category.children) {
+                        const count = entity.assertionCount || 0;
+                        const ratio = entity.evidenceRatio || 0;
+                        totalAssertions += count;
+                        totalValidated += Math.round(count * ratio);
+                    }
+                }
+            }
+
+            const coverage = totalAssertions > 0 ? Math.round((totalValidated / totalAssertions) * 100) : 0;
+
+            dom.headerStats.innerHTML = `
+                <div class="stat-chip">
+                    <span class="value">${state.treeData.children.length}</span>
+                    <span class="label">Categories</span>
+                </div>
+                <div class="stat-chip">
+                    <span class="value">${totalEntities}</span>
+                    <span class="label">Entities</span>
+                </div>
+                <div class="stat-chip">
+                    <span class="value">${totalAssertions}</span>
+                    <span class="label">Assertions</span>
+                </div>
+            `;
+
+            dom.coverageValue.textContent = `${coverage}%`;
+        }
+
+        function updateBreadcrumb() {
+            let html = `
+                <button class="breadcrumb-item ${state.currentLevel === 'project' ? 'active' : ''}"
+                        onclick="navigateToProject()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                    </svg>
+                    <span>All Categories</span>
+                </button>
+            `;
+
+            if (state.selectedCategory) {
+                html += `
+                    <span class="breadcrumb-separator">›</span>
+                    <button class="breadcrumb-item ${state.currentLevel === 'category' ? 'active' : ''}"
+                            onclick="navigateToCategory('${state.selectedCategory.key}')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        <span>${formatCategoryName(state.selectedCategory.key)}</span>
+                    </button>
+                `;
+            }
+
+            dom.breadcrumb.innerHTML = html;
+        }
+
+        // =====================================================
+        // NAVIGATION
+        // =====================================================
+
+        function navigateToProject() {
+            state.currentLevel = 'project';
+            state.selectedCategory = null;
+            closeDetailPanel();
+            updateBreadcrumb();
+            renderCategories();
+        }
+
+        function navigateToCategory(categoryKey) {
+            const category = state.treeData.children.find(c => c.key === categoryKey);
+            if (category) {
+                state.currentLevel = 'category';
+                state.selectedCategory = category;
+                closeDetailPanel();
+                updateBreadcrumb();
+                renderEntities(category);
+            }
+        }
+
+        function selectEntity(entityId, entityData) {
+            state.currentLevel = 'entity';
+            loadEntityDetails(entityId);
+        }
+
+        // =====================================================
+        // VISUALIZATION - CATEGORIES
+        // =====================================================
+
+        function renderCategories() {
+            if (!state.treeData || !state.treeData.children) return;
+
+            dom.canvas.innerHTML = '';
+
+            const width = dom.canvas.clientWidth;
+            const height = dom.canvas.clientHeight;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radius = Math.min(width, height) * 0.35;
+
+            const svg = d3.select('#grove-canvas')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${centerX}, ${centerY})`);
+
+            const categories = state.treeData.children;
+            const angleStep = (2 * Math.PI) / categories.length;
+
+            // Draw links
+            g.selectAll('.link')
+                .data(categories)
+                .enter()
+                .append('line')
+                .attr('class', 'link')
+                .attr('x1', 0)
+                .attr('y1', 0)
+                .attr('x2', (d, i) => radius * Math.cos(i * angleStep - Math.PI / 2))
+                .attr('y2', (d, i) => radius * Math.sin(i * angleStep - Math.PI / 2));
+
+            // Center node
+            const center = g.append('g')
+                .attr('class', 'node node-center');
+
+            center.append('circle')
+                .attr('r', 50);
+
+            center.append('text')
+                .attr('text-anchor', 'middle')
+                .attr('dy', -8)
+                .style('font-weight', '600')
+                .style('font-size', '12px')
+                .text(state.treeData.name.length > 15 ? state.treeData.name.substring(0, 12) + '...' : state.treeData.name);
+
+            center.append('text')
+                .attr('text-anchor', 'middle')
+                .attr('dy', 8)
+                .attr('class', 'count-badge')
+                .style('fill', 'var(--text-secondary)')
+                .text(`${categories.length} categories`);
+
+            // Category nodes
+            const nodes = g.selectAll('.node-category')
+                .data(categories)
+                .enter()
+                .append('g')
+                .attr('class', d => `node node-category`)
+                .attr('data-category', d => d.key)
+                .attr('transform', (d, i) => {
+                    const x = radius * Math.cos(i * angleStep - Math.PI / 2);
+                    const y = radius * Math.sin(i * angleStep - Math.PI / 2);
+                    return `translate(${x}, ${y})`;
+                })
+                .style('cursor', 'pointer')
+                .on('click', (event, d) => navigateToCategory(d.key))
+                .on('mouseenter', (event, d) => showTooltip(event, d, 'category'))
+                .on('mouseleave', hideTooltip);
+
+            // Category circles
+            nodes.append('circle')
+                .attr('r', d => {
+                    const count = d.children ? d.children.length : 0;
+                    return Math.max(30, Math.min(55, 25 + Math.sqrt(count) * 5));
+                })
+                .style('fill-opacity', 0.15);
+
+            // Entity count
+            nodes.append('text')
+                .attr('class', 'count-badge')
+                .attr('text-anchor', 'middle')
+                .attr('dy', 4)
+                .text(d => d.children ? d.children.length : 0);
+
+            // Category labels
+            nodes.append('text')
+                .attr('text-anchor', 'middle')
+                .attr('dy', d => {
+                    const count = d.children ? d.children.length : 0;
+                    return Math.max(30, Math.min(55, 25 + Math.sqrt(count) * 5)) + 20;
+                })
+                .style('font-size', '11px')
+                .style('fill', 'var(--text-secondary)')
+                .text(d => formatCategoryName(d.key));
+        }
+
+        // =====================================================
+        // VISUALIZATION - ENTITIES
+        // =====================================================
+
+        function renderEntities(category) {
+            if (!category || !category.children) return;
+
+            dom.canvas.innerHTML = '';
+
+            const width = dom.canvas.clientWidth;
+            const height = dom.canvas.clientHeight;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radius = Math.min(width, height) * 0.38;
+
+            const svg = d3.select('#grove-canvas')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${centerX}, ${centerY})`);
+
+            const entities = category.children;
+            const angleStep = (2 * Math.PI) / Math.max(entities.length, 1);
+
+            // Draw links
+            g.selectAll('.link')
+                .data(entities)
+                .enter()
+                .append('line')
+                .attr('class', 'link')
+                .attr('x1', 0)
+                .attr('y1', 0)
+                .attr('x2', (d, i) => radius * Math.cos(i * angleStep - Math.PI / 2))
+                .attr('y2', (d, i) => radius * Math.sin(i * angleStep - Math.PI / 2));
+
+            // Center node (category)
+            const center = g.append('g')
+                .attr('class', 'node node-category')
+                .attr('data-category', category.key);
+
+            center.append('circle')
+                .attr('r', 45)
+                .style('fill-opacity', 0.15);
+
+            const catName = formatCategoryName(category.key);
+            const words = catName.split(' ');
+
+            center.append('text')
+                .attr('text-anchor', 'middle')
+                .attr('dy', words.length > 1 ? -6 : 0)
+                .style('font-weight', '600')
+                .style('font-size', '11px')
+                .text(words[0]);
+
+            if (words.length > 1) {
+                center.append('text')
+                    .attr('text-anchor', 'middle')
+                    .attr('dy', 10)
+                    .style('font-size', '10px')
+                    .style('fill', 'var(--text-secondary)')
+                    .text(words.slice(1).join(' '));
+            }
+
+            // Entity nodes
+            const nodes = g.selectAll('.node-entity')
+                .data(entities)
+                .enter()
+                .append('g')
+                .attr('class', d => {
+                    const ratio = d.evidenceRatio || 0;
+                    const status = ratio > 0.5 ? 'validated' : ratio > 0 ? 'pending' : '';
+                    return `node node-entity ${status}`;
+                })
+                .attr('transform', (d, i) => {
+                    const x = radius * Math.cos(i * angleStep - Math.PI / 2);
+                    const y = radius * Math.sin(i * angleStep - Math.PI / 2);
+                    return `translate(${x}, ${y})`;
+                })
+                .style('cursor', 'pointer')
+                .on('click', (event, d) => selectEntity(d.id, d))
+                .on('mouseenter', (event, d) => showTooltip(event, d, 'entity'))
+                .on('mouseleave', hideTooltip);
+
+            // Entity circles
+            nodes.append('circle')
+                .attr('r', d => {
+                    const count = d.assertionCount || 0;
+                    return Math.max(14, Math.min(28, 12 + Math.sqrt(count) * 2.5));
+                });
+
+            // Entity labels
+            nodes.append('text')
+                .attr('text-anchor', (d, i) => {
+                    const angle = i * angleStep - Math.PI / 2;
+                    return Math.cos(angle) > 0.2 ? 'start' : Math.cos(angle) < -0.2 ? 'end' : 'middle';
+                })
+                .attr('dx', (d, i) => {
+                    const angle = i * angleStep - Math.PI / 2;
+                    const r = Math.max(14, Math.min(28, 12 + Math.sqrt(d.assertionCount || 0) * 2.5));
+                    return Math.cos(angle) > 0.2 ? r + 8 : Math.cos(angle) < -0.2 ? -r - 8 : 0;
+                })
+                .attr('dy', (d, i) => {
+                    const angle = i * angleStep - Math.PI / 2;
+                    const r = Math.max(14, Math.min(28, 12 + Math.sqrt(d.assertionCount || 0) * 2.5));
+                    if (Math.abs(Math.cos(angle)) <= 0.2) {
+                        return Math.sin(angle) > 0 ? r + 16 : -r - 6;
+                    }
+                    return 4;
+                })
+                .style('font-size', '11px')
+                .text(d => d.name.length > 18 ? d.name.substring(0, 15) + '...' : d.name);
+        }
+
+        // =====================================================
+        // DETAIL PANEL
+        // =====================================================
+
+        function showDetailPanel(entity) {
+            const panel = dom.detailPanel;
+
+            // Entity header
+            document.getElementById('entity-name').textContent = entity.name;
+
+            const logoEl = document.getElementById('entity-logo');
+            if (entity.logoUrl || entity.logoSvgContent) {
+                if (entity.logoSvgContent) {
+                    logoEl.innerHTML = entity.logoSvgContent;
+                } else {
+                    logoEl.innerHTML = `<img src="${entity.logoUrl}" alt="${entity.name} logo" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>${entity.name.charAt(0)}</span>'">`;
+                }
+            } else {
+                logoEl.innerHTML = `<span class="placeholder">${entity.name.charAt(0)}</span>`;
+            }
+
+            const urlEl = document.getElementById('entity-url');
+            if (entity.url) {
+                urlEl.href = entity.url;
+                urlEl.querySelector('span').textContent = new URL(entity.url).hostname;
+                urlEl.style.display = 'flex';
+            } else {
+                urlEl.style.display = 'none';
+            }
+
+            // Stats
+            const assertions = entity.assertions || [];
+            const validated = assertions.filter(a => a.status === 'EVIDENCE').length;
+            const pending = assertions.filter(a => a.status === 'CLAIM').length;
+
+            document.getElementById('stat-assertions').textContent = assertions.length;
+            document.getElementById('stat-validated').textContent = validated;
+            document.getElementById('stat-pending').textContent = pending;
+
+            // Assertions grouped by category
+            const panelContent = document.getElementById('panel-content');
+
+            if (assertions.length === 0) {
+                panelContent.innerHTML = `
+                    <div class="empty-state" style="padding: var(--space-xl) 0;">
+                        <p style="color: var(--text-tertiary);">No assertions yet</p>
+                        <p style="font-size: 12px; color: var(--text-muted);">Run /research-entity to gather data</p>
+                    </div>
+                `;
+            } else {
+                // Group by category
+                const grouped = {};
+                for (const assertion of assertions) {
+                    const cat = assertion.category || 'uncategorized';
+                    if (!grouped[cat]) grouped[cat] = [];
+                    grouped[cat].push(assertion);
+                }
+
+                let html = '<div class="assertions-section">';
+                html += `<div class="section-header">
+                    <span class="section-title">Assertions</span>
+                    <span class="section-count">${assertions.length}</span>
+                </div>`;
+
+                for (const [category, items] of Object.entries(grouped)) {
+                    html += `<div class="assertion-group">
+                        <div class="assertion-group-header">${category}</div>`;
+
+                    for (const assertion of items) {
+                        const statusClass = assertion.status.toLowerCase();
+                        const criticalityClass = (assertion.criticality || 'medium').toLowerCase();
+
+                        html += `
+                            <div class="assertion-card">
+                                <div class="assertion-header">
+                                    <span class="assertion-status ${statusClass}"></span>
+                                    <span class="assertion-claim">${assertion.claim}</span>
+                                </div>
+                                <div class="assertion-meta">
+                                    <span class="assertion-badge badge-status ${statusClass}">${assertion.status}</span>
+                                    <span class="assertion-badge badge-criticality ${criticalityClass}">${assertion.criticality || 'MEDIUM'}</span>
+                                </div>
+                                ${assertion.evidenceDescription ? `
+                                    <div class="evidence-section">
+                                        <div class="evidence-item">
+                                            <svg class="evidence-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                                <polyline points="14 2 14 8 20 8"/>
+                                            </svg>
+                                            <span class="evidence-text">${assertion.evidenceDescription}</span>
+                                        </div>
+                                        ${assertion.evidenceScreenshotPath ? `
+                                            <div class="evidence-screenshot">
+                                                <img src="/${assertion.evidenceScreenshotPath}" alt="Evidence screenshot"
+                                                     onerror="this.parentElement.style.display='none'">
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    }
+
+                    html += '</div>';
+                }
+
+                html += '</div>';
+                panelContent.innerHTML = html;
+            }
+
+            panel.classList.add('open');
+        }
+
+        function closeDetailPanel() {
+            dom.detailPanel.classList.remove('open');
+            state.selectedEntity = null;
+        }
+
+        // =====================================================
+        // TOOLTIP
+        // =====================================================
+
+        function showTooltip(event, data, type) {
+            const tooltip = dom.tooltip;
+
+            if (type === 'category') {
+                const count = data.children ? data.children.length : 0;
+                tooltip.innerHTML = `
+                    <div class="tooltip-title">${formatCategoryName(data.key)}</div>
+                    <div class="tooltip-meta">${count} entities</div>
+                    <div class="tooltip-stats">
+                        <span class="tooltip-stat">Click to explore</span>
+                    </div>
+                `;
+            } else if (type === 'entity') {
+                const validated = Math.round((data.evidenceRatio || 0) * 100);
+                tooltip.innerHTML = `
+                    <div class="tooltip-title">${data.name}</div>
+                    <div class="tooltip-meta">${data.entityType || 'Entity'}</div>
+                    <div class="tooltip-stats">
+                        <span class="tooltip-stat"><span class="value">${data.assertionCount || 0}</span> assertions</span>
+                        <span class="tooltip-stat"><span class="value">${validated}%</span> validated</span>
+                    </div>
+                `;
+            }
+
+            const rect = event.target.getBoundingClientRect();
+            tooltip.style.left = `${rect.right + 10}px`;
+            tooltip.style.top = `${rect.top}px`;
+            tooltip.classList.add('visible');
+        }
+
+        function hideTooltip() {
+            dom.tooltip.classList.remove('visible');
+        }
+
+        // =====================================================
+        // UTILITIES
+        // =====================================================
+
+        function formatCategoryName(key) {
+            if (!key) return 'Unknown';
+            return key
+                .replace(/_/g, ' ')
+                .replace(/\bai\b/gi, 'AI')
+                .replace(/\bgenai\b/gi, 'GenAI')
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
+
+        // Handle window resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (state.currentLevel === 'project') {
+                    renderCategories();
+                } else if (state.currentLevel === 'category' && state.selectedCategory) {
+                    renderEntities(state.selectedCategory);
+                }
+            }, 250);
+        });
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>
