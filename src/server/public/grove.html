@@ -10,51 +10,52 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         /* =====================================================
-           RESEARCH GROVE - OBSERVATORY CONSOLE
+           RESEARCH GROVE - SOLARIZED LIGHT OBSERVATORY
            A sophisticated research command center
+           Color palette inspired by Ethan Schoonover's Solarized Light
            ===================================================== */
 
         :root {
-            /* Core palette - deep space */
-            --bg-void: #050810;
-            --bg-deep: #0a0e1a;
-            --bg-surface: #111827;
-            --bg-elevated: #1f2937;
-            --bg-hover: #374151;
+            /* Core palette - Solarized Light */
+            --bg-void: #fdf6e3;       /* base3 - main background */
+            --bg-deep: #eee8d5;       /* base2 - secondary */
+            --bg-surface: #fdf6e3;    /* base3 */
+            --bg-elevated: #eee8d5;   /* base2 */
+            --bg-hover: #e4ddc8;      /* slightly darker */
 
             /* Borders & lines */
-            --border-subtle: rgba(75, 85, 99, 0.3);
-            --border-medium: rgba(75, 85, 99, 0.5);
-            --border-bright: rgba(16, 185, 129, 0.3);
+            --border-subtle: rgba(101, 123, 131, 0.2);
+            --border-medium: rgba(101, 123, 131, 0.35);
+            --border-bright: rgba(133, 153, 0, 0.4);
 
-            /* Text hierarchy */
-            --text-primary: #f9fafb;
-            --text-secondary: #9ca3af;
-            --text-tertiary: #6b7280;
-            --text-muted: #4b5563;
+            /* Text hierarchy - Solarized content tones */
+            --text-primary: #586e75;   /* base01 - emphasized */
+            --text-secondary: #657b83; /* base00 - body */
+            --text-tertiary: #839496;  /* base0 - subtle */
+            --text-muted: #93a1a1;     /* base1 - comments */
 
-            /* Accent - Emerald observatory */
-            --accent-primary: #10b981;
-            --accent-glow: rgba(16, 185, 129, 0.15);
-            --accent-bright: #34d399;
-            --accent-dim: #059669;
+            /* Accent - Solarized Green */
+            --accent-primary: #859900;
+            --accent-glow: rgba(133, 153, 0, 0.12);
+            --accent-bright: #859900;
+            --accent-dim: #6d8c00;
 
-            /* Status colors */
-            --status-validated: #10b981;
-            --status-pending: #f59e0b;
-            --status-rejected: #ef4444;
-            --status-claim: #6366f1;
+            /* Status colors - Solarized */
+            --status-validated: #859900; /* green */
+            --status-pending: #b58900;   /* yellow */
+            --status-rejected: #dc322f;  /* red */
+            --status-claim: #6c71c4;     /* violet */
 
-            /* Category colors */
-            --cat-code: #8b5cf6;
-            --cat-review: #ec4899;
-            --cat-debug: #f97316;
-            --cat-test: #14b8a6;
-            --cat-docs: #06b6d4;
-            --cat-security: #ef4444;
-            --cat-devops: #3b82f6;
-            --cat-analytics: #a855f7;
-            --cat-genai: #10b981;
+            /* Category colors - Solarized accents */
+            --cat-code: #6c71c4;      /* violet */
+            --cat-review: #d33682;    /* magenta */
+            --cat-debug: #cb4b16;     /* orange */
+            --cat-test: #2aa198;      /* cyan */
+            --cat-docs: #268bd2;      /* blue */
+            --cat-security: #dc322f;  /* red */
+            --cat-devops: #268bd2;    /* blue */
+            --cat-analytics: #6c71c4; /* violet */
+            --cat-genai: #859900;     /* green */
 
             /* Typography */
             --font-display: 'Space Grotesk', system-ui, sans-serif;
@@ -106,14 +107,14 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Background atmosphere */
+        /* Background atmosphere - subtle warm gradients */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.08), transparent),
-                radial-gradient(ellipse 60% 40% at 80% 100%, rgba(99, 102, 241, 0.05), transparent);
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(133, 153, 0, 0.06), transparent),
+                radial-gradient(ellipse 60% 40% at 80% 100%, rgba(38, 139, 210, 0.04), transparent);
             pointer-events: none;
             z-index: 0;
         }
@@ -155,7 +156,7 @@
             right: 0;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-            opacity: 0.3;
+            opacity: 0.5;
         }
 
         .header-left {
@@ -184,7 +185,7 @@
         .logo-icon svg {
             width: 20px;
             height: 20px;
-            stroke: white;
+            stroke: #fdf6e3;
             stroke-width: 2;
             fill: none;
         }
@@ -468,7 +469,7 @@
             bottom: 0;
             width: 1px;
             background: linear-gradient(180deg, var(--accent-primary), transparent);
-            opacity: 0.5;
+            opacity: 0.6;
         }
 
         .panel-header {
@@ -718,18 +719,18 @@
             color: var(--text-tertiary);
         }
 
-        .badge-criticality.critical { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
-        .badge-criticality.high { background: rgba(249, 115, 22, 0.2); color: #fdba74; }
-        .badge-criticality.medium { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
-        .badge-criticality.low { background: rgba(75, 85, 99, 0.2); color: #9ca3af; }
+        .badge-criticality.critical { background: rgba(220, 50, 47, 0.15); color: #dc322f; }
+        .badge-criticality.high { background: rgba(203, 75, 22, 0.15); color: #cb4b16; }
+        .badge-criticality.medium { background: rgba(181, 137, 0, 0.15); color: #b58900; }
+        .badge-criticality.low { background: rgba(131, 148, 150, 0.15); color: #839496; }
 
         .badge-status {
             background: var(--bg-elevated);
         }
 
-        .badge-status.evidence { background: rgba(16, 185, 129, 0.2); color: var(--status-validated); }
-        .badge-status.claim { background: rgba(245, 158, 11, 0.2); color: var(--status-pending); }
-        .badge-status.rejected { background: rgba(239, 68, 68, 0.2); color: var(--status-rejected); }
+        .badge-status.evidence { background: rgba(133, 153, 0, 0.15); color: var(--status-validated); }
+        .badge-status.claim { background: rgba(181, 137, 0, 0.15); color: var(--status-pending); }
+        .badge-status.rejected { background: rgba(220, 50, 47, 0.15); color: var(--status-rejected); }
 
         /* Evidence section */
         .evidence-section {
@@ -789,7 +790,7 @@
             opacity: 0;
             transform: translateY(8px);
             transition: opacity var(--transition-fast), transform var(--transition-fast);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
         }
 
         .tooltip.visible {
