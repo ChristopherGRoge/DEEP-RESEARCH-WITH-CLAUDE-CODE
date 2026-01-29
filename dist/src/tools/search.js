@@ -31,8 +31,8 @@ async function globalSearch(input) {
             where: {
                 ...projectFilter,
                 OR: [
-                    { name: { contains: input.query, mode: 'insensitive' } },
-                    { description: { contains: input.query, mode: 'insensitive' } },
+                    { name: { contains: input.query } },
+                    { description: { contains: input.query } },
                 ],
             },
             include: {
@@ -45,7 +45,7 @@ async function globalSearch(input) {
     // Search assertions
     if (input.includeAssertions !== false) {
         const assertionWhere = {
-            claim: { contains: input.query, mode: 'insensitive' },
+            claim: { contains: input.query },
         };
         if (input.projectId) {
             assertionWhere.entity = { projectId: input.projectId };
@@ -64,9 +64,9 @@ async function globalSearch(input) {
         results.sources = await client_1.default.source.findMany({
             where: {
                 OR: [
-                    { url: { contains: input.query, mode: 'insensitive' } },
-                    { title: { contains: input.query, mode: 'insensitive' } },
-                    { description: { contains: input.query, mode: 'insensitive' } },
+                    { url: { contains: input.query } },
+                    { title: { contains: input.query } },
+                    { description: { contains: input.query } },
                 ],
             },
             include: {

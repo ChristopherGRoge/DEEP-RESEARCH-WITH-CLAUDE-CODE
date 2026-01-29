@@ -148,7 +148,7 @@ async function searchAssertions(input) {
         where.entity = { projectId: input.projectId };
     }
     if (input.query) {
-        where.claim = { contains: input.query, mode: 'insensitive' };
+        where.claim = { contains: input.query };
     }
     if (input.category) {
         where.category = input.category;
@@ -474,7 +474,6 @@ async function findSimilarAssertions(entityId, claim) {
             entityId,
             claim: {
                 contains: claim.split(' ').slice(0, 3).join(' '),
-                mode: 'insensitive',
             },
         },
         include: {

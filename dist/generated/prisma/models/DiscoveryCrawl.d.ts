@@ -230,7 +230,7 @@ export type DiscoveryCrawlGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 export type DiscoveryCrawlGroupByOutputType = {
     id: string;
     projectId: string | null;
-    sourceIds: string[];
+    sourceIds: runtime.JsonValue | null;
     researchFocus: string | null;
     startedAt: Date;
     completedAt: Date | null;
@@ -259,7 +259,7 @@ export type DiscoveryCrawlWhereInput = {
     NOT?: Prisma.DiscoveryCrawlWhereInput | Prisma.DiscoveryCrawlWhereInput[];
     id?: Prisma.StringFilter<"DiscoveryCrawl"> | string;
     projectId?: Prisma.StringNullableFilter<"DiscoveryCrawl"> | string | null;
-    sourceIds?: Prisma.StringNullableListFilter<"DiscoveryCrawl">;
+    sourceIds?: Prisma.JsonNullableFilter<"DiscoveryCrawl">;
     researchFocus?: Prisma.StringNullableFilter<"DiscoveryCrawl"> | string | null;
     startedAt?: Prisma.DateTimeFilter<"DiscoveryCrawl"> | Date | string;
     completedAt?: Prisma.DateTimeNullableFilter<"DiscoveryCrawl"> | Date | string | null;
@@ -277,7 +277,7 @@ export type DiscoveryCrawlWhereInput = {
 export type DiscoveryCrawlOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
     projectId?: Prisma.SortOrderInput | Prisma.SortOrder;
-    sourceIds?: Prisma.SortOrder;
+    sourceIds?: Prisma.SortOrderInput | Prisma.SortOrder;
     researchFocus?: Prisma.SortOrderInput | Prisma.SortOrder;
     startedAt?: Prisma.SortOrder;
     completedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -298,7 +298,7 @@ export type DiscoveryCrawlWhereUniqueInput = Prisma.AtLeast<{
     OR?: Prisma.DiscoveryCrawlWhereInput[];
     NOT?: Prisma.DiscoveryCrawlWhereInput | Prisma.DiscoveryCrawlWhereInput[];
     projectId?: Prisma.StringNullableFilter<"DiscoveryCrawl"> | string | null;
-    sourceIds?: Prisma.StringNullableListFilter<"DiscoveryCrawl">;
+    sourceIds?: Prisma.JsonNullableFilter<"DiscoveryCrawl">;
     researchFocus?: Prisma.StringNullableFilter<"DiscoveryCrawl"> | string | null;
     startedAt?: Prisma.DateTimeFilter<"DiscoveryCrawl"> | Date | string;
     completedAt?: Prisma.DateTimeNullableFilter<"DiscoveryCrawl"> | Date | string | null;
@@ -316,7 +316,7 @@ export type DiscoveryCrawlWhereUniqueInput = Prisma.AtLeast<{
 export type DiscoveryCrawlOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     projectId?: Prisma.SortOrderInput | Prisma.SortOrder;
-    sourceIds?: Prisma.SortOrder;
+    sourceIds?: Prisma.SortOrderInput | Prisma.SortOrder;
     researchFocus?: Prisma.SortOrderInput | Prisma.SortOrder;
     startedAt?: Prisma.SortOrder;
     completedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -342,7 +342,7 @@ export type DiscoveryCrawlScalarWhereWithAggregatesInput = {
     NOT?: Prisma.DiscoveryCrawlScalarWhereWithAggregatesInput | Prisma.DiscoveryCrawlScalarWhereWithAggregatesInput[];
     id?: Prisma.StringWithAggregatesFilter<"DiscoveryCrawl"> | string;
     projectId?: Prisma.StringNullableWithAggregatesFilter<"DiscoveryCrawl"> | string | null;
-    sourceIds?: Prisma.StringNullableListFilter<"DiscoveryCrawl">;
+    sourceIds?: Prisma.JsonNullableWithAggregatesFilter<"DiscoveryCrawl">;
     researchFocus?: Prisma.StringNullableWithAggregatesFilter<"DiscoveryCrawl"> | string | null;
     startedAt?: Prisma.DateTimeWithAggregatesFilter<"DiscoveryCrawl"> | Date | string;
     completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DiscoveryCrawl"> | Date | string | null;
@@ -360,7 +360,7 @@ export type DiscoveryCrawlScalarWhereWithAggregatesInput = {
 export type DiscoveryCrawlCreateInput = {
     id?: string;
     projectId?: string | null;
-    sourceIds?: Prisma.DiscoveryCrawlCreatesourceIdsInput | string[];
+    sourceIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     researchFocus?: string | null;
     startedAt?: Date | string;
     completedAt?: Date | string | null;
@@ -378,7 +378,7 @@ export type DiscoveryCrawlCreateInput = {
 export type DiscoveryCrawlUncheckedCreateInput = {
     id?: string;
     projectId?: string | null;
-    sourceIds?: Prisma.DiscoveryCrawlCreatesourceIdsInput | string[];
+    sourceIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     researchFocus?: string | null;
     startedAt?: Date | string;
     completedAt?: Date | string | null;
@@ -396,7 +396,7 @@ export type DiscoveryCrawlUncheckedCreateInput = {
 export type DiscoveryCrawlUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    sourceIds?: Prisma.DiscoveryCrawlUpdatesourceIdsInput | string[];
+    sourceIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     researchFocus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -414,7 +414,7 @@ export type DiscoveryCrawlUpdateInput = {
 export type DiscoveryCrawlUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    sourceIds?: Prisma.DiscoveryCrawlUpdatesourceIdsInput | string[];
+    sourceIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     researchFocus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -432,7 +432,7 @@ export type DiscoveryCrawlUncheckedUpdateInput = {
 export type DiscoveryCrawlCreateManyInput = {
     id?: string;
     projectId?: string | null;
-    sourceIds?: Prisma.DiscoveryCrawlCreatesourceIdsInput | string[];
+    sourceIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     researchFocus?: string | null;
     startedAt?: Date | string;
     completedAt?: Date | string | null;
@@ -450,7 +450,7 @@ export type DiscoveryCrawlCreateManyInput = {
 export type DiscoveryCrawlUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    sourceIds?: Prisma.DiscoveryCrawlUpdatesourceIdsInput | string[];
+    sourceIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     researchFocus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -468,7 +468,7 @@ export type DiscoveryCrawlUpdateManyMutationInput = {
 export type DiscoveryCrawlUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    sourceIds?: Prisma.DiscoveryCrawlUpdatesourceIdsInput | string[];
+    sourceIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     researchFocus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
@@ -550,13 +550,6 @@ export type DiscoveryCrawlSumOrderByAggregateInput = {
     entitiesCreated?: Prisma.SortOrder;
     entitiesUpdated?: Prisma.SortOrder;
     trendsDetected?: Prisma.SortOrder;
-};
-export type DiscoveryCrawlCreatesourceIdsInput = {
-    set: string[];
-};
-export type DiscoveryCrawlUpdatesourceIdsInput = {
-    set?: string[];
-    push?: string | string[];
 };
 export type EnumCrawlStatusFieldUpdateOperationsInput = {
     set?: $Enums.CrawlStatus;
@@ -640,7 +633,7 @@ export type $DiscoveryCrawlPayload<ExtArgs extends runtime.Types.Extensions.Inte
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         projectId: string | null;
-        sourceIds: string[];
+        sourceIds: runtime.JsonValue | null;
         researchFocus: string | null;
         startedAt: Date;
         completedAt: Date | null;
@@ -1010,7 +1003,7 @@ export interface Prisma__DiscoveryCrawlClient<T, Null = never, ExtArgs extends r
 export interface DiscoveryCrawlFieldRefs {
     readonly id: Prisma.FieldRef<"DiscoveryCrawl", 'String'>;
     readonly projectId: Prisma.FieldRef<"DiscoveryCrawl", 'String'>;
-    readonly sourceIds: Prisma.FieldRef<"DiscoveryCrawl", 'String[]'>;
+    readonly sourceIds: Prisma.FieldRef<"DiscoveryCrawl", 'Json'>;
     readonly researchFocus: Prisma.FieldRef<"DiscoveryCrawl", 'String'>;
     readonly startedAt: Prisma.FieldRef<"DiscoveryCrawl", 'DateTime'>;
     readonly completedAt: Prisma.FieldRef<"DiscoveryCrawl", 'DateTime'>;
@@ -1220,7 +1213,6 @@ export type DiscoveryCrawlCreateManyArgs<ExtArgs extends runtime.Types.Extension
      * The data used to create many DiscoveryCrawls.
      */
     data: Prisma.DiscoveryCrawlCreateManyInput | Prisma.DiscoveryCrawlCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * DiscoveryCrawl createManyAndReturn
@@ -1238,7 +1230,6 @@ export type DiscoveryCrawlCreateManyAndReturnArgs<ExtArgs extends runtime.Types.
      * The data used to create many DiscoveryCrawls.
      */
     data: Prisma.DiscoveryCrawlCreateManyInput | Prisma.DiscoveryCrawlCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * DiscoveryCrawl update

@@ -136,7 +136,7 @@ export declare function getEntity(entityId: string): Promise<({
         humanResponse: string | null;
         validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
         partiallyValidated: boolean;
-        evidenceScreenshots: string[];
+        evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
         evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
         evidenceDescription: string | null;
         evidenceScreenshotPath: string | null;
@@ -249,7 +249,7 @@ export declare function findEntityByName(projectId: string, name: string): Promi
         humanResponse: string | null;
         validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
         partiallyValidated: boolean;
-        evidenceScreenshots: string[];
+        evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
         evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
         evidenceDescription: string | null;
         evidenceScreenshotPath: string | null;

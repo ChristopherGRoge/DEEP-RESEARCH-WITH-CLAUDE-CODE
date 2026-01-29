@@ -124,7 +124,6 @@ async function findDomainByName(name) {
         where: {
             name: {
                 equals: name,
-                mode: 'insensitive',
             },
         },
         include: {

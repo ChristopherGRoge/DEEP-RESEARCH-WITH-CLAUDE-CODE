@@ -1039,7 +1039,6 @@ export type ResearchProjectCreateManyArgs<ExtArgs extends runtime.Types.Extensio
      * The data used to create many ResearchProjects.
      */
     data: Prisma.ResearchProjectCreateManyInput | Prisma.ResearchProjectCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * ResearchProject createManyAndReturn
@@ -1057,7 +1056,6 @@ export type ResearchProjectCreateManyAndReturnArgs<ExtArgs extends runtime.Types
      * The data used to create many ResearchProjects.
      */
     data: Prisma.ResearchProjectCreateManyInput | Prisma.ResearchProjectCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * ResearchProject update

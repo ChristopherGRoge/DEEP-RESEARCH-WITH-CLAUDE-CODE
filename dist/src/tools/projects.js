@@ -102,7 +102,6 @@ async function findProjectByName(name) {
         where: {
             name: {
                 equals: name,
-                mode: 'insensitive',
             },
         },
         include: {

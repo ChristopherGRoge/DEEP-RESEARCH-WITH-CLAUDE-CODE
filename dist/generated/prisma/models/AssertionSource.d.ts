@@ -482,7 +482,6 @@ export type AssertionSourceCreateOrConnectWithoutAssertionInput = {
 };
 export type AssertionSourceCreateManyAssertionInputEnvelope = {
     data: Prisma.AssertionSourceCreateManyAssertionInput | Prisma.AssertionSourceCreateManyAssertionInput[];
-    skipDuplicates?: boolean;
 };
 export type AssertionSourceUpsertWithWhereUniqueWithoutAssertionInput = {
     where: Prisma.AssertionSourceWhereUniqueInput;
@@ -540,7 +539,6 @@ export type AssertionSourceCreateOrConnectWithoutSourceInput = {
 };
 export type AssertionSourceCreateManySourceInputEnvelope = {
     data: Prisma.AssertionSourceCreateManySourceInput | Prisma.AssertionSourceCreateManySourceInput[];
-    skipDuplicates?: boolean;
 };
 export type AssertionSourceUpsertWithWhereUniqueWithoutSourceInput = {
     where: Prisma.AssertionSourceWhereUniqueInput;
@@ -1313,7 +1311,6 @@ export type AssertionSourceCreateManyArgs<ExtArgs extends runtime.Types.Extensio
      * The data used to create many AssertionSources.
      */
     data: Prisma.AssertionSourceCreateManyInput | Prisma.AssertionSourceCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * AssertionSource createManyAndReturn
@@ -1331,7 +1328,6 @@ export type AssertionSourceCreateManyAndReturnArgs<ExtArgs extends runtime.Types
      * The data used to create many AssertionSources.
      */
     data: Prisma.AssertionSourceCreateManyInput | Prisma.AssertionSourceCreateManyInput[];
-    skipDuplicates?: boolean;
     /**
      * Choose, which related nodes to fetch as well
      */

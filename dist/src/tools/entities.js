@@ -79,7 +79,6 @@ async function findEntityByName(projectId, name) {
             projectId,
             name: {
                 equals: name,
-                mode: 'insensitive',
             },
         },
         include: {
@@ -116,8 +115,8 @@ async function searchEntities(input) {
     }
     if (input.query) {
         where.OR = [
-            { name: { contains: input.query, mode: 'insensitive' } },
-            { description: { contains: input.query, mode: 'insensitive' } },
+            { name: { contains: input.query } },
+            { description: { contains: input.query } },
         ];
     }
     if (input.entityType) {
@@ -174,7 +173,6 @@ async function entityExists(projectId, name) {
             projectId,
             name: {
                 equals: name,
-                mode: 'insensitive',
             },
         },
     });

@@ -165,7 +165,7 @@ export declare function getExtractions(entityId: string, schemaType?: SchemaType
     extractedAt: Date;
     expiresAt: Date | null;
     screenshotId: string | null;
-    assertionIds: string[];
+    assertionIds: import("@prisma/client/runtime/client").JsonValue | null;
 })[]>;
 export declare function getLatestExtraction(entityId: string, schemaType: SchemaType): Promise<({
     source: {
@@ -206,7 +206,7 @@ export declare function getLatestExtraction(entityId: string, schemaType: Schema
     extractedAt: Date;
     expiresAt: Date | null;
     screenshotId: string | null;
-    assertionIds: string[];
+    assertionIds: import("@prisma/client/runtime/client").JsonValue | null;
 }) | null>;
 export declare function getStaleExtractions(projectId?: string): Promise<({
     source: {
@@ -277,7 +277,7 @@ export declare function getStaleExtractions(projectId?: string): Promise<({
     extractedAt: Date;
     expiresAt: Date | null;
     screenshotId: string | null;
-    assertionIds: string[];
+    assertionIds: import("@prisma/client/runtime/client").JsonValue | null;
 })[]>;
 export declare function getExtractionSummary(projectId: string): Promise<Record<string, {
     total: number;

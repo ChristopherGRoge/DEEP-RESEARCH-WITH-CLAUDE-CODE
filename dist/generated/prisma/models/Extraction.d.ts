@@ -195,7 +195,7 @@ export type ExtractionGroupByOutputType = {
     entityId: string;
     sourceId: string;
     screenshotId: string | null;
-    assertionIds: string[];
+    assertionIds: runtime.JsonValue | null;
     _count: ExtractionCountAggregateOutputType | null;
     _avg: ExtractionAvgAggregateOutputType | null;
     _sum: ExtractionSumAggregateOutputType | null;
@@ -221,7 +221,7 @@ export type ExtractionWhereInput = {
     entityId?: Prisma.StringFilter<"Extraction"> | string;
     sourceId?: Prisma.StringFilter<"Extraction"> | string;
     screenshotId?: Prisma.StringNullableFilter<"Extraction"> | string | null;
-    assertionIds?: Prisma.StringNullableListFilter<"Extraction">;
+    assertionIds?: Prisma.JsonNullableFilter<"Extraction">;
     entity?: Prisma.XOR<Prisma.EntityScalarRelationFilter, Prisma.EntityWhereInput>;
     source?: Prisma.XOR<Prisma.SourceScalarRelationFilter, Prisma.SourceWhereInput>;
     screenshot?: Prisma.XOR<Prisma.ScreenshotNullableScalarRelationFilter, Prisma.ScreenshotWhereInput> | null;
@@ -239,7 +239,7 @@ export type ExtractionOrderByWithRelationInput = {
     entityId?: Prisma.SortOrder;
     sourceId?: Prisma.SortOrder;
     screenshotId?: Prisma.SortOrderInput | Prisma.SortOrder;
-    assertionIds?: Prisma.SortOrder;
+    assertionIds?: Prisma.SortOrderInput | Prisma.SortOrder;
     entity?: Prisma.EntityOrderByWithRelationInput;
     source?: Prisma.SourceOrderByWithRelationInput;
     screenshot?: Prisma.ScreenshotOrderByWithRelationInput;
@@ -260,7 +260,7 @@ export type ExtractionWhereUniqueInput = Prisma.AtLeast<{
     entityId?: Prisma.StringFilter<"Extraction"> | string;
     sourceId?: Prisma.StringFilter<"Extraction"> | string;
     screenshotId?: Prisma.StringNullableFilter<"Extraction"> | string | null;
-    assertionIds?: Prisma.StringNullableListFilter<"Extraction">;
+    assertionIds?: Prisma.JsonNullableFilter<"Extraction">;
     entity?: Prisma.XOR<Prisma.EntityScalarRelationFilter, Prisma.EntityWhereInput>;
     source?: Prisma.XOR<Prisma.SourceScalarRelationFilter, Prisma.SourceWhereInput>;
     screenshot?: Prisma.XOR<Prisma.ScreenshotNullableScalarRelationFilter, Prisma.ScreenshotWhereInput> | null;
@@ -278,7 +278,7 @@ export type ExtractionOrderByWithAggregationInput = {
     entityId?: Prisma.SortOrder;
     sourceId?: Prisma.SortOrder;
     screenshotId?: Prisma.SortOrderInput | Prisma.SortOrder;
-    assertionIds?: Prisma.SortOrder;
+    assertionIds?: Prisma.SortOrderInput | Prisma.SortOrder;
     _count?: Prisma.ExtractionCountOrderByAggregateInput;
     _avg?: Prisma.ExtractionAvgOrderByAggregateInput;
     _max?: Prisma.ExtractionMaxOrderByAggregateInput;
@@ -301,7 +301,7 @@ export type ExtractionScalarWhereWithAggregatesInput = {
     entityId?: Prisma.StringWithAggregatesFilter<"Extraction"> | string;
     sourceId?: Prisma.StringWithAggregatesFilter<"Extraction"> | string;
     screenshotId?: Prisma.StringNullableWithAggregatesFilter<"Extraction"> | string | null;
-    assertionIds?: Prisma.StringNullableListFilter<"Extraction">;
+    assertionIds?: Prisma.JsonNullableWithAggregatesFilter<"Extraction">;
 };
 export type ExtractionCreateInput = {
     id?: string;
@@ -313,7 +313,7 @@ export type ExtractionCreateInput = {
     error?: string | null;
     extractedAt?: Date | string;
     expiresAt?: Date | string | null;
-    assertionIds?: Prisma.ExtractionCreateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity: Prisma.EntityCreateNestedOneWithoutExtractionsInput;
     source: Prisma.SourceCreateNestedOneWithoutExtractionsInput;
     screenshot?: Prisma.ScreenshotCreateNestedOneWithoutExtractionsInput;
@@ -331,7 +331,7 @@ export type ExtractionUncheckedCreateInput = {
     entityId: string;
     sourceId: string;
     screenshotId?: string | null;
-    assertionIds?: Prisma.ExtractionCreateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -343,7 +343,7 @@ export type ExtractionUpdateInput = {
     error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     extractedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    assertionIds?: Prisma.ExtractionUpdateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity?: Prisma.EntityUpdateOneRequiredWithoutExtractionsNestedInput;
     source?: Prisma.SourceUpdateOneRequiredWithoutExtractionsNestedInput;
     screenshot?: Prisma.ScreenshotUpdateOneWithoutExtractionsNestedInput;
@@ -361,7 +361,7 @@ export type ExtractionUncheckedUpdateInput = {
     entityId?: Prisma.StringFieldUpdateOperationsInput | string;
     sourceId?: Prisma.StringFieldUpdateOperationsInput | string;
     screenshotId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    assertionIds?: Prisma.ExtractionUpdateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionCreateManyInput = {
     id?: string;
@@ -376,7 +376,7 @@ export type ExtractionCreateManyInput = {
     entityId: string;
     sourceId: string;
     screenshotId?: string | null;
-    assertionIds?: Prisma.ExtractionCreateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -388,7 +388,7 @@ export type ExtractionUpdateManyMutationInput = {
     error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     extractedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    assertionIds?: Prisma.ExtractionUpdateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -403,7 +403,7 @@ export type ExtractionUncheckedUpdateManyInput = {
     entityId?: Prisma.StringFieldUpdateOperationsInput | string;
     sourceId?: Prisma.StringFieldUpdateOperationsInput | string;
     screenshotId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    assertionIds?: Prisma.ExtractionUpdateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionListRelationFilter = {
     every?: Prisma.ExtractionWhereInput;
@@ -572,15 +572,8 @@ export type ExtractionUncheckedUpdateManyWithoutScreenshotNestedInput = {
     updateMany?: Prisma.ExtractionUpdateManyWithWhereWithoutScreenshotInput | Prisma.ExtractionUpdateManyWithWhereWithoutScreenshotInput[];
     deleteMany?: Prisma.ExtractionScalarWhereInput | Prisma.ExtractionScalarWhereInput[];
 };
-export type ExtractionCreateassertionIdsInput = {
-    set: string[];
-};
 export type EnumExtractionStatusFieldUpdateOperationsInput = {
     set?: $Enums.ExtractionStatus;
-};
-export type ExtractionUpdateassertionIdsInput = {
-    set?: string[];
-    push?: string | string[];
 };
 export type ExtractionCreateWithoutEntityInput = {
     id?: string;
@@ -592,7 +585,7 @@ export type ExtractionCreateWithoutEntityInput = {
     error?: string | null;
     extractedAt?: Date | string;
     expiresAt?: Date | string | null;
-    assertionIds?: Prisma.ExtractionCreateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     source: Prisma.SourceCreateNestedOneWithoutExtractionsInput;
     screenshot?: Prisma.ScreenshotCreateNestedOneWithoutExtractionsInput;
 };
@@ -608,7 +601,7 @@ export type ExtractionUncheckedCreateWithoutEntityInput = {
     expiresAt?: Date | string | null;
     sourceId: string;
     screenshotId?: string | null;
-    assertionIds?: Prisma.ExtractionCreateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionCreateOrConnectWithoutEntityInput = {
     where: Prisma.ExtractionWhereUniqueInput;
@@ -616,7 +609,6 @@ export type ExtractionCreateOrConnectWithoutEntityInput = {
 };
 export type ExtractionCreateManyEntityInputEnvelope = {
     data: Prisma.ExtractionCreateManyEntityInput | Prisma.ExtractionCreateManyEntityInput[];
-    skipDuplicates?: boolean;
 };
 export type ExtractionUpsertWithWhereUniqueWithoutEntityInput = {
     where: Prisma.ExtractionWhereUniqueInput;
@@ -647,7 +639,7 @@ export type ExtractionScalarWhereInput = {
     entityId?: Prisma.StringFilter<"Extraction"> | string;
     sourceId?: Prisma.StringFilter<"Extraction"> | string;
     screenshotId?: Prisma.StringNullableFilter<"Extraction"> | string | null;
-    assertionIds?: Prisma.StringNullableListFilter<"Extraction">;
+    assertionIds?: Prisma.JsonNullableFilter<"Extraction">;
 };
 export type ExtractionCreateWithoutSourceInput = {
     id?: string;
@@ -659,7 +651,7 @@ export type ExtractionCreateWithoutSourceInput = {
     error?: string | null;
     extractedAt?: Date | string;
     expiresAt?: Date | string | null;
-    assertionIds?: Prisma.ExtractionCreateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity: Prisma.EntityCreateNestedOneWithoutExtractionsInput;
     screenshot?: Prisma.ScreenshotCreateNestedOneWithoutExtractionsInput;
 };
@@ -675,7 +667,7 @@ export type ExtractionUncheckedCreateWithoutSourceInput = {
     expiresAt?: Date | string | null;
     entityId: string;
     screenshotId?: string | null;
-    assertionIds?: Prisma.ExtractionCreateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionCreateOrConnectWithoutSourceInput = {
     where: Prisma.ExtractionWhereUniqueInput;
@@ -683,7 +675,6 @@ export type ExtractionCreateOrConnectWithoutSourceInput = {
 };
 export type ExtractionCreateManySourceInputEnvelope = {
     data: Prisma.ExtractionCreateManySourceInput | Prisma.ExtractionCreateManySourceInput[];
-    skipDuplicates?: boolean;
 };
 export type ExtractionUpsertWithWhereUniqueWithoutSourceInput = {
     where: Prisma.ExtractionWhereUniqueInput;
@@ -708,7 +699,7 @@ export type ExtractionCreateWithoutScreenshotInput = {
     error?: string | null;
     extractedAt?: Date | string;
     expiresAt?: Date | string | null;
-    assertionIds?: Prisma.ExtractionCreateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity: Prisma.EntityCreateNestedOneWithoutExtractionsInput;
     source: Prisma.SourceCreateNestedOneWithoutExtractionsInput;
 };
@@ -724,7 +715,7 @@ export type ExtractionUncheckedCreateWithoutScreenshotInput = {
     expiresAt?: Date | string | null;
     entityId: string;
     sourceId: string;
-    assertionIds?: Prisma.ExtractionCreateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionCreateOrConnectWithoutScreenshotInput = {
     where: Prisma.ExtractionWhereUniqueInput;
@@ -732,7 +723,6 @@ export type ExtractionCreateOrConnectWithoutScreenshotInput = {
 };
 export type ExtractionCreateManyScreenshotInputEnvelope = {
     data: Prisma.ExtractionCreateManyScreenshotInput | Prisma.ExtractionCreateManyScreenshotInput[];
-    skipDuplicates?: boolean;
 };
 export type ExtractionUpsertWithWhereUniqueWithoutScreenshotInput = {
     where: Prisma.ExtractionWhereUniqueInput;
@@ -759,7 +749,7 @@ export type ExtractionCreateManyEntityInput = {
     expiresAt?: Date | string | null;
     sourceId: string;
     screenshotId?: string | null;
-    assertionIds?: Prisma.ExtractionCreateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionUpdateWithoutEntityInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -771,7 +761,7 @@ export type ExtractionUpdateWithoutEntityInput = {
     error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     extractedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    assertionIds?: Prisma.ExtractionUpdateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     source?: Prisma.SourceUpdateOneRequiredWithoutExtractionsNestedInput;
     screenshot?: Prisma.ScreenshotUpdateOneWithoutExtractionsNestedInput;
 };
@@ -787,7 +777,7 @@ export type ExtractionUncheckedUpdateWithoutEntityInput = {
     expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     sourceId?: Prisma.StringFieldUpdateOperationsInput | string;
     screenshotId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    assertionIds?: Prisma.ExtractionUpdateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionUncheckedUpdateManyWithoutEntityInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -801,7 +791,7 @@ export type ExtractionUncheckedUpdateManyWithoutEntityInput = {
     expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     sourceId?: Prisma.StringFieldUpdateOperationsInput | string;
     screenshotId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    assertionIds?: Prisma.ExtractionUpdateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionCreateManySourceInput = {
     id?: string;
@@ -815,7 +805,7 @@ export type ExtractionCreateManySourceInput = {
     expiresAt?: Date | string | null;
     entityId: string;
     screenshotId?: string | null;
-    assertionIds?: Prisma.ExtractionCreateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionUpdateWithoutSourceInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -827,7 +817,7 @@ export type ExtractionUpdateWithoutSourceInput = {
     error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     extractedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    assertionIds?: Prisma.ExtractionUpdateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity?: Prisma.EntityUpdateOneRequiredWithoutExtractionsNestedInput;
     screenshot?: Prisma.ScreenshotUpdateOneWithoutExtractionsNestedInput;
 };
@@ -843,7 +833,7 @@ export type ExtractionUncheckedUpdateWithoutSourceInput = {
     expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     entityId?: Prisma.StringFieldUpdateOperationsInput | string;
     screenshotId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    assertionIds?: Prisma.ExtractionUpdateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionUncheckedUpdateManyWithoutSourceInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -857,7 +847,7 @@ export type ExtractionUncheckedUpdateManyWithoutSourceInput = {
     expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     entityId?: Prisma.StringFieldUpdateOperationsInput | string;
     screenshotId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    assertionIds?: Prisma.ExtractionUpdateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionCreateManyScreenshotInput = {
     id?: string;
@@ -871,7 +861,7 @@ export type ExtractionCreateManyScreenshotInput = {
     expiresAt?: Date | string | null;
     entityId: string;
     sourceId: string;
-    assertionIds?: Prisma.ExtractionCreateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionUpdateWithoutScreenshotInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -883,7 +873,7 @@ export type ExtractionUpdateWithoutScreenshotInput = {
     error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     extractedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    assertionIds?: Prisma.ExtractionUpdateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity?: Prisma.EntityUpdateOneRequiredWithoutExtractionsNestedInput;
     source?: Prisma.SourceUpdateOneRequiredWithoutExtractionsNestedInput;
 };
@@ -899,7 +889,7 @@ export type ExtractionUncheckedUpdateWithoutScreenshotInput = {
     expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     entityId?: Prisma.StringFieldUpdateOperationsInput | string;
     sourceId?: Prisma.StringFieldUpdateOperationsInput | string;
-    assertionIds?: Prisma.ExtractionUpdateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionUncheckedUpdateManyWithoutScreenshotInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -913,7 +903,7 @@ export type ExtractionUncheckedUpdateManyWithoutScreenshotInput = {
     expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     entityId?: Prisma.StringFieldUpdateOperationsInput | string;
     sourceId?: Prisma.StringFieldUpdateOperationsInput | string;
-    assertionIds?: Prisma.ExtractionUpdateassertionIdsInput | string[];
+    assertionIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
 };
 export type ExtractionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -1020,7 +1010,7 @@ export type $ExtractionPayload<ExtArgs extends runtime.Types.Extensions.Internal
         entityId: string;
         sourceId: string;
         screenshotId: string | null;
-        assertionIds: string[];
+        assertionIds: runtime.JsonValue | null;
     }, ExtArgs["result"]["extraction"]>;
     composites: {};
 };
@@ -1390,7 +1380,7 @@ export interface ExtractionFieldRefs {
     readonly entityId: Prisma.FieldRef<"Extraction", 'String'>;
     readonly sourceId: Prisma.FieldRef<"Extraction", 'String'>;
     readonly screenshotId: Prisma.FieldRef<"Extraction", 'String'>;
-    readonly assertionIds: Prisma.FieldRef<"Extraction", 'String[]'>;
+    readonly assertionIds: Prisma.FieldRef<"Extraction", 'Json'>;
 }
 /**
  * Extraction findUnique
@@ -1611,7 +1601,6 @@ export type ExtractionCreateManyArgs<ExtArgs extends runtime.Types.Extensions.In
      * The data used to create many Extractions.
      */
     data: Prisma.ExtractionCreateManyInput | Prisma.ExtractionCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * Extraction createManyAndReturn
@@ -1629,7 +1618,6 @@ export type ExtractionCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exte
      * The data used to create many Extractions.
      */
     data: Prisma.ExtractionCreateManyInput | Prisma.ExtractionCreateManyInput[];
-    skipDuplicates?: boolean;
     /**
      * Choose, which related nodes to fetch as well
      */

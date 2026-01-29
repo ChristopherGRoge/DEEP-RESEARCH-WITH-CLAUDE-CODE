@@ -192,12 +192,12 @@ export type ResearchDomainGroupByOutputType = {
     id: string;
     name: string;
     description: string;
-    entityTypes: string[];
+    entityTypes: runtime.JsonValue | null;
     inclusionCriteria: string | null;
     exclusionCriteria: string | null;
     searchHints: string | null;
-    knownLeaders: string[];
-    relevantTopics: string[];
+    knownLeaders: runtime.JsonValue | null;
+    relevantTopics: runtime.JsonValue | null;
     evaluationDimensions: runtime.JsonValue | null;
     lastDiscoveryAt: Date | null;
     entityCount: number;
@@ -220,12 +220,12 @@ export type ResearchDomainWhereInput = {
     id?: Prisma.StringFilter<"ResearchDomain"> | string;
     name?: Prisma.StringFilter<"ResearchDomain"> | string;
     description?: Prisma.StringFilter<"ResearchDomain"> | string;
-    entityTypes?: Prisma.StringNullableListFilter<"ResearchDomain">;
+    entityTypes?: Prisma.JsonNullableFilter<"ResearchDomain">;
     inclusionCriteria?: Prisma.StringNullableFilter<"ResearchDomain"> | string | null;
     exclusionCriteria?: Prisma.StringNullableFilter<"ResearchDomain"> | string | null;
     searchHints?: Prisma.StringNullableFilter<"ResearchDomain"> | string | null;
-    knownLeaders?: Prisma.StringNullableListFilter<"ResearchDomain">;
-    relevantTopics?: Prisma.StringNullableListFilter<"ResearchDomain">;
+    knownLeaders?: Prisma.JsonNullableFilter<"ResearchDomain">;
+    relevantTopics?: Prisma.JsonNullableFilter<"ResearchDomain">;
     evaluationDimensions?: Prisma.JsonNullableFilter<"ResearchDomain">;
     lastDiscoveryAt?: Prisma.DateTimeNullableFilter<"ResearchDomain"> | Date | string | null;
     entityCount?: Prisma.IntFilter<"ResearchDomain"> | number;
@@ -238,12 +238,12 @@ export type ResearchDomainOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
     name?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
-    entityTypes?: Prisma.SortOrder;
+    entityTypes?: Prisma.SortOrderInput | Prisma.SortOrder;
     inclusionCriteria?: Prisma.SortOrderInput | Prisma.SortOrder;
     exclusionCriteria?: Prisma.SortOrderInput | Prisma.SortOrder;
     searchHints?: Prisma.SortOrderInput | Prisma.SortOrder;
-    knownLeaders?: Prisma.SortOrder;
-    relevantTopics?: Prisma.SortOrder;
+    knownLeaders?: Prisma.SortOrderInput | Prisma.SortOrder;
+    relevantTopics?: Prisma.SortOrderInput | Prisma.SortOrder;
     evaluationDimensions?: Prisma.SortOrderInput | Prisma.SortOrder;
     lastDiscoveryAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     entityCount?: Prisma.SortOrder;
@@ -259,12 +259,12 @@ export type ResearchDomainWhereUniqueInput = Prisma.AtLeast<{
     OR?: Prisma.ResearchDomainWhereInput[];
     NOT?: Prisma.ResearchDomainWhereInput | Prisma.ResearchDomainWhereInput[];
     description?: Prisma.StringFilter<"ResearchDomain"> | string;
-    entityTypes?: Prisma.StringNullableListFilter<"ResearchDomain">;
+    entityTypes?: Prisma.JsonNullableFilter<"ResearchDomain">;
     inclusionCriteria?: Prisma.StringNullableFilter<"ResearchDomain"> | string | null;
     exclusionCriteria?: Prisma.StringNullableFilter<"ResearchDomain"> | string | null;
     searchHints?: Prisma.StringNullableFilter<"ResearchDomain"> | string | null;
-    knownLeaders?: Prisma.StringNullableListFilter<"ResearchDomain">;
-    relevantTopics?: Prisma.StringNullableListFilter<"ResearchDomain">;
+    knownLeaders?: Prisma.JsonNullableFilter<"ResearchDomain">;
+    relevantTopics?: Prisma.JsonNullableFilter<"ResearchDomain">;
     evaluationDimensions?: Prisma.JsonNullableFilter<"ResearchDomain">;
     lastDiscoveryAt?: Prisma.DateTimeNullableFilter<"ResearchDomain"> | Date | string | null;
     entityCount?: Prisma.IntFilter<"ResearchDomain"> | number;
@@ -277,12 +277,12 @@ export type ResearchDomainOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     name?: Prisma.SortOrder;
     description?: Prisma.SortOrder;
-    entityTypes?: Prisma.SortOrder;
+    entityTypes?: Prisma.SortOrderInput | Prisma.SortOrder;
     inclusionCriteria?: Prisma.SortOrderInput | Prisma.SortOrder;
     exclusionCriteria?: Prisma.SortOrderInput | Prisma.SortOrder;
     searchHints?: Prisma.SortOrderInput | Prisma.SortOrder;
-    knownLeaders?: Prisma.SortOrder;
-    relevantTopics?: Prisma.SortOrder;
+    knownLeaders?: Prisma.SortOrderInput | Prisma.SortOrder;
+    relevantTopics?: Prisma.SortOrderInput | Prisma.SortOrder;
     evaluationDimensions?: Prisma.SortOrderInput | Prisma.SortOrder;
     lastDiscoveryAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     entityCount?: Prisma.SortOrder;
@@ -302,12 +302,12 @@ export type ResearchDomainScalarWhereWithAggregatesInput = {
     id?: Prisma.StringWithAggregatesFilter<"ResearchDomain"> | string;
     name?: Prisma.StringWithAggregatesFilter<"ResearchDomain"> | string;
     description?: Prisma.StringWithAggregatesFilter<"ResearchDomain"> | string;
-    entityTypes?: Prisma.StringNullableListFilter<"ResearchDomain">;
+    entityTypes?: Prisma.JsonNullableWithAggregatesFilter<"ResearchDomain">;
     inclusionCriteria?: Prisma.StringNullableWithAggregatesFilter<"ResearchDomain"> | string | null;
     exclusionCriteria?: Prisma.StringNullableWithAggregatesFilter<"ResearchDomain"> | string | null;
     searchHints?: Prisma.StringNullableWithAggregatesFilter<"ResearchDomain"> | string | null;
-    knownLeaders?: Prisma.StringNullableListFilter<"ResearchDomain">;
-    relevantTopics?: Prisma.StringNullableListFilter<"ResearchDomain">;
+    knownLeaders?: Prisma.JsonNullableWithAggregatesFilter<"ResearchDomain">;
+    relevantTopics?: Prisma.JsonNullableWithAggregatesFilter<"ResearchDomain">;
     evaluationDimensions?: Prisma.JsonNullableWithAggregatesFilter<"ResearchDomain">;
     lastDiscoveryAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ResearchDomain"> | Date | string | null;
     entityCount?: Prisma.IntWithAggregatesFilter<"ResearchDomain"> | number;
@@ -319,12 +319,12 @@ export type ResearchDomainCreateInput = {
     id?: string;
     name: string;
     description: string;
-    entityTypes?: Prisma.ResearchDomainCreateentityTypesInput | string[];
+    entityTypes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     inclusionCriteria?: string | null;
     exclusionCriteria?: string | null;
     searchHints?: string | null;
-    knownLeaders?: Prisma.ResearchDomainCreateknownLeadersInput | string[];
-    relevantTopics?: Prisma.ResearchDomainCreaterelevantTopicsInput | string[];
+    knownLeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    relevantTopics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evaluationDimensions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastDiscoveryAt?: Date | string | null;
     entityCount?: number;
@@ -337,12 +337,12 @@ export type ResearchDomainUncheckedCreateInput = {
     id?: string;
     name: string;
     description: string;
-    entityTypes?: Prisma.ResearchDomainCreateentityTypesInput | string[];
+    entityTypes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     inclusionCriteria?: string | null;
     exclusionCriteria?: string | null;
     searchHints?: string | null;
-    knownLeaders?: Prisma.ResearchDomainCreateknownLeadersInput | string[];
-    relevantTopics?: Prisma.ResearchDomainCreaterelevantTopicsInput | string[];
+    knownLeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    relevantTopics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evaluationDimensions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastDiscoveryAt?: Date | string | null;
     entityCount?: number;
@@ -355,12 +355,12 @@ export type ResearchDomainUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
-    entityTypes?: Prisma.ResearchDomainUpdateentityTypesInput | string[];
+    entityTypes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     inclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     exclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     searchHints?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    knownLeaders?: Prisma.ResearchDomainUpdateknownLeadersInput | string[];
-    relevantTopics?: Prisma.ResearchDomainUpdaterelevantTopicsInput | string[];
+    knownLeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    relevantTopics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evaluationDimensions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -373,12 +373,12 @@ export type ResearchDomainUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
-    entityTypes?: Prisma.ResearchDomainUpdateentityTypesInput | string[];
+    entityTypes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     inclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     exclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     searchHints?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    knownLeaders?: Prisma.ResearchDomainUpdateknownLeadersInput | string[];
-    relevantTopics?: Prisma.ResearchDomainUpdaterelevantTopicsInput | string[];
+    knownLeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    relevantTopics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evaluationDimensions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -391,12 +391,12 @@ export type ResearchDomainCreateManyInput = {
     id?: string;
     name: string;
     description: string;
-    entityTypes?: Prisma.ResearchDomainCreateentityTypesInput | string[];
+    entityTypes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     inclusionCriteria?: string | null;
     exclusionCriteria?: string | null;
     searchHints?: string | null;
-    knownLeaders?: Prisma.ResearchDomainCreateknownLeadersInput | string[];
-    relevantTopics?: Prisma.ResearchDomainCreaterelevantTopicsInput | string[];
+    knownLeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    relevantTopics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evaluationDimensions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastDiscoveryAt?: Date | string | null;
     entityCount?: number;
@@ -408,12 +408,12 @@ export type ResearchDomainUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
-    entityTypes?: Prisma.ResearchDomainUpdateentityTypesInput | string[];
+    entityTypes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     inclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     exclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     searchHints?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    knownLeaders?: Prisma.ResearchDomainUpdateknownLeadersInput | string[];
-    relevantTopics?: Prisma.ResearchDomainUpdaterelevantTopicsInput | string[];
+    knownLeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    relevantTopics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evaluationDimensions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -425,12 +425,12 @@ export type ResearchDomainUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
-    entityTypes?: Prisma.ResearchDomainUpdateentityTypesInput | string[];
+    entityTypes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     inclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     exclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     searchHints?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    knownLeaders?: Prisma.ResearchDomainUpdateknownLeadersInput | string[];
-    relevantTopics?: Prisma.ResearchDomainUpdaterelevantTopicsInput | string[];
+    knownLeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    relevantTopics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evaluationDimensions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -505,37 +505,16 @@ export type ResearchDomainUpdateOneWithoutEntitiesNestedInput = {
     connect?: Prisma.ResearchDomainWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ResearchDomainUpdateToOneWithWhereWithoutEntitiesInput, Prisma.ResearchDomainUpdateWithoutEntitiesInput>, Prisma.ResearchDomainUncheckedUpdateWithoutEntitiesInput>;
 };
-export type ResearchDomainCreateentityTypesInput = {
-    set: string[];
-};
-export type ResearchDomainCreateknownLeadersInput = {
-    set: string[];
-};
-export type ResearchDomainCreaterelevantTopicsInput = {
-    set: string[];
-};
-export type ResearchDomainUpdateentityTypesInput = {
-    set?: string[];
-    push?: string | string[];
-};
-export type ResearchDomainUpdateknownLeadersInput = {
-    set?: string[];
-    push?: string | string[];
-};
-export type ResearchDomainUpdaterelevantTopicsInput = {
-    set?: string[];
-    push?: string | string[];
-};
 export type ResearchDomainCreateWithoutEntitiesInput = {
     id?: string;
     name: string;
     description: string;
-    entityTypes?: Prisma.ResearchDomainCreateentityTypesInput | string[];
+    entityTypes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     inclusionCriteria?: string | null;
     exclusionCriteria?: string | null;
     searchHints?: string | null;
-    knownLeaders?: Prisma.ResearchDomainCreateknownLeadersInput | string[];
-    relevantTopics?: Prisma.ResearchDomainCreaterelevantTopicsInput | string[];
+    knownLeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    relevantTopics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evaluationDimensions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastDiscoveryAt?: Date | string | null;
     entityCount?: number;
@@ -547,12 +526,12 @@ export type ResearchDomainUncheckedCreateWithoutEntitiesInput = {
     id?: string;
     name: string;
     description: string;
-    entityTypes?: Prisma.ResearchDomainCreateentityTypesInput | string[];
+    entityTypes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     inclusionCriteria?: string | null;
     exclusionCriteria?: string | null;
     searchHints?: string | null;
-    knownLeaders?: Prisma.ResearchDomainCreateknownLeadersInput | string[];
-    relevantTopics?: Prisma.ResearchDomainCreaterelevantTopicsInput | string[];
+    knownLeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    relevantTopics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evaluationDimensions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastDiscoveryAt?: Date | string | null;
     entityCount?: number;
@@ -577,12 +556,12 @@ export type ResearchDomainUpdateWithoutEntitiesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
-    entityTypes?: Prisma.ResearchDomainUpdateentityTypesInput | string[];
+    entityTypes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     inclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     exclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     searchHints?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    knownLeaders?: Prisma.ResearchDomainUpdateknownLeadersInput | string[];
-    relevantTopics?: Prisma.ResearchDomainUpdaterelevantTopicsInput | string[];
+    knownLeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    relevantTopics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evaluationDimensions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -594,12 +573,12 @@ export type ResearchDomainUncheckedUpdateWithoutEntitiesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     description?: Prisma.StringFieldUpdateOperationsInput | string;
-    entityTypes?: Prisma.ResearchDomainUpdateentityTypesInput | string[];
+    entityTypes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     inclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     exclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     searchHints?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    knownLeaders?: Prisma.ResearchDomainUpdateknownLeadersInput | string[];
-    relevantTopics?: Prisma.ResearchDomainUpdaterelevantTopicsInput | string[];
+    knownLeaders?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    relevantTopics?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evaluationDimensions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     lastDiscoveryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -717,12 +696,12 @@ export type $ResearchDomainPayload<ExtArgs extends runtime.Types.Extensions.Inte
         id: string;
         name: string;
         description: string;
-        entityTypes: string[];
+        entityTypes: runtime.JsonValue | null;
         inclusionCriteria: string | null;
         exclusionCriteria: string | null;
         searchHints: string | null;
-        knownLeaders: string[];
-        relevantTopics: string[];
+        knownLeaders: runtime.JsonValue | null;
+        relevantTopics: runtime.JsonValue | null;
         evaluationDimensions: runtime.JsonValue | null;
         lastDiscoveryAt: Date | null;
         entityCount: number;
@@ -1087,12 +1066,12 @@ export interface ResearchDomainFieldRefs {
     readonly id: Prisma.FieldRef<"ResearchDomain", 'String'>;
     readonly name: Prisma.FieldRef<"ResearchDomain", 'String'>;
     readonly description: Prisma.FieldRef<"ResearchDomain", 'String'>;
-    readonly entityTypes: Prisma.FieldRef<"ResearchDomain", 'String[]'>;
+    readonly entityTypes: Prisma.FieldRef<"ResearchDomain", 'Json'>;
     readonly inclusionCriteria: Prisma.FieldRef<"ResearchDomain", 'String'>;
     readonly exclusionCriteria: Prisma.FieldRef<"ResearchDomain", 'String'>;
     readonly searchHints: Prisma.FieldRef<"ResearchDomain", 'String'>;
-    readonly knownLeaders: Prisma.FieldRef<"ResearchDomain", 'String[]'>;
-    readonly relevantTopics: Prisma.FieldRef<"ResearchDomain", 'String[]'>;
+    readonly knownLeaders: Prisma.FieldRef<"ResearchDomain", 'Json'>;
+    readonly relevantTopics: Prisma.FieldRef<"ResearchDomain", 'Json'>;
     readonly evaluationDimensions: Prisma.FieldRef<"ResearchDomain", 'Json'>;
     readonly lastDiscoveryAt: Prisma.FieldRef<"ResearchDomain", 'DateTime'>;
     readonly entityCount: Prisma.FieldRef<"ResearchDomain", 'Int'>;
@@ -1319,7 +1298,6 @@ export type ResearchDomainCreateManyArgs<ExtArgs extends runtime.Types.Extension
      * The data used to create many ResearchDomains.
      */
     data: Prisma.ResearchDomainCreateManyInput | Prisma.ResearchDomainCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * ResearchDomain createManyAndReturn
@@ -1337,7 +1315,6 @@ export type ResearchDomainCreateManyAndReturnArgs<ExtArgs extends runtime.Types.
      * The data used to create many ResearchDomains.
      */
     data: Prisma.ResearchDomainCreateManyInput | Prisma.ResearchDomainCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * ResearchDomain update

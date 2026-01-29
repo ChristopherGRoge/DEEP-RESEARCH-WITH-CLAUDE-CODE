@@ -1408,7 +1408,6 @@ export type SourceCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
      * The data used to create many Sources.
      */
     data: Prisma.SourceCreateManyInput | Prisma.SourceCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * Source createManyAndReturn
@@ -1426,7 +1425,6 @@ export type SourceCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
      * The data used to create many Sources.
      */
     data: Prisma.SourceCreateManyInput | Prisma.SourceCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * Source update

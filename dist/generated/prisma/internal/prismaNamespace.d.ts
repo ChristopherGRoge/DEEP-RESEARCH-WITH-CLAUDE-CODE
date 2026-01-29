@@ -1550,9 +1550,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
  * Enums
  */
 export declare const TransactionIsolationLevel: {
-    readonly ReadUncommitted: "ReadUncommitted";
-    readonly ReadCommitted: "ReadCommitted";
-    readonly RepeatableRead: "RepeatableRead";
     readonly Serializable: "Serializable";
 };
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
@@ -1881,11 +1878,6 @@ export declare const JsonNullValueInput: {
     readonly JsonNull: runtime.JsonNullClass;
 };
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput];
-export declare const QueryMode: {
-    readonly default: "default";
-    readonly insensitive: "insensitive";
-};
-export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
 export declare const NullsOrder: {
     readonly first: "first";
     readonly last: "last";
@@ -1897,6 +1889,11 @@ export declare const JsonNullValueFilter: {
     readonly AnyNull: runtime.AnyNullClass;
 };
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter];
+export declare const QueryMode: {
+    readonly default: "default";
+    readonly insensitive: "insensitive";
+};
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
 /**
  * Field references
  */
@@ -1905,25 +1902,13 @@ export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof Json
  */
 export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>;
 /**
- * Reference to a field of type 'String[]'
- */
-export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>;
-/**
  * Reference to a field of type 'ResearchWorkflow'
  */
 export type EnumResearchWorkflowFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ResearchWorkflow'>;
 /**
- * Reference to a field of type 'ResearchWorkflow[]'
- */
-export type ListEnumResearchWorkflowFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ResearchWorkflow[]'>;
-/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
-/**
- * Reference to a field of type 'DateTime[]'
- */
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
 /**
  * Reference to a field of type 'Boolean'
  */
@@ -1933,17 +1918,9 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
 /**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
-/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>;
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>;
 /**
  * Reference to a field of type 'Json'
  */
@@ -1957,73 +1934,37 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
  */
 export type EnumAssertionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssertionStatus'>;
 /**
- * Reference to a field of type 'AssertionStatus[]'
- */
-export type ListEnumAssertionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssertionStatus[]'>;
-/**
  * Reference to a field of type 'AssertionCriticality'
  */
 export type EnumAssertionCriticalityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssertionCriticality'>;
-/**
- * Reference to a field of type 'AssertionCriticality[]'
- */
-export type ListEnumAssertionCriticalityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AssertionCriticality[]'>;
 /**
  * Reference to a field of type 'SourceStatus'
  */
 export type EnumSourceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SourceStatus'>;
 /**
- * Reference to a field of type 'SourceStatus[]'
- */
-export type ListEnumSourceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SourceStatus[]'>;
-/**
  * Reference to a field of type 'SourceRelevance'
  */
 export type EnumSourceRelevanceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SourceRelevance'>;
-/**
- * Reference to a field of type 'SourceRelevance[]'
- */
-export type ListEnumSourceRelevanceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SourceRelevance[]'>;
 /**
  * Reference to a field of type 'ExtractionStatus'
  */
 export type EnumExtractionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExtractionStatus'>;
 /**
- * Reference to a field of type 'ExtractionStatus[]'
- */
-export type ListEnumExtractionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExtractionStatus[]'>;
-/**
  * Reference to a field of type 'ResearchSessionStatus'
  */
 export type EnumResearchSessionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ResearchSessionStatus'>;
-/**
- * Reference to a field of type 'ResearchSessionStatus[]'
- */
-export type ListEnumResearchSessionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ResearchSessionStatus[]'>;
 /**
  * Reference to a field of type 'ResearchTaskStatus'
  */
 export type EnumResearchTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ResearchTaskStatus'>;
 /**
- * Reference to a field of type 'ResearchTaskStatus[]'
- */
-export type ListEnumResearchTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ResearchTaskStatus[]'>;
-/**
  * Reference to a field of type 'SourceType'
  */
 export type EnumSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SourceType'>;
 /**
- * Reference to a field of type 'SourceType[]'
- */
-export type ListEnumSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SourceType[]'>;
-/**
  * Reference to a field of type 'CrawlStatus'
  */
 export type EnumCrawlStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CrawlStatus'>;
-/**
- * Reference to a field of type 'CrawlStatus[]'
- */
-export type ListEnumCrawlStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CrawlStatus[]'>;
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */

@@ -108,7 +108,7 @@ const createEntityTool = (sessionId, sessionManager) => (0, claude_agent_sdk_1.t
         let entity = await tools_1.prisma.entity.findFirst({
             where: {
                 projectId: session.projectId,
-                name: { equals: args.name, mode: 'insensitive' },
+                name: { equals: args.name },
             },
         });
         if (entity) {

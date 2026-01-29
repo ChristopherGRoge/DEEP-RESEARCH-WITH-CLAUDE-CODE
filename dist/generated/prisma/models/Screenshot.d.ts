@@ -1072,7 +1072,6 @@ export type ScreenshotCreateManyArgs<ExtArgs extends runtime.Types.Extensions.In
      * The data used to create many Screenshots.
      */
     data: Prisma.ScreenshotCreateManyInput | Prisma.ScreenshotCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * Screenshot createManyAndReturn
@@ -1090,7 +1089,6 @@ export type ScreenshotCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exte
      * The data used to create many Screenshots.
      */
     data: Prisma.ScreenshotCreateManyInput | Prisma.ScreenshotCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * Screenshot update

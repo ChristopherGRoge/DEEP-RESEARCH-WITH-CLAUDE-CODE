@@ -312,7 +312,6 @@ export type ReasoningCreateOrConnectWithoutAssertionInput = {
 };
 export type ReasoningCreateManyAssertionInputEnvelope = {
     data: Prisma.ReasoningCreateManyAssertionInput | Prisma.ReasoningCreateManyAssertionInput[];
-    skipDuplicates?: boolean;
 };
 export type ReasoningUpsertWithWhereUniqueWithoutAssertionInput = {
     where: Prisma.ReasoningWhereUniqueInput;
@@ -993,7 +992,6 @@ export type ReasoningCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Int
      * The data used to create many Reasonings.
      */
     data: Prisma.ReasoningCreateManyInput | Prisma.ReasoningCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * Reasoning createManyAndReturn
@@ -1011,7 +1009,6 @@ export type ReasoningCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exten
      * The data used to create many Reasonings.
      */
     data: Prisma.ReasoningCreateManyInput | Prisma.ReasoningCreateManyInput[];
-    skipDuplicates?: boolean;
     /**
      * Choose, which related nodes to fetch as well
      */

@@ -41,7 +41,7 @@ export declare function createDiscoverySource(input: SourceCreateInput): Promise
     validatedCount: number;
     hitRate: number | null;
     avgNoveltyScore: number | null;
-    tags: string[];
+    tags: import("@prisma/client/runtime/client").JsonValue | null;
     priority: number;
 }>;
 /**
@@ -75,7 +75,7 @@ export declare function getDiscoverySource(sourceId: string): Promise<({
     validatedCount: number;
     hitRate: number | null;
     avgNoveltyScore: number | null;
-    tags: string[];
+    tags: import("@prisma/client/runtime/client").JsonValue | null;
     priority: number;
 }) | null>;
 /**
@@ -105,7 +105,7 @@ export declare function updateDiscoverySource(sourceId: string, updates: Partial
     validatedCount: number;
     hitRate: number | null;
     avgNoveltyScore: number | null;
-    tags: string[];
+    tags: import("@prisma/client/runtime/client").JsonValue | null;
     priority: number;
 }>;
 /**
@@ -135,7 +135,7 @@ export declare function deleteDiscoverySource(sourceId: string): Promise<{
     validatedCount: number;
     hitRate: number | null;
     avgNoveltyScore: number | null;
-    tags: string[];
+    tags: import("@prisma/client/runtime/client").JsonValue | null;
     priority: number;
 }>;
 /**
@@ -173,7 +173,7 @@ export declare function listDiscoverySources(filters?: {
     validatedCount: number;
     hitRate: number | null;
     avgNoveltyScore: number | null;
-    tags: string[];
+    tags: import("@prisma/client/runtime/client").JsonValue | null;
     priority: number;
 })[]>;
 /**
@@ -207,7 +207,7 @@ export declare function getDiscoverySourcesByType(sourceType: SourceType): Promi
     validatedCount: number;
     hitRate: number | null;
     avgNoveltyScore: number | null;
-    tags: string[];
+    tags: import("@prisma/client/runtime/client").JsonValue | null;
     priority: number;
 })[]>;
 /**
@@ -237,7 +237,7 @@ export declare function getStaleSources(maxAgeHours: number): Promise<{
     validatedCount: number;
     hitRate: number | null;
     avgNoveltyScore: number | null;
-    tags: string[];
+    tags: import("@prisma/client/runtime/client").JsonValue | null;
     priority: number;
 }[]>;
 /**
@@ -289,7 +289,7 @@ export declare function markSourceCrawled(sourceId: string, success: boolean, er
     validatedCount: number;
     hitRate: number | null;
     avgNoveltyScore: number | null;
-    tags: string[];
+    tags: import("@prisma/client/runtime/client").JsonValue | null;
     priority: number;
 }>;
 /**
@@ -322,7 +322,7 @@ export declare function updateSourceMetrics(sourceId: string, metrics: {
     validatedCount: number;
     hitRate: number | null;
     avgNoveltyScore: number | null;
-    tags: string[];
+    tags: import("@prisma/client/runtime/client").JsonValue | null;
     priority: number;
 }>;
 /**
@@ -358,7 +358,7 @@ export declare function seedDefaultSources(): Promise<{
             validatedCount: number;
             hitRate: number | null;
             avgNoveltyScore: number | null;
-            tags: string[];
+            tags: import("@prisma/client/runtime/client").JsonValue | null;
             priority: number;
         };
         action: string;

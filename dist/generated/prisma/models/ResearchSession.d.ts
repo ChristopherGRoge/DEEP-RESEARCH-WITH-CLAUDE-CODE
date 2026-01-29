@@ -247,7 +247,7 @@ export type ResearchSessionGroupByOutputType = {
     startedAt: Date | null;
     completedAt: Date | null;
     pausedAt: Date | null;
-    categories: string[];
+    categories: runtime.JsonValue | null;
     mode: string;
     config: runtime.JsonValue | null;
     overallProgress: runtime.JsonValue | null;
@@ -279,7 +279,7 @@ export type ResearchSessionWhereInput = {
     startedAt?: Prisma.DateTimeNullableFilter<"ResearchSession"> | Date | string | null;
     completedAt?: Prisma.DateTimeNullableFilter<"ResearchSession"> | Date | string | null;
     pausedAt?: Prisma.DateTimeNullableFilter<"ResearchSession"> | Date | string | null;
-    categories?: Prisma.StringNullableListFilter<"ResearchSession">;
+    categories?: Prisma.JsonNullableFilter<"ResearchSession">;
     mode?: Prisma.StringFilter<"ResearchSession"> | string;
     config?: Prisma.JsonNullableFilter<"ResearchSession">;
     overallProgress?: Prisma.JsonNullableFilter<"ResearchSession">;
@@ -302,7 +302,7 @@ export type ResearchSessionOrderByWithRelationInput = {
     startedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     completedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     pausedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
-    categories?: Prisma.SortOrder;
+    categories?: Prisma.SortOrderInput | Prisma.SortOrder;
     mode?: Prisma.SortOrder;
     config?: Prisma.SortOrderInput | Prisma.SortOrder;
     overallProgress?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -328,7 +328,7 @@ export type ResearchSessionWhereUniqueInput = Prisma.AtLeast<{
     startedAt?: Prisma.DateTimeNullableFilter<"ResearchSession"> | Date | string | null;
     completedAt?: Prisma.DateTimeNullableFilter<"ResearchSession"> | Date | string | null;
     pausedAt?: Prisma.DateTimeNullableFilter<"ResearchSession"> | Date | string | null;
-    categories?: Prisma.StringNullableListFilter<"ResearchSession">;
+    categories?: Prisma.JsonNullableFilter<"ResearchSession">;
     mode?: Prisma.StringFilter<"ResearchSession"> | string;
     config?: Prisma.JsonNullableFilter<"ResearchSession">;
     overallProgress?: Prisma.JsonNullableFilter<"ResearchSession">;
@@ -351,7 +351,7 @@ export type ResearchSessionOrderByWithAggregationInput = {
     startedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     completedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
     pausedAt?: Prisma.SortOrderInput | Prisma.SortOrder;
-    categories?: Prisma.SortOrder;
+    categories?: Prisma.SortOrderInput | Prisma.SortOrder;
     mode?: Prisma.SortOrder;
     config?: Prisma.SortOrderInput | Prisma.SortOrder;
     overallProgress?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -380,7 +380,7 @@ export type ResearchSessionScalarWhereWithAggregatesInput = {
     startedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ResearchSession"> | Date | string | null;
     completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ResearchSession"> | Date | string | null;
     pausedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ResearchSession"> | Date | string | null;
-    categories?: Prisma.StringNullableListFilter<"ResearchSession">;
+    categories?: Prisma.JsonNullableWithAggregatesFilter<"ResearchSession">;
     mode?: Prisma.StringWithAggregatesFilter<"ResearchSession"> | string;
     config?: Prisma.JsonNullableWithAggregatesFilter<"ResearchSession">;
     overallProgress?: Prisma.JsonNullableWithAggregatesFilter<"ResearchSession">;
@@ -400,7 +400,7 @@ export type ResearchSessionCreateInput = {
     startedAt?: Date | string | null;
     completedAt?: Date | string | null;
     pausedAt?: Date | string | null;
-    categories?: Prisma.ResearchSessionCreatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode: string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -423,7 +423,7 @@ export type ResearchSessionUncheckedCreateInput = {
     startedAt?: Date | string | null;
     completedAt?: Date | string | null;
     pausedAt?: Date | string | null;
-    categories?: Prisma.ResearchSessionCreatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode: string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -444,7 +444,7 @@ export type ResearchSessionUpdateInput = {
     startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    categories?: Prisma.ResearchSessionUpdatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -467,7 +467,7 @@ export type ResearchSessionUncheckedUpdateInput = {
     startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    categories?: Prisma.ResearchSessionUpdatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -489,7 +489,7 @@ export type ResearchSessionCreateManyInput = {
     startedAt?: Date | string | null;
     completedAt?: Date | string | null;
     pausedAt?: Date | string | null;
-    categories?: Prisma.ResearchSessionCreatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode: string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -509,7 +509,7 @@ export type ResearchSessionUpdateManyMutationInput = {
     startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    categories?: Prisma.ResearchSessionUpdatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -530,7 +530,7 @@ export type ResearchSessionUncheckedUpdateManyInput = {
     startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    categories?: Prisma.ResearchSessionUpdatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -664,15 +664,8 @@ export type ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput = {
     updateMany?: Prisma.ResearchSessionUpdateManyWithWhereWithoutEntityInput | Prisma.ResearchSessionUpdateManyWithWhereWithoutEntityInput[];
     deleteMany?: Prisma.ResearchSessionScalarWhereInput | Prisma.ResearchSessionScalarWhereInput[];
 };
-export type ResearchSessionCreatecategoriesInput = {
-    set: string[];
-};
 export type EnumResearchSessionStatusFieldUpdateOperationsInput = {
     set?: $Enums.ResearchSessionStatus;
-};
-export type ResearchSessionUpdatecategoriesInput = {
-    set?: string[];
-    push?: string | string[];
 };
 export type ResearchSessionCreateNestedOneWithoutTasksInput = {
     create?: Prisma.XOR<Prisma.ResearchSessionCreateWithoutTasksInput, Prisma.ResearchSessionUncheckedCreateWithoutTasksInput>;
@@ -695,7 +688,7 @@ export type ResearchSessionCreateWithoutEntityInput = {
     startedAt?: Date | string | null;
     completedAt?: Date | string | null;
     pausedAt?: Date | string | null;
-    categories?: Prisma.ResearchSessionCreatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode: string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -716,7 +709,7 @@ export type ResearchSessionUncheckedCreateWithoutEntityInput = {
     startedAt?: Date | string | null;
     completedAt?: Date | string | null;
     pausedAt?: Date | string | null;
-    categories?: Prisma.ResearchSessionCreatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode: string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -734,7 +727,6 @@ export type ResearchSessionCreateOrConnectWithoutEntityInput = {
 };
 export type ResearchSessionCreateManyEntityInputEnvelope = {
     data: Prisma.ResearchSessionCreateManyEntityInput | Prisma.ResearchSessionCreateManyEntityInput[];
-    skipDuplicates?: boolean;
 };
 export type ResearchSessionUpsertWithWhereUniqueWithoutEntityInput = {
     where: Prisma.ResearchSessionWhereUniqueInput;
@@ -762,7 +754,7 @@ export type ResearchSessionScalarWhereInput = {
     startedAt?: Prisma.DateTimeNullableFilter<"ResearchSession"> | Date | string | null;
     completedAt?: Prisma.DateTimeNullableFilter<"ResearchSession"> | Date | string | null;
     pausedAt?: Prisma.DateTimeNullableFilter<"ResearchSession"> | Date | string | null;
-    categories?: Prisma.StringNullableListFilter<"ResearchSession">;
+    categories?: Prisma.JsonNullableFilter<"ResearchSession">;
     mode?: Prisma.StringFilter<"ResearchSession"> | string;
     config?: Prisma.JsonNullableFilter<"ResearchSession">;
     overallProgress?: Prisma.JsonNullableFilter<"ResearchSession">;
@@ -782,7 +774,7 @@ export type ResearchSessionCreateWithoutTasksInput = {
     startedAt?: Date | string | null;
     completedAt?: Date | string | null;
     pausedAt?: Date | string | null;
-    categories?: Prisma.ResearchSessionCreatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode: string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -804,7 +796,7 @@ export type ResearchSessionUncheckedCreateWithoutTasksInput = {
     startedAt?: Date | string | null;
     completedAt?: Date | string | null;
     pausedAt?: Date | string | null;
-    categories?: Prisma.ResearchSessionCreatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode: string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -837,7 +829,7 @@ export type ResearchSessionUpdateWithoutTasksInput = {
     startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    categories?: Prisma.ResearchSessionUpdatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -859,7 +851,7 @@ export type ResearchSessionUncheckedUpdateWithoutTasksInput = {
     startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    categories?: Prisma.ResearchSessionUpdatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -879,7 +871,7 @@ export type ResearchSessionCreateManyEntityInput = {
     startedAt?: Date | string | null;
     completedAt?: Date | string | null;
     pausedAt?: Date | string | null;
-    categories?: Prisma.ResearchSessionCreatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode: string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -899,7 +891,7 @@ export type ResearchSessionUpdateWithoutEntityInput = {
     startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    categories?: Prisma.ResearchSessionUpdatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -920,7 +912,7 @@ export type ResearchSessionUncheckedUpdateWithoutEntityInput = {
     startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    categories?: Prisma.ResearchSessionUpdatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -941,7 +933,7 @@ export type ResearchSessionUncheckedUpdateManyWithoutEntityInput = {
     startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    categories?: Prisma.ResearchSessionUpdatecategoriesInput | string[];
+    categories?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     mode?: Prisma.StringFieldUpdateOperationsInput | string;
     config?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     overallProgress?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
@@ -1093,7 +1085,7 @@ export type $ResearchSessionPayload<ExtArgs extends runtime.Types.Extensions.Int
         startedAt: Date | null;
         completedAt: Date | null;
         pausedAt: Date | null;
-        categories: string[];
+        categories: runtime.JsonValue | null;
         mode: string;
         config: runtime.JsonValue | null;
         overallProgress: runtime.JsonValue | null;
@@ -1468,7 +1460,7 @@ export interface ResearchSessionFieldRefs {
     readonly startedAt: Prisma.FieldRef<"ResearchSession", 'DateTime'>;
     readonly completedAt: Prisma.FieldRef<"ResearchSession", 'DateTime'>;
     readonly pausedAt: Prisma.FieldRef<"ResearchSession", 'DateTime'>;
-    readonly categories: Prisma.FieldRef<"ResearchSession", 'String[]'>;
+    readonly categories: Prisma.FieldRef<"ResearchSession", 'Json'>;
     readonly mode: Prisma.FieldRef<"ResearchSession", 'String'>;
     readonly config: Prisma.FieldRef<"ResearchSession", 'Json'>;
     readonly overallProgress: Prisma.FieldRef<"ResearchSession", 'Json'>;
@@ -1698,7 +1690,6 @@ export type ResearchSessionCreateManyArgs<ExtArgs extends runtime.Types.Extensio
      * The data used to create many ResearchSessions.
      */
     data: Prisma.ResearchSessionCreateManyInput | Prisma.ResearchSessionCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * ResearchSession createManyAndReturn
@@ -1716,7 +1707,6 @@ export type ResearchSessionCreateManyAndReturnArgs<ExtArgs extends runtime.Types
      * The data used to create many ResearchSessions.
      */
     data: Prisma.ResearchSessionCreateManyInput | Prisma.ResearchSessionCreateManyInput[];
-    skipDuplicates?: boolean;
     /**
      * Choose, which related nodes to fetch as well
      */

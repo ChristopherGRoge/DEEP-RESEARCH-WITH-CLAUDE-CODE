@@ -100,7 +100,7 @@ export declare function getPendingValidation(projectId?: string): Promise<{
         humanResponse: string | null;
         validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
         partiallyValidated: boolean;
-        evidenceScreenshots: string[];
+        evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
         evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
         evidenceDescription: string | null;
         evidenceScreenshotPath: string | null;
@@ -214,7 +214,7 @@ export declare function getAssertionsWithoutSources(projectId?: string): Promise
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;

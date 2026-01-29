@@ -247,8 +247,8 @@ export type DiscoveryTrendGroupByOutputType = {
     firstSeenAt: Date;
     lastSeenAt: Date;
     peakAt: Date | null;
-    entityIds: string[];
-    keywords: string[];
+    entityIds: runtime.JsonValue | null;
+    keywords: runtime.JsonValue | null;
     trendScore: number | null;
     emergingScore: number | null;
     createdAt: Date;
@@ -278,8 +278,8 @@ export type DiscoveryTrendWhereInput = {
     firstSeenAt?: Prisma.DateTimeFilter<"DiscoveryTrend"> | Date | string;
     lastSeenAt?: Prisma.DateTimeFilter<"DiscoveryTrend"> | Date | string;
     peakAt?: Prisma.DateTimeNullableFilter<"DiscoveryTrend"> | Date | string | null;
-    entityIds?: Prisma.StringNullableListFilter<"DiscoveryTrend">;
-    keywords?: Prisma.StringNullableListFilter<"DiscoveryTrend">;
+    entityIds?: Prisma.JsonNullableFilter<"DiscoveryTrend">;
+    keywords?: Prisma.JsonNullableFilter<"DiscoveryTrend">;
     trendScore?: Prisma.FloatNullableFilter<"DiscoveryTrend"> | number | null;
     emergingScore?: Prisma.FloatNullableFilter<"DiscoveryTrend"> | number | null;
     createdAt?: Prisma.DateTimeFilter<"DiscoveryTrend"> | Date | string;
@@ -298,8 +298,8 @@ export type DiscoveryTrendOrderByWithRelationInput = {
     firstSeenAt?: Prisma.SortOrder;
     lastSeenAt?: Prisma.SortOrder;
     peakAt?: Prisma.SortOrderInput | Prisma.SortOrder;
-    entityIds?: Prisma.SortOrder;
-    keywords?: Prisma.SortOrder;
+    entityIds?: Prisma.SortOrderInput | Prisma.SortOrder;
+    keywords?: Prisma.SortOrderInput | Prisma.SortOrder;
     trendScore?: Prisma.SortOrderInput | Prisma.SortOrder;
     emergingScore?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
@@ -321,8 +321,8 @@ export type DiscoveryTrendWhereUniqueInput = Prisma.AtLeast<{
     firstSeenAt?: Prisma.DateTimeFilter<"DiscoveryTrend"> | Date | string;
     lastSeenAt?: Prisma.DateTimeFilter<"DiscoveryTrend"> | Date | string;
     peakAt?: Prisma.DateTimeNullableFilter<"DiscoveryTrend"> | Date | string | null;
-    entityIds?: Prisma.StringNullableListFilter<"DiscoveryTrend">;
-    keywords?: Prisma.StringNullableListFilter<"DiscoveryTrend">;
+    entityIds?: Prisma.JsonNullableFilter<"DiscoveryTrend">;
+    keywords?: Prisma.JsonNullableFilter<"DiscoveryTrend">;
     trendScore?: Prisma.FloatNullableFilter<"DiscoveryTrend"> | number | null;
     emergingScore?: Prisma.FloatNullableFilter<"DiscoveryTrend"> | number | null;
     createdAt?: Prisma.DateTimeFilter<"DiscoveryTrend"> | Date | string;
@@ -341,8 +341,8 @@ export type DiscoveryTrendOrderByWithAggregationInput = {
     firstSeenAt?: Prisma.SortOrder;
     lastSeenAt?: Prisma.SortOrder;
     peakAt?: Prisma.SortOrderInput | Prisma.SortOrder;
-    entityIds?: Prisma.SortOrder;
-    keywords?: Prisma.SortOrder;
+    entityIds?: Prisma.SortOrderInput | Prisma.SortOrder;
+    keywords?: Prisma.SortOrderInput | Prisma.SortOrder;
     trendScore?: Prisma.SortOrderInput | Prisma.SortOrder;
     emergingScore?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
@@ -369,8 +369,8 @@ export type DiscoveryTrendScalarWhereWithAggregatesInput = {
     firstSeenAt?: Prisma.DateTimeWithAggregatesFilter<"DiscoveryTrend"> | Date | string;
     lastSeenAt?: Prisma.DateTimeWithAggregatesFilter<"DiscoveryTrend"> | Date | string;
     peakAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DiscoveryTrend"> | Date | string | null;
-    entityIds?: Prisma.StringNullableListFilter<"DiscoveryTrend">;
-    keywords?: Prisma.StringNullableListFilter<"DiscoveryTrend">;
+    entityIds?: Prisma.JsonNullableWithAggregatesFilter<"DiscoveryTrend">;
+    keywords?: Prisma.JsonNullableWithAggregatesFilter<"DiscoveryTrend">;
     trendScore?: Prisma.FloatNullableWithAggregatesFilter<"DiscoveryTrend"> | number | null;
     emergingScore?: Prisma.FloatNullableWithAggregatesFilter<"DiscoveryTrend"> | number | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"DiscoveryTrend"> | Date | string;
@@ -389,8 +389,8 @@ export type DiscoveryTrendCreateInput = {
     firstSeenAt: Date | string;
     lastSeenAt: Date | string;
     peakAt?: Date | string | null;
-    entityIds?: Prisma.DiscoveryTrendCreateentityIdsInput | string[];
-    keywords?: Prisma.DiscoveryTrendCreatekeywordsInput | string[];
+    entityIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     trendScore?: number | null;
     emergingScore?: number | null;
     createdAt?: Date | string;
@@ -409,8 +409,8 @@ export type DiscoveryTrendUncheckedCreateInput = {
     firstSeenAt: Date | string;
     lastSeenAt: Date | string;
     peakAt?: Date | string | null;
-    entityIds?: Prisma.DiscoveryTrendCreateentityIdsInput | string[];
-    keywords?: Prisma.DiscoveryTrendCreatekeywordsInput | string[];
+    entityIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     trendScore?: number | null;
     emergingScore?: number | null;
     createdAt?: Date | string;
@@ -429,8 +429,8 @@ export type DiscoveryTrendUpdateInput = {
     firstSeenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastSeenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     peakAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    entityIds?: Prisma.DiscoveryTrendUpdateentityIdsInput | string[];
-    keywords?: Prisma.DiscoveryTrendUpdatekeywordsInput | string[];
+    entityIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     trendScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     emergingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -449,8 +449,8 @@ export type DiscoveryTrendUncheckedUpdateInput = {
     firstSeenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastSeenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     peakAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    entityIds?: Prisma.DiscoveryTrendUpdateentityIdsInput | string[];
-    keywords?: Prisma.DiscoveryTrendUpdatekeywordsInput | string[];
+    entityIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     trendScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     emergingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -469,8 +469,8 @@ export type DiscoveryTrendCreateManyInput = {
     firstSeenAt: Date | string;
     lastSeenAt: Date | string;
     peakAt?: Date | string | null;
-    entityIds?: Prisma.DiscoveryTrendCreateentityIdsInput | string[];
-    keywords?: Prisma.DiscoveryTrendCreatekeywordsInput | string[];
+    entityIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     trendScore?: number | null;
     emergingScore?: number | null;
     createdAt?: Date | string;
@@ -489,8 +489,8 @@ export type DiscoveryTrendUpdateManyMutationInput = {
     firstSeenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastSeenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     peakAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    entityIds?: Prisma.DiscoveryTrendUpdateentityIdsInput | string[];
-    keywords?: Prisma.DiscoveryTrendUpdatekeywordsInput | string[];
+    entityIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     trendScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     emergingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -509,8 +509,8 @@ export type DiscoveryTrendUncheckedUpdateManyInput = {
     firstSeenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     lastSeenAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     peakAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    entityIds?: Prisma.DiscoveryTrendUpdateentityIdsInput | string[];
-    keywords?: Prisma.DiscoveryTrendUpdatekeywordsInput | string[];
+    entityIds?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     trendScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     emergingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -587,20 +587,6 @@ export type DiscoveryTrendSumOrderByAggregateInput = {
     velocity?: Prisma.SortOrder;
     trendScore?: Prisma.SortOrder;
     emergingScore?: Prisma.SortOrder;
-};
-export type DiscoveryTrendCreateentityIdsInput = {
-    set: string[];
-};
-export type DiscoveryTrendCreatekeywordsInput = {
-    set: string[];
-};
-export type DiscoveryTrendUpdateentityIdsInput = {
-    set?: string[];
-    push?: string | string[];
-};
-export type DiscoveryTrendUpdatekeywordsInput = {
-    set?: string[];
-    push?: string | string[];
 };
 export type DiscoveryTrendSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -699,8 +685,8 @@ export type $DiscoveryTrendPayload<ExtArgs extends runtime.Types.Extensions.Inte
         firstSeenAt: Date;
         lastSeenAt: Date;
         peakAt: Date | null;
-        entityIds: string[];
-        keywords: string[];
+        entityIds: runtime.JsonValue | null;
+        keywords: runtime.JsonValue | null;
         trendScore: number | null;
         emergingScore: number | null;
         createdAt: Date;
@@ -1071,8 +1057,8 @@ export interface DiscoveryTrendFieldRefs {
     readonly firstSeenAt: Prisma.FieldRef<"DiscoveryTrend", 'DateTime'>;
     readonly lastSeenAt: Prisma.FieldRef<"DiscoveryTrend", 'DateTime'>;
     readonly peakAt: Prisma.FieldRef<"DiscoveryTrend", 'DateTime'>;
-    readonly entityIds: Prisma.FieldRef<"DiscoveryTrend", 'String[]'>;
-    readonly keywords: Prisma.FieldRef<"DiscoveryTrend", 'String[]'>;
+    readonly entityIds: Prisma.FieldRef<"DiscoveryTrend", 'Json'>;
+    readonly keywords: Prisma.FieldRef<"DiscoveryTrend", 'Json'>;
     readonly trendScore: Prisma.FieldRef<"DiscoveryTrend", 'Float'>;
     readonly emergingScore: Prisma.FieldRef<"DiscoveryTrend", 'Float'>;
     readonly createdAt: Prisma.FieldRef<"DiscoveryTrend", 'DateTime'>;
@@ -1273,7 +1259,6 @@ export type DiscoveryTrendCreateManyArgs<ExtArgs extends runtime.Types.Extension
      * The data used to create many DiscoveryTrends.
      */
     data: Prisma.DiscoveryTrendCreateManyInput | Prisma.DiscoveryTrendCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * DiscoveryTrend createManyAndReturn
@@ -1291,7 +1276,6 @@ export type DiscoveryTrendCreateManyAndReturnArgs<ExtArgs extends runtime.Types.
      * The data used to create many DiscoveryTrends.
      */
     data: Prisma.DiscoveryTrendCreateManyInput | Prisma.DiscoveryTrendCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * DiscoveryTrend update

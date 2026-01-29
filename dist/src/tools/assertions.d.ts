@@ -103,7 +103,7 @@ export declare function createAssertion(input: CreateAssertionInput): Promise<({
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -225,7 +225,7 @@ export declare function getAssertion(assertionId: string): Promise<({
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -298,7 +298,7 @@ export declare function listAssertions(entityId: string): Promise<({
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -375,7 +375,7 @@ export declare function searchAssertions(input: SearchAssertionsInput): Promise<
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -411,7 +411,7 @@ export declare function updateAssertion(assertionId: string, input: UpdateAssert
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -457,7 +457,7 @@ export declare function validateAssertion(assertionId: string, validatedBy: stri
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -494,7 +494,7 @@ export declare function rejectAssertion(assertionId: string, validatedBy: string
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -530,7 +530,7 @@ export declare function setCriticality(assertionId: string, criticality: Asserti
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -566,7 +566,7 @@ export declare function markCitedInConclusion(assertionId: string, conclusionCon
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -645,7 +645,7 @@ export declare function getAssertionsPendingValidation(projectId?: string): Prom
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -723,7 +723,7 @@ export declare function getRejectedForReresearch(projectId?: string): Promise<({
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -759,7 +759,7 @@ export declare function supersededAssertion(rejectedId: string, newAssertionId: 
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -800,7 +800,7 @@ export declare function addHumanResponse(assertionId: string, response: string, 
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -837,7 +837,7 @@ export declare function addAgentResponse(assertionId: string, response: string, 
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -915,7 +915,7 @@ export declare function getActiveDialogues(projectId?: string): Promise<({
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -951,7 +951,7 @@ export declare function deleteAssertion(assertionId: string): Promise<{
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -1024,7 +1024,7 @@ export declare function findSimilarAssertions(entityId: string, claim: string): 
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -1091,7 +1091,7 @@ export declare function updateConfidence(assertionId: string, score?: number, fa
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -1168,7 +1168,7 @@ export declare function getAssertionsByConfidence(entityId: string, minConfidenc
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -1246,7 +1246,7 @@ export declare function getLowConfidenceAssertions(projectId?: string, threshold
     humanResponse: string | null;
     validationNotes: import("@prisma/client/runtime/client").JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceChain: import("@prisma/client/runtime/client").JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;

@@ -249,7 +249,6 @@ async function crossReferenceEvidence(input) {
     const where = {
         claim: {
             contains: claim.split(' ').slice(0, 5).join(' '), // Search by first 5 words
-            mode: 'insensitive',
         },
     };
     if (entityId) {

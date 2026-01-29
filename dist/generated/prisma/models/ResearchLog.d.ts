@@ -833,7 +833,6 @@ export type ResearchLogCreateManyArgs<ExtArgs extends runtime.Types.Extensions.I
      * The data used to create many ResearchLogs.
      */
     data: Prisma.ResearchLogCreateManyInput | Prisma.ResearchLogCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * ResearchLog createManyAndReturn
@@ -851,7 +850,6 @@ export type ResearchLogCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ext
      * The data used to create many ResearchLogs.
      */
     data: Prisma.ResearchLogCreateManyInput | Prisma.ResearchLogCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * ResearchLog update

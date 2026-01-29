@@ -218,7 +218,6 @@ async function calculateNovelty(entityId, claimText) {
             entityId,
             claim: {
                 contains: keywords[0],
-                mode: 'insensitive',
             },
             status: { not: 'REJECTED' },
         },

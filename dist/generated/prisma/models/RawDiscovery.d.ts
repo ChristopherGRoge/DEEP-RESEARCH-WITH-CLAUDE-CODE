@@ -219,10 +219,10 @@ export type RawDiscoveryGroupByOutputType = {
     briefDescription: string | null;
     discoveryUrl: string;
     contextSnippet: string | null;
-    extractedLinks: string[];
+    extractedLinks: runtime.JsonValue | null;
     releaseVersion: string | null;
     releaseDate: Date | null;
-    keywords: string[];
+    keywords: runtime.JsonValue | null;
     discoveredAt: Date;
     crawlSessionId: string;
     processed: boolean;
@@ -249,10 +249,10 @@ export type RawDiscoveryWhereInput = {
     briefDescription?: Prisma.StringNullableFilter<"RawDiscovery"> | string | null;
     discoveryUrl?: Prisma.StringFilter<"RawDiscovery"> | string;
     contextSnippet?: Prisma.StringNullableFilter<"RawDiscovery"> | string | null;
-    extractedLinks?: Prisma.StringNullableListFilter<"RawDiscovery">;
+    extractedLinks?: Prisma.JsonNullableFilter<"RawDiscovery">;
     releaseVersion?: Prisma.StringNullableFilter<"RawDiscovery"> | string | null;
     releaseDate?: Prisma.DateTimeNullableFilter<"RawDiscovery"> | Date | string | null;
-    keywords?: Prisma.StringNullableListFilter<"RawDiscovery">;
+    keywords?: Prisma.JsonNullableFilter<"RawDiscovery">;
     discoveredAt?: Prisma.DateTimeFilter<"RawDiscovery"> | Date | string;
     crawlSessionId?: Prisma.StringFilter<"RawDiscovery"> | string;
     processed?: Prisma.BoolFilter<"RawDiscovery"> | boolean;
@@ -269,10 +269,10 @@ export type RawDiscoveryOrderByWithRelationInput = {
     briefDescription?: Prisma.SortOrderInput | Prisma.SortOrder;
     discoveryUrl?: Prisma.SortOrder;
     contextSnippet?: Prisma.SortOrderInput | Prisma.SortOrder;
-    extractedLinks?: Prisma.SortOrder;
+    extractedLinks?: Prisma.SortOrderInput | Prisma.SortOrder;
     releaseVersion?: Prisma.SortOrderInput | Prisma.SortOrder;
     releaseDate?: Prisma.SortOrderInput | Prisma.SortOrder;
-    keywords?: Prisma.SortOrder;
+    keywords?: Prisma.SortOrderInput | Prisma.SortOrder;
     discoveredAt?: Prisma.SortOrder;
     crawlSessionId?: Prisma.SortOrder;
     processed?: Prisma.SortOrder;
@@ -292,10 +292,10 @@ export type RawDiscoveryWhereUniqueInput = Prisma.AtLeast<{
     briefDescription?: Prisma.StringNullableFilter<"RawDiscovery"> | string | null;
     discoveryUrl?: Prisma.StringFilter<"RawDiscovery"> | string;
     contextSnippet?: Prisma.StringNullableFilter<"RawDiscovery"> | string | null;
-    extractedLinks?: Prisma.StringNullableListFilter<"RawDiscovery">;
+    extractedLinks?: Prisma.JsonNullableFilter<"RawDiscovery">;
     releaseVersion?: Prisma.StringNullableFilter<"RawDiscovery"> | string | null;
     releaseDate?: Prisma.DateTimeNullableFilter<"RawDiscovery"> | Date | string | null;
-    keywords?: Prisma.StringNullableListFilter<"RawDiscovery">;
+    keywords?: Prisma.JsonNullableFilter<"RawDiscovery">;
     discoveredAt?: Prisma.DateTimeFilter<"RawDiscovery"> | Date | string;
     crawlSessionId?: Prisma.StringFilter<"RawDiscovery"> | string;
     processed?: Prisma.BoolFilter<"RawDiscovery"> | boolean;
@@ -312,10 +312,10 @@ export type RawDiscoveryOrderByWithAggregationInput = {
     briefDescription?: Prisma.SortOrderInput | Prisma.SortOrder;
     discoveryUrl?: Prisma.SortOrder;
     contextSnippet?: Prisma.SortOrderInput | Prisma.SortOrder;
-    extractedLinks?: Prisma.SortOrder;
+    extractedLinks?: Prisma.SortOrderInput | Prisma.SortOrder;
     releaseVersion?: Prisma.SortOrderInput | Prisma.SortOrder;
     releaseDate?: Prisma.SortOrderInput | Prisma.SortOrder;
-    keywords?: Prisma.SortOrder;
+    keywords?: Prisma.SortOrderInput | Prisma.SortOrder;
     discoveredAt?: Prisma.SortOrder;
     crawlSessionId?: Prisma.SortOrder;
     processed?: Prisma.SortOrder;
@@ -339,10 +339,10 @@ export type RawDiscoveryScalarWhereWithAggregatesInput = {
     briefDescription?: Prisma.StringNullableWithAggregatesFilter<"RawDiscovery"> | string | null;
     discoveryUrl?: Prisma.StringWithAggregatesFilter<"RawDiscovery"> | string;
     contextSnippet?: Prisma.StringNullableWithAggregatesFilter<"RawDiscovery"> | string | null;
-    extractedLinks?: Prisma.StringNullableListFilter<"RawDiscovery">;
+    extractedLinks?: Prisma.JsonNullableWithAggregatesFilter<"RawDiscovery">;
     releaseVersion?: Prisma.StringNullableWithAggregatesFilter<"RawDiscovery"> | string | null;
     releaseDate?: Prisma.DateTimeNullableWithAggregatesFilter<"RawDiscovery"> | Date | string | null;
-    keywords?: Prisma.StringNullableListFilter<"RawDiscovery">;
+    keywords?: Prisma.JsonNullableWithAggregatesFilter<"RawDiscovery">;
     discoveredAt?: Prisma.DateTimeWithAggregatesFilter<"RawDiscovery"> | Date | string;
     crawlSessionId?: Prisma.StringWithAggregatesFilter<"RawDiscovery"> | string;
     processed?: Prisma.BoolWithAggregatesFilter<"RawDiscovery"> | boolean;
@@ -357,10 +357,10 @@ export type RawDiscoveryCreateInput = {
     briefDescription?: string | null;
     discoveryUrl: string;
     contextSnippet?: string | null;
-    extractedLinks?: Prisma.RawDiscoveryCreateextractedLinksInput | string[];
+    extractedLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     releaseVersion?: string | null;
     releaseDate?: Date | string | null;
-    keywords?: Prisma.RawDiscoveryCreatekeywordsInput | string[];
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     discoveredAt?: Date | string;
     crawlSessionId: string;
     processed?: boolean;
@@ -377,10 +377,10 @@ export type RawDiscoveryUncheckedCreateInput = {
     briefDescription?: string | null;
     discoveryUrl: string;
     contextSnippet?: string | null;
-    extractedLinks?: Prisma.RawDiscoveryCreateextractedLinksInput | string[];
+    extractedLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     releaseVersion?: string | null;
     releaseDate?: Date | string | null;
-    keywords?: Prisma.RawDiscoveryCreatekeywordsInput | string[];
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     discoveredAt?: Date | string;
     crawlSessionId: string;
     processed?: boolean;
@@ -395,10 +395,10 @@ export type RawDiscoveryUpdateInput = {
     briefDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     discoveryUrl?: Prisma.StringFieldUpdateOperationsInput | string;
     contextSnippet?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    extractedLinks?: Prisma.RawDiscoveryUpdateextractedLinksInput | string[];
+    extractedLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     releaseVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    keywords?: Prisma.RawDiscoveryUpdatekeywordsInput | string[];
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     crawlSessionId?: Prisma.StringFieldUpdateOperationsInput | string;
     processed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
@@ -415,10 +415,10 @@ export type RawDiscoveryUncheckedUpdateInput = {
     briefDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     discoveryUrl?: Prisma.StringFieldUpdateOperationsInput | string;
     contextSnippet?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    extractedLinks?: Prisma.RawDiscoveryUpdateextractedLinksInput | string[];
+    extractedLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     releaseVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    keywords?: Prisma.RawDiscoveryUpdatekeywordsInput | string[];
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     crawlSessionId?: Prisma.StringFieldUpdateOperationsInput | string;
     processed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
@@ -434,10 +434,10 @@ export type RawDiscoveryCreateManyInput = {
     briefDescription?: string | null;
     discoveryUrl: string;
     contextSnippet?: string | null;
-    extractedLinks?: Prisma.RawDiscoveryCreateextractedLinksInput | string[];
+    extractedLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     releaseVersion?: string | null;
     releaseDate?: Date | string | null;
-    keywords?: Prisma.RawDiscoveryCreatekeywordsInput | string[];
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     discoveredAt?: Date | string;
     crawlSessionId: string;
     processed?: boolean;
@@ -452,10 +452,10 @@ export type RawDiscoveryUpdateManyMutationInput = {
     briefDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     discoveryUrl?: Prisma.StringFieldUpdateOperationsInput | string;
     contextSnippet?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    extractedLinks?: Prisma.RawDiscoveryUpdateextractedLinksInput | string[];
+    extractedLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     releaseVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    keywords?: Prisma.RawDiscoveryUpdatekeywordsInput | string[];
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     crawlSessionId?: Prisma.StringFieldUpdateOperationsInput | string;
     processed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
@@ -471,10 +471,10 @@ export type RawDiscoveryUncheckedUpdateManyInput = {
     briefDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     discoveryUrl?: Prisma.StringFieldUpdateOperationsInput | string;
     contextSnippet?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    extractedLinks?: Prisma.RawDiscoveryUpdateextractedLinksInput | string[];
+    extractedLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     releaseVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    keywords?: Prisma.RawDiscoveryUpdatekeywordsInput | string[];
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     crawlSessionId?: Prisma.StringFieldUpdateOperationsInput | string;
     processed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
@@ -590,30 +590,16 @@ export type RawDiscoveryUncheckedUpdateManyWithoutSourceNestedInput = {
     updateMany?: Prisma.RawDiscoveryUpdateManyWithWhereWithoutSourceInput | Prisma.RawDiscoveryUpdateManyWithWhereWithoutSourceInput[];
     deleteMany?: Prisma.RawDiscoveryScalarWhereInput | Prisma.RawDiscoveryScalarWhereInput[];
 };
-export type RawDiscoveryCreateextractedLinksInput = {
-    set: string[];
-};
-export type RawDiscoveryCreatekeywordsInput = {
-    set: string[];
-};
-export type RawDiscoveryUpdateextractedLinksInput = {
-    set?: string[];
-    push?: string | string[];
-};
-export type RawDiscoveryUpdatekeywordsInput = {
-    set?: string[];
-    push?: string | string[];
-};
 export type RawDiscoveryCreateWithoutSourceInput = {
     id?: string;
     mentionedName: string;
     briefDescription?: string | null;
     discoveryUrl: string;
     contextSnippet?: string | null;
-    extractedLinks?: Prisma.RawDiscoveryCreateextractedLinksInput | string[];
+    extractedLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     releaseVersion?: string | null;
     releaseDate?: Date | string | null;
-    keywords?: Prisma.RawDiscoveryCreatekeywordsInput | string[];
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     discoveredAt?: Date | string;
     crawlSessionId: string;
     processed?: boolean;
@@ -628,10 +614,10 @@ export type RawDiscoveryUncheckedCreateWithoutSourceInput = {
     briefDescription?: string | null;
     discoveryUrl: string;
     contextSnippet?: string | null;
-    extractedLinks?: Prisma.RawDiscoveryCreateextractedLinksInput | string[];
+    extractedLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     releaseVersion?: string | null;
     releaseDate?: Date | string | null;
-    keywords?: Prisma.RawDiscoveryCreatekeywordsInput | string[];
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     discoveredAt?: Date | string;
     crawlSessionId: string;
     processed?: boolean;
@@ -646,7 +632,6 @@ export type RawDiscoveryCreateOrConnectWithoutSourceInput = {
 };
 export type RawDiscoveryCreateManySourceInputEnvelope = {
     data: Prisma.RawDiscoveryCreateManySourceInput | Prisma.RawDiscoveryCreateManySourceInput[];
-    skipDuplicates?: boolean;
 };
 export type RawDiscoveryUpsertWithWhereUniqueWithoutSourceInput = {
     where: Prisma.RawDiscoveryWhereUniqueInput;
@@ -671,10 +656,10 @@ export type RawDiscoveryScalarWhereInput = {
     briefDescription?: Prisma.StringNullableFilter<"RawDiscovery"> | string | null;
     discoveryUrl?: Prisma.StringFilter<"RawDiscovery"> | string;
     contextSnippet?: Prisma.StringNullableFilter<"RawDiscovery"> | string | null;
-    extractedLinks?: Prisma.StringNullableListFilter<"RawDiscovery">;
+    extractedLinks?: Prisma.JsonNullableFilter<"RawDiscovery">;
     releaseVersion?: Prisma.StringNullableFilter<"RawDiscovery"> | string | null;
     releaseDate?: Prisma.DateTimeNullableFilter<"RawDiscovery"> | Date | string | null;
-    keywords?: Prisma.StringNullableListFilter<"RawDiscovery">;
+    keywords?: Prisma.JsonNullableFilter<"RawDiscovery">;
     discoveredAt?: Prisma.DateTimeFilter<"RawDiscovery"> | Date | string;
     crawlSessionId?: Prisma.StringFilter<"RawDiscovery"> | string;
     processed?: Prisma.BoolFilter<"RawDiscovery"> | boolean;
@@ -689,10 +674,10 @@ export type RawDiscoveryCreateManySourceInput = {
     briefDescription?: string | null;
     discoveryUrl: string;
     contextSnippet?: string | null;
-    extractedLinks?: Prisma.RawDiscoveryCreateextractedLinksInput | string[];
+    extractedLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     releaseVersion?: string | null;
     releaseDate?: Date | string | null;
-    keywords?: Prisma.RawDiscoveryCreatekeywordsInput | string[];
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     discoveredAt?: Date | string;
     crawlSessionId: string;
     processed?: boolean;
@@ -707,10 +692,10 @@ export type RawDiscoveryUpdateWithoutSourceInput = {
     briefDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     discoveryUrl?: Prisma.StringFieldUpdateOperationsInput | string;
     contextSnippet?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    extractedLinks?: Prisma.RawDiscoveryUpdateextractedLinksInput | string[];
+    extractedLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     releaseVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    keywords?: Prisma.RawDiscoveryUpdatekeywordsInput | string[];
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     crawlSessionId?: Prisma.StringFieldUpdateOperationsInput | string;
     processed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
@@ -725,10 +710,10 @@ export type RawDiscoveryUncheckedUpdateWithoutSourceInput = {
     briefDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     discoveryUrl?: Prisma.StringFieldUpdateOperationsInput | string;
     contextSnippet?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    extractedLinks?: Prisma.RawDiscoveryUpdateextractedLinksInput | string[];
+    extractedLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     releaseVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    keywords?: Prisma.RawDiscoveryUpdatekeywordsInput | string[];
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     crawlSessionId?: Prisma.StringFieldUpdateOperationsInput | string;
     processed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
@@ -743,10 +728,10 @@ export type RawDiscoveryUncheckedUpdateManyWithoutSourceInput = {
     briefDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     discoveryUrl?: Prisma.StringFieldUpdateOperationsInput | string;
     contextSnippet?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    extractedLinks?: Prisma.RawDiscoveryUpdateextractedLinksInput | string[];
+    extractedLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     releaseVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
-    keywords?: Prisma.RawDiscoveryUpdatekeywordsInput | string[];
+    keywords?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     discoveredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     crawlSessionId?: Prisma.StringFieldUpdateOperationsInput | string;
     processed?: Prisma.BoolFieldUpdateOperationsInput | boolean;
@@ -856,10 +841,10 @@ export type $RawDiscoveryPayload<ExtArgs extends runtime.Types.Extensions.Intern
         briefDescription: string | null;
         discoveryUrl: string;
         contextSnippet: string | null;
-        extractedLinks: string[];
+        extractedLinks: runtime.JsonValue | null;
         releaseVersion: string | null;
         releaseDate: Date | null;
-        keywords: string[];
+        keywords: runtime.JsonValue | null;
         discoveredAt: Date;
         crawlSessionId: string;
         processed: boolean;
@@ -1228,10 +1213,10 @@ export interface RawDiscoveryFieldRefs {
     readonly briefDescription: Prisma.FieldRef<"RawDiscovery", 'String'>;
     readonly discoveryUrl: Prisma.FieldRef<"RawDiscovery", 'String'>;
     readonly contextSnippet: Prisma.FieldRef<"RawDiscovery", 'String'>;
-    readonly extractedLinks: Prisma.FieldRef<"RawDiscovery", 'String[]'>;
+    readonly extractedLinks: Prisma.FieldRef<"RawDiscovery", 'Json'>;
     readonly releaseVersion: Prisma.FieldRef<"RawDiscovery", 'String'>;
     readonly releaseDate: Prisma.FieldRef<"RawDiscovery", 'DateTime'>;
-    readonly keywords: Prisma.FieldRef<"RawDiscovery", 'String[]'>;
+    readonly keywords: Prisma.FieldRef<"RawDiscovery", 'Json'>;
     readonly discoveredAt: Prisma.FieldRef<"RawDiscovery", 'DateTime'>;
     readonly crawlSessionId: Prisma.FieldRef<"RawDiscovery", 'String'>;
     readonly processed: Prisma.FieldRef<"RawDiscovery", 'Boolean'>;
@@ -1459,7 +1444,6 @@ export type RawDiscoveryCreateManyArgs<ExtArgs extends runtime.Types.Extensions.
      * The data used to create many RawDiscoveries.
      */
     data: Prisma.RawDiscoveryCreateManyInput | Prisma.RawDiscoveryCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * RawDiscovery createManyAndReturn
@@ -1477,7 +1461,6 @@ export type RawDiscoveryCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
      * The data used to create many RawDiscoveries.
      */
     data: Prisma.RawDiscoveryCreateManyInput | Prisma.RawDiscoveryCreateManyInput[];
-    skipDuplicates?: boolean;
     /**
      * Choose, which related nodes to fetch as well
      */

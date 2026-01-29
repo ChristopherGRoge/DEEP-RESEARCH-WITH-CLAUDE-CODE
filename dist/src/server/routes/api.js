@@ -818,6 +818,11 @@ api.get('/entities/tree/:projectId', async (c) => {
             logoSvgContent: entity.logoSvgContent,
             assertionCount: totalAssertions,
             evidenceRatio,
+            // Buzz score for visual emphasis
+            buzzScore: entity.buzzScore,
+            buzzComponents: entity.buzzComponents,
+            // GitHub metrics for display
+            githubStars: entity.githubStars,
         });
     }
     // Sort categories by a logical order (discovery categories first, then alphabetically)
@@ -844,7 +849,10 @@ api.get('/entities/tree/:projectId', async (c) => {
             name: categoryDisplayNames[key] || key,
             key: key, // Original key for filtering
             type: 'category',
-            children: entities.map(e => ({
+            children: entities
+                // Sort entities by buzz score (highest first)
+                .sort((a, b) => (b.buzzScore || 0) - (a.buzzScore || 0))
+                .map(e => ({
                 name: e.name,
                 type: 'entity',
                 id: e.id,
@@ -855,6 +863,9 @@ api.get('/entities/tree/:projectId', async (c) => {
                 logoSvgContent: e.logoSvgContent,
                 assertionCount: e.assertionCount,
                 evidenceRatio: e.evidenceRatio,
+                buzzScore: e.buzzScore,
+                buzzComponents: e.buzzComponents,
+                githubStars: e.githubStars,
             })),
         })),
     };

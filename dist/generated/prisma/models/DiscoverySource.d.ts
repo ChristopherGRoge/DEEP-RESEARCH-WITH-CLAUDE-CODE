@@ -303,7 +303,7 @@ export type DiscoverySourceGroupByOutputType = {
     hitRate: number | null;
     avgNoveltyScore: number | null;
     description: string | null;
-    tags: string[];
+    tags: runtime.JsonValue | null;
     priority: number;
     createdAt: Date;
     updatedAt: Date;
@@ -341,7 +341,7 @@ export type DiscoverySourceWhereInput = {
     hitRate?: Prisma.FloatNullableFilter<"DiscoverySource"> | number | null;
     avgNoveltyScore?: Prisma.FloatNullableFilter<"DiscoverySource"> | number | null;
     description?: Prisma.StringNullableFilter<"DiscoverySource"> | string | null;
-    tags?: Prisma.StringNullableListFilter<"DiscoverySource">;
+    tags?: Prisma.JsonNullableFilter<"DiscoverySource">;
     priority?: Prisma.IntFilter<"DiscoverySource"> | number;
     createdAt?: Prisma.DateTimeFilter<"DiscoverySource"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"DiscoverySource"> | Date | string;
@@ -369,7 +369,7 @@ export type DiscoverySourceOrderByWithRelationInput = {
     hitRate?: Prisma.SortOrderInput | Prisma.SortOrder;
     avgNoveltyScore?: Prisma.SortOrderInput | Prisma.SortOrder;
     description?: Prisma.SortOrderInput | Prisma.SortOrder;
-    tags?: Prisma.SortOrder;
+    tags?: Prisma.SortOrderInput | Prisma.SortOrder;
     priority?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -400,7 +400,7 @@ export type DiscoverySourceWhereUniqueInput = Prisma.AtLeast<{
     hitRate?: Prisma.FloatNullableFilter<"DiscoverySource"> | number | null;
     avgNoveltyScore?: Prisma.FloatNullableFilter<"DiscoverySource"> | number | null;
     description?: Prisma.StringNullableFilter<"DiscoverySource"> | string | null;
-    tags?: Prisma.StringNullableListFilter<"DiscoverySource">;
+    tags?: Prisma.JsonNullableFilter<"DiscoverySource">;
     priority?: Prisma.IntFilter<"DiscoverySource"> | number;
     createdAt?: Prisma.DateTimeFilter<"DiscoverySource"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"DiscoverySource"> | Date | string;
@@ -428,7 +428,7 @@ export type DiscoverySourceOrderByWithAggregationInput = {
     hitRate?: Prisma.SortOrderInput | Prisma.SortOrder;
     avgNoveltyScore?: Prisma.SortOrderInput | Prisma.SortOrder;
     description?: Prisma.SortOrderInput | Prisma.SortOrder;
-    tags?: Prisma.SortOrder;
+    tags?: Prisma.SortOrderInput | Prisma.SortOrder;
     priority?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -463,7 +463,7 @@ export type DiscoverySourceScalarWhereWithAggregatesInput = {
     hitRate?: Prisma.FloatNullableWithAggregatesFilter<"DiscoverySource"> | number | null;
     avgNoveltyScore?: Prisma.FloatNullableWithAggregatesFilter<"DiscoverySource"> | number | null;
     description?: Prisma.StringNullableWithAggregatesFilter<"DiscoverySource"> | string | null;
-    tags?: Prisma.StringNullableListFilter<"DiscoverySource">;
+    tags?: Prisma.JsonNullableWithAggregatesFilter<"DiscoverySource">;
     priority?: Prisma.IntWithAggregatesFilter<"DiscoverySource"> | number;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"DiscoverySource"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"DiscoverySource"> | Date | string;
@@ -490,7 +490,7 @@ export type DiscoverySourceCreateInput = {
     hitRate?: number | null;
     avgNoveltyScore?: number | null;
     description?: string | null;
-    tags?: Prisma.DiscoverySourceCreatetagsInput | string[];
+    tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     priority?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -518,7 +518,7 @@ export type DiscoverySourceUncheckedCreateInput = {
     hitRate?: number | null;
     avgNoveltyScore?: number | null;
     description?: string | null;
-    tags?: Prisma.DiscoverySourceCreatetagsInput | string[];
+    tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     priority?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -546,7 +546,7 @@ export type DiscoverySourceUpdateInput = {
     hitRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     avgNoveltyScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    tags?: Prisma.DiscoverySourceUpdatetagsInput | string[];
+    tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     priority?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -574,7 +574,7 @@ export type DiscoverySourceUncheckedUpdateInput = {
     hitRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     avgNoveltyScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    tags?: Prisma.DiscoverySourceUpdatetagsInput | string[];
+    tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     priority?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -602,7 +602,7 @@ export type DiscoverySourceCreateManyInput = {
     hitRate?: number | null;
     avgNoveltyScore?: number | null;
     description?: string | null;
-    tags?: Prisma.DiscoverySourceCreatetagsInput | string[];
+    tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     priority?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -629,7 +629,7 @@ export type DiscoverySourceUpdateManyMutationInput = {
     hitRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     avgNoveltyScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    tags?: Prisma.DiscoverySourceUpdatetagsInput | string[];
+    tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     priority?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -656,7 +656,7 @@ export type DiscoverySourceUncheckedUpdateManyInput = {
     hitRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     avgNoveltyScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    tags?: Prisma.DiscoverySourceUpdatetagsInput | string[];
+    tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     priority?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -760,15 +760,8 @@ export type DiscoverySourceScalarRelationFilter = {
     is?: Prisma.DiscoverySourceWhereInput;
     isNot?: Prisma.DiscoverySourceWhereInput;
 };
-export type DiscoverySourceCreatetagsInput = {
-    set: string[];
-};
 export type EnumSourceTypeFieldUpdateOperationsInput = {
     set?: $Enums.SourceType;
-};
-export type DiscoverySourceUpdatetagsInput = {
-    set?: string[];
-    push?: string | string[];
 };
 export type DiscoverySourceCreateNestedOneWithoutDiscoveriesInput = {
     create?: Prisma.XOR<Prisma.DiscoverySourceCreateWithoutDiscoveriesInput, Prisma.DiscoverySourceUncheckedCreateWithoutDiscoveriesInput>;
@@ -804,7 +797,7 @@ export type DiscoverySourceCreateWithoutDiscoveriesInput = {
     hitRate?: number | null;
     avgNoveltyScore?: number | null;
     description?: string | null;
-    tags?: Prisma.DiscoverySourceCreatetagsInput | string[];
+    tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     priority?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -831,7 +824,7 @@ export type DiscoverySourceUncheckedCreateWithoutDiscoveriesInput = {
     hitRate?: number | null;
     avgNoveltyScore?: number | null;
     description?: string | null;
-    tags?: Prisma.DiscoverySourceCreatetagsInput | string[];
+    tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     priority?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -871,7 +864,7 @@ export type DiscoverySourceUpdateWithoutDiscoveriesInput = {
     hitRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     avgNoveltyScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    tags?: Prisma.DiscoverySourceUpdatetagsInput | string[];
+    tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     priority?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -898,7 +891,7 @@ export type DiscoverySourceUncheckedUpdateWithoutDiscoveriesInput = {
     hitRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     avgNoveltyScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
     description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    tags?: Prisma.DiscoverySourceUpdatetagsInput | string[];
+    tags?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     priority?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -1071,7 +1064,7 @@ export type $DiscoverySourcePayload<ExtArgs extends runtime.Types.Extensions.Int
         hitRate: number | null;
         avgNoveltyScore: number | null;
         description: string | null;
-        tags: string[];
+        tags: runtime.JsonValue | null;
         priority: number;
         createdAt: Date;
         updatedAt: Date;
@@ -1451,7 +1444,7 @@ export interface DiscoverySourceFieldRefs {
     readonly hitRate: Prisma.FieldRef<"DiscoverySource", 'Float'>;
     readonly avgNoveltyScore: Prisma.FieldRef<"DiscoverySource", 'Float'>;
     readonly description: Prisma.FieldRef<"DiscoverySource", 'String'>;
-    readonly tags: Prisma.FieldRef<"DiscoverySource", 'String[]'>;
+    readonly tags: Prisma.FieldRef<"DiscoverySource", 'Json'>;
     readonly priority: Prisma.FieldRef<"DiscoverySource", 'Int'>;
     readonly createdAt: Prisma.FieldRef<"DiscoverySource", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"DiscoverySource", 'DateTime'>;
@@ -1675,7 +1668,6 @@ export type DiscoverySourceCreateManyArgs<ExtArgs extends runtime.Types.Extensio
      * The data used to create many DiscoverySources.
      */
     data: Prisma.DiscoverySourceCreateManyInput | Prisma.DiscoverySourceCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * DiscoverySource createManyAndReturn
@@ -1693,7 +1685,6 @@ export type DiscoverySourceCreateManyAndReturnArgs<ExtArgs extends runtime.Types
      * The data used to create many DiscoverySources.
      */
     data: Prisma.DiscoverySourceCreateManyInput | Prisma.DiscoverySourceCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * DiscoverySource update

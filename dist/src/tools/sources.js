@@ -99,9 +99,9 @@ async function searchSources(query) {
     return client_1.default.source.findMany({
         where: {
             OR: [
-                { url: { contains: query, mode: 'insensitive' } },
-                { title: { contains: query, mode: 'insensitive' } },
-                { description: { contains: query, mode: 'insensitive' } },
+                { url: { contains: query } },
+                { title: { contains: query } },
+                { description: { contains: query } },
             ],
         },
         include: {

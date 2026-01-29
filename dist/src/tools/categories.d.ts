@@ -50,8 +50,8 @@ export declare function createCategory(input: CreateCategoryInput): Promise<{
     inclusionCriteria: string | null;
     exclusionCriteria: string | null;
     displayName: string;
-    exemplarEntities: string[];
-    antiExemplars: string[];
+    exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
+    antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
 }>;
 /**
  * Get a category by ID
@@ -70,8 +70,8 @@ export declare function getCategory(categoryId: string): Promise<({
     inclusionCriteria: string | null;
     exclusionCriteria: string | null;
     displayName: string;
-    exemplarEntities: string[];
-    antiExemplars: string[];
+    exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
+    antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
 }) | null>;
 /**
  * Get a category by name
@@ -90,8 +90,8 @@ export declare function getCategoryByName(name: string): Promise<({
     inclusionCriteria: string | null;
     exclusionCriteria: string | null;
     displayName: string;
-    exemplarEntities: string[];
-    antiExemplars: string[];
+    exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
+    antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
 }) | null>;
 /**
  * List all categories
@@ -110,8 +110,8 @@ export declare function listCategories(): Promise<({
     inclusionCriteria: string | null;
     exclusionCriteria: string | null;
     displayName: string;
-    exemplarEntities: string[];
-    antiExemplars: string[];
+    exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
+    antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
 })[]>;
 /**
  * Update a category
@@ -126,8 +126,8 @@ export declare function updateCategory(categoryId: string, input: UpdateCategory
     inclusionCriteria: string | null;
     exclusionCriteria: string | null;
     displayName: string;
-    exemplarEntities: string[];
-    antiExemplars: string[];
+    exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
+    antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
 }>;
 /**
  * Delete a category
@@ -143,8 +143,8 @@ export declare function deleteCategory(categoryId: string): Promise<{
     inclusionCriteria: string | null;
     exclusionCriteria: string | null;
     displayName: string;
-    exemplarEntities: string[];
-    antiExemplars: string[];
+    exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
+    antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
 }>;
 /**
  * Get category with all entities
@@ -210,8 +210,8 @@ export declare function getCategoryWithEntities(categoryId: string, options?: {
     inclusionCriteria: string | null;
     exclusionCriteria: string | null;
     displayName: string;
-    exemplarEntities: string[];
-    antiExemplars: string[];
+    exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
+    antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
 }) | null>;
 /**
  * Get summary statistics for a category
@@ -231,8 +231,8 @@ export declare function getCategorySummary(categoryId: string): Promise<{
         inclusionCriteria: string | null;
         exclusionCriteria: string | null;
         displayName: string;
-        exemplarEntities: string[];
-        antiExemplars: string[];
+        exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
+        antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
     };
     statistics: {
         totalEntities: number;
@@ -257,8 +257,8 @@ export declare function updateCategoryStats(categoryId: string): Promise<{
     inclusionCriteria: string | null;
     exclusionCriteria: string | null;
     displayName: string;
-    exemplarEntities: string[];
-    antiExemplars: string[];
+    exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
+    antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
 }>;
 /**
  * Update stats for all categories
@@ -329,11 +329,11 @@ export declare function explainClassification(entityId: string): Promise<{
         description: string;
         inclusionCriteria: string | null;
         exclusionCriteria: string | null;
-        exemplarEntities: string[];
-        antiExemplars: string[];
+        exemplarEntities: import("@prisma/client/runtime/client").JsonValue;
+        antiExemplars: import("@prisma/client/runtime/client").JsonValue;
     };
     analysis: {
-        isExemplar: boolean;
+        isExemplar: any;
         inAntiExemplarsFor: string[];
     };
     explanation: string;

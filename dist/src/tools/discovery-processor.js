@@ -551,9 +551,9 @@ async function getPendingDiscoveries(projectId, limit) {
 async function searchDiscoveries(query, filters) {
     const where = {
         OR: [
-            { mentionedName: { contains: query, mode: 'insensitive' } },
-            { briefDescription: { contains: query, mode: 'insensitive' } },
-            { contextSnippet: { contains: query, mode: 'insensitive' } },
+            { mentionedName: { contains: query } },
+            { briefDescription: { contains: query } },
+            { contextSnippet: { contains: query } },
             { keywords: { has: query } },
         ],
     };

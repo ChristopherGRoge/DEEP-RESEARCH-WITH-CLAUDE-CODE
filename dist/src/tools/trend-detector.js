@@ -421,8 +421,8 @@ async function getTrendDetails(trendId) {
             assertions: {
                 where: {
                     OR: [
-                        { claim: { contains: trend.name, mode: 'insensitive' } },
-                        ...trend.keywords.map(k => ({ claim: { contains: k, mode: 'insensitive' } }))
+                        { claim: { contains: trend.name } },
+                        ...trend.keywords.map(k => ({ claim: { contains: k } }))
                     ]
                 },
                 take: 5,
@@ -435,7 +435,7 @@ async function getTrendDetails(trendId) {
         where: {
             matchedEntityId: { in: trend.entityIds },
             OR: [
-                { mentionedName: { contains: trend.name, mode: 'insensitive' } },
+                { mentionedName: { contains: trend.name } },
                 ...trend.keywords.map(k => ({ keywords: { has: k } }))
             ]
         },

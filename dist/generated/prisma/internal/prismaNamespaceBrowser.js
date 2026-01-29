@@ -48,7 +48,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.JsonNullValueFilter = exports.NullsOrder = exports.QueryMode = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.ResearchDomainScalarFieldEnum = exports.DiscoveryCategoryScalarFieldEnum = exports.DiscoveryTrendScalarFieldEnum = exports.DiscoveryCrawlScalarFieldEnum = exports.RawDiscoveryScalarFieldEnum = exports.DiscoverySourceScalarFieldEnum = exports.ResearchTaskScalarFieldEnum = exports.ResearchSessionScalarFieldEnum = exports.ExtractionScalarFieldEnum = exports.ScreenshotScalarFieldEnum = exports.ResearchLogScalarFieldEnum = exports.AssertionSourceScalarFieldEnum = exports.SourceScalarFieldEnum = exports.ReasoningScalarFieldEnum = exports.AssertionScalarFieldEnum = exports.EntityScalarFieldEnum = exports.ResearchProjectScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.QueryMode = exports.JsonNullValueFilter = exports.NullsOrder = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.ResearchDomainScalarFieldEnum = exports.DiscoveryCategoryScalarFieldEnum = exports.DiscoveryTrendScalarFieldEnum = exports.DiscoveryCrawlScalarFieldEnum = exports.RawDiscoveryScalarFieldEnum = exports.DiscoverySourceScalarFieldEnum = exports.ResearchTaskScalarFieldEnum = exports.ResearchSessionScalarFieldEnum = exports.ExtractionScalarFieldEnum = exports.ScreenshotScalarFieldEnum = exports.ResearchLogScalarFieldEnum = exports.AssertionSourceScalarFieldEnum = exports.SourceScalarFieldEnum = exports.ReasoningScalarFieldEnum = exports.AssertionScalarFieldEnum = exports.EntityScalarFieldEnum = exports.ResearchProjectScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -97,9 +97,6 @@ exports.ModelName = {
  * Enums
  */
 exports.TransactionIsolationLevel = {
-    ReadUncommitted: 'ReadUncommitted',
-    ReadCommitted: 'ReadCommitted',
-    RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
 };
 exports.ResearchProjectScalarFieldEnum = {
@@ -407,10 +404,6 @@ exports.NullableJsonNullValueInput = {
 exports.JsonNullValueInput = {
     JsonNull: 'JsonNull'
 };
-exports.QueryMode = {
-    default: 'default',
-    insensitive: 'insensitive'
-};
 exports.NullsOrder = {
     first: 'first',
     last: 'last'
@@ -419,5 +412,9 @@ exports.JsonNullValueFilter = {
     DbNull: 'DbNull',
     JsonNull: 'JsonNull',
     AnyNull: 'AnyNull'
+};
+exports.QueryMode = {
+    default: 'default',
+    insensitive: 'insensitive'
 };
 //# sourceMappingURL=prismaNamespaceBrowser.js.map

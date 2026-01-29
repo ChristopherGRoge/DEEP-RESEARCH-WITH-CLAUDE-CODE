@@ -804,7 +804,6 @@ researchApi.get('/pending-evidence', async (c) => {
         const where = {
             humanResponse: {
                 contains: 'evidence requested',
-                mode: 'insensitive',
             },
             status: client_1.AssertionStatus.CLAIM,
         };

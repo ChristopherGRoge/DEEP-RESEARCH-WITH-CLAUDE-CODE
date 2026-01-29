@@ -310,7 +310,7 @@ export type AssertionGroupByOutputType = {
     humanResponse: string | null;
     validationNotes: runtime.JsonValue | null;
     partiallyValidated: boolean;
-    evidenceScreenshots: string[];
+    evidenceScreenshots: runtime.JsonValue | null;
     evidenceChain: runtime.JsonValue | null;
     evidenceDescription: string | null;
     evidenceScreenshotPath: string | null;
@@ -354,7 +354,7 @@ export type AssertionWhereInput = {
     humanResponse?: Prisma.StringNullableFilter<"Assertion"> | string | null;
     validationNotes?: Prisma.JsonNullableFilter<"Assertion">;
     partiallyValidated?: Prisma.BoolFilter<"Assertion"> | boolean;
-    evidenceScreenshots?: Prisma.StringNullableListFilter<"Assertion">;
+    evidenceScreenshots?: Prisma.JsonNullableFilter<"Assertion">;
     evidenceChain?: Prisma.JsonNullableFilter<"Assertion">;
     evidenceDescription?: Prisma.StringNullableFilter<"Assertion"> | string | null;
     evidenceScreenshotPath?: Prisma.StringNullableFilter<"Assertion"> | string | null;
@@ -390,7 +390,7 @@ export type AssertionOrderByWithRelationInput = {
     humanResponse?: Prisma.SortOrderInput | Prisma.SortOrder;
     validationNotes?: Prisma.SortOrderInput | Prisma.SortOrder;
     partiallyValidated?: Prisma.SortOrder;
-    evidenceScreenshots?: Prisma.SortOrder;
+    evidenceScreenshots?: Prisma.SortOrderInput | Prisma.SortOrder;
     evidenceChain?: Prisma.SortOrderInput | Prisma.SortOrder;
     evidenceDescription?: Prisma.SortOrderInput | Prisma.SortOrder;
     evidenceScreenshotPath?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -429,7 +429,7 @@ export type AssertionWhereUniqueInput = Prisma.AtLeast<{
     humanResponse?: Prisma.StringNullableFilter<"Assertion"> | string | null;
     validationNotes?: Prisma.JsonNullableFilter<"Assertion">;
     partiallyValidated?: Prisma.BoolFilter<"Assertion"> | boolean;
-    evidenceScreenshots?: Prisma.StringNullableListFilter<"Assertion">;
+    evidenceScreenshots?: Prisma.JsonNullableFilter<"Assertion">;
     evidenceChain?: Prisma.JsonNullableFilter<"Assertion">;
     evidenceDescription?: Prisma.StringNullableFilter<"Assertion"> | string | null;
     evidenceScreenshotPath?: Prisma.StringNullableFilter<"Assertion"> | string | null;
@@ -465,7 +465,7 @@ export type AssertionOrderByWithAggregationInput = {
     humanResponse?: Prisma.SortOrderInput | Prisma.SortOrder;
     validationNotes?: Prisma.SortOrderInput | Prisma.SortOrder;
     partiallyValidated?: Prisma.SortOrder;
-    evidenceScreenshots?: Prisma.SortOrder;
+    evidenceScreenshots?: Prisma.SortOrderInput | Prisma.SortOrder;
     evidenceChain?: Prisma.SortOrderInput | Prisma.SortOrder;
     evidenceDescription?: Prisma.SortOrderInput | Prisma.SortOrder;
     evidenceScreenshotPath?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -506,7 +506,7 @@ export type AssertionScalarWhereWithAggregatesInput = {
     humanResponse?: Prisma.StringNullableWithAggregatesFilter<"Assertion"> | string | null;
     validationNotes?: Prisma.JsonNullableWithAggregatesFilter<"Assertion">;
     partiallyValidated?: Prisma.BoolWithAggregatesFilter<"Assertion"> | boolean;
-    evidenceScreenshots?: Prisma.StringNullableListFilter<"Assertion">;
+    evidenceScreenshots?: Prisma.JsonNullableWithAggregatesFilter<"Assertion">;
     evidenceChain?: Prisma.JsonNullableWithAggregatesFilter<"Assertion">;
     evidenceDescription?: Prisma.StringNullableWithAggregatesFilter<"Assertion"> | string | null;
     evidenceScreenshotPath?: Prisma.StringNullableWithAggregatesFilter<"Assertion"> | string | null;
@@ -539,7 +539,7 @@ export type AssertionCreateInput = {
     humanResponse?: string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: boolean;
-    evidenceScreenshots?: Prisma.AssertionCreateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
@@ -574,7 +574,7 @@ export type AssertionUncheckedCreateInput = {
     humanResponse?: string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: boolean;
-    evidenceScreenshots?: Prisma.AssertionCreateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
@@ -609,7 +609,7 @@ export type AssertionUpdateInput = {
     humanResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    evidenceScreenshots?: Prisma.AssertionUpdateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -644,7 +644,7 @@ export type AssertionUncheckedUpdateInput = {
     humanResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    evidenceScreenshots?: Prisma.AssertionUpdateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -679,7 +679,7 @@ export type AssertionCreateManyInput = {
     humanResponse?: string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: boolean;
-    evidenceScreenshots?: Prisma.AssertionCreateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
@@ -712,7 +712,7 @@ export type AssertionUpdateManyMutationInput = {
     humanResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    evidenceScreenshots?: Prisma.AssertionUpdateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -744,7 +744,7 @@ export type AssertionUncheckedUpdateManyInput = {
     humanResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    evidenceScreenshots?: Prisma.AssertionUpdateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -763,13 +763,6 @@ export type AssertionListRelationFilter = {
 };
 export type AssertionOrderByRelationAggregateInput = {
     _count?: Prisma.SortOrder;
-};
-export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null;
-    has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null;
-    hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>;
-    hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>;
-    isEmpty?: boolean;
 };
 export type AssertionCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -912,18 +905,11 @@ export type AssertionUncheckedUpdateManyWithoutEntityNestedInput = {
     updateMany?: Prisma.AssertionUpdateManyWithWhereWithoutEntityInput | Prisma.AssertionUpdateManyWithWhereWithoutEntityInput[];
     deleteMany?: Prisma.AssertionScalarWhereInput | Prisma.AssertionScalarWhereInput[];
 };
-export type AssertionCreateevidenceScreenshotsInput = {
-    set: string[];
-};
 export type EnumAssertionStatusFieldUpdateOperationsInput = {
     set?: $Enums.AssertionStatus;
 };
 export type EnumAssertionCriticalityFieldUpdateOperationsInput = {
     set?: $Enums.AssertionCriticality;
-};
-export type AssertionUpdateevidenceScreenshotsInput = {
-    set?: string[];
-    push?: string | string[];
 };
 export type IntFieldUpdateOperationsInput = {
     set?: number;
@@ -977,7 +963,7 @@ export type AssertionCreateWithoutEntityInput = {
     humanResponse?: string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: boolean;
-    evidenceScreenshots?: Prisma.AssertionCreateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
@@ -1011,7 +997,7 @@ export type AssertionUncheckedCreateWithoutEntityInput = {
     humanResponse?: string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: boolean;
-    evidenceScreenshots?: Prisma.AssertionCreateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
@@ -1030,7 +1016,6 @@ export type AssertionCreateOrConnectWithoutEntityInput = {
 };
 export type AssertionCreateManyEntityInputEnvelope = {
     data: Prisma.AssertionCreateManyEntityInput | Prisma.AssertionCreateManyEntityInput[];
-    skipDuplicates?: boolean;
 };
 export type AssertionUpsertWithWhereUniqueWithoutEntityInput = {
     where: Prisma.AssertionWhereUniqueInput;
@@ -1069,7 +1054,7 @@ export type AssertionScalarWhereInput = {
     humanResponse?: Prisma.StringNullableFilter<"Assertion"> | string | null;
     validationNotes?: Prisma.JsonNullableFilter<"Assertion">;
     partiallyValidated?: Prisma.BoolFilter<"Assertion"> | boolean;
-    evidenceScreenshots?: Prisma.StringNullableListFilter<"Assertion">;
+    evidenceScreenshots?: Prisma.JsonNullableFilter<"Assertion">;
     evidenceChain?: Prisma.JsonNullableFilter<"Assertion">;
     evidenceDescription?: Prisma.StringNullableFilter<"Assertion"> | string | null;
     evidenceScreenshotPath?: Prisma.StringNullableFilter<"Assertion"> | string | null;
@@ -1102,7 +1087,7 @@ export type AssertionCreateWithoutReasoningInput = {
     humanResponse?: string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: boolean;
-    evidenceScreenshots?: Prisma.AssertionCreateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
@@ -1136,7 +1121,7 @@ export type AssertionUncheckedCreateWithoutReasoningInput = {
     humanResponse?: string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: boolean;
-    evidenceScreenshots?: Prisma.AssertionCreateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
@@ -1183,7 +1168,7 @@ export type AssertionUpdateWithoutReasoningInput = {
     humanResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    evidenceScreenshots?: Prisma.AssertionUpdateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1217,7 +1202,7 @@ export type AssertionUncheckedUpdateWithoutReasoningInput = {
     humanResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    evidenceScreenshots?: Prisma.AssertionUpdateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1251,7 +1236,7 @@ export type AssertionCreateWithoutSourcesInput = {
     humanResponse?: string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: boolean;
-    evidenceScreenshots?: Prisma.AssertionCreateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
@@ -1285,7 +1270,7 @@ export type AssertionUncheckedCreateWithoutSourcesInput = {
     humanResponse?: string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: boolean;
-    evidenceScreenshots?: Prisma.AssertionCreateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
@@ -1332,7 +1317,7 @@ export type AssertionUpdateWithoutSourcesInput = {
     humanResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    evidenceScreenshots?: Prisma.AssertionUpdateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1366,7 +1351,7 @@ export type AssertionUncheckedUpdateWithoutSourcesInput = {
     humanResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    evidenceScreenshots?: Prisma.AssertionUpdateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1400,7 +1385,7 @@ export type AssertionCreateManyEntityInput = {
     humanResponse?: string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: boolean;
-    evidenceScreenshots?: Prisma.AssertionCreateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: string | null;
     evidenceScreenshotPath?: string | null;
@@ -1432,7 +1417,7 @@ export type AssertionUpdateWithoutEntityInput = {
     humanResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    evidenceScreenshots?: Prisma.AssertionUpdateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1466,7 +1451,7 @@ export type AssertionUncheckedUpdateWithoutEntityInput = {
     humanResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    evidenceScreenshots?: Prisma.AssertionUpdateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1500,7 +1485,7 @@ export type AssertionUncheckedUpdateManyWithoutEntityInput = {
     humanResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     partiallyValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean;
-    evidenceScreenshots?: Prisma.AssertionUpdateevidenceScreenshotsInput | string[];
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1722,7 +1707,7 @@ export type $AssertionPayload<ExtArgs extends runtime.Types.Extensions.InternalA
         humanResponse: string | null;
         validationNotes: runtime.JsonValue | null;
         partiallyValidated: boolean;
-        evidenceScreenshots: string[];
+        evidenceScreenshots: runtime.JsonValue | null;
         evidenceChain: runtime.JsonValue | null;
         evidenceDescription: string | null;
         evidenceScreenshotPath: string | null;
@@ -2110,7 +2095,7 @@ export interface AssertionFieldRefs {
     readonly humanResponse: Prisma.FieldRef<"Assertion", 'String'>;
     readonly validationNotes: Prisma.FieldRef<"Assertion", 'Json'>;
     readonly partiallyValidated: Prisma.FieldRef<"Assertion", 'Boolean'>;
-    readonly evidenceScreenshots: Prisma.FieldRef<"Assertion", 'String[]'>;
+    readonly evidenceScreenshots: Prisma.FieldRef<"Assertion", 'Json'>;
     readonly evidenceChain: Prisma.FieldRef<"Assertion", 'Json'>;
     readonly evidenceDescription: Prisma.FieldRef<"Assertion", 'String'>;
     readonly evidenceScreenshotPath: Prisma.FieldRef<"Assertion", 'String'>;
@@ -2341,7 +2326,6 @@ export type AssertionCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Int
      * The data used to create many Assertions.
      */
     data: Prisma.AssertionCreateManyInput | Prisma.AssertionCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * Assertion createManyAndReturn
@@ -2359,7 +2343,6 @@ export type AssertionCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exten
      * The data used to create many Assertions.
      */
     data: Prisma.AssertionCreateManyInput | Prisma.AssertionCreateManyInput[];
-    skipDuplicates?: boolean;
     /**
      * Choose, which related nodes to fetch as well
      */

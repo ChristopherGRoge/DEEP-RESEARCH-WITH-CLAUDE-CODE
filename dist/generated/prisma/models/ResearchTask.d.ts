@@ -424,7 +424,6 @@ export type ResearchTaskCreateOrConnectWithoutSessionInput = {
 };
 export type ResearchTaskCreateManySessionInputEnvelope = {
     data: Prisma.ResearchTaskCreateManySessionInput | Prisma.ResearchTaskCreateManySessionInput[];
-    skipDuplicates?: boolean;
 };
 export type ResearchTaskUpsertWithWhereUniqueWithoutSessionInput = {
     where: Prisma.ResearchTaskWhereUniqueInput;
@@ -1160,7 +1159,6 @@ export type ResearchTaskCreateManyArgs<ExtArgs extends runtime.Types.Extensions.
      * The data used to create many ResearchTasks.
      */
     data: Prisma.ResearchTaskCreateManyInput | Prisma.ResearchTaskCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * ResearchTask createManyAndReturn
@@ -1178,7 +1176,6 @@ export type ResearchTaskCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
      * The data used to create many ResearchTasks.
      */
     data: Prisma.ResearchTaskCreateManyInput | Prisma.ResearchTaskCreateManyInput[];
-    skipDuplicates?: boolean;
     /**
      * Choose, which related nodes to fetch as well
      */

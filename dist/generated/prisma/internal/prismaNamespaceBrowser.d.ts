@@ -46,9 +46,6 @@ export declare const ModelName: {
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
-    readonly ReadUncommitted: "ReadUncommitted";
-    readonly ReadCommitted: "ReadCommitted";
-    readonly RepeatableRead: "RepeatableRead";
     readonly Serializable: "Serializable";
 };
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
@@ -377,11 +374,6 @@ export declare const JsonNullValueInput: {
     readonly JsonNull: "JsonNull";
 };
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput];
-export declare const QueryMode: {
-    readonly default: "default";
-    readonly insensitive: "insensitive";
-};
-export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
 export declare const NullsOrder: {
     readonly first: "first";
     readonly last: "last";
@@ -393,4 +385,9 @@ export declare const JsonNullValueFilter: {
     readonly AnyNull: "AnyNull";
 };
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter];
+export declare const QueryMode: {
+    readonly default: "default";
+    readonly insensitive: "insensitive";
+};
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
 //# sourceMappingURL=prismaNamespaceBrowser.d.ts.map

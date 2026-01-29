@@ -331,7 +331,6 @@ async function saveDiscoveries(discoveries) {
                     projectId: discovery.projectId,
                     name: {
                         equals: discovery.mentionedName,
-                        mode: 'insensitive',
                     },
                 },
             });
@@ -398,17 +397,17 @@ async function saveDiscoveries(discoveries) {
  * Get crawl statistics for a project
  */
 async function getCrawlStats(projectId) {
-    const logs = await client_1.prisma.researchLog.findMany({
+    // Fetch logs and filter by projectId in JavaScript (SQLite doesn't support JSON path queries)
+    const allLogs = await client_1.prisma.researchLog.findMany({
         where: {
             action: 'rss_crawl',
-            details: {
-                path: ['projectId'],
-                equals: projectId,
-            },
         },
         orderBy: { createdAt: 'desc' },
-        take: 10,
+        take: 100, // Fetch more and filter
     });
+    const logs = allLogs
+        .filter(log => log.details?.projectId === projectId)
+        .slice(0, 10);
     const crawlSessions = logs.map(log => ({
         sessionId: log.details.crawlSessionId,
         crawledAt: log.createdAt,

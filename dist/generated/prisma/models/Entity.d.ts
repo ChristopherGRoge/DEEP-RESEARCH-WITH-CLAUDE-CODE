@@ -1320,7 +1320,6 @@ export type EntityCreateOrConnectWithoutProjectInput = {
 };
 export type EntityCreateManyProjectInputEnvelope = {
     data: Prisma.EntityCreateManyProjectInput | Prisma.EntityCreateManyProjectInput[];
-    skipDuplicates?: boolean;
 };
 export type EntityUpsertWithWhereUniqueWithoutProjectInput = {
     where: Prisma.EntityWhereUniqueInput;
@@ -1996,7 +1995,6 @@ export type EntityCreateOrConnectWithoutCategoryInput = {
 };
 export type EntityCreateManyCategoryInputEnvelope = {
     data: Prisma.EntityCreateManyCategoryInput | Prisma.EntityCreateManyCategoryInput[];
-    skipDuplicates?: boolean;
 };
 export type EntityUpsertWithWhereUniqueWithoutCategoryInput = {
     where: Prisma.EntityWhereUniqueInput;
@@ -2099,7 +2097,6 @@ export type EntityCreateOrConnectWithoutDomainInput = {
 };
 export type EntityCreateManyDomainInputEnvelope = {
     data: Prisma.EntityCreateManyDomainInput | Prisma.EntityCreateManyDomainInput[];
-    skipDuplicates?: boolean;
 };
 export type EntityUpsertWithWhereUniqueWithoutDomainInput = {
     where: Prisma.EntityWhereUniqueInput;
@@ -3482,7 +3479,6 @@ export type EntityCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
      * The data used to create many Entities.
      */
     data: Prisma.EntityCreateManyInput | Prisma.EntityCreateManyInput[];
-    skipDuplicates?: boolean;
 };
 /**
  * Entity createManyAndReturn
@@ -3500,7 +3496,6 @@ export type EntityCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
      * The data used to create many Entities.
      */
     data: Prisma.EntityCreateManyInput | Prisma.EntityCreateManyInput[];
-    skipDuplicates?: boolean;
     /**
      * Choose, which related nodes to fetch as well
      */
