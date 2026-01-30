@@ -79,11 +79,7 @@ export declare function downloadLogo(url: string, entityName: string): Promise<L
  * Save logo information to an entity
  */
 export declare function saveLogo(input: LogoSaveInput): Promise<LogoSaveResult>;
-/**
- * Full workflow: search, verify, download, and save logo
- * Prioritizes SVG format for inline storage
- */
-export declare function fetchLogo(entityId: string): Promise<{
+interface FetchLogoResult {
     success: boolean;
     entityName: string;
     logoUrl?: string;
@@ -93,7 +89,15 @@ export declare function fetchLogo(entityId: string): Promise<{
     searchedPages?: string[];
     candidatesFound?: number;
     error?: string;
-}>;
+}
+/**
+ * Full workflow: search, verify, download, and save logo
+ * Prioritizes SVG format for inline storage
+ *
+ * Includes process-level timeout to prevent zombie processes.
+ * Always closes browser on completion (success or failure).
+ */
+export declare function fetchLogo(entityId: string, timeoutMs?: number): Promise<FetchLogoResult>;
 /**
  * Get entities without logos
  */
@@ -146,4 +150,5 @@ export declare function getLogoInline(entityId: string): Promise<{
     logoUrl?: string;
     error?: string;
 }>;
+export {};
 //# sourceMappingURL=logos.d.ts.map

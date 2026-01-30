@@ -1333,8 +1333,9 @@ for entity in scout.entities:
         }}'
     """)
 
-# Step 3: Fetch logo (Haiku, parallel)
-Task(model="haiku", prompt=f"Fetch logo for: {entity.name}", run_in_background=True)
+# Step 3: Fetch logo (Haiku) - SYNCHRONOUS, not background
+# Logo fetch uses Playwright which requires proper cleanup
+Task(model="haiku", prompt=f"npm run cli -- logo:fetch '{{\"entityId\": \"{entity.id}\"}}'")
 ```
 
 #### Pattern 2: Deep Entity Analysis
@@ -1351,13 +1352,27 @@ for claim in tech.claims + fed.claims:
 ```
 
 #### Pattern 3: Batch Logo Collection
-```python
-# Get entities needing logos
-entities = search:noAssertions where category = branding
 
-# Parallel logo fetch (Haiku)
-for entity in entities:
-    Task(model="haiku", prompt=f"Fetch logo for: {entity.name}", run_in_background=True)
+**WARNING**: Do NOT use `run_in_background=True` for logo:fetch. Logo fetching uses
+Playwright browser instances that can become zombie processes without proper cleanup.
+
+```python
+# RECOMMENDED: Use agenda-based batch processing
+# This ensures proper cleanup between fetches
+
+# 1. Create an agenda for batch logo fetching
+npm run cli -- agenda:create '{
+    "projectId": "...",
+    "name": "Batch logo collection",
+    "taskType": "logo:fetch",
+    "filter": {"hasUrl": true}
+}'
+
+# 2. Work through agenda sequentially (not in parallel)
+while agenda.has_next():
+    item = npm run cli -- agenda:next '{"agendaId": "..."}'
+    npm run cli -- logo:fetch '{"entityId": item.entityId}'
+    npm run cli -- agenda:complete '{"agendaId": "..."}'
 ```
 
 ### Agent Naming Convention

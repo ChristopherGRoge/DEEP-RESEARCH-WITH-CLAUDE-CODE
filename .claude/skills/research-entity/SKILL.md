@@ -1102,6 +1102,18 @@ npm run cli -- logo:fetch '{"entityId": "ENTITY_ID"}'
 
 **Logo Priority**: SVG preferred (vector, inline storage), then PNG, JPG.
 
+**IMPORTANT - Logo Fetch Best Practices:**
+- **DO NOT** use `run_in_background=True` for logo:fetch tasks
+- Logo fetches use Playwright browser instances that require cleanup
+- For batch logo fetching, use agenda-based processing:
+  ```bash
+  npm run cli -- agenda:create '{"projectId": "...", "name": "Batch logos", "taskType": "logo:fetch"}'
+  npm run cli -- agenda:next '{"agendaId": "..."}'
+  # Run logo:fetch synchronously, then mark complete
+  npm run cli -- agenda:complete '{"agendaId": "..."}'
+  ```
+- This ensures proper browser cleanup between fetches
+
 ### Step 2.8: Calculate Buzz Score
 
 Assess entity's market presence and momentum using web signals.

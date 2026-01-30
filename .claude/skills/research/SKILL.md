@@ -181,9 +181,11 @@ Task(
 
     Continue until entity target reached or search space exhausted.
     Focus on BREADTH over depth. Collect everything, validate later.
-    """,
-    run_in_background=True
+    """
 )
+# NOTE: Do NOT use run_in_background=True for research tasks.
+# Background tasks without proper cleanup can become zombie processes.
+# Instead, run tasks sequentially or use agenda-based batch processing.
 ```
 
 ### Outputs

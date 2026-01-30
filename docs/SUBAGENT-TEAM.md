@@ -775,19 +775,16 @@ for entity in scout_result.entities_found:
     Task(subagent_type="general-purpose", model="haiku",
         prompt=f"npm run cli -- entity:create '{json.dumps(entity)}'")
 
-# Step 3: Fetch logos (Haiku, parallel)
-logo_tasks = [
+# Step 3: Fetch logos (Haiku) - SEQUENTIAL, not parallel
+# WARNING: Logo fetch uses Playwright which can create zombie processes if run in background
+for entity in entities:
     Task(subagent_type="general-purpose", model="haiku",
-        prompt=f"Fetch logo for: {entity.name}", run_in_background=True)
-    for entity in entities
-]
+        prompt=f"npm run cli -- logo:fetch '{{\"entityId\": \"{entity.id}\"}}'")
 
-# Step 4: Enrich metadata (Haiku, parallel)
-metadata_tasks = [
+# Step 4: Enrich metadata (Haiku)
+for entity in entities:
     Task(subagent_type="general-purpose", model="haiku",
-        prompt=f"Enrich metadata for: {entity.name}", run_in_background=True)
-    for entity in entities
-]
+        prompt=f"Enrich metadata for: {entity.name}")
 ```
 
 ### Pattern 2: Deep Entity Analysis
@@ -827,36 +824,40 @@ for claim in tech_analysis.claims + fed_assessment.claims:
 
 ### Pattern 3: Batch Logo Collection
 
+**WARNING**: Do NOT use `run_in_background=True` for logo:fetch operations.
+Logo fetching uses Playwright browser instances that become zombie processes
+without proper cleanup. Use agenda-based sequential processing instead.
+
 ```python
-# Get all entities without logos
-entities = Task(model="haiku",
-    prompt="npm run cli -- search:noAssertions '...'")  # Filter for no branding claims
+# RECOMMENDED: Use agenda for batch logo collection
+# This ensures proper browser cleanup between fetches
 
-# Spawn parallel logo fetchers (Haiku)
-logo_results = []
-for entity in entities:
-    result = Task(
-        subagent_type="general-purpose",
-        model="haiku",
-        prompt=f"""
-        Fetch logo for: {entity['name']}
-        URL: {entity['url']}
-        """,
-        run_in_background=True
-    )
-    logo_results.append((entity, result))
+# Step 1: Create agenda for batch logo fetching
+Task(model="haiku", prompt="""
+npm run cli -- agenda:create '{
+    "projectId": "...",
+    "name": "Batch logo collection",
+    "taskType": "logo:fetch",
+    "filter": {"hasUrl": true}
+}'
+""")
 
-# Collect results and persist
-for entity, result_task in logo_results:
-    result = TaskOutput(task_id=result_task.id)
-    if result.logo_url:
-        Task(model="haiku",
-            prompt=f"""npm run cli -- assertion:create '{{
-                "entityId": "{entity['id']}",
-                "claim": "Official logo available at {result.logo_url}",
-                "category": "branding",
-                "sourceUrl": "{result.source_page}"
-            }}'""")
+# Step 2: Process agenda sequentially (NOT in parallel)
+while True:
+    # Get next item
+    next_item = Task(model="haiku",
+        prompt=f"npm run cli -- agenda:next '{{\"agendaId\": \"{agenda_id}\"}}'")
+
+    if not next_item.entity:
+        break  # Agenda complete
+
+    # Fetch logo synchronously (ensures browser cleanup)
+    Task(model="haiku",
+        prompt=f"npm run cli -- logo:fetch '{{\"entityId\": \"{next_item.entity.id}\"}}'")
+
+    # Mark complete
+    Task(model="haiku",
+        prompt=f"npm run cli -- agenda:complete '{{\"agendaId\": \"{agenda_id}\"}}'")
 ```
 
 ---
@@ -876,11 +877,15 @@ Include agentId in assertions for audit trail:
 npm run cli -- assertion:create '{"...", "agentId": "discovery-scout-001"}'
 ```
 
-### 3. Parallel When Possible
-Use `run_in_background=True` for independent tasks:
-- Logo fetching for multiple entities
-- Metadata enrichment for multiple entities
-- URL validation for multiple sources
+### 3. Parallel When Possible (With Exceptions)
+Use `run_in_background=True` for independent tasks, **EXCEPT**:
+- **Logo fetching** - uses Playwright, must run sequentially to avoid zombie processes
+- Any task that spawns browser instances or long-running processes
+
+Safe for background execution:
+- URL validation for multiple sources (uses simple HTTP requests)
+- Database writes (fast, stateless)
+- Metadata enrichment (if not using browser)
 
 ### 4. Sequential When Dependent
 Run sequentially when results depend on each other:

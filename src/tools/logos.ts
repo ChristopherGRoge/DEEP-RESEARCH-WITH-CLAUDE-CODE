@@ -118,6 +118,7 @@ const LOGO_PATTERNS = [
 // ============================================
 
 let browserInstance: Browser | null = null;
+let isClosing = false;
 
 async function getBrowser(): Promise<Browser> {
   if (!browserInstance) {
@@ -129,11 +130,39 @@ async function getBrowser(): Promise<Browser> {
 }
 
 export async function closeLogoBrowser(): Promise<void> {
-  if (browserInstance) {
-    await browserInstance.close();
+  if (browserInstance && !isClosing) {
+    isClosing = true;
+    try {
+      await browserInstance.close();
+    } catch {
+      // Ignore close errors
+    }
     browserInstance = null;
+    isClosing = false;
   }
 }
+
+// Ensure browser is closed on process exit
+function setupCleanupHandlers(): void {
+  const cleanup = () => {
+    if (browserInstance) {
+      browserInstance.close().catch(() => {});
+      browserInstance = null;
+    }
+  };
+
+  process.on('exit', cleanup);
+  process.on('SIGINT', () => { cleanup(); process.exit(130); });
+  process.on('SIGTERM', () => { cleanup(); process.exit(143); });
+  process.on('uncaughtException', (err) => {
+    console.error('Uncaught exception:', err);
+    cleanup();
+    process.exit(1);
+  });
+}
+
+// Initialize cleanup handlers
+setupCleanupHandlers();
 
 // ============================================
 // LOGO SEARCH
@@ -624,11 +653,10 @@ export async function saveLogo(input: LogoSaveInput): Promise<LogoSaveResult> {
 // COMBINED FETCH WORKFLOW
 // ============================================
 
-/**
- * Full workflow: search, verify, download, and save logo
- * Prioritizes SVG format for inline storage
- */
-export async function fetchLogo(entityId: string): Promise<{
+// Default timeout for entire fetchLogo operation (60 seconds)
+const FETCH_LOGO_TIMEOUT_MS = 60000;
+
+interface FetchLogoResult {
   success: boolean;
   entityName: string;
   logoUrl?: string;
@@ -638,7 +666,12 @@ export async function fetchLogo(entityId: string): Promise<{
   searchedPages?: string[];
   candidatesFound?: number;
   error?: string;
-}> {
+}
+
+/**
+ * Internal implementation of fetchLogo workflow
+ */
+async function fetchLogoInternal(entityId: string): Promise<FetchLogoResult> {
   // Search for logos
   const searchResult = await searchForLogo(entityId);
 
@@ -696,6 +729,45 @@ export async function fetchLogo(entityId: string): Promise<{
     candidatesFound: searchResult.candidates.length,
     error: 'All logo candidates failed verification',
   };
+}
+
+/**
+ * Full workflow: search, verify, download, and save logo
+ * Prioritizes SVG format for inline storage
+ *
+ * Includes process-level timeout to prevent zombie processes.
+ * Always closes browser on completion (success or failure).
+ */
+export async function fetchLogo(
+  entityId: string,
+  timeoutMs: number = FETCH_LOGO_TIMEOUT_MS
+): Promise<FetchLogoResult> {
+  // Create timeout promise
+  const timeoutPromise = new Promise<FetchLogoResult>((_, reject) => {
+    setTimeout(() => {
+      reject(new Error(`Logo fetch timeout after ${timeoutMs}ms`));
+    }, timeoutMs);
+  });
+
+  try {
+    // Race between actual work and timeout
+    const result = await Promise.race([
+      fetchLogoInternal(entityId),
+      timeoutPromise,
+    ]);
+    return result;
+  } catch (error) {
+    // Handle timeout or other errors
+    const message = error instanceof Error ? error.message : String(error);
+    return {
+      success: false,
+      entityName: '',
+      error: message,
+    };
+  } finally {
+    // ALWAYS close browser to prevent zombie processes
+    await closeLogoBrowser();
+  }
 }
 
 // ============================================
