@@ -59,8 +59,8 @@ export declare function createAssertion(input: CreateAssertionInput): Promise<({
             createdAt: Date;
             updatedAt: Date;
             url: string;
-            status: import("../../generated/prisma/enums").SourceStatus;
             validatedAt: Date | null;
+            status: import("../../generated/prisma/enums").SourceStatus;
             validatedBy: string | null;
             title: string | null;
             sourceType: string | null;
@@ -87,6 +87,7 @@ export declare function createAssertion(input: CreateAssertionInput): Promise<({
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -94,7 +95,6 @@ export declare function createAssertion(input: CreateAssertionInput): Promise<({
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -181,8 +181,8 @@ export declare function getAssertion(assertionId: string): Promise<({
             createdAt: Date;
             updatedAt: Date;
             url: string;
-            status: import("../../generated/prisma/enums").SourceStatus;
             validatedAt: Date | null;
+            status: import("../../generated/prisma/enums").SourceStatus;
             validatedBy: string | null;
             title: string | null;
             sourceType: string | null;
@@ -209,6 +209,7 @@ export declare function getAssertion(assertionId: string): Promise<({
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -216,7 +217,6 @@ export declare function getAssertion(assertionId: string): Promise<({
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -254,8 +254,8 @@ export declare function listAssertions(entityId: string): Promise<({
             createdAt: Date;
             updatedAt: Date;
             url: string;
-            status: import("../../generated/prisma/enums").SourceStatus;
             validatedAt: Date | null;
+            status: import("../../generated/prisma/enums").SourceStatus;
             validatedBy: string | null;
             title: string | null;
             sourceType: string | null;
@@ -282,6 +282,7 @@ export declare function listAssertions(entityId: string): Promise<({
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -289,7 +290,6 @@ export declare function listAssertions(entityId: string): Promise<({
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -331,8 +331,8 @@ export declare function searchAssertions(input: SearchAssertionsInput): Promise<
             createdAt: Date;
             updatedAt: Date;
             url: string;
-            status: import("../../generated/prisma/enums").SourceStatus;
             validatedAt: Date | null;
+            status: import("../../generated/prisma/enums").SourceStatus;
             validatedBy: string | null;
             title: string | null;
             sourceType: string | null;
@@ -359,6 +359,7 @@ export declare function searchAssertions(input: SearchAssertionsInput): Promise<
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -366,7 +367,6 @@ export declare function searchAssertions(input: SearchAssertionsInput): Promise<
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -395,6 +395,7 @@ export declare function updateAssertion(assertionId: string, input: UpdateAssert
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -402,7 +403,6 @@ export declare function updateAssertion(assertionId: string, input: UpdateAssert
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -441,6 +441,7 @@ export declare function validateAssertion(assertionId: string, validatedBy: stri
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -448,7 +449,6 @@ export declare function validateAssertion(assertionId: string, validatedBy: stri
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -478,6 +478,7 @@ export declare function rejectAssertion(assertionId: string, validatedBy: string
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -485,7 +486,6 @@ export declare function rejectAssertion(assertionId: string, validatedBy: string
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -514,6 +514,7 @@ export declare function setCriticality(assertionId: string, criticality: Asserti
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -521,7 +522,6 @@ export declare function setCriticality(assertionId: string, criticality: Asserti
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -550,6 +550,7 @@ export declare function markCitedInConclusion(assertionId: string, conclusionCon
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -557,7 +558,6 @@ export declare function markCitedInConclusion(assertionId: string, conclusionCon
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -601,8 +601,8 @@ export declare function getAssertionsPendingValidation(projectId?: string): Prom
             createdAt: Date;
             updatedAt: Date;
             url: string;
-            status: import("../../generated/prisma/enums").SourceStatus;
             validatedAt: Date | null;
+            status: import("../../generated/prisma/enums").SourceStatus;
             validatedBy: string | null;
             title: string | null;
             sourceType: string | null;
@@ -629,6 +629,7 @@ export declare function getAssertionsPendingValidation(projectId?: string): Prom
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -636,7 +637,6 @@ export declare function getAssertionsPendingValidation(projectId?: string): Prom
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -679,8 +679,8 @@ export declare function getRejectedForReresearch(projectId?: string): Promise<({
             createdAt: Date;
             updatedAt: Date;
             url: string;
-            status: import("../../generated/prisma/enums").SourceStatus;
             validatedAt: Date | null;
+            status: import("../../generated/prisma/enums").SourceStatus;
             validatedBy: string | null;
             title: string | null;
             sourceType: string | null;
@@ -707,6 +707,7 @@ export declare function getRejectedForReresearch(projectId?: string): Promise<({
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -714,7 +715,6 @@ export declare function getRejectedForReresearch(projectId?: string): Promise<({
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -743,6 +743,7 @@ export declare function supersededAssertion(rejectedId: string, newAssertionId: 
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -750,7 +751,6 @@ export declare function supersededAssertion(rejectedId: string, newAssertionId: 
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -784,6 +784,7 @@ export declare function addHumanResponse(assertionId: string, response: string, 
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -791,7 +792,6 @@ export declare function addHumanResponse(assertionId: string, response: string, 
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -821,6 +821,7 @@ export declare function addAgentResponse(assertionId: string, response: string, 
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -828,7 +829,6 @@ export declare function addAgentResponse(assertionId: string, response: string, 
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -871,8 +871,8 @@ export declare function getActiveDialogues(projectId?: string): Promise<({
             createdAt: Date;
             updatedAt: Date;
             url: string;
-            status: import("../../generated/prisma/enums").SourceStatus;
             validatedAt: Date | null;
+            status: import("../../generated/prisma/enums").SourceStatus;
             validatedBy: string | null;
             title: string | null;
             sourceType: string | null;
@@ -899,6 +899,7 @@ export declare function getActiveDialogues(projectId?: string): Promise<({
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -906,7 +907,6 @@ export declare function getActiveDialogues(projectId?: string): Promise<({
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -935,6 +935,7 @@ export declare function deleteAssertion(assertionId: string): Promise<{
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -942,7 +943,6 @@ export declare function deleteAssertion(assertionId: string): Promise<{
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -980,8 +980,8 @@ export declare function findSimilarAssertions(entityId: string, claim: string): 
             createdAt: Date;
             updatedAt: Date;
             url: string;
-            status: import("../../generated/prisma/enums").SourceStatus;
             validatedAt: Date | null;
+            status: import("../../generated/prisma/enums").SourceStatus;
             validatedBy: string | null;
             title: string | null;
             sourceType: string | null;
@@ -1008,6 +1008,7 @@ export declare function findSimilarAssertions(entityId: string, claim: string): 
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -1015,7 +1016,6 @@ export declare function findSimilarAssertions(entityId: string, claim: string): 
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -1075,6 +1075,7 @@ export declare function updateConfidence(assertionId: string, score?: number, fa
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -1082,7 +1083,6 @@ export declare function updateConfidence(assertionId: string, score?: number, fa
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -1124,8 +1124,8 @@ export declare function getAssertionsByConfidence(entityId: string, minConfidenc
             createdAt: Date;
             updatedAt: Date;
             url: string;
-            status: import("../../generated/prisma/enums").SourceStatus;
             validatedAt: Date | null;
+            status: import("../../generated/prisma/enums").SourceStatus;
             validatedBy: string | null;
             title: string | null;
             sourceType: string | null;
@@ -1152,6 +1152,7 @@ export declare function getAssertionsByConfidence(entityId: string, minConfidenc
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -1159,7 +1160,6 @@ export declare function getAssertionsByConfidence(entityId: string, minConfidenc
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;
@@ -1202,8 +1202,8 @@ export declare function getLowConfidenceAssertions(projectId?: string, threshold
             createdAt: Date;
             updatedAt: Date;
             url: string;
-            status: import("../../generated/prisma/enums").SourceStatus;
             validatedAt: Date | null;
+            status: import("../../generated/prisma/enums").SourceStatus;
             validatedBy: string | null;
             title: string | null;
             sourceType: string | null;
@@ -1230,6 +1230,7 @@ export declare function getLowConfidenceAssertions(projectId?: string, threshold
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -1237,7 +1238,6 @@ export declare function getLowConfidenceAssertions(projectId?: string, threshold
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;

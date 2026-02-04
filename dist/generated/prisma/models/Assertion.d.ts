@@ -368,6 +368,7 @@ export type AssertionWhereInput = {
     entity?: Prisma.XOR<Prisma.EntityScalarRelationFilter, Prisma.EntityWhereInput>;
     reasoning?: Prisma.ReasoningListRelationFilter;
     sources?: Prisma.AssertionSourceListRelationFilter;
+    validations?: Prisma.ValidationResultListRelationFilter;
 };
 export type AssertionOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -404,6 +405,7 @@ export type AssertionOrderByWithRelationInput = {
     entity?: Prisma.EntityOrderByWithRelationInput;
     reasoning?: Prisma.ReasoningOrderByRelationAggregateInput;
     sources?: Prisma.AssertionSourceOrderByRelationAggregateInput;
+    validations?: Prisma.ValidationResultOrderByRelationAggregateInput;
 };
 export type AssertionWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -443,6 +445,7 @@ export type AssertionWhereUniqueInput = Prisma.AtLeast<{
     entity?: Prisma.XOR<Prisma.EntityScalarRelationFilter, Prisma.EntityWhereInput>;
     reasoning?: Prisma.ReasoningListRelationFilter;
     sources?: Prisma.AssertionSourceListRelationFilter;
+    validations?: Prisma.ValidationResultListRelationFilter;
 }, "id">;
 export type AssertionOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -552,6 +555,7 @@ export type AssertionCreateInput = {
     entity: Prisma.EntityCreateNestedOneWithoutAssertionsInput;
     reasoning?: Prisma.ReasoningCreateNestedManyWithoutAssertionInput;
     sources?: Prisma.AssertionSourceCreateNestedManyWithoutAssertionInput;
+    validations?: Prisma.ValidationResultCreateNestedManyWithoutAssertionInput;
 };
 export type AssertionUncheckedCreateInput = {
     id?: string;
@@ -587,6 +591,7 @@ export type AssertionUncheckedCreateInput = {
     entityId: string;
     reasoning?: Prisma.ReasoningUncheckedCreateNestedManyWithoutAssertionInput;
     sources?: Prisma.AssertionSourceUncheckedCreateNestedManyWithoutAssertionInput;
+    validations?: Prisma.ValidationResultUncheckedCreateNestedManyWithoutAssertionInput;
 };
 export type AssertionUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -622,6 +627,7 @@ export type AssertionUpdateInput = {
     entity?: Prisma.EntityUpdateOneRequiredWithoutAssertionsNestedInput;
     reasoning?: Prisma.ReasoningUpdateManyWithoutAssertionNestedInput;
     sources?: Prisma.AssertionSourceUpdateManyWithoutAssertionNestedInput;
+    validations?: Prisma.ValidationResultUpdateManyWithoutAssertionNestedInput;
 };
 export type AssertionUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -657,6 +663,7 @@ export type AssertionUncheckedUpdateInput = {
     entityId?: Prisma.StringFieldUpdateOperationsInput | string;
     reasoning?: Prisma.ReasoningUncheckedUpdateManyWithoutAssertionNestedInput;
     sources?: Prisma.AssertionSourceUncheckedUpdateManyWithoutAssertionNestedInput;
+    validations?: Prisma.ValidationResultUncheckedUpdateManyWithoutAssertionNestedInput;
 };
 export type AssertionCreateManyInput = {
     id?: string;
@@ -942,6 +949,18 @@ export type AssertionUpdateOneRequiredWithoutSourcesNestedInput = {
     connect?: Prisma.AssertionWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.AssertionUpdateToOneWithWhereWithoutSourcesInput, Prisma.AssertionUpdateWithoutSourcesInput>, Prisma.AssertionUncheckedUpdateWithoutSourcesInput>;
 };
+export type AssertionCreateNestedOneWithoutValidationsInput = {
+    create?: Prisma.XOR<Prisma.AssertionCreateWithoutValidationsInput, Prisma.AssertionUncheckedCreateWithoutValidationsInput>;
+    connectOrCreate?: Prisma.AssertionCreateOrConnectWithoutValidationsInput;
+    connect?: Prisma.AssertionWhereUniqueInput;
+};
+export type AssertionUpdateOneRequiredWithoutValidationsNestedInput = {
+    create?: Prisma.XOR<Prisma.AssertionCreateWithoutValidationsInput, Prisma.AssertionUncheckedCreateWithoutValidationsInput>;
+    connectOrCreate?: Prisma.AssertionCreateOrConnectWithoutValidationsInput;
+    upsert?: Prisma.AssertionUpsertWithoutValidationsInput;
+    connect?: Prisma.AssertionWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.AssertionUpdateToOneWithWhereWithoutValidationsInput, Prisma.AssertionUpdateWithoutValidationsInput>, Prisma.AssertionUncheckedUpdateWithoutValidationsInput>;
+};
 export type AssertionCreateWithoutEntityInput = {
     id?: string;
     claim: string;
@@ -975,6 +994,7 @@ export type AssertionCreateWithoutEntityInput = {
     criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     reasoning?: Prisma.ReasoningCreateNestedManyWithoutAssertionInput;
     sources?: Prisma.AssertionSourceCreateNestedManyWithoutAssertionInput;
+    validations?: Prisma.ValidationResultCreateNestedManyWithoutAssertionInput;
 };
 export type AssertionUncheckedCreateWithoutEntityInput = {
     id?: string;
@@ -1009,6 +1029,7 @@ export type AssertionUncheckedCreateWithoutEntityInput = {
     criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     reasoning?: Prisma.ReasoningUncheckedCreateNestedManyWithoutAssertionInput;
     sources?: Prisma.AssertionSourceUncheckedCreateNestedManyWithoutAssertionInput;
+    validations?: Prisma.ValidationResultUncheckedCreateNestedManyWithoutAssertionInput;
 };
 export type AssertionCreateOrConnectWithoutEntityInput = {
     where: Prisma.AssertionWhereUniqueInput;
@@ -1099,6 +1120,7 @@ export type AssertionCreateWithoutReasoningInput = {
     criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity: Prisma.EntityCreateNestedOneWithoutAssertionsInput;
     sources?: Prisma.AssertionSourceCreateNestedManyWithoutAssertionInput;
+    validations?: Prisma.ValidationResultCreateNestedManyWithoutAssertionInput;
 };
 export type AssertionUncheckedCreateWithoutReasoningInput = {
     id?: string;
@@ -1133,6 +1155,7 @@ export type AssertionUncheckedCreateWithoutReasoningInput = {
     criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entityId: string;
     sources?: Prisma.AssertionSourceUncheckedCreateNestedManyWithoutAssertionInput;
+    validations?: Prisma.ValidationResultUncheckedCreateNestedManyWithoutAssertionInput;
 };
 export type AssertionCreateOrConnectWithoutReasoningInput = {
     where: Prisma.AssertionWhereUniqueInput;
@@ -1180,6 +1203,7 @@ export type AssertionUpdateWithoutReasoningInput = {
     criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity?: Prisma.EntityUpdateOneRequiredWithoutAssertionsNestedInput;
     sources?: Prisma.AssertionSourceUpdateManyWithoutAssertionNestedInput;
+    validations?: Prisma.ValidationResultUpdateManyWithoutAssertionNestedInput;
 };
 export type AssertionUncheckedUpdateWithoutReasoningInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1214,6 +1238,7 @@ export type AssertionUncheckedUpdateWithoutReasoningInput = {
     criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entityId?: Prisma.StringFieldUpdateOperationsInput | string;
     sources?: Prisma.AssertionSourceUncheckedUpdateManyWithoutAssertionNestedInput;
+    validations?: Prisma.ValidationResultUncheckedUpdateManyWithoutAssertionNestedInput;
 };
 export type AssertionCreateWithoutSourcesInput = {
     id?: string;
@@ -1248,6 +1273,7 @@ export type AssertionCreateWithoutSourcesInput = {
     criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity: Prisma.EntityCreateNestedOneWithoutAssertionsInput;
     reasoning?: Prisma.ReasoningCreateNestedManyWithoutAssertionInput;
+    validations?: Prisma.ValidationResultCreateNestedManyWithoutAssertionInput;
 };
 export type AssertionUncheckedCreateWithoutSourcesInput = {
     id?: string;
@@ -1282,6 +1308,7 @@ export type AssertionUncheckedCreateWithoutSourcesInput = {
     criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entityId: string;
     reasoning?: Prisma.ReasoningUncheckedCreateNestedManyWithoutAssertionInput;
+    validations?: Prisma.ValidationResultUncheckedCreateNestedManyWithoutAssertionInput;
 };
 export type AssertionCreateOrConnectWithoutSourcesInput = {
     where: Prisma.AssertionWhereUniqueInput;
@@ -1329,6 +1356,7 @@ export type AssertionUpdateWithoutSourcesInput = {
     criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entity?: Prisma.EntityUpdateOneRequiredWithoutAssertionsNestedInput;
     reasoning?: Prisma.ReasoningUpdateManyWithoutAssertionNestedInput;
+    validations?: Prisma.ValidationResultUpdateManyWithoutAssertionNestedInput;
 };
 export type AssertionUncheckedUpdateWithoutSourcesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1363,6 +1391,160 @@ export type AssertionUncheckedUpdateWithoutSourcesInput = {
     criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     entityId?: Prisma.StringFieldUpdateOperationsInput | string;
     reasoning?: Prisma.ReasoningUncheckedUpdateManyWithoutAssertionNestedInput;
+    validations?: Prisma.ValidationResultUncheckedUpdateManyWithoutAssertionNestedInput;
+};
+export type AssertionCreateWithoutValidationsInput = {
+    id?: string;
+    claim: string;
+    status?: $Enums.AssertionStatus;
+    category?: string | null;
+    confidence?: number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    criticality?: $Enums.AssertionCriticality;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    validatedAt?: Date | string | null;
+    validatedBy?: string | null;
+    citedInConclusion?: boolean;
+    conclusionContext?: string | null;
+    rejectionReason?: string | null;
+    supersededBy?: string | null;
+    humanResponse?: string | null;
+    validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    partiallyValidated?: boolean;
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    evidenceDescription?: string | null;
+    evidenceScreenshotPath?: string | null;
+    discoverySourceId?: string | null;
+    firstDiscoveredAt?: Date | string | null;
+    mentionCount?: number;
+    sourceSpread?: number;
+    criticalityScore?: number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    entity: Prisma.EntityCreateNestedOneWithoutAssertionsInput;
+    reasoning?: Prisma.ReasoningCreateNestedManyWithoutAssertionInput;
+    sources?: Prisma.AssertionSourceCreateNestedManyWithoutAssertionInput;
+};
+export type AssertionUncheckedCreateWithoutValidationsInput = {
+    id?: string;
+    claim: string;
+    status?: $Enums.AssertionStatus;
+    category?: string | null;
+    confidence?: number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    criticality?: $Enums.AssertionCriticality;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    validatedAt?: Date | string | null;
+    validatedBy?: string | null;
+    citedInConclusion?: boolean;
+    conclusionContext?: string | null;
+    rejectionReason?: string | null;
+    supersededBy?: string | null;
+    humanResponse?: string | null;
+    validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    partiallyValidated?: boolean;
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    evidenceDescription?: string | null;
+    evidenceScreenshotPath?: string | null;
+    discoverySourceId?: string | null;
+    firstDiscoveredAt?: Date | string | null;
+    mentionCount?: number;
+    sourceSpread?: number;
+    criticalityScore?: number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    entityId: string;
+    reasoning?: Prisma.ReasoningUncheckedCreateNestedManyWithoutAssertionInput;
+    sources?: Prisma.AssertionSourceUncheckedCreateNestedManyWithoutAssertionInput;
+};
+export type AssertionCreateOrConnectWithoutValidationsInput = {
+    where: Prisma.AssertionWhereUniqueInput;
+    create: Prisma.XOR<Prisma.AssertionCreateWithoutValidationsInput, Prisma.AssertionUncheckedCreateWithoutValidationsInput>;
+};
+export type AssertionUpsertWithoutValidationsInput = {
+    update: Prisma.XOR<Prisma.AssertionUpdateWithoutValidationsInput, Prisma.AssertionUncheckedUpdateWithoutValidationsInput>;
+    create: Prisma.XOR<Prisma.AssertionCreateWithoutValidationsInput, Prisma.AssertionUncheckedCreateWithoutValidationsInput>;
+    where?: Prisma.AssertionWhereInput;
+};
+export type AssertionUpdateToOneWithWhereWithoutValidationsInput = {
+    where?: Prisma.AssertionWhereInput;
+    data: Prisma.XOR<Prisma.AssertionUpdateWithoutValidationsInput, Prisma.AssertionUncheckedUpdateWithoutValidationsInput>;
+};
+export type AssertionUpdateWithoutValidationsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    claim?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumAssertionStatusFieldUpdateOperationsInput | $Enums.AssertionStatus;
+    category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    criticality?: Prisma.EnumAssertionCriticalityFieldUpdateOperationsInput | $Enums.AssertionCriticality;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    validatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    citedInConclusion?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    conclusionContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    supersededBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    humanResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    partiallyValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    discoverySourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    firstDiscoveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    mentionCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    sourceSpread?: Prisma.IntFieldUpdateOperationsInput | number;
+    criticalityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    entity?: Prisma.EntityUpdateOneRequiredWithoutAssertionsNestedInput;
+    reasoning?: Prisma.ReasoningUpdateManyWithoutAssertionNestedInput;
+    sources?: Prisma.AssertionSourceUpdateManyWithoutAssertionNestedInput;
+};
+export type AssertionUncheckedUpdateWithoutValidationsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    claim?: Prisma.StringFieldUpdateOperationsInput | string;
+    status?: Prisma.EnumAssertionStatusFieldUpdateOperationsInput | $Enums.AssertionStatus;
+    category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    confidenceFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    lastValidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validationHistory?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    criticality?: Prisma.EnumAssertionCriticalityFieldUpdateOperationsInput | $Enums.AssertionCriticality;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    validatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    validatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    citedInConclusion?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    conclusionContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    supersededBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    humanResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    validationNotes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    partiallyValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    evidenceScreenshots?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    evidenceChain?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    evidenceDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    evidenceScreenshotPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    discoverySourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    firstDiscoveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    mentionCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    sourceSpread?: Prisma.IntFieldUpdateOperationsInput | number;
+    criticalityScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    entityId?: Prisma.StringFieldUpdateOperationsInput | string;
+    reasoning?: Prisma.ReasoningUncheckedUpdateManyWithoutAssertionNestedInput;
+    sources?: Prisma.AssertionSourceUncheckedUpdateManyWithoutAssertionNestedInput;
 };
 export type AssertionCreateManyEntityInput = {
     id?: string;
@@ -1429,6 +1611,7 @@ export type AssertionUpdateWithoutEntityInput = {
     criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     reasoning?: Prisma.ReasoningUpdateManyWithoutAssertionNestedInput;
     sources?: Prisma.AssertionSourceUpdateManyWithoutAssertionNestedInput;
+    validations?: Prisma.ValidationResultUpdateManyWithoutAssertionNestedInput;
 };
 export type AssertionUncheckedUpdateWithoutEntityInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1463,6 +1646,7 @@ export type AssertionUncheckedUpdateWithoutEntityInput = {
     criticalityFactors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     reasoning?: Prisma.ReasoningUncheckedUpdateManyWithoutAssertionNestedInput;
     sources?: Prisma.AssertionSourceUncheckedUpdateManyWithoutAssertionNestedInput;
+    validations?: Prisma.ValidationResultUncheckedUpdateManyWithoutAssertionNestedInput;
 };
 export type AssertionUncheckedUpdateManyWithoutEntityInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1502,10 +1686,12 @@ export type AssertionUncheckedUpdateManyWithoutEntityInput = {
 export type AssertionCountOutputType = {
     reasoning: number;
     sources: number;
+    validations: number;
 };
 export type AssertionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     reasoning?: boolean | AssertionCountOutputTypeCountReasoningArgs;
     sources?: boolean | AssertionCountOutputTypeCountSourcesArgs;
+    validations?: boolean | AssertionCountOutputTypeCountValidationsArgs;
 };
 /**
  * AssertionCountOutputType without action
@@ -1527,6 +1713,12 @@ export type AssertionCountOutputTypeCountReasoningArgs<ExtArgs extends runtime.T
  */
 export type AssertionCountOutputTypeCountSourcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.AssertionSourceWhereInput;
+};
+/**
+ * AssertionCountOutputType without action
+ */
+export type AssertionCountOutputTypeCountValidationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ValidationResultWhereInput;
 };
 export type AssertionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -1563,6 +1755,7 @@ export type AssertionSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
     entity?: boolean | Prisma.EntityDefaultArgs<ExtArgs>;
     reasoning?: boolean | Prisma.Assertion$reasoningArgs<ExtArgs>;
     sources?: boolean | Prisma.Assertion$sourcesArgs<ExtArgs>;
+    validations?: boolean | Prisma.Assertion$validationsArgs<ExtArgs>;
     _count?: boolean | Prisma.AssertionCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["assertion"]>;
 export type AssertionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1671,6 +1864,7 @@ export type AssertionInclude<ExtArgs extends runtime.Types.Extensions.InternalAr
     entity?: boolean | Prisma.EntityDefaultArgs<ExtArgs>;
     reasoning?: boolean | Prisma.Assertion$reasoningArgs<ExtArgs>;
     sources?: boolean | Prisma.Assertion$sourcesArgs<ExtArgs>;
+    validations?: boolean | Prisma.Assertion$validationsArgs<ExtArgs>;
     _count?: boolean | Prisma.AssertionCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type AssertionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1685,6 +1879,7 @@ export type $AssertionPayload<ExtArgs extends runtime.Types.Extensions.InternalA
         entity: Prisma.$EntityPayload<ExtArgs>;
         reasoning: Prisma.$ReasoningPayload<ExtArgs>[];
         sources: Prisma.$AssertionSourcePayload<ExtArgs>[];
+        validations: Prisma.$ValidationResultPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -2050,6 +2245,7 @@ export interface Prisma__AssertionClient<T, Null = never, ExtArgs extends runtim
     entity<T extends Prisma.EntityDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EntityDefaultArgs<ExtArgs>>): Prisma.Prisma__EntityClient<runtime.Types.Result.GetResult<Prisma.$EntityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     reasoning<T extends Prisma.Assertion$reasoningArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assertion$reasoningArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReasoningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     sources<T extends Prisma.Assertion$sourcesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assertion$sourcesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssertionSourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    validations<T extends Prisma.Assertion$validationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assertion$validationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ValidationResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2527,6 +2723,29 @@ export type Assertion$sourcesArgs<ExtArgs extends runtime.Types.Extensions.Inter
     take?: number;
     skip?: number;
     distinct?: Prisma.AssertionSourceScalarFieldEnum | Prisma.AssertionSourceScalarFieldEnum[];
+};
+/**
+ * Assertion.validations
+ */
+export type Assertion$validationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ValidationResult
+     */
+    select?: Prisma.ValidationResultSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ValidationResult
+     */
+    omit?: Prisma.ValidationResultOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ValidationResultInclude<ExtArgs> | null;
+    where?: Prisma.ValidationResultWhereInput;
+    orderBy?: Prisma.ValidationResultOrderByWithRelationInput | Prisma.ValidationResultOrderByWithRelationInput[];
+    cursor?: Prisma.ValidationResultWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ValidationResultScalarFieldEnum | Prisma.ValidationResultScalarFieldEnum[];
 };
 /**
  * Assertion without action

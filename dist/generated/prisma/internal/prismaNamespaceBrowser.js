@@ -48,7 +48,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.QueryMode = exports.JsonNullValueFilter = exports.NullsOrder = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.ResearchDomainScalarFieldEnum = exports.DiscoveryCategoryScalarFieldEnum = exports.DiscoveryTrendScalarFieldEnum = exports.DiscoveryCrawlScalarFieldEnum = exports.RawDiscoveryScalarFieldEnum = exports.DiscoverySourceScalarFieldEnum = exports.ResearchTaskScalarFieldEnum = exports.ResearchSessionScalarFieldEnum = exports.ExtractionScalarFieldEnum = exports.ScreenshotScalarFieldEnum = exports.ResearchLogScalarFieldEnum = exports.AssertionSourceScalarFieldEnum = exports.SourceScalarFieldEnum = exports.ReasoningScalarFieldEnum = exports.AssertionScalarFieldEnum = exports.EntityScalarFieldEnum = exports.ResearchProjectScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.QueryMode = exports.JsonNullValueFilter = exports.NullsOrder = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.ResearchDomainScalarFieldEnum = exports.DiscoveryCategoryScalarFieldEnum = exports.DiscoveryTrendScalarFieldEnum = exports.DiscoveryCrawlScalarFieldEnum = exports.RawDiscoveryScalarFieldEnum = exports.DiscoverySourceScalarFieldEnum = exports.ResearchTaskScalarFieldEnum = exports.ResearchSessionScalarFieldEnum = exports.ExtractionScalarFieldEnum = exports.ScreenshotScalarFieldEnum = exports.VerifiedCitationScalarFieldEnum = exports.ValidationResultScalarFieldEnum = exports.ResearchLogScalarFieldEnum = exports.AssertionSourceScalarFieldEnum = exports.SourceScalarFieldEnum = exports.ReasoningScalarFieldEnum = exports.AssertionScalarFieldEnum = exports.EntityScalarFieldEnum = exports.ResearchProjectScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -82,6 +82,8 @@ exports.ModelName = {
     Source: 'Source',
     AssertionSource: 'AssertionSource',
     ResearchLog: 'ResearchLog',
+    ValidationResult: 'ValidationResult',
+    VerifiedCitation: 'VerifiedCitation',
     Screenshot: 'Screenshot',
     Extraction: 'Extraction',
     ResearchSession: 'ResearchSession',
@@ -221,6 +223,37 @@ exports.ResearchLogScalarFieldEnum = {
     details: 'details',
     agentId: 'agentId',
     createdAt: 'createdAt'
+};
+exports.ValidationResultScalarFieldEnum = {
+    id: 'id',
+    assertionId: 'assertionId',
+    verdict: 'verdict',
+    confidence: 'confidence',
+    method: 'method',
+    refinedClaim: 'refinedClaim',
+    attackResults: 'attackResults',
+    counterEvidence: 'counterEvidence',
+    conditions: 'conditions',
+    summary: 'summary',
+    recommendations: 'recommendations',
+    validatorId: 'validatorId',
+    validatedAt: 'validatedAt',
+    durationMs: 'durationMs',
+    rawOutput: 'rawOutput'
+};
+exports.VerifiedCitationScalarFieldEnum = {
+    id: 'id',
+    url: 'url',
+    quote: 'quote',
+    found: 'found',
+    accessible: 'accessible',
+    statusCode: 'statusCode',
+    context: 'context',
+    similarPhrases: 'similarPhrases',
+    recommendation: 'recommendation',
+    reasoning: 'reasoning',
+    verifiedAt: 'verifiedAt',
+    validationResultId: 'validationResultId'
 };
 exports.ScreenshotScalarFieldEnum = {
     id: 'id',

@@ -79,7 +79,7 @@ export async function createEntity(input: CreateEntityInput) {
 }
 
 /**
- * Get an entity by ID with all related data
+ * Get an entity by ID with all related data including validation results
  */
 export async function getEntity(entityId: string) {
   return prisma.entity.findUnique({
@@ -90,6 +90,13 @@ export async function getEntity(entityId: string) {
         include: {
           sources: { include: { source: true } },
           reasoning: true,
+          validations: {
+            orderBy: { validatedAt: 'desc' },
+            take: 1, // Latest validation only
+            include: {
+              citations: true, // Include verified citations
+            },
+          },
         },
         orderBy: { createdAt: 'desc' },
       },
@@ -98,7 +105,7 @@ export async function getEntity(entityId: string) {
 }
 
 /**
- * Find entity by name within a project
+ * Find entity by name within a project (includes validation data)
  */
 export async function findEntityByName(projectId: string, name: string) {
   return prisma.entity.findFirst({
@@ -106,7 +113,7 @@ export async function findEntityByName(projectId: string, name: string) {
       projectId,
       name: {
         equals: name,
-        
+
       },
     },
     include: {
@@ -114,6 +121,13 @@ export async function findEntityByName(projectId: string, name: string) {
         include: {
           sources: { include: { source: true } },
           reasoning: true,
+          validations: {
+            orderBy: { validatedAt: 'desc' },
+            take: 1, // Latest validation only
+            include: {
+              citations: true,
+            },
+          },
         },
       },
     },

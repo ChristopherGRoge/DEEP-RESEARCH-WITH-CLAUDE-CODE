@@ -43,8 +43,8 @@ export declare function getProject(projectId: string): Promise<({
                     createdAt: Date;
                     updatedAt: Date;
                     url: string;
-                    status: import("../../generated/prisma/enums").SourceStatus;
                     validatedAt: Date | null;
+                    status: import("../../generated/prisma/enums").SourceStatus;
                     validatedBy: string | null;
                     title: string | null;
                     sourceType: string | null;
@@ -71,6 +71,7 @@ export declare function getProject(projectId: string): Promise<({
             updatedAt: Date;
             category: string | null;
             entityId: string;
+            validatedAt: Date | null;
             claim: string;
             status: import("../../generated/prisma/enums").AssertionStatus;
             confidence: number | null;
@@ -78,7 +79,6 @@ export declare function getProject(projectId: string): Promise<({
             lastValidatedAt: Date | null;
             validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
             criticality: import("../../generated/prisma/enums").AssertionCriticality;
-            validatedAt: Date | null;
             validatedBy: string | null;
             citedInConclusion: boolean;
             conclusionContext: string | null;

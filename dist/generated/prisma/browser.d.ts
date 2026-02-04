@@ -39,6 +39,18 @@ export type AssertionSource = Prisma.AssertionSourceModel;
  */
 export type ResearchLog = Prisma.ResearchLogModel;
 /**
+ * Model ValidationResult
+ * A structured validation result from adversarial validation
+ * Supports multiple validations per assertion (history tracking)
+ */
+export type ValidationResult = Prisma.ValidationResultModel;
+/**
+ * Model VerifiedCitation
+ * A verified citation from the cite:verify tool
+ * Persisted for audit trail, reuse, and cache
+ */
+export type VerifiedCitation = Prisma.VerifiedCitationModel;
+/**
  * Model Screenshot
  * Screenshot evidence captured during extraction
  */

@@ -189,6 +189,28 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.validationResult`: Exposes CRUD operations for the **ValidationResult** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ValidationResults
+      * const validationResults = await prisma.validationResult.findMany()
+      * ```
+      */
+    get validationResult(): Prisma.ValidationResultDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.verifiedCitation`: Exposes CRUD operations for the **VerifiedCitation** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more VerifiedCitations
+      * const verifiedCitations = await prisma.verifiedCitation.findMany()
+      * ```
+      */
+    get verifiedCitation(): Prisma.VerifiedCitationDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.screenshot`: Exposes CRUD operations for the **Screenshot** model.
       * Example usage:
       * ```ts

@@ -238,6 +238,8 @@ export declare const ModelName: {
     readonly Source: "Source";
     readonly AssertionSource: "AssertionSource";
     readonly ResearchLog: "ResearchLog";
+    readonly ValidationResult: "ValidationResult";
+    readonly VerifiedCitation: "VerifiedCitation";
     readonly Screenshot: "Screenshot";
     readonly Extraction: "Extraction";
     readonly ResearchSession: "ResearchSession";
@@ -260,7 +262,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "researchProject" | "entity" | "assertion" | "reasoning" | "source" | "assertionSource" | "researchLog" | "screenshot" | "extraction" | "researchSession" | "researchTask" | "discoverySource" | "rawDiscovery" | "discoveryCrawl" | "discoveryTrend" | "discoveryCategory" | "researchDomain";
+        modelProps: "researchProject" | "entity" | "assertion" | "reasoning" | "source" | "assertionSource" | "researchLog" | "validationResult" | "verifiedCitation" | "screenshot" | "extraction" | "researchSession" | "researchTask" | "discoverySource" | "rawDiscovery" | "discoveryCrawl" | "discoveryTrend" | "discoveryCategory" | "researchDomain";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -779,6 +781,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 count: {
                     args: Prisma.ResearchLogCountArgs<ExtArgs>;
                     result: runtime.Types.Utils.Optional<Prisma.ResearchLogCountAggregateOutputType> | number;
+                };
+            };
+        };
+        ValidationResult: {
+            payload: Prisma.$ValidationResultPayload<ExtArgs>;
+            fields: Prisma.ValidationResultFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.ValidationResultFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ValidationResultPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.ValidationResultFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ValidationResultPayload>;
+                };
+                findFirst: {
+                    args: Prisma.ValidationResultFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ValidationResultPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.ValidationResultFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ValidationResultPayload>;
+                };
+                findMany: {
+                    args: Prisma.ValidationResultFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ValidationResultPayload>[];
+                };
+                create: {
+                    args: Prisma.ValidationResultCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ValidationResultPayload>;
+                };
+                createMany: {
+                    args: Prisma.ValidationResultCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.ValidationResultCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ValidationResultPayload>[];
+                };
+                delete: {
+                    args: Prisma.ValidationResultDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ValidationResultPayload>;
+                };
+                update: {
+                    args: Prisma.ValidationResultUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ValidationResultPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.ValidationResultDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.ValidationResultUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.ValidationResultUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ValidationResultPayload>[];
+                };
+                upsert: {
+                    args: Prisma.ValidationResultUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ValidationResultPayload>;
+                };
+                aggregate: {
+                    args: Prisma.ValidationResultAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateValidationResult>;
+                };
+                groupBy: {
+                    args: Prisma.ValidationResultGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.ValidationResultGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.ValidationResultCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.ValidationResultCountAggregateOutputType> | number;
+                };
+            };
+        };
+        VerifiedCitation: {
+            payload: Prisma.$VerifiedCitationPayload<ExtArgs>;
+            fields: Prisma.VerifiedCitationFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.VerifiedCitationFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifiedCitationPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.VerifiedCitationFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifiedCitationPayload>;
+                };
+                findFirst: {
+                    args: Prisma.VerifiedCitationFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifiedCitationPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.VerifiedCitationFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifiedCitationPayload>;
+                };
+                findMany: {
+                    args: Prisma.VerifiedCitationFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifiedCitationPayload>[];
+                };
+                create: {
+                    args: Prisma.VerifiedCitationCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifiedCitationPayload>;
+                };
+                createMany: {
+                    args: Prisma.VerifiedCitationCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.VerifiedCitationCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifiedCitationPayload>[];
+                };
+                delete: {
+                    args: Prisma.VerifiedCitationDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifiedCitationPayload>;
+                };
+                update: {
+                    args: Prisma.VerifiedCitationUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifiedCitationPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.VerifiedCitationDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.VerifiedCitationUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.VerifiedCitationUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifiedCitationPayload>[];
+                };
+                upsert: {
+                    args: Prisma.VerifiedCitationUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$VerifiedCitationPayload>;
+                };
+                aggregate: {
+                    args: Prisma.VerifiedCitationAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateVerifiedCitation>;
+                };
+                groupBy: {
+                    args: Prisma.VerifiedCitationGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.VerifiedCitationGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.VerifiedCitationCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.VerifiedCitationCountAggregateOutputType> | number;
                 };
             };
         };
@@ -1683,6 +1833,39 @@ export declare const ResearchLogScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type ResearchLogScalarFieldEnum = (typeof ResearchLogScalarFieldEnum)[keyof typeof ResearchLogScalarFieldEnum];
+export declare const ValidationResultScalarFieldEnum: {
+    readonly id: "id";
+    readonly assertionId: "assertionId";
+    readonly verdict: "verdict";
+    readonly confidence: "confidence";
+    readonly method: "method";
+    readonly refinedClaim: "refinedClaim";
+    readonly attackResults: "attackResults";
+    readonly counterEvidence: "counterEvidence";
+    readonly conditions: "conditions";
+    readonly summary: "summary";
+    readonly recommendations: "recommendations";
+    readonly validatorId: "validatorId";
+    readonly validatedAt: "validatedAt";
+    readonly durationMs: "durationMs";
+    readonly rawOutput: "rawOutput";
+};
+export type ValidationResultScalarFieldEnum = (typeof ValidationResultScalarFieldEnum)[keyof typeof ValidationResultScalarFieldEnum];
+export declare const VerifiedCitationScalarFieldEnum: {
+    readonly id: "id";
+    readonly url: "url";
+    readonly quote: "quote";
+    readonly found: "found";
+    readonly accessible: "accessible";
+    readonly statusCode: "statusCode";
+    readonly context: "context";
+    readonly similarPhrases: "similarPhrases";
+    readonly recommendation: "recommendation";
+    readonly reasoning: "reasoning";
+    readonly verifiedAt: "verifiedAt";
+    readonly validationResultId: "validationResultId";
+};
+export type VerifiedCitationScalarFieldEnum = (typeof VerifiedCitationScalarFieldEnum)[keyof typeof VerifiedCitationScalarFieldEnum];
 export declare const ScreenshotScalarFieldEnum: {
     readonly id: "id";
     readonly filePath: "filePath";
@@ -1946,6 +2129,18 @@ export type EnumSourceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  */
 export type EnumSourceRelevanceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SourceRelevance'>;
 /**
+ * Reference to a field of type 'ValidationVerdict'
+ */
+export type EnumValidationVerdictFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ValidationVerdict'>;
+/**
+ * Reference to a field of type 'ValidationConfidence'
+ */
+export type EnumValidationConfidenceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ValidationConfidence'>;
+/**
+ * Reference to a field of type 'ValidationMethod'
+ */
+export type EnumValidationMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ValidationMethod'>;
+/**
  * Reference to a field of type 'ExtractionStatus'
  */
 export type EnumExtractionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExtractionStatus'>;
@@ -2066,6 +2261,8 @@ export type GlobalOmitConfig = {
     source?: Prisma.SourceOmit;
     assertionSource?: Prisma.AssertionSourceOmit;
     researchLog?: Prisma.ResearchLogOmit;
+    validationResult?: Prisma.ValidationResultOmit;
+    verifiedCitation?: Prisma.VerifiedCitationOmit;
     screenshot?: Prisma.ScreenshotOmit;
     extraction?: Prisma.ExtractionOmit;
     researchSession?: Prisma.ResearchSessionOmit;

@@ -33,6 +33,8 @@ export declare const ModelName: {
     readonly Source: "Source";
     readonly AssertionSource: "AssertionSource";
     readonly ResearchLog: "ResearchLog";
+    readonly ValidationResult: "ValidationResult";
+    readonly VerifiedCitation: "VerifiedCitation";
     readonly Screenshot: "Screenshot";
     readonly Extraction: "Extraction";
     readonly ResearchSession: "ResearchSession";
@@ -179,6 +181,39 @@ export declare const ResearchLogScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type ResearchLogScalarFieldEnum = (typeof ResearchLogScalarFieldEnum)[keyof typeof ResearchLogScalarFieldEnum];
+export declare const ValidationResultScalarFieldEnum: {
+    readonly id: "id";
+    readonly assertionId: "assertionId";
+    readonly verdict: "verdict";
+    readonly confidence: "confidence";
+    readonly method: "method";
+    readonly refinedClaim: "refinedClaim";
+    readonly attackResults: "attackResults";
+    readonly counterEvidence: "counterEvidence";
+    readonly conditions: "conditions";
+    readonly summary: "summary";
+    readonly recommendations: "recommendations";
+    readonly validatorId: "validatorId";
+    readonly validatedAt: "validatedAt";
+    readonly durationMs: "durationMs";
+    readonly rawOutput: "rawOutput";
+};
+export type ValidationResultScalarFieldEnum = (typeof ValidationResultScalarFieldEnum)[keyof typeof ValidationResultScalarFieldEnum];
+export declare const VerifiedCitationScalarFieldEnum: {
+    readonly id: "id";
+    readonly url: "url";
+    readonly quote: "quote";
+    readonly found: "found";
+    readonly accessible: "accessible";
+    readonly statusCode: "statusCode";
+    readonly context: "context";
+    readonly similarPhrases: "similarPhrases";
+    readonly recommendation: "recommendation";
+    readonly reasoning: "reasoning";
+    readonly verifiedAt: "verifiedAt";
+    readonly validationResultId: "validationResultId";
+};
+export type VerifiedCitationScalarFieldEnum = (typeof VerifiedCitationScalarFieldEnum)[keyof typeof VerifiedCitationScalarFieldEnum];
 export declare const ScreenshotScalarFieldEnum: {
     readonly id: "id";
     readonly filePath: "filePath";

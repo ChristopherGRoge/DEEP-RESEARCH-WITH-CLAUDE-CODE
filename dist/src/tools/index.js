@@ -40,6 +40,8 @@ __exportStar(require("./domains"), exports);
 __exportStar(require("./categories"), exports);
 __exportStar(require("./github"), exports);
 __exportStar(require("./buzz"), exports);
+__exportStar(require("./cite-verify"), exports);
+__exportStar(require("./validation"), exports);
 // Re-export Prisma client for direct access if needed
 var client_1 = require("../db/client");
 Object.defineProperty(exports, "prisma", { enumerable: true, get: function () { return client_1.prisma; } });

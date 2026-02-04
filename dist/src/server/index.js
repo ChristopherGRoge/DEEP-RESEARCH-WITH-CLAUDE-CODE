@@ -79,24 +79,16 @@ app.use('/screenshots/*', (0, serve_static_1.serveStatic)({
 // ============================================
 // Explicit routes (MUST come before static handlers)
 // ============================================
-// Serve Svelte app at root (or fallback to Alpine.js landing page)
+// Serve Research Grove as home page
 app.get('/', async (c) => {
     const fs = await Promise.resolve().then(() => __importStar(require('fs/promises')));
     const pathModule = await Promise.resolve().then(() => __importStar(require('path')));
-    // Try Svelte build first
     try {
-        const svelteHtml = await fs.readFile(pathModule.join(process.cwd(), 'src/server/public/dist/index.html'), 'utf-8');
-        return c.html(svelteHtml);
+        const html = await fs.readFile(pathModule.join(process.cwd(), 'src/server/public/grove.html'), 'utf-8');
+        return c.html(html);
     }
-    catch {
-        // Fallback to Alpine.js landing page
-        try {
-            const html = await fs.readFile(pathModule.join(process.cwd(), 'src/server/public/index-new.html'), 'utf-8');
-            return c.html(html);
-        }
-        catch (error) {
-            return c.text('Frontend not found. Run: cd frontend && npm install && npm run build', 404);
-        }
+    catch (error) {
+        return c.text('Grove frontend not found. Ensure src/server/public/grove.html exists.', 404);
     }
 });
 // Serve legacy validation UI at /validate
@@ -121,6 +113,18 @@ app.get('/research-legacy', async (c) => {
     }
     catch (error) {
         return c.text('Research UI not found.', 404);
+    }
+});
+// Serve entity research page at /entity/:id
+app.get('/entity/:id', async (c) => {
+    try {
+        const fs = await Promise.resolve().then(() => __importStar(require('fs/promises')));
+        const pathModule = await Promise.resolve().then(() => __importStar(require('path')));
+        const html = await fs.readFile(pathModule.join(process.cwd(), 'src/server/public/entity.html'), 'utf-8');
+        return c.html(html);
+    }
+    catch (error) {
+        return c.text('Entity page not found. Please ensure src/server/public/entity.html exists.', 404);
     }
 });
 // Health check

@@ -9,7 +9,7 @@
 * 🟢 You can import this file directly.
 */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ResearchTaskStatus = exports.ResearchSessionStatus = exports.CrawlStatus = exports.SourceType = exports.SourceRelevance = exports.AssertionCriticality = exports.ExtractionStatus = exports.ResearchWorkflow = exports.SourceStatus = exports.AssertionStatus = void 0;
+exports.ResearchTaskStatus = exports.ResearchSessionStatus = exports.ValidationMethod = exports.ValidationConfidence = exports.ValidationVerdict = exports.CrawlStatus = exports.SourceType = exports.SourceRelevance = exports.AssertionCriticality = exports.ExtractionStatus = exports.ResearchWorkflow = exports.SourceStatus = exports.AssertionStatus = void 0;
 exports.AssertionStatus = {
     CLAIM: 'CLAIM',
     EVIDENCE: 'EVIDENCE',
@@ -65,6 +65,25 @@ exports.CrawlStatus = {
     COMPLETED: 'COMPLETED',
     FAILED: 'FAILED',
     CANCELLED: 'CANCELLED'
+};
+exports.ValidationVerdict = {
+    ROBUST: 'ROBUST',
+    CONDITIONAL: 'CONDITIONAL',
+    WEAK: 'WEAK',
+    REFUTED: 'REFUTED',
+    UNVERIFIABLE: 'UNVERIFIABLE'
+};
+exports.ValidationConfidence = {
+    HIGH: 'HIGH',
+    MEDIUM: 'MEDIUM',
+    LOW: 'LOW',
+    UNKNOWN: 'UNKNOWN'
+};
+exports.ValidationMethod = {
+    ADVERSARIAL: 'ADVERSARIAL',
+    MANUAL: 'MANUAL',
+    AUTOMATED: 'AUTOMATED',
+    HYBRID: 'HYBRID'
 };
 exports.ResearchSessionStatus = {
     INITIALIZING: 'INITIALIZING',

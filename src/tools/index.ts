@@ -24,6 +24,8 @@ export * from './domains';
 export * from './categories';
 export * from './github';
 export * from './buzz';
+export * from './cite-verify';
+export * from './validation';
 
 // Re-export Prisma client for direct access if needed
 export { prisma } from '../db/client';

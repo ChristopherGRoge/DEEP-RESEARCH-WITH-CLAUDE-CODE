@@ -79,6 +79,32 @@ enum CrawlStatus {
 }
 
 // ============================================
+// VALIDATION ENUMS - Adversarial Validation
+// ============================================
+
+enum ValidationVerdict {
+  ROBUST        // Assertion withstands all challenges - safe to cite
+  CONDITIONAL   // True only under specific conditions - requires qualifiers
+  WEAK          // Evidence insufficient - needs more research
+  REFUTED       // Counter-evidence disproves claim - do not cite
+  UNVERIFIABLE  // Cannot be verified with available methods
+}
+
+enum ValidationConfidence {
+  HIGH          // Strong evidence supporting the verdict
+  MEDIUM        // Moderate evidence, some uncertainty
+  LOW           // Limited evidence, significant uncertainty
+  UNKNOWN       // Cannot assess confidence
+}
+
+enum ValidationMethod {
+  ADVERSARIAL   // Systematic challenge via 5 attack vectors
+  MANUAL        // Human review without structured challenge
+  AUTOMATED     // Automated verification (link check, cite:verify)
+  HYBRID        // Combination of automated and manual
+}
+
+// ============================================
 // CORE MODELS
 // ============================================
 
@@ -212,6 +238,7 @@ model Assertion {
 
   reasoning   Reasoning[]
   sources     AssertionSource[]
+  validations ValidationResult[]
 
   @@index([criticality, status])
   @@index([citedInConclusion])
@@ -294,6 +321,90 @@ model ResearchLog {
   createdAt   DateTime @default(now())
 
   @@map("research_logs")
+}
+
+// ============================================
+// VALIDATION MODELS - Adversarial Assertion Validation
+// ============================================
+
+/// A structured validation result from adversarial validation
+/// Supports multiple validations per assertion (history tracking)
+model ValidationResult {
+  id              String   @id @default(cuid())
+  assertionId     String
+  assertion       Assertion @relation(fields: [assertionId], references: [id], onDelete: Cascade)
+
+  // Core verdict
+  verdict         ValidationVerdict
+  confidence      ValidationConfidence
+  method          ValidationMethod
+
+  // Refined claim (if original was imprecise or needed qualification)
+  refinedClaim    String?
+
+  // Attack vector results - structured JSON
+  // Schema: {
+  //   counterEvidence: {challenged: bool, finding?: string, severity?: string},
+  //   evidenceGap: {challenged: bool, finding?: string, severity?: string},
+  //   logicalFlaw: {challenged: bool, finding?: string, severity?: string},
+  //   scopeLimitation: {challenged: bool, finding?: string, severity?: string},
+  //   alternativeExplanation: {challenged: bool, finding?: string, severity?: string}
+  // }
+  attackResults   Json?
+
+  // Counter-evidence with verified quotes
+  // Schema: Array of {quote: string, sourceUrl: string, verified: bool, citeVerifyId?: string}
+  counterEvidence Json?
+
+  // Conditions (for CONDITIONAL verdicts)
+  // Schema: Array of {condition: string, implication: string}
+  conditions      Json?
+
+  // Summary and recommendations
+  summary         String?
+  recommendations String?
+
+  // Validator info
+  validatorId     String   // Agent ID or researcher name
+  validatedAt     DateTime @default(now())
+
+  // Performance tracking
+  durationMs      Int?     // How long validation took
+
+  // Audit trail
+  rawOutput       Json?    // Full validation output for debugging
+
+  // Related citations verified during this validation
+  citations       VerifiedCitation[]
+
+  @@index([assertionId])
+  @@index([verdict])
+  @@index([validatedAt])
+  @@map("validation_results")
+}
+
+/// A verified citation from the cite:verify tool
+/// Persisted for audit trail, reuse, and cache
+model VerifiedCitation {
+  id              String   @id @default(cuid())
+  url             String
+  quote           String
+  found           Boolean
+  accessible      Boolean
+  statusCode      Int?
+  context         String?      // Surrounding text if found
+  similarPhrases  Json?        // Array of similar text if exact not found
+  recommendation  String       // "CITE", "PARAPHRASE", "DO_NOT_CITE", "PAGE_NOT_FOUND"
+  reasoning       String?
+  verifiedAt      DateTime @default(now())
+
+  // Link to validation that used this citation
+  validationResultId String?
+  validationResult   ValidationResult? @relation(fields: [validationResultId], references: [id])
+
+  @@index([url])
+  @@index([validationResultId])
+  @@map("verified_citations")
 }
 
 // ============================================

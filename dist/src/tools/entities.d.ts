@@ -65,7 +65,7 @@ export declare function createEntity(input: CreateEntityInput): Promise<{
     buzzOverrideReason: string | null;
 }>;
 /**
- * Get an entity by ID with all related data
+ * Get an entity by ID with all related data including validation results
  */
 export declare function getEntity(entityId: string): Promise<({
     project: {
@@ -92,8 +92,8 @@ export declare function getEntity(entityId: string): Promise<({
                 createdAt: Date;
                 updatedAt: Date;
                 url: string;
-                status: import(".").SourceStatus;
                 validatedAt: Date | null;
+                status: import(".").SourceStatus;
                 validatedBy: string | null;
                 title: string | null;
                 sourceType: string | null;
@@ -114,12 +114,45 @@ export declare function getEntity(entityId: string): Promise<({
             gradedAt: Date | null;
             sourceId: string;
         })[];
+        validations: ({
+            citations: {
+                id: string;
+                reasoning: string | null;
+                url: string;
+                quote: string;
+                statusCode: number | null;
+                recommendation: string;
+                context: string | null;
+                found: boolean;
+                accessible: boolean;
+                similarPhrases: import("@prisma/client/runtime/client").JsonValue | null;
+                validationResultId: string | null;
+                verifiedAt: Date;
+            }[];
+        } & {
+            id: string;
+            validatedAt: Date;
+            confidence: import("./validation").ValidationConfidence;
+            assertionId: string;
+            summary: string | null;
+            method: import("./validation").ValidationMethod;
+            durationMs: number | null;
+            verdict: import("./validation").ValidationVerdict;
+            refinedClaim: string | null;
+            attackResults: import("@prisma/client/runtime/client").JsonValue | null;
+            counterEvidence: import("@prisma/client/runtime/client").JsonValue | null;
+            conditions: import("@prisma/client/runtime/client").JsonValue | null;
+            recommendations: string | null;
+            validatorId: string;
+            rawOutput: import("@prisma/client/runtime/client").JsonValue | null;
+        })[];
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
         category: string | null;
         entityId: string;
+        validatedAt: Date | null;
         claim: string;
         status: import(".").AssertionStatus;
         confidence: number | null;
@@ -127,7 +160,6 @@ export declare function getEntity(entityId: string): Promise<({
         lastValidatedAt: Date | null;
         validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
         criticality: import(".").AssertionCriticality;
-        validatedAt: Date | null;
         validatedBy: string | null;
         citedInConclusion: boolean;
         conclusionContext: string | null;
@@ -187,7 +219,7 @@ export declare function getEntity(entityId: string): Promise<({
     buzzOverrideReason: string | null;
 }) | null>;
 /**
- * Find entity by name within a project
+ * Find entity by name within a project (includes validation data)
  */
 export declare function findEntityByName(projectId: string, name: string): Promise<({
     assertions: ({
@@ -205,8 +237,8 @@ export declare function findEntityByName(projectId: string, name: string): Promi
                 createdAt: Date;
                 updatedAt: Date;
                 url: string;
-                status: import(".").SourceStatus;
                 validatedAt: Date | null;
+                status: import(".").SourceStatus;
                 validatedBy: string | null;
                 title: string | null;
                 sourceType: string | null;
@@ -227,12 +259,45 @@ export declare function findEntityByName(projectId: string, name: string): Promi
             gradedAt: Date | null;
             sourceId: string;
         })[];
+        validations: ({
+            citations: {
+                id: string;
+                reasoning: string | null;
+                url: string;
+                quote: string;
+                statusCode: number | null;
+                recommendation: string;
+                context: string | null;
+                found: boolean;
+                accessible: boolean;
+                similarPhrases: import("@prisma/client/runtime/client").JsonValue | null;
+                validationResultId: string | null;
+                verifiedAt: Date;
+            }[];
+        } & {
+            id: string;
+            validatedAt: Date;
+            confidence: import("./validation").ValidationConfidence;
+            assertionId: string;
+            summary: string | null;
+            method: import("./validation").ValidationMethod;
+            durationMs: number | null;
+            verdict: import("./validation").ValidationVerdict;
+            refinedClaim: string | null;
+            attackResults: import("@prisma/client/runtime/client").JsonValue | null;
+            counterEvidence: import("@prisma/client/runtime/client").JsonValue | null;
+            conditions: import("@prisma/client/runtime/client").JsonValue | null;
+            recommendations: string | null;
+            validatorId: string;
+            rawOutput: import("@prisma/client/runtime/client").JsonValue | null;
+        })[];
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
         category: string | null;
         entityId: string;
+        validatedAt: Date | null;
         claim: string;
         status: import(".").AssertionStatus;
         confidence: number | null;
@@ -240,7 +305,6 @@ export declare function findEntityByName(projectId: string, name: string): Promi
         lastValidatedAt: Date | null;
         validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
         criticality: import(".").AssertionCriticality;
-        validatedAt: Date | null;
         validatedBy: string | null;
         citedInConclusion: boolean;
         conclusionContext: string | null;

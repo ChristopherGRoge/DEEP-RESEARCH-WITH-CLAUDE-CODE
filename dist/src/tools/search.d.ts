@@ -56,8 +56,8 @@ export declare function getPendingValidation(projectId?: string): Promise<{
                 createdAt: Date;
                 updatedAt: Date;
                 url: string;
-                status: SourceStatus;
                 validatedAt: Date | null;
+                status: SourceStatus;
                 validatedBy: string | null;
                 title: string | null;
                 sourceType: string | null;
@@ -84,6 +84,7 @@ export declare function getPendingValidation(projectId?: string): Promise<{
         updatedAt: Date;
         category: string | null;
         entityId: string;
+        validatedAt: Date | null;
         claim: string;
         status: AssertionStatus;
         confidence: number | null;
@@ -91,7 +92,6 @@ export declare function getPendingValidation(projectId?: string): Promise<{
         lastValidatedAt: Date | null;
         validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
         criticality: import("../../generated/prisma/enums").AssertionCriticality;
-        validatedAt: Date | null;
         validatedBy: string | null;
         citedInConclusion: boolean;
         conclusionContext: string | null;
@@ -121,8 +121,8 @@ export declare function getPendingValidation(projectId?: string): Promise<{
         createdAt: Date;
         updatedAt: Date;
         url: string;
-        status: SourceStatus;
         validatedAt: Date | null;
+        status: SourceStatus;
         validatedBy: string | null;
         title: string | null;
         sourceType: string | null;
@@ -198,6 +198,7 @@ export declare function getAssertionsWithoutSources(projectId?: string): Promise
     updatedAt: Date;
     category: string | null;
     entityId: string;
+    validatedAt: Date | null;
     claim: string;
     status: AssertionStatus;
     confidence: number | null;
@@ -205,7 +206,6 @@ export declare function getAssertionsWithoutSources(projectId?: string): Promise
     lastValidatedAt: Date | null;
     validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
     criticality: import("../../generated/prisma/enums").AssertionCriticality;
-    validatedAt: Date | null;
     validatedBy: string | null;
     citedInConclusion: boolean;
     conclusionContext: string | null;

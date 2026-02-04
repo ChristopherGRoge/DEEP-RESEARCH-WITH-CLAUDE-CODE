@@ -53,7 +53,7 @@ async function createEntity(input) {
     return entity;
 }
 /**
- * Get an entity by ID with all related data
+ * Get an entity by ID with all related data including validation results
  */
 async function getEntity(entityId) {
     return client_1.default.entity.findUnique({
@@ -64,6 +64,13 @@ async function getEntity(entityId) {
                 include: {
                     sources: { include: { source: true } },
                     reasoning: true,
+                    validations: {
+                        orderBy: { validatedAt: 'desc' },
+                        take: 1, // Latest validation only
+                        include: {
+                            citations: true, // Include verified citations
+                        },
+                    },
                 },
                 orderBy: { createdAt: 'desc' },
             },
@@ -71,7 +78,7 @@ async function getEntity(entityId) {
     });
 }
 /**
- * Find entity by name within a project
+ * Find entity by name within a project (includes validation data)
  */
 async function findEntityByName(projectId, name) {
     return client_1.default.entity.findFirst({
@@ -86,6 +93,13 @@ async function findEntityByName(projectId, name) {
                 include: {
                     sources: { include: { source: true } },
                     reasoning: true,
+                    validations: {
+                        orderBy: { validatedAt: 'desc' },
+                        take: 1, // Latest validation only
+                        include: {
+                            citations: true,
+                        },
+                    },
                 },
             },
         },

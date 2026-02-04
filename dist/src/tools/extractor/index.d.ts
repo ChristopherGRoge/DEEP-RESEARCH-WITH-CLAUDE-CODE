@@ -133,8 +133,8 @@ export declare function getExtractions(entityId: string, schemaType?: SchemaType
         createdAt: Date;
         updatedAt: Date;
         url: string;
-        status: import("..").SourceStatus;
         validatedAt: Date | null;
+        status: import("..").SourceStatus;
         validatedBy: string | null;
         title: string | null;
         sourceType: string | null;
@@ -174,8 +174,8 @@ export declare function getLatestExtraction(entityId: string, schemaType: Schema
         createdAt: Date;
         updatedAt: Date;
         url: string;
-        status: import("..").SourceStatus;
         validatedAt: Date | null;
+        status: import("..").SourceStatus;
         validatedBy: string | null;
         title: string | null;
         sourceType: string | null;
@@ -215,8 +215,8 @@ export declare function getStaleExtractions(projectId?: string): Promise<({
         createdAt: Date;
         updatedAt: Date;
         url: string;
-        status: import("..").SourceStatus;
         validatedAt: Date | null;
+        status: import("..").SourceStatus;
         validatedBy: string | null;
         title: string | null;
         sourceType: string | null;

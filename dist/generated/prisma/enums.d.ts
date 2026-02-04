@@ -62,6 +62,28 @@ export declare const CrawlStatus: {
     readonly CANCELLED: "CANCELLED";
 };
 export type CrawlStatus = (typeof CrawlStatus)[keyof typeof CrawlStatus];
+export declare const ValidationVerdict: {
+    readonly ROBUST: "ROBUST";
+    readonly CONDITIONAL: "CONDITIONAL";
+    readonly WEAK: "WEAK";
+    readonly REFUTED: "REFUTED";
+    readonly UNVERIFIABLE: "UNVERIFIABLE";
+};
+export type ValidationVerdict = (typeof ValidationVerdict)[keyof typeof ValidationVerdict];
+export declare const ValidationConfidence: {
+    readonly HIGH: "HIGH";
+    readonly MEDIUM: "MEDIUM";
+    readonly LOW: "LOW";
+    readonly UNKNOWN: "UNKNOWN";
+};
+export type ValidationConfidence = (typeof ValidationConfidence)[keyof typeof ValidationConfidence];
+export declare const ValidationMethod: {
+    readonly ADVERSARIAL: "ADVERSARIAL";
+    readonly MANUAL: "MANUAL";
+    readonly AUTOMATED: "AUTOMATED";
+    readonly HYBRID: "HYBRID";
+};
+export type ValidationMethod = (typeof ValidationMethod)[keyof typeof ValidationMethod];
 export declare const ResearchSessionStatus: {
     readonly INITIALIZING: "INITIALIZING";
     readonly PLANNING: "PLANNING";

@@ -460,6 +460,55 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
         break;
 
       // ============================================
+      // CITATION VERIFICATION - Mandatory before citing quotes
+      // ============================================
+      case 'cite:verify':
+        result = await tools.verifyCitation(args as unknown as tools.CiteVerifyInput);
+        break;
+
+      // ============================================
+      // ADVERSARIAL VALIDATION - Structured validation storage
+      // ============================================
+      case 'validation:create':
+        result = await tools.createValidation(args as unknown as tools.ValidationCreateInput);
+        break;
+      case 'validation:get':
+        result = await tools.getValidation(args as unknown as tools.ValidationGetInput);
+        break;
+      case 'validation:list':
+        result = await tools.listValidations(args as unknown as tools.ValidationListInput);
+        break;
+      case 'validation:summary':
+        result = await tools.getValidationSummary(args as unknown as tools.ValidationSummaryInput);
+        break;
+      case 'validation:latest':
+        result = await tools.getLatestValidation({ assertionId: args.assertionId as string });
+        break;
+      case 'validation:history':
+        result = await tools.getValidationHistory({ assertionId: args.assertionId as string });
+        break;
+      case 'validation:unvalidated':
+        result = await tools.getUnvalidatedAssertions({
+          entityId: args.entityId as string,
+          criticality: args.criticality as string | undefined,
+        });
+        break;
+      case 'validation:pillars':
+        result = await tools.getPillarAssertions({ entityId: args.entityId as string });
+        break;
+
+      // Verified citations (from cite:verify, persisted)
+      case 'citation:create':
+        result = await tools.createCitation(args as unknown as tools.CitationCreateInput);
+        break;
+      case 'citation:list':
+        result = await tools.listCitations(args as unknown as tools.CitationListInput);
+        break;
+      case 'citation:find':
+        result = await tools.findCitation({ url: args.url as string, quote: args.quote as string });
+        break;
+
+      // ============================================
       // CRAWLERS - Web discovery tools
       // ============================================
       case 'crawl:hn':
@@ -959,6 +1008,13 @@ async function main() {
         // Automated (requires ANTHROPIC_API_KEY)
         'extract:pricing', 'extract:features', 'extract:company', 'extract:compliance', 'extract:integrations', 'extract:differentiators',
         'extract:validate', 'extract:list', 'extract:latest', 'extract:stale', 'extract:summary',
+        // Citation verification (REQUIRED before citing quotes)
+        'cite:verify',
+        // Adversarial validation - structured storage
+        'validation:create', 'validation:get', 'validation:list', 'validation:summary', 'validation:latest', 'validation:history',
+        'validation:unvalidated', 'validation:pillars',
+        // Verified citations (persisted)
+        'citation:create', 'citation:list', 'citation:find',
         // Standard commands
         'project:create', 'project:get', 'project:list', 'project:update', 'project:delete', 'project:find',
         'entity:create', 'entity:get', 'entity:find', 'entity:list', 'entity:search', 'entity:update', 'entity:delete', 'entity:exists',

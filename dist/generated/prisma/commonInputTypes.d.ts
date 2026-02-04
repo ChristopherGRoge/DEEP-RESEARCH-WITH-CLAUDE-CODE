@@ -297,6 +297,51 @@ export type EnumSourceRelevanceNullableWithAggregatesFilter<$PrismaModel = never
     _min?: Prisma.NestedEnumSourceRelevanceNullableFilter<$PrismaModel>;
     _max?: Prisma.NestedEnumSourceRelevanceNullableFilter<$PrismaModel>;
 };
+export type EnumValidationVerdictFilter<$PrismaModel = never> = {
+    equals?: $Enums.ValidationVerdict | Prisma.EnumValidationVerdictFieldRefInput<$PrismaModel>;
+    in?: $Enums.ValidationVerdict[];
+    notIn?: $Enums.ValidationVerdict[];
+    not?: Prisma.NestedEnumValidationVerdictFilter<$PrismaModel> | $Enums.ValidationVerdict;
+};
+export type EnumValidationConfidenceFilter<$PrismaModel = never> = {
+    equals?: $Enums.ValidationConfidence | Prisma.EnumValidationConfidenceFieldRefInput<$PrismaModel>;
+    in?: $Enums.ValidationConfidence[];
+    notIn?: $Enums.ValidationConfidence[];
+    not?: Prisma.NestedEnumValidationConfidenceFilter<$PrismaModel> | $Enums.ValidationConfidence;
+};
+export type EnumValidationMethodFilter<$PrismaModel = never> = {
+    equals?: $Enums.ValidationMethod | Prisma.EnumValidationMethodFieldRefInput<$PrismaModel>;
+    in?: $Enums.ValidationMethod[];
+    notIn?: $Enums.ValidationMethod[];
+    not?: Prisma.NestedEnumValidationMethodFilter<$PrismaModel> | $Enums.ValidationMethod;
+};
+export type EnumValidationVerdictWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ValidationVerdict | Prisma.EnumValidationVerdictFieldRefInput<$PrismaModel>;
+    in?: $Enums.ValidationVerdict[];
+    notIn?: $Enums.ValidationVerdict[];
+    not?: Prisma.NestedEnumValidationVerdictWithAggregatesFilter<$PrismaModel> | $Enums.ValidationVerdict;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumValidationVerdictFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumValidationVerdictFilter<$PrismaModel>;
+};
+export type EnumValidationConfidenceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ValidationConfidence | Prisma.EnumValidationConfidenceFieldRefInput<$PrismaModel>;
+    in?: $Enums.ValidationConfidence[];
+    notIn?: $Enums.ValidationConfidence[];
+    not?: Prisma.NestedEnumValidationConfidenceWithAggregatesFilter<$PrismaModel> | $Enums.ValidationConfidence;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumValidationConfidenceFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumValidationConfidenceFilter<$PrismaModel>;
+};
+export type EnumValidationMethodWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ValidationMethod | Prisma.EnumValidationMethodFieldRefInput<$PrismaModel>;
+    in?: $Enums.ValidationMethod[];
+    notIn?: $Enums.ValidationMethod[];
+    not?: Prisma.NestedEnumValidationMethodWithAggregatesFilter<$PrismaModel> | $Enums.ValidationMethod;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumValidationMethodFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumValidationMethodFilter<$PrismaModel>;
+};
 export type JsonFilter<$PrismaModel = never> = Prisma.PatchUndefined<Prisma.Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>, Required<JsonFilterBase<$PrismaModel>>> | Prisma.OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>;
 export type JsonFilterBase<$PrismaModel = never> = {
     equals?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter;
@@ -685,6 +730,51 @@ export type NestedEnumSourceRelevanceNullableWithAggregatesFilter<$PrismaModel =
     _count?: Prisma.NestedIntNullableFilter<$PrismaModel>;
     _min?: Prisma.NestedEnumSourceRelevanceNullableFilter<$PrismaModel>;
     _max?: Prisma.NestedEnumSourceRelevanceNullableFilter<$PrismaModel>;
+};
+export type NestedEnumValidationVerdictFilter<$PrismaModel = never> = {
+    equals?: $Enums.ValidationVerdict | Prisma.EnumValidationVerdictFieldRefInput<$PrismaModel>;
+    in?: $Enums.ValidationVerdict[];
+    notIn?: $Enums.ValidationVerdict[];
+    not?: Prisma.NestedEnumValidationVerdictFilter<$PrismaModel> | $Enums.ValidationVerdict;
+};
+export type NestedEnumValidationConfidenceFilter<$PrismaModel = never> = {
+    equals?: $Enums.ValidationConfidence | Prisma.EnumValidationConfidenceFieldRefInput<$PrismaModel>;
+    in?: $Enums.ValidationConfidence[];
+    notIn?: $Enums.ValidationConfidence[];
+    not?: Prisma.NestedEnumValidationConfidenceFilter<$PrismaModel> | $Enums.ValidationConfidence;
+};
+export type NestedEnumValidationMethodFilter<$PrismaModel = never> = {
+    equals?: $Enums.ValidationMethod | Prisma.EnumValidationMethodFieldRefInput<$PrismaModel>;
+    in?: $Enums.ValidationMethod[];
+    notIn?: $Enums.ValidationMethod[];
+    not?: Prisma.NestedEnumValidationMethodFilter<$PrismaModel> | $Enums.ValidationMethod;
+};
+export type NestedEnumValidationVerdictWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ValidationVerdict | Prisma.EnumValidationVerdictFieldRefInput<$PrismaModel>;
+    in?: $Enums.ValidationVerdict[];
+    notIn?: $Enums.ValidationVerdict[];
+    not?: Prisma.NestedEnumValidationVerdictWithAggregatesFilter<$PrismaModel> | $Enums.ValidationVerdict;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumValidationVerdictFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumValidationVerdictFilter<$PrismaModel>;
+};
+export type NestedEnumValidationConfidenceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ValidationConfidence | Prisma.EnumValidationConfidenceFieldRefInput<$PrismaModel>;
+    in?: $Enums.ValidationConfidence[];
+    notIn?: $Enums.ValidationConfidence[];
+    not?: Prisma.NestedEnumValidationConfidenceWithAggregatesFilter<$PrismaModel> | $Enums.ValidationConfidence;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumValidationConfidenceFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumValidationConfidenceFilter<$PrismaModel>;
+};
+export type NestedEnumValidationMethodWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ValidationMethod | Prisma.EnumValidationMethodFieldRefInput<$PrismaModel>;
+    in?: $Enums.ValidationMethod[];
+    notIn?: $Enums.ValidationMethod[];
+    not?: Prisma.NestedEnumValidationMethodWithAggregatesFilter<$PrismaModel> | $Enums.ValidationMethod;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumValidationMethodFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumValidationMethodFilter<$PrismaModel>;
 };
 export type NestedEnumExtractionStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.ExtractionStatus | Prisma.EnumExtractionStatusFieldRefInput<$PrismaModel>;

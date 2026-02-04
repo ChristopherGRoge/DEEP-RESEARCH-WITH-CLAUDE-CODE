@@ -29,6 +29,149 @@ Analysis of validated assertions revealed that 43% of agent-provided source URLs
 | Content drift | Pricing changed since capture |
 | Wrong page | Correct site, wrong URL |
 
+### MANDATORY: Citation Verification Before Citing Quotes
+
+**NEVER cite quotes from WebSearch results directly.** WebSearch snippets may be outdated, hallucinated, or paraphrased.
+
+Before citing ANY quote from a URL, run:
+
+```bash
+npm run cli -- cite:verify '{"url": "https://example.com/page", "quote": "exact text to cite"}'
+```
+
+**Interpret results:**
+
+| Recommendation | Meaning | Action |
+|----------------|---------|--------|
+| `CITE` | Quote verified on page | Safe to cite |
+| `PARAPHRASE` | Quote not found, similar content exists | Use `similarPhrases` from response |
+| `DO_NOT_CITE` | Quote doesn't exist | Do not cite this quote |
+| `PAGE_NOT_FOUND` | URL inaccessible | URL is invalid, find alternative |
+
+**Example:**
+```bash
+# WRONG: Citing WebSearch snippet without verification
+"According to https://cline.bot/privacy: 'code snippets are transmitted to AI providers'"
+
+# RIGHT: Verify first
+npm run cli -- cite:verify '{"url": "https://cline.bot/privacy", "quote": "code snippets are transmitted"}'
+# Response: recommendation: "DO_NOT_CITE" - quote doesn't exist!
+# Then find actual text or don't cite
+```
+
+---
+
+## ADVERSARIAL VALIDATION STORAGE
+
+**USE THESE COMMANDS TO PERSIST VALIDATION RESULTS.** The `/research-validation` skill produces structured verdicts that must be stored rigorously.
+
+### ValidationResult Model
+
+Each validation is stored with:
+- **Verdict**: ROBUST, CONDITIONAL, WEAK, REFUTED, UNVERIFIABLE
+- **Confidence**: HIGH, MEDIUM, LOW, UNKNOWN
+- **Method**: ADVERSARIAL (5 attack vectors), MANUAL, AUTOMATED, HYBRID
+- **Attack Results**: Findings from each attack vector
+- **Counter-Evidence**: Verified quotes that challenge the claim
+- **Conditions**: For CONDITIONAL verdicts, what conditions apply
+- **Refined Claim**: If the original claim needed qualification
+
+### Creating a Validation Result
+
+```bash
+npm run cli -- validation:create '{
+  "assertionId": "<id>",
+  "verdict": "CONDITIONAL",
+  "confidence": "HIGH",
+  "method": "ADVERSARIAL",
+  "refinedClaim": "Cline transmits code to AI providers when using Cline-provided API keys",
+  "attackResults": {
+    "counterEvidence": {"challenged": false},
+    "evidenceGap": {"challenged": true, "finding": "Only applies to Cline API keys, not user-provided keys", "severity": "major"},
+    "logicalFlaw": {"challenged": false},
+    "scopeLimitation": {"challenged": true, "finding": "Privacy policy language is ambiguous", "severity": "minor"},
+    "alternativeExplanation": {"challenged": false}
+  },
+  "conditions": [
+    {"condition": "User must be using Cline-provided API keys", "implication": "If using own keys, data goes directly to provider"}
+  ],
+  "summary": "Claim is valid but only for a subset of users",
+  "recommendations": "Clarify in reports that this applies to Cline API key users only",
+  "validatorId": "validation-agent-001"
+}'
+```
+
+### Query Validation Results
+
+```bash
+# Get all validations for an entity
+npm run cli -- validation:list '{"entityId": "<id>"}'
+
+# Get validations by verdict
+npm run cli -- validation:list '{"verdict": "REFUTED"}'
+
+# Get latest validation for an assertion
+npm run cli -- validation:latest '{"assertionId": "<id>"}'
+
+# Get validation history (all validations for an assertion)
+npm run cli -- validation:history '{"assertionId": "<id>"}'
+
+# Get full validation details
+npm run cli -- validation:get '{"validationId": "<id>"}'
+
+# Get validation summary for a project
+npm run cli -- validation:summary '{"projectId": "<id>"}'
+```
+
+### Find Assertions Needing Validation
+
+```bash
+# Get pillar assertions (CRITICAL + HIGH criticality)
+npm run cli -- validation:pillars '{"entityId": "<id>"}'
+
+# Get unvalidated assertions
+npm run cli -- validation:unvalidated '{"entityId": "<id>"}'
+
+# Filter by criticality
+npm run cli -- validation:unvalidated '{"entityId": "<id>", "criticality": "CRITICAL"}'
+```
+
+### Verdict Meanings
+
+| Verdict | Meaning | Assertion Status |
+|---------|---------|------------------|
+| ROBUST | Withstands all attack vectors | EVIDENCE |
+| CONDITIONAL | True only under specific conditions | EVIDENCE |
+| WEAK | Insufficient evidence | CLAIM (unchanged) |
+| REFUTED | Counter-evidence disproves | REJECTED |
+| UNVERIFIABLE | Cannot be verified | CLAIM (unchanged) |
+
+### Verified Citations
+
+Citations verified via `cite:verify` can be persisted for audit trail:
+
+```bash
+# Create a persisted citation record
+npm run cli -- citation:create '{
+  "url": "https://example.com/page",
+  "quote": "exact quoted text",
+  "found": true,
+  "accessible": true,
+  "statusCode": 200,
+  "context": "...surrounding text...",
+  "recommendation": "CITE",
+  "validationResultId": "<optional-link-to-validation>"
+}'
+
+# Find a cached citation (avoids re-fetching)
+npm run cli -- citation:find '{"url": "https://example.com/page", "quote": "exact text"}'
+
+# List recent citations
+npm run cli -- citation:list '{"limit": 20}'
+```
+
+---
+
 ### Evidence-First Workflow
 
 When making assertions, follow this order:

@@ -26,8 +26,8 @@ export declare function createSource(input: CreateSourceInput): Promise<{
     createdAt: Date;
     updatedAt: Date;
     url: string;
-    status: SourceStatus;
     validatedAt: Date | null;
+    status: SourceStatus;
     validatedBy: string | null;
     title: string | null;
     sourceType: string | null;
@@ -52,6 +52,7 @@ export declare function getSource(sourceId: string): Promise<({
             updatedAt: Date;
             category: string | null;
             entityId: string;
+            validatedAt: Date | null;
             claim: string;
             status: import("../../generated/prisma/enums").AssertionStatus;
             confidence: number | null;
@@ -59,7 +60,6 @@ export declare function getSource(sourceId: string): Promise<({
             lastValidatedAt: Date | null;
             validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
             criticality: import("../../generated/prisma/enums").AssertionCriticality;
-            validatedAt: Date | null;
             validatedBy: string | null;
             citedInConclusion: boolean;
             conclusionContext: string | null;
@@ -97,8 +97,8 @@ export declare function getSource(sourceId: string): Promise<({
     createdAt: Date;
     updatedAt: Date;
     url: string;
-    status: SourceStatus;
     validatedAt: Date | null;
+    status: SourceStatus;
     validatedBy: string | null;
     title: string | null;
     sourceType: string | null;
@@ -118,6 +118,7 @@ export declare function findSourceByUrl(url: string): Promise<({
             updatedAt: Date;
             category: string | null;
             entityId: string;
+            validatedAt: Date | null;
             claim: string;
             status: import("../../generated/prisma/enums").AssertionStatus;
             confidence: number | null;
@@ -125,7 +126,6 @@ export declare function findSourceByUrl(url: string): Promise<({
             lastValidatedAt: Date | null;
             validationHistory: import("@prisma/client/runtime/client").JsonValue | null;
             criticality: import("../../generated/prisma/enums").AssertionCriticality;
-            validatedAt: Date | null;
             validatedBy: string | null;
             citedInConclusion: boolean;
             conclusionContext: string | null;
@@ -163,8 +163,8 @@ export declare function findSourceByUrl(url: string): Promise<({
     createdAt: Date;
     updatedAt: Date;
     url: string;
-    status: SourceStatus;
     validatedAt: Date | null;
+    status: SourceStatus;
     validatedBy: string | null;
     title: string | null;
     sourceType: string | null;
@@ -186,8 +186,8 @@ export declare function listSources(status?: SourceStatus): Promise<({
     createdAt: Date;
     updatedAt: Date;
     url: string;
-    status: SourceStatus;
     validatedAt: Date | null;
+    status: SourceStatus;
     validatedBy: string | null;
     title: string | null;
     sourceType: string | null;
@@ -209,8 +209,8 @@ export declare function searchSources(query: string): Promise<({
     createdAt: Date;
     updatedAt: Date;
     url: string;
-    status: SourceStatus;
     validatedAt: Date | null;
+    status: SourceStatus;
     validatedBy: string | null;
     title: string | null;
     sourceType: string | null;
@@ -243,8 +243,8 @@ export declare function updateSource(sourceId: string, input: UpdateSourceInput)
     createdAt: Date;
     updatedAt: Date;
     url: string;
-    status: SourceStatus;
     validatedAt: Date | null;
+    status: SourceStatus;
     validatedBy: string | null;
     title: string | null;
     sourceType: string | null;
@@ -262,8 +262,8 @@ export declare function validateSource(sourceId: string, validatedBy: string): P
     createdAt: Date;
     updatedAt: Date;
     url: string;
-    status: SourceStatus;
     validatedAt: Date | null;
+    status: SourceStatus;
     validatedBy: string | null;
     title: string | null;
     sourceType: string | null;
@@ -281,8 +281,8 @@ export declare function rejectSource(sourceId: string, validatedBy: string): Pro
     createdAt: Date;
     updatedAt: Date;
     url: string;
-    status: SourceStatus;
     validatedAt: Date | null;
+    status: SourceStatus;
     validatedBy: string | null;
     title: string | null;
     sourceType: string | null;
@@ -300,8 +300,8 @@ export declare function deleteSource(sourceId: string): Promise<{
     createdAt: Date;
     updatedAt: Date;
     url: string;
-    status: SourceStatus;
     validatedAt: Date | null;
+    status: SourceStatus;
     validatedBy: string | null;
     title: string | null;
     sourceType: string | null;
@@ -323,8 +323,8 @@ export declare function getSourcesByType(sourceType: string): Promise<({
     createdAt: Date;
     updatedAt: Date;
     url: string;
-    status: SourceStatus;
     validatedAt: Date | null;
+    status: SourceStatus;
     validatedBy: string | null;
     title: string | null;
     sourceType: string | null;
