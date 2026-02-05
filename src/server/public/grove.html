@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         /* =====================================================
@@ -393,6 +394,29 @@
             font-size: 11px;
             font-weight: 600;
             fill: var(--text-primary);
+        }
+
+        /* Material Icons in SVG */
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .category-icon {
+            font-family: 'Material Symbols Outlined';
+            font-size: 18px;
+            fill: currentColor;
         }
 
         .link {
@@ -1334,6 +1358,12 @@
         // =====================================================
 
         function navigateToProject() {
+            // Cleanup any running animations
+            if (state.cleanupAnimation) {
+                state.cleanupAnimation();
+                state.cleanupAnimation = null;
+            }
+
             state.currentLevel = 'project';
             state.selectedCategory = null;
             closeDetailPanel();
@@ -1342,6 +1372,12 @@
         }
 
         function navigateToCategory(categoryKey) {
+            // Cleanup any running animations
+            if (state.cleanupAnimation) {
+                state.cleanupAnimation();
+                state.cleanupAnimation = null;
+            }
+
             const category = state.treeData.children.find(c => c.key === categoryKey);
             if (category) {
                 state.currentLevel = 'category';
@@ -1361,6 +1397,19 @@
         // VISUALIZATION - CATEGORIES
         // =====================================================
 
+        /**
+         * Calculate category node radius based on weighted blend of
+         * cumulative buzz scores and entity count
+         */
+        function getCategoryNodeRadius(d) {
+            const minRadius = 30;
+            const maxRadius = 65;
+            // Use normalizedWeight from API (0-1 range, blends buzz + count)
+            const weight = d.normalizedWeight || 0;
+            // Map to radius with some baseline
+            return minRadius + (weight * (maxRadius - minRadius));
+        }
+
         function renderCategories() {
             if (!state.treeData || !state.treeData.children) return;
 
@@ -1370,7 +1419,7 @@
             const height = dom.canvas.clientHeight;
             const centerX = width / 2;
             const centerY = height / 2;
-            const radius = Math.min(width, height) * 0.35;
+            const baseRadius = Math.min(width, height) * 0.35;
 
             const svg = d3.select('#grove-canvas')
                 .append('svg')
@@ -1383,16 +1432,29 @@
             const categories = state.treeData.children;
             const angleStep = (2 * Math.PI) / categories.length;
 
-            // Draw links
-            g.selectAll('.link')
+            // Initialize positions for each category (for drift animation)
+            categories.forEach((d, i) => {
+                const angle = i * angleStep - Math.PI / 2;
+                d.baseX = baseRadius * Math.cos(angle);
+                d.baseY = baseRadius * Math.sin(angle);
+                d.x = d.baseX;
+                d.y = d.baseY;
+                // Small random offset for initial drift variation
+                d.driftPhase = Math.random() * Math.PI * 2;
+                d.driftSpeed = 0.3 + Math.random() * 0.2;
+                d.driftAmplitude = 3 + Math.random() * 4;
+            });
+
+            // Draw links (will be updated by animation)
+            const links = g.selectAll('.link')
                 .data(categories)
                 .enter()
                 .append('line')
                 .attr('class', 'link')
                 .attr('x1', 0)
                 .attr('y1', 0)
-                .attr('x2', (d, i) => radius * Math.cos(i * angleStep - Math.PI / 2))
-                .attr('y2', (d, i) => radius * Math.sin(i * angleStep - Math.PI / 2));
+                .attr('x2', d => d.x)
+                .attr('y2', d => d.y);
 
             // Center node
             const center = g.append('g')
@@ -1422,41 +1484,77 @@
                 .append('g')
                 .attr('class', d => `node node-category`)
                 .attr('data-category', d => d.key)
-                .attr('transform', (d, i) => {
-                    const x = radius * Math.cos(i * angleStep - Math.PI / 2);
-                    const y = radius * Math.sin(i * angleStep - Math.PI / 2);
-                    return `translate(${x}, ${y})`;
-                })
+                .attr('transform', d => `translate(${d.x}, ${d.y})`)
                 .style('cursor', 'pointer')
                 .on('click', (event, d) => navigateToCategory(d.key))
                 .on('mouseenter', (event, d) => showTooltip(event, d, 'category'))
                 .on('mouseleave', hideTooltip);
 
-            // Category circles
+            // Category circles - sized by weighted blend of buzz + count
             nodes.append('circle')
-                .attr('r', d => {
-                    const count = d.children ? d.children.length : 0;
-                    return Math.max(30, Math.min(55, 25 + Math.sqrt(count) * 5));
-                })
+                .attr('r', d => getCategoryNodeRadius(d))
                 .style('fill-opacity', 0.15);
 
-            // Entity count
+            // Material Icon (centered in circle, above count)
+            nodes.append('text')
+                .attr('class', 'category-icon')
+                .attr('text-anchor', 'middle')
+                .attr('dy', -6)
+                .style('font-family', 'Material Symbols Outlined')
+                .style('font-size', '20px')
+                .style('fill', 'var(--text-secondary)')
+                .text(d => d.materialIcon || 'category');
+
+            // Entity count (below icon)
             nodes.append('text')
                 .attr('class', 'count-badge')
                 .attr('text-anchor', 'middle')
-                .attr('dy', 4)
+                .attr('dy', 14)
                 .text(d => d.children ? d.children.length : 0);
 
-            // Category labels
+            // Category labels (below circle)
             nodes.append('text')
                 .attr('text-anchor', 'middle')
-                .attr('dy', d => {
-                    const count = d.children ? d.children.length : 0;
-                    return Math.max(30, Math.min(55, 25 + Math.sqrt(count) * 5)) + 20;
-                })
+                .attr('dy', d => getCategoryNodeRadius(d) + 18)
                 .style('font-size', '11px')
                 .style('fill', 'var(--text-secondary)')
                 .text(d => formatCategoryName(d.key));
+
+            // Gentle drift animation
+            let animationFrame;
+            let startTime = Date.now();
+
+            function animateDrift() {
+                const elapsed = (Date.now() - startTime) / 1000;
+
+                categories.forEach(d => {
+                    // Gentle sinusoidal drift around base position
+                    const driftX = Math.sin(elapsed * d.driftSpeed + d.driftPhase) * d.driftAmplitude;
+                    const driftY = Math.cos(elapsed * d.driftSpeed * 0.7 + d.driftPhase + 1) * d.driftAmplitude;
+                    d.x = d.baseX + driftX;
+                    d.y = d.baseY + driftY;
+                });
+
+                // Update node positions
+                nodes.attr('transform', d => `translate(${d.x}, ${d.y})`);
+
+                // Update link endpoints
+                links
+                    .attr('x2', d => d.x)
+                    .attr('y2', d => d.y);
+
+                animationFrame = requestAnimationFrame(animateDrift);
+            }
+
+            // Start drift animation
+            animateDrift();
+
+            // Store cleanup function for when view changes
+            state.cleanupAnimation = () => {
+                if (animationFrame) {
+                    cancelAnimationFrame(animationFrame);
+                }
+            };
         }
 
         // =====================================================
@@ -1743,6 +1841,64 @@
                         .text(ringLabels[i]);
                 }
             });
+
+            // Gentle drift animation for entities
+            // Each entity drifts slightly along its ring circumference
+            let animationFrame;
+            let startTime = Date.now();
+
+            // Initialize drift parameters for each entity
+            entities.forEach(entity => {
+                const pos = entityPositions.get(entity.id);
+                if (pos) {
+                    entity.baseAngle = pos.angle;
+                    entity.driftPhase = Math.random() * Math.PI * 2;
+                    entity.driftSpeed = 0.15 + Math.random() * 0.1;
+                    entity.driftAmplitude = 0.02 + Math.random() * 0.02; // Small angular drift (radians)
+                    entity.radialDrift = 1 + Math.random() * 2; // Small radial wobble
+                }
+            });
+
+            function animateEntityDrift() {
+                const elapsed = (Date.now() - startTime) / 1000;
+
+                entities.forEach(entity => {
+                    const basePos = entityPositions.get(entity.id);
+                    if (!basePos) return;
+
+                    // Angular drift along the ring
+                    const angleDrift = Math.sin(elapsed * entity.driftSpeed + entity.driftPhase) * entity.driftAmplitude;
+                    const newAngle = entity.baseAngle + angleDrift;
+
+                    // Small radial wobble
+                    const radialDrift = Math.cos(elapsed * entity.driftSpeed * 0.7 + entity.driftPhase) * entity.radialDrift;
+                    const newRadius = basePos.radius + radialDrift;
+
+                    entity.currentX = newRadius * Math.cos(newAngle);
+                    entity.currentY = newRadius * Math.sin(newAngle);
+                });
+
+                // Update node positions
+                nodes.attr('transform', d => {
+                    if (d.currentX !== undefined) {
+                        return `translate(${d.currentX}, ${d.currentY})`;
+                    }
+                    const pos = entityPositions.get(d.id);
+                    return pos ? `translate(${pos.x}, ${pos.y})` : 'translate(0, 0)';
+                });
+
+                animationFrame = requestAnimationFrame(animateEntityDrift);
+            }
+
+            // Start drift animation
+            animateEntityDrift();
+
+            // Store cleanup function
+            state.cleanupAnimation = () => {
+                if (animationFrame) {
+                    cancelAnimationFrame(animationFrame);
+                }
+            };
         }
 
         // =====================================================
@@ -1879,9 +2035,18 @@
 
             if (type === 'category') {
                 const count = data.children ? data.children.length : 0;
+                const avgBuzz = data.avgBuzz ? Math.round(data.avgBuzz * 100) : 0;
+                const weight = data.normalizedWeight ? Math.round(data.normalizedWeight * 100) : 0;
                 tooltip.innerHTML = `
-                    <div class="tooltip-title">${formatCategoryName(data.key)}</div>
+                    <div class="tooltip-title">
+                        <span class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">${data.materialIcon || 'category'}</span>
+                        ${formatCategoryName(data.key)}
+                    </div>
                     <div class="tooltip-meta">${count} entities</div>
+                    <div class="tooltip-stats">
+                        <span class="tooltip-stat"><span class="value">${avgBuzz}%</span> avg buzz</span>
+                        <span class="tooltip-stat"><span class="value">${weight}%</span> weight</span>
+                    </div>
                     <div class="tooltip-stats">
                         <span class="tooltip-stat">Click to explore</span>
                     </div>

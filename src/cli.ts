@@ -927,6 +927,25 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
         result = await tools.migrateFromLegacyCategories({ projectId: args.projectId as string, dryRun: args.dryRun as boolean });
         break;
 
+      // Category icon commands
+      case 'category:suggestIcon':
+        result = await tools.suggestCategoryIcon(args.categoryId as string || args.name as string);
+        break;
+      case 'category:setIcon':
+        result = await tools.setCategoryIcon(args.categoryId as string, args.icon as string);
+        break;
+      case 'category:autoAssignIcons':
+        result = await tools.autoAssignCategoryIcons();
+        break;
+
+      // Category weight commands
+      case 'category:weight':
+        result = await tools.calculateCategoryWeight(args.categoryId as string);
+        break;
+      case 'category:weights':
+        result = await tools.calculateAllCategoryWeights(args.projectId as string | undefined);
+        break;
+
       // GitHub metrics commands
       case 'github:fetch':
         result = await tools.fetchEntityGitHubMetrics({
@@ -1068,6 +1087,7 @@ async function main() {
         'category:create', 'category:get', 'category:getByName', 'category:list', 'category:update', 'category:delete',
         'category:entities', 'category:summary', 'category:updateStats', 'category:updateAllStats',
         'category:prompt', 'category:context', 'category:apply', 'category:explain', 'category:unclassified', 'category:preview',
+        'category:suggestIcon', 'category:setIcon', 'category:autoAssignIcons', 'category:weight', 'category:weights',
         'category:seed', 'category:migrate',
       ],
     }));

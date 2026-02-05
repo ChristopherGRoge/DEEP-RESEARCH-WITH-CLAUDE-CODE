@@ -812,3 +812,285 @@ export async function migrateFromLegacyCategories(options?: { projectId?: string
     ...results,
   };
 }
+
+// ============================================
+// MATERIAL ICONS - Visual Identity
+// ============================================
+
+/**
+ * Mapping of category names to contextually appropriate Google Material Icons
+ * Icons are chosen based on the category's semantic meaning and visual recognition
+ * Reference: https://fonts.google.com/icons
+ */
+const CATEGORY_ICON_MAPPING: Record<string, string> = {
+  ai_code_assistants: 'smart_toy',           // AI assistant/robot
+  ai_code_review: 'rate_review',             // Review/feedback
+  ai_debugging: 'bug_report',                // Bug/debugging
+  ai_testing: 'science',                     // Testing/experimentation
+  ai_documentation: 'description',           // Documents
+  ai_security: 'security',                   // Security shield
+  ai_devops: 'settings_suggest',             // DevOps/automation
+  ai_analytics: 'insights',                  // Analytics/insights
+  genai_concepts: 'psychology',              // AI/brain concepts
+};
+
+/**
+ * Alternative icons for each category (for variety)
+ */
+const CATEGORY_ICON_ALTERNATIVES: Record<string, string[]> = {
+  ai_code_assistants: ['code', 'terminal', 'assistant', 'auto_fix_high', 'lightbulb'],
+  ai_code_review: ['checklist', 'fact_check', 'grading', 'rule', 'verified'],
+  ai_debugging: ['pest_control', 'troubleshoot', 'build_circle', 'emergency'],
+  ai_testing: ['biotech', 'experiment', 'quiz', 'check_circle', 'verified_user'],
+  ai_documentation: ['article', 'menu_book', 'library_books', 'edit_document', 'summarize'],
+  ai_security: ['shield', 'lock', 'gpp_good', 'admin_panel_settings', 'verified_user'],
+  ai_devops: ['integration_instructions', 'rocket_launch', 'engineering', 'developer_board', 'cloud_sync'],
+  ai_analytics: ['query_stats', 'monitoring', 'bar_chart', 'trending_up', 'analytics'],
+  genai_concepts: ['neurology', 'auto_awesome', 'model_training', 'hub', 'memory'],
+};
+
+/**
+ * Suggest a Material Icon for a category based on its name and description
+ */
+export async function suggestCategoryIcon(
+  categoryIdOrName: string
+): Promise<{ icon: string; alternatives: string[]; confidence: 'exact' | 'inferred' }> {
+  // Try to get category by ID first, then by name
+  let category = await prisma.discoveryCategory.findUnique({
+    where: { id: categoryIdOrName },
+  });
+
+  if (!category) {
+    category = await prisma.discoveryCategory.findUnique({
+      where: { name: categoryIdOrName },
+    });
+  }
+
+  if (!category) {
+    // For unknown category names, try to infer from the name
+    const lowerName = categoryIdOrName.toLowerCase();
+
+    // Infer from keywords in the name
+    if (lowerName.includes('code') || lowerName.includes('assist') || lowerName.includes('copilot')) {
+      return { icon: 'smart_toy', alternatives: CATEGORY_ICON_ALTERNATIVES.ai_code_assistants, confidence: 'inferred' };
+    }
+    if (lowerName.includes('review') || lowerName.includes('quality')) {
+      return { icon: 'rate_review', alternatives: CATEGORY_ICON_ALTERNATIVES.ai_code_review, confidence: 'inferred' };
+    }
+    if (lowerName.includes('debug') || lowerName.includes('error') || lowerName.includes('bug')) {
+      return { icon: 'bug_report', alternatives: CATEGORY_ICON_ALTERNATIVES.ai_debugging, confidence: 'inferred' };
+    }
+    if (lowerName.includes('test') || lowerName.includes('qa')) {
+      return { icon: 'science', alternatives: CATEGORY_ICON_ALTERNATIVES.ai_testing, confidence: 'inferred' };
+    }
+    if (lowerName.includes('doc') || lowerName.includes('write')) {
+      return { icon: 'description', alternatives: CATEGORY_ICON_ALTERNATIVES.ai_documentation, confidence: 'inferred' };
+    }
+    if (lowerName.includes('secur') || lowerName.includes('vuln')) {
+      return { icon: 'security', alternatives: CATEGORY_ICON_ALTERNATIVES.ai_security, confidence: 'inferred' };
+    }
+    if (lowerName.includes('devops') || lowerName.includes('deploy') || lowerName.includes('ci')) {
+      return { icon: 'settings_suggest', alternatives: CATEGORY_ICON_ALTERNATIVES.ai_devops, confidence: 'inferred' };
+    }
+    if (lowerName.includes('analytics') || lowerName.includes('monitor') || lowerName.includes('observ')) {
+      return { icon: 'insights', alternatives: CATEGORY_ICON_ALTERNATIVES.ai_analytics, confidence: 'inferred' };
+    }
+    if (lowerName.includes('genai') || lowerName.includes('llm') || lowerName.includes('agent')) {
+      return { icon: 'psychology', alternatives: CATEGORY_ICON_ALTERNATIVES.genai_concepts, confidence: 'inferred' };
+    }
+
+    // Default fallback
+    return { icon: 'category', alternatives: ['apps', 'grid_view', 'view_module'], confidence: 'inferred' };
+  }
+
+  // Known category - use exact mapping
+  const icon = CATEGORY_ICON_MAPPING[category.name] || 'category';
+  const alternatives = CATEGORY_ICON_ALTERNATIVES[category.name] || ['apps', 'grid_view'];
+
+  return {
+    icon,
+    alternatives,
+    confidence: CATEGORY_ICON_MAPPING[category.name] ? 'exact' : 'inferred',
+  };
+}
+
+/**
+ * Set the Material Icon for a category
+ */
+export async function setCategoryIcon(categoryId: string, iconName: string) {
+  const category = await prisma.discoveryCategory.update({
+    where: { id: categoryId },
+    data: {
+      materialIcon: iconName,
+      updatedAt: new Date(),
+    },
+  });
+
+  await prisma.researchLog.create({
+    data: {
+      action: 'category_icon_set',
+      details: { categoryId, iconName },
+    },
+  });
+
+  return category;
+}
+
+/**
+ * Auto-assign icons to all categories that don't have one
+ */
+export async function autoAssignCategoryIcons() {
+  const categories = await prisma.discoveryCategory.findMany({
+    where: {
+      OR: [
+        { materialIcon: null },
+        { materialIcon: '' },
+      ],
+    },
+  });
+
+  const results = [];
+  for (const cat of categories) {
+    const suggestion = await suggestCategoryIcon(cat.name);
+    const updated = await setCategoryIcon(cat.id, suggestion.icon);
+    results.push({
+      categoryId: cat.id,
+      name: cat.name,
+      icon: suggestion.icon,
+      confidence: suggestion.confidence,
+    });
+  }
+
+  return {
+    updated: results.length,
+    categories: results,
+  };
+}
+
+// ============================================
+// CATEGORY WEIGHTS - For Visual Sizing
+// ============================================
+
+export interface CategoryWeight {
+  categoryId: string;
+  categoryName: string;
+  displayName: string;
+  materialIcon: string | null;
+  entityCount: number;
+  totalBuzz: number;
+  avgBuzz: number;
+  weight: number;
+  normalizedWeight: number;
+}
+
+/**
+ * Calculate weight for a category based on entity count and cumulative buzz
+ *
+ * Formula: weight = (avgBuzz * entityCount * 0.5) + (entityCount * 0.5)
+ * This blends "quality" (avg buzz) with "quantity" (entity count)
+ */
+export async function calculateCategoryWeight(categoryId: string): Promise<CategoryWeight | null> {
+  const category = await prisma.discoveryCategory.findUnique({
+    where: { id: categoryId },
+    include: {
+      entities: {
+        select: {
+          buzzScore: true,
+        },
+      },
+    },
+  });
+
+  if (!category) return null;
+
+  const entityCount = category.entities.length;
+  const buzzScores = category.entities.map(e => e.buzzScore || 0);
+  const totalBuzz = buzzScores.reduce((sum, b) => sum + b, 0);
+  const avgBuzz = entityCount > 0 ? totalBuzz / entityCount : 0;
+
+  // Blend formula: 50% from buzz quality, 50% from entity volume
+  // Normalize avgBuzz (0-1) and scale entityCount logarithmically
+  const buzzComponent = avgBuzz * Math.log10(Math.max(1, entityCount) + 1);
+  const countComponent = Math.log10(Math.max(1, entityCount) + 1);
+  const weight = (buzzComponent * 0.5) + (countComponent * 0.5);
+
+  return {
+    categoryId: category.id,
+    categoryName: category.name,
+    displayName: category.displayName,
+    materialIcon: category.materialIcon,
+    entityCount,
+    totalBuzz,
+    avgBuzz,
+    weight,
+    normalizedWeight: 0, // Will be calculated when comparing across categories
+  };
+}
+
+/**
+ * Calculate weights for all categories in a project
+ * Returns weights normalized to 0-1 range for visualization sizing
+ */
+export async function calculateAllCategoryWeights(projectId?: string): Promise<{
+  categories: CategoryWeight[];
+  maxWeight: number;
+  minWeight: number;
+}> {
+  // Get all categories
+  const categories = await prisma.discoveryCategory.findMany({
+    include: {
+      entities: {
+        where: projectId ? { projectId } : undefined,
+        select: {
+          buzzScore: true,
+        },
+      },
+    },
+  });
+
+  const weights: CategoryWeight[] = [];
+
+  for (const category of categories) {
+    const entityCount = category.entities.length;
+    if (entityCount === 0) continue; // Skip empty categories
+
+    const buzzScores = category.entities.map(e => e.buzzScore || 0);
+    const totalBuzz = buzzScores.reduce((sum, b) => sum + b, 0);
+    const avgBuzz = totalBuzz / entityCount;
+
+    // Blend formula
+    const buzzComponent = avgBuzz * Math.log10(entityCount + 1);
+    const countComponent = Math.log10(entityCount + 1);
+    const weight = (buzzComponent * 0.5) + (countComponent * 0.5);
+
+    weights.push({
+      categoryId: category.id,
+      categoryName: category.name,
+      displayName: category.displayName,
+      materialIcon: category.materialIcon,
+      entityCount,
+      totalBuzz,
+      avgBuzz,
+      weight,
+      normalizedWeight: 0,
+    });
+  }
+
+  // Normalize weights to 0-1 range
+  const maxWeight = Math.max(...weights.map(w => w.weight), 1);
+  const minWeight = Math.min(...weights.map(w => w.weight), 0);
+  const range = maxWeight - minWeight || 1;
+
+  for (const w of weights) {
+    w.normalizedWeight = (w.weight - minWeight) / range;
+  }
+
+  // Sort by weight descending
+  weights.sort((a, b) => b.weight - a.weight);
+
+  return {
+    categories: weights,
+    maxWeight,
+    minWeight,
+  };
+}

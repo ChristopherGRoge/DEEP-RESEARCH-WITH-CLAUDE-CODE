@@ -1173,6 +1173,42 @@ npm run cli -- category:migrate '{"dryRun": true}'   # Preview
 npm run cli -- category:migrate '{"dryRun": false}'  # Execute
 ```
 
+#### Category Icons & Weights
+
+```bash
+# Suggest a contextually appropriate Google Material Icon for a category
+npm run cli -- category:suggestIcon '{"categoryId": "<id>"}'
+npm run cli -- category:suggestIcon '{"name": "ai_code_assistants"}'
+# Returns: { icon: "smart_toy", alternatives: ["code", "terminal", ...], confidence: "exact" }
+
+# Set a specific icon for a category
+npm run cli -- category:setIcon '{"categoryId": "<id>", "icon": "smart_toy"}'
+
+# Auto-assign icons to all categories without icons
+npm run cli -- category:autoAssignIcons
+
+# Calculate weight for a single category (entity count + buzz blend)
+npm run cli -- category:weight '{"categoryId": "<id>"}'
+
+# Calculate weights for all categories (for visual sizing)
+npm run cli -- category:weights '{"projectId": "<id>"}'
+# Returns: categories sorted by weight, each with normalizedWeight (0-1)
+```
+
+**Default Icon Mapping:**
+
+| Category | Icon | Description |
+|----------|------|-------------|
+| `ai_code_assistants` | `smart_toy` | AI assistant/robot |
+| `ai_code_review` | `rate_review` | Review/feedback |
+| `ai_debugging` | `bug_report` | Bug/debugging |
+| `ai_testing` | `science` | Testing/experimentation |
+| `ai_documentation` | `description` | Documents |
+| `ai_security` | `security` | Security shield |
+| `ai_devops` | `settings_suggest` | DevOps/automation |
+| `ai_analytics` | `insights` | Analytics/insights |
+| `genai_concepts` | `psychology` | AI/brain concepts |
+
 #### Default Categories
 
 | Name | Display Name | Examples |

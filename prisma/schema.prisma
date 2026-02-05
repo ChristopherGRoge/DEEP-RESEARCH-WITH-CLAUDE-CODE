@@ -715,6 +715,9 @@ model DiscoveryCategory {
   exemplarEntities   Json?           // Example entities that belong here - stored as JSON array
   antiExemplars      Json?           // Entities that might seem to fit but don't - stored as JSON array
 
+  // Visual identity for category
+  materialIcon String?    // Google Material Icon name (e.g., "code", "security", "bug_report")
+
   // Metadata
   entityCount Int       @default(0)
   createdAt   DateTime  @default(now())
