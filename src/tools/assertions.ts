@@ -50,8 +50,29 @@ export interface SearchAssertionsInput {
  * Evidence-First Research: New assertions SHOULD include evidenceDescription
  * and evidenceScreenshotPath to provide direct screenshot evidence rather
  * than relying solely on source URLs.
+ *
+ * DEDUPLICATION: This function checks for existing identical claims before
+ * creating a new assertion. If an identical claim exists for the same entity,
+ * the existing assertion is returned instead of creating a duplicate.
  */
 export async function createAssertion(input: CreateAssertionInput) {
+  // Check for existing identical claim (deduplication)
+  const existing = await prisma.assertion.findFirst({
+    where: {
+      entityId: input.entityId,
+      claim: input.claim,
+    },
+    include: {
+      reasoning: true,
+      sources: { include: { source: true } },
+    },
+  });
+
+  if (existing) {
+    // Return existing assertion instead of creating duplicate
+    return existing;
+  }
+
   // Build evidence chain from provided evidence
   let evidenceChain: EvidenceChainItem[] | undefined;
   if (input.evidenceScreenshotPath && input.evidenceDescription) {

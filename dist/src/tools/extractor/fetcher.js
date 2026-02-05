@@ -140,6 +140,48 @@ async function fetchUrl(url, options = {}) {
 // ============================================
 // SCREENSHOT CAPTURE
 // ============================================
+// Hash index for content-based deduplication
+const screenshotHashIndex = new Map(); // hash -> filePath
+/**
+ * Build index of existing screenshot hashes on first use
+ */
+function buildScreenshotHashIndex(directory) {
+    if (screenshotHashIndex.size > 0)
+        return; // Already built
+    try {
+        const walkDir = (dir) => {
+            if (!fs.existsSync(dir))
+                return;
+            const entries = fs.readdirSync(dir, { withFileTypes: true });
+            for (const entry of entries) {
+                const fullPath = path.join(dir, entry.name);
+                if (entry.isDirectory()) {
+                    walkDir(fullPath);
+                }
+                else if (entry.isFile() && /\.png$/i.test(entry.name)) {
+                    try {
+                        const content = fs.readFileSync(fullPath);
+                        const hash = crypto.createHash('md5').update(content).digest('hex');
+                        screenshotHashIndex.set(hash, fullPath);
+                    }
+                    catch {
+                        // Skip files we can't read
+                    }
+                }
+            }
+        };
+        walkDir(directory);
+    }
+    catch {
+        // Ignore errors building index
+    }
+}
+/**
+ * Find existing screenshot with same content hash
+ */
+function findExistingScreenshot(contentHash) {
+    return screenshotHashIndex.get(contentHash);
+}
 async function captureScreenshot(url, options = {}) {
     const { fullPage = true, selector, directory = 'screenshots', } = options;
     let page = null;
@@ -152,6 +194,34 @@ async function captureScreenshot(url, options = {}) {
             timeout: 30000,
             waitUntil: 'networkidle',
         });
+        // Capture screenshot to buffer first (for deduplication)
+        let screenshotBuffer;
+        if (selector) {
+            const element = await page.$(selector);
+            if (element) {
+                screenshotBuffer = await element.screenshot();
+            }
+            else {
+                screenshotBuffer = await page.screenshot({ fullPage });
+            }
+        }
+        else {
+            screenshotBuffer = await page.screenshot({ fullPage });
+        }
+        // Check for existing identical screenshot (content deduplication)
+        buildScreenshotHashIndex(directory);
+        const contentHash = crypto.createHash('md5').update(screenshotBuffer).digest('hex');
+        const existingPath = findExistingScreenshot(contentHash);
+        if (existingPath && fs.existsSync(existingPath)) {
+            // Return existing file instead of creating duplicate
+            const viewport = page.viewportSize();
+            return {
+                success: true,
+                filePath: existingPath,
+                width: viewport?.width,
+                height: viewport?.height,
+            };
+        }
         // Create directory structure: screenshots/YYYY-MM/
         const now = new Date();
         const monthDir = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
@@ -164,23 +234,10 @@ async function captureScreenshot(url, options = {}) {
         const urlSlug = new URL(url).hostname.replace(/\./g, '-');
         const filename = `${urlSlug}-${urlHash}.png`;
         const filePath = path.join(fullDir, filename);
-        // Capture screenshot
-        let screenshotOptions = {
-            path: filePath,
-            fullPage,
-        };
-        if (selector) {
-            const element = await page.$(selector);
-            if (element) {
-                await element.screenshot({ path: filePath });
-            }
-            else {
-                await page.screenshot(screenshotOptions);
-            }
-        }
-        else {
-            await page.screenshot(screenshotOptions);
-        }
+        // Write screenshot to disk
+        fs.writeFileSync(filePath, screenshotBuffer);
+        // Add to hash index for future deduplication
+        screenshotHashIndex.set(contentHash, filePath);
         // Get dimensions
         const viewport = page.viewportSize();
         return {

@@ -43,6 +43,10 @@ export interface SearchAssertionsInput {
  * Evidence-First Research: New assertions SHOULD include evidenceDescription
  * and evidenceScreenshotPath to provide direct screenshot evidence rather
  * than relying solely on source URLs.
+ *
+ * DEDUPLICATION: This function checks for existing identical claims before
+ * creating a new assertion. If an identical claim exists for the same entity,
+ * the existing assertion is returned instead of creating a duplicate.
  */
 export declare function createAssertion(input: CreateAssertionInput): Promise<({
     reasoning: {
