@@ -1155,27 +1155,6 @@
             fill: var(--text-secondary);
         }
 
-        /* Positioning pills on canvas */
-        .wm-pos-pill-bg {
-            fill: var(--bg-elevated);
-            stroke: var(--border-subtle);
-        }
-
-        .wm-pos-pill-label {
-            font-family: var(--font-mono);
-            font-size: 8px;
-            fill: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .wm-pos-pill-value {
-            font-family: var(--font-display);
-            font-size: 10px;
-            font-weight: 600;
-            fill: var(--text-primary);
-        }
-
         /* Force field indicators on canvas */
         .wm-force-label {
             font-family: var(--font-mono);
@@ -1539,7 +1518,7 @@
             projects: [],
             selectedProjectId: null,
             treeData: null,
-            currentLevel: 'project', // 'project', 'category', 'entity'
+            currentLevel: 'project', // 'project', 'category', 'worldmodel'
             selectedCategory: null,
             selectedEntity: null,
             worldModelData: null,
@@ -1577,7 +1556,7 @@
 
             dom.panelClose.addEventListener('click', closeDetailPanel);
 
-            // Close panel on escape
+            // ESC: close panel (and return to category view if in world model)
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') closeDetailPanel();
             });
@@ -1634,23 +1613,7 @@
             }
         }
 
-        async function loadEntityDetails(entityId) {
-            try {
-                const res = await fetch(`/api/entities/${entityId}`);
-                const data = await res.json();
-
-                if (data.success) {
-                    state.selectedEntity = data.data;
-                    showDetailPanel(data.data);
-                }
-            } catch (err) {
-                console.error('Failed to load entity:', err);
-            }
-        }
-
-        async function loadWorldModel(entityId) {
-            showLoading();
-
+        async function fetchWorldModel(entityId) {
             try {
                 const res = await fetch(`/api/entities/${entityId}/world-model`);
                 const data = await res.json();
@@ -1661,17 +1624,12 @@
                     if (wmData && wmData.success && wmData.data) {
                         wmData = wmData.data;
                     }
-
-                    state.worldModelData = wmData;
-                    state.worldModelEntityId = entityId;
-                    state.currentLevel = 'worldmodel';
-                    updateBreadcrumb();
-                    renderWorldModel(wmData);
-                    showWorldModelPanel(wmData);
+                    return wmData;
                 }
+                return null;
             } catch (err) {
-                console.error('Failed to load world model:', err);
-                showError('Failed to load world model');
+                console.warn('World model not available:', err);
+                return null;
             }
         }
 
@@ -1813,7 +1771,7 @@
                             <path d="M12 2a10 10 0 0 1 0 20 10 10 0 0 1 0-20"/>
                             <path d="M2 12h4M18 12h4"/>
                         </svg>
-                        <span>World Model: ${state.worldModelData.entity.name}</span>
+                        <span>${state.worldModelData.entity.name}</span>
                     </button>
                 `;
             }
@@ -1856,19 +1814,147 @@
             }
         }
 
-        function selectEntity(entityId, entityData) {
-            state.currentLevel = 'entity';
-            loadEntityDetails(entityId);
+        async function selectEntity(entityId, entityData) {
+            try {
+                // Cleanup any running animations
+                if (state.cleanupAnimation) {
+                    state.cleanupAnimation();
+                    state.cleanupAnimation = null;
+                }
+
+                const fromWorldModel = state.currentLevel === 'worldmodel';
+
+                // Fetch entity details + world model in parallel
+                const [entityDetails, wmData] = await Promise.all([
+                    fetch(`/api/entities/${entityId}`).then(r => r.json()).then(d => d.success ? d.data : null),
+                    fetchWorldModel(entityId)
+                ]);
+
+                if (!entityDetails) return;
+
+                // Set state
+                state.selectedEntity = entityDetails;
+                state.worldModelData = wmData;
+                state.worldModelEntityId = entityId;
+
+                // Determine the category for this entity (for breadcrumb/back nav)
+                if (!fromWorldModel && state.selectedCategory) {
+                    // Already have category from current view
+                } else if (wmData && wmData.entity) {
+                    // Try to find category from tree data
+                    const cat = state.treeData?.children?.find(c =>
+                        c.children?.some(e => e.id === entityId)
+                    );
+                    if (cat) state.selectedCategory = cat;
+                }
+
+                // Run tween animation from category view
+                if (!fromWorldModel && state.currentLevel === 'category') {
+                    await tweenToWorldModel(entityId, entityData);
+                } else {
+                    // Cross-fade from one world model to another, or direct render
+                    dom.canvas.innerHTML = '';
+                }
+
+                // Update state and render
+                state.currentLevel = 'worldmodel';
+                updateBreadcrumb();
+
+                if (wmData) {
+                    renderWorldModel(wmData, !fromWorldModel);
+                } else {
+                    // No world model data - show centered entity name
+                    dom.canvas.innerHTML = '';
+                    const width = dom.canvas.clientWidth;
+                    const height = dom.canvas.clientHeight;
+                    const svg = d3.select('#grove-canvas')
+                        .append('svg')
+                        .attr('width', width)
+                        .attr('height', height);
+                    const g = svg.append('g')
+                        .attr('transform', `translate(${width / 2}, ${height / 2})`);
+                    g.append('text')
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', -20)
+                        .style('font-family', 'var(--font-display)')
+                        .style('font-size', '16px')
+                        .style('font-weight', '600')
+                        .style('fill', 'var(--text-primary)')
+                        .text(entityDetails.name);
+                    g.append('text')
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', 10)
+                        .style('font-family', 'var(--font-display)')
+                        .style('font-size', '13px')
+                        .style('fill', 'var(--text-muted)')
+                        .text('No world model data yet');
+                }
+
+                // Show detail panel with entity assertions
+                showDetailPanel(entityDetails);
+            } catch (err) {
+                console.error('Failed to select entity:', err);
+            }
         }
 
-        function navigateToWorldModel(entityId) {
-            // Cleanup any running animations
-            if (state.cleanupAnimation) {
-                state.cleanupAnimation();
-                state.cleanupAnimation = null;
-            }
+        /**
+         * Animate from category ring view to world model.
+         * Exit phase: fade out siblings, zoom clicked entity to center.
+         * Returns a promise that resolves when the exit animation completes.
+         */
+        function tweenToWorldModel(entityId, entityData) {
+            return new Promise(resolve => {
+                const svg = d3.select('#grove-canvas svg');
+                if (svg.empty()) { resolve(); return; }
 
-            loadWorldModel(entityId);
+                const g = svg.select('g');
+                const width = dom.canvas.clientWidth;
+                const height = dom.canvas.clientHeight;
+
+                // Find the clicked entity node
+                const allEntityNodes = g.selectAll('.node-entity');
+                let clickedNode = null;
+                let clickedPos = { x: 0, y: 0 };
+
+                allEntityNodes.each(function(d) {
+                    if (d.id === entityId) {
+                        clickedNode = d3.select(this);
+                        clickedPos = { x: d.x || 0, y: d.y || 0 };
+                    }
+                });
+
+                if (!clickedNode) { resolve(); return; }
+
+                // EXIT PHASE (~400ms)
+                const duration = 400;
+                const ease = d3.easeCubicInOut;
+
+                // Fade out all siblings (other entity nodes, links, center, ring guides, labels)
+                g.selectAll('.node-entity')
+                    .filter(function(d) { return d.id !== entityId; })
+                    .transition()
+                    .duration(duration)
+                    .ease(ease)
+                    .style('opacity', 0);
+
+                g.selectAll('.link, .ring-guide, .ring-label, .node-category, .buzz-indicator')
+                    .transition()
+                    .duration(duration)
+                    .ease(ease)
+                    .style('opacity', 0);
+
+                // Zoom clicked entity to center and scale up
+                clickedNode
+                    .transition()
+                    .duration(duration)
+                    .ease(ease)
+                    .attr('transform', `translate(0, 0) scale(1.3)`)
+                    .on('end', () => {
+                        // Clear canvas after exit animation
+                        dom.canvas.innerHTML = '';
+                        resolve();
+                    });
+            });
         }
 
         // =====================================================
@@ -2356,7 +2442,7 @@
         // VISUALIZATION - WORLD MODEL (Orbital Relationship Map)
         // =====================================================
 
-        function renderWorldModel(data) {
+        function renderWorldModel(data, animate = false) {
             if (!data || !data.entity) return;
 
             dom.canvas.innerHTML = '';
@@ -2460,24 +2546,50 @@
 
             const positionedRels = [...strongRels, ...weakRels];
 
+            // Animation timing
+            const enterEase = d3.easeCubicOut;
+            const ringDelay = 0;
+            const linkDelay = animate ? 200 : 0;
+            const nodeDelay = animate ? 350 : 0;
+            const enterDuration = animate ? 500 : 0;
+
             // Background glow behind center
-            g.append('circle')
+            const glowCircle = g.append('circle')
                 .attr('r', innerRing * 0.7)
                 .attr('fill', 'url(#center-glow)');
+            if (animate) {
+                glowCircle.style('opacity', 0)
+                    .transition().duration(enterDuration).delay(ringDelay).ease(enterEase)
+                    .style('opacity', 1);
+            }
 
             // Ring guides
-            g.append('circle').attr('class', 'wm-ring-guide').attr('r', innerRing);
-            g.append('circle').attr('class', 'wm-ring-guide').attr('r', outerRing);
+            const ringGuide1 = g.append('circle').attr('class', 'wm-ring-guide').attr('r', innerRing);
+            const ringGuide2 = g.append('circle').attr('class', 'wm-ring-guide').attr('r', outerRing);
+            if (animate) {
+                [ringGuide1, ringGuide2].forEach(rg => {
+                    rg.style('opacity', 0)
+                        .transition().duration(enterDuration).delay(ringDelay).ease(enterEase)
+                        .style('opacity', 1);
+                });
+            }
 
             // Ring labels
-            g.append('text')
+            const ringLabel1 = g.append('text')
                 .attr('x', innerRing + 5).attr('y', 4)
                 .style('font-size', '8px').style('fill', 'var(--text-muted)').style('font-style', 'italic')
                 .text('Strong');
-            g.append('text')
+            const ringLabel2 = g.append('text')
                 .attr('x', outerRing + 5).attr('y', 4)
                 .style('font-size', '8px').style('fill', 'var(--text-muted)').style('font-style', 'italic')
                 .text('Moderate');
+            if (animate) {
+                [ringLabel1, ringLabel2].forEach(rl => {
+                    rl.style('opacity', 0)
+                        .transition().duration(enterDuration).delay(ringDelay).ease(enterEase)
+                        .style('opacity', 1);
+                });
+            }
 
             // Draw relationship links
             const links = g.selectAll('.wm-link')
@@ -2487,8 +2599,8 @@
                 .attr('class', d => `wm-link wm-link-${relTypeClass(d.relationshipType)}`)
                 .attr('x1', 0)
                 .attr('y1', 0)
-                .attr('x2', d => d._x)
-                .attr('y2', d => d._y)
+                .attr('x2', animate ? 0 : d => d._x)
+                .attr('y2', animate ? 0 : d => d._y)
                 .attr('stroke-width', d => 1 + d.strength * 2.5)
                 .attr('marker-end', d => {
                     const cls = relTypeClass(d.relationshipType);
@@ -2498,13 +2610,23 @@
                     return null;
                 });
 
+            if (animate) {
+                links.transition()
+                    .duration(enterDuration)
+                    .delay(linkDelay)
+                    .ease(enterEase)
+                    .attr('x2', d => d._x)
+                    .attr('y2', d => d._y);
+            }
+
             // Related entity nodes
             const nodes = g.selectAll('.wm-node')
                 .data(positionedRels)
                 .enter()
                 .append('g')
                 .attr('class', 'wm-node')
-                .attr('transform', d => `translate(${d._x}, ${d._y})`)
+                .attr('transform', animate ? 'translate(0, 0)' : d => `translate(${d._x}, ${d._y})`)
+                .style('opacity', animate ? 0 : 1)
                 .on('click', (event, d) => {
                     if (d.relatedEntity && d.relatedEntity.id) {
                         selectEntity(d.relatedEntity.id);
@@ -2512,6 +2634,15 @@
                 })
                 .on('mouseenter', (event, d) => showTooltip(event, d, 'worldmodel'))
                 .on('mouseleave', hideTooltip);
+
+            if (animate) {
+                nodes.transition()
+                    .duration(enterDuration)
+                    .delay(nodeDelay)
+                    .ease(enterEase)
+                    .attr('transform', d => `translate(${d._x}, ${d._y})`)
+                    .style('opacity', 1);
+            }
 
             // Node circles colored by relationship type
             nodes.append('circle')
@@ -2572,7 +2703,7 @@
                 .style('fill', d => getRelColor(d.relationshipType))
                 .text(d => relTypeLabel(d.relationshipType));
 
-            // Central entity node
+            // Central entity node (appears immediately in animation - represents the clicked entity)
             const centerNode = g.append('g').attr('class', 'wm-center');
 
             centerNode.append('circle')
@@ -2590,53 +2721,6 @@
                 .attr('text-anchor', 'middle')
                 .attr('dy', 12)
                 .text(data.entity.entityType || 'entity');
-
-            // Positioning pills at top
-            if (data.positioning) {
-                const pos = data.positioning;
-                const pills = [];
-                if (pos.primaryStage) pills.push({ label: 'Stage', value: pos.primaryStage });
-                if (pos.solutionScope) pills.push({ label: 'Scope', value: pos.solutionScope });
-                if (pos.maturityStage) pills.push({ label: 'Maturity', value: pos.maturityStage });
-                if (pos.businessModel) pills.push({ label: 'Model', value: pos.businessModel });
-
-                if (pills.length > 0) {
-                    const pillWidth = 100;
-                    const pillHeight = 32;
-                    const pillGap = 8;
-                    const totalWidth = pills.length * pillWidth + (pills.length - 1) * pillGap;
-                    const startX = -totalWidth / 2;
-                    const pillY = -(Math.min(width, height) * 0.43);
-
-                    const pillGroup = g.append('g')
-                        .attr('transform', `translate(0, ${pillY})`);
-
-                    pills.forEach((pill, i) => {
-                        const pg = pillGroup.append('g')
-                            .attr('transform', `translate(${startX + i * (pillWidth + pillGap)}, 0)`);
-
-                        pg.append('rect')
-                            .attr('class', 'wm-pos-pill-bg')
-                            .attr('width', pillWidth)
-                            .attr('height', pillHeight)
-                            .attr('rx', 6);
-
-                        pg.append('text')
-                            .attr('class', 'wm-pos-pill-label')
-                            .attr('x', pillWidth / 2)
-                            .attr('y', 12)
-                            .attr('text-anchor', 'middle')
-                            .text(pill.label);
-
-                        pg.append('text')
-                            .attr('class', 'wm-pos-pill-value')
-                            .attr('x', pillWidth / 2)
-                            .attr('y', 26)
-                            .attr('text-anchor', 'middle')
-                            .text(pill.value);
-                    });
-                }
-            }
 
             // Force field indicators
             const forces = data.forces;
@@ -2684,6 +2768,12 @@
                     .attr('class', 'wm-legend')
                     .attr('transform', `translate(${legendX}, ${legendY})`);
 
+                if (animate) {
+                    legend.style('opacity', 0)
+                        .transition().duration(enterDuration).delay(nodeDelay + 100).ease(enterEase)
+                        .style('opacity', 1);
+                }
+
                 legend.append('rect')
                     .attr('class', 'wm-legend-bg')
                     .attr('x', -8)
@@ -2715,6 +2805,9 @@
             }
 
             // Collision resolution simulation
+            // When animating, delay simulation start until entrance animations finish
+            const simDelay = animate ? nodeDelay + enterDuration + 50 : 0;
+
             positionedRels.forEach(rel => {
                 rel.x = rel._x;
                 rel.y = rel._y;
@@ -2724,26 +2817,34 @@
                 rel.nodeRadius = rel._nodeRadius;
             });
 
-            const simulation = d3.forceSimulation(positionedRels)
-                .force('collision', d3.forceCollide()
-                    .radius(d => d.nodeRadius + 6)
-                    .strength(0.8)
-                )
-                .force('radial', d3.forceRadial(d => d.targetRadius, 0, 0).strength(0.3))
-                .force('x', d3.forceX(d => d.targetX).strength(0.1))
-                .force('y', d3.forceY(d => d.targetY).strength(0.1))
-                .alphaDecay(0.025)
-                .velocityDecay(0.35)
-                .on('tick', () => {
-                    nodes.attr('transform', d => `translate(${d.x}, ${d.y})`);
-                    links.attr('x2', d => d.x).attr('y2', d => d.y);
-                });
+            let simulation = null;
+            let stopTimeout = null;
 
-            const stopTimeout = setTimeout(() => simulation.stop(), 3000);
+            const startSimulation = () => {
+                simulation = d3.forceSimulation(positionedRels)
+                    .force('collision', d3.forceCollide()
+                        .radius(d => d.nodeRadius + 6)
+                        .strength(0.8)
+                    )
+                    .force('radial', d3.forceRadial(d => d.targetRadius, 0, 0).strength(0.3))
+                    .force('x', d3.forceX(d => d.targetX).strength(0.1))
+                    .force('y', d3.forceY(d => d.targetY).strength(0.1))
+                    .alphaDecay(0.025)
+                    .velocityDecay(0.35)
+                    .on('tick', () => {
+                        nodes.attr('transform', d => `translate(${d.x}, ${d.y})`);
+                        links.attr('x2', d => d.x).attr('y2', d => d.y);
+                    });
+
+                stopTimeout = setTimeout(() => simulation.stop(), 3000);
+            };
+
+            const simStartTimeout = setTimeout(startSimulation, simDelay);
 
             state.cleanupAnimation = () => {
-                simulation.stop();
-                clearTimeout(stopTimeout);
+                clearTimeout(simStartTimeout);
+                if (simulation) simulation.stop();
+                if (stopTimeout) clearTimeout(stopTimeout);
             };
         }
 
@@ -2813,14 +2914,30 @@
             // Assertions grouped by category
             const panelContent = document.getElementById('panel-content');
 
+            // Build positioning section if world model data available
+            let positioningHtml = '';
+            if (state.worldModelData && state.worldModelData.positioning) {
+                const pos = state.worldModelData.positioning;
+                const dims = [];
+                if (pos.primaryStage) dims.push({ label: 'Stage', value: pos.primaryStage });
+                if (pos.solutionScope) dims.push({ label: 'Scope', value: pos.solutionScope });
+                if (pos.maturityStage) dims.push({ label: 'Maturity', value: pos.maturityStage });
+                if (pos.businessModel) dims.push({ label: 'Model', value: pos.businessModel });
+                if (pos.adoptionCurve) dims.push({ label: 'Adoption', value: pos.adoptionCurve.replace(/_/g, ' ') });
+                if (pos.primaryEcosystem) dims.push({ label: 'Ecosystem', value: pos.primaryEcosystem });
+
+                if (dims.length > 0) {
+                    positioningHtml = `<div class="wm-panel-section">
+                        <div class="wm-section-title">Position</div>
+                        <div class="wm-dimensions">
+                            ${dims.map(d => `<div class="wm-dim"><span class="wm-dim-label">${d.label}</span><span class="wm-dim-value">${d.value}</span></div>`).join('')}
+                        </div>
+                    </div>`;
+                }
+            }
+
             if (assertions.length === 0) {
-                panelContent.innerHTML = `
-                    <div style="padding: var(--space-sm) var(--space-lg) 0;">
-                        <button class="wm-btn" onclick="navigateToWorldModel('${entity.id}')">
-                            <span class="material-symbols-outlined wm-btn-icon">hub</span>
-                            View World Model
-                        </button>
-                    </div>
+                panelContent.innerHTML = positioningHtml + `
                     <div class="empty-state" style="padding: var(--space-xl) 0;">
                         <p style="color: var(--text-tertiary);">No assertions yet</p>
                         <p style="font-size: 12px; color: var(--text-muted);">Run /research-entity to gather data</p>
@@ -2835,15 +2952,7 @@
                     grouped[cat].push(assertion);
                 }
 
-                let html = '';
-
-                // World Model button
-                html += `<div style="padding: var(--space-sm) var(--space-lg) var(--space-md);">
-                    <button class="wm-btn" onclick="navigateToWorldModel('${entity.id}')">
-                        <span class="material-symbols-outlined wm-btn-icon">hub</span>
-                        View World Model
-                    </button>
-                </div>`;
+                let html = positioningHtml;
 
                 html += '<div class="assertions-section">';
                 html += `<div class="section-header">
@@ -2903,185 +3012,18 @@
         function closeDetailPanel() {
             dom.detailPanel.classList.remove('open');
             state.selectedEntity = null;
-        }
-
-        function showWorldModelPanel(data) {
-            const panel = dom.detailPanel;
-            const entity = data.entity;
-
-            // Set entity header
-            const entityNameEl = document.getElementById('entity-name');
-            entityNameEl.innerHTML = `<span style="color: inherit;">${entity.name}</span> <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">World Model</span>`;
-
-            // Logo placeholder
-            const logoEl = document.getElementById('entity-logo');
-            logoEl.innerHTML = `<span class="placeholder" style="background: linear-gradient(135deg, var(--accent-primary), #268bd2); color: white;">${entity.name.charAt(0)}</span>`;
-
-            // URL
-            const urlEl = document.getElementById('entity-url');
-            if (entity.url) {
-                urlEl.href = entity.url;
-                urlEl.querySelector('span').textContent = new URL(entity.url).hostname;
-                urlEl.style.display = 'flex';
-            } else {
-                urlEl.style.display = 'none';
-            }
-
-            // Hide full research link in world model view
-            document.getElementById('panel-full-research').style.display = 'none';
-
-            // Stats - show world model stats
-            document.getElementById('stat-assertions').textContent = data.stats.relationshipCount;
-            document.getElementById('stat-validated').textContent = data.stats.forceCount;
-            document.getElementById('stat-pending').textContent = data.stats.hasPositioning ? '6/6' : '—';
-
-            // Relabel stats
-            const statsEl = document.getElementById('panel-stats');
-            statsEl.innerHTML = `
-                <div class="panel-stat">
-                    <div class="value">${data.stats.relationshipCount}</div>
-                    <div class="label">Relationships</div>
-                </div>
-                <div class="panel-stat accent">
-                    <div class="value">${data.stats.forceCount}</div>
-                    <div class="label">Forces</div>
-                </div>
-                <div class="panel-stat">
-                    <div class="value">${data.stats.hasPositioning ? '✓' : '—'}</div>
-                    <div class="label">Positioned</div>
-                </div>
-            `;
-
-            // Panel content
-            const panelContent = document.getElementById('panel-content');
-            let html = '';
-
-            // Positioning statement
-            if (data.positioning && data.positioning.positioningStatement) {
-                html += `<div class="wm-panel-section">
-                    <div class="wm-statement">${data.positioning.positioningStatement}</div>
-                </div>`;
-            }
-
-            // Positioning dimensions
-            if (data.positioning) {
-                const pos = data.positioning;
-                html += `<div class="wm-panel-section">
-                    <div class="wm-section-title">Position</div>
-                    <div class="wm-dimensions">
-                        ${pos.primaryStage ? `<div class="wm-dim"><span class="wm-dim-label">Stage</span><span class="wm-dim-value">${pos.primaryStage}</span></div>` : ''}
-                        ${pos.solutionScope ? `<div class="wm-dim"><span class="wm-dim-label">Scope</span><span class="wm-dim-value">${pos.solutionScope}</span></div>` : ''}
-                        ${pos.maturityStage ? `<div class="wm-dim"><span class="wm-dim-label">Maturity</span><span class="wm-dim-value">${pos.maturityStage}</span></div>` : ''}
-                        ${pos.adoptionCurve ? `<div class="wm-dim"><span class="wm-dim-label">Adoption</span><span class="wm-dim-value">${pos.adoptionCurve.replace(/_/g, ' ')}</span></div>` : ''}
-                        ${pos.businessModel ? `<div class="wm-dim"><span class="wm-dim-label">Model</span><span class="wm-dim-value">${pos.businessModel}</span></div>` : ''}
-                        ${pos.primaryEcosystem ? `<div class="wm-dim"><span class="wm-dim-label">Ecosystem</span><span class="wm-dim-value">${pos.primaryEcosystem}</span></div>` : ''}
-                    </div>
-                </div>`;
-            }
-
-            // Force field
-            const forces = data.forces;
-            if (forces && forces.counts.total > 0) {
-                html += `<div class="wm-panel-section">
-                    <div class="wm-section-title">Force Field</div>`;
-
-                if (forces.tailwinds.length > 0) {
-                    html += `<div class="wm-force-group">
-                        <div class="wm-force-group-title tailwind"><span>▲</span> Tailwinds</div>`;
-                    for (const f of forces.tailwinds) {
-                        html += `<div class="wm-force-item">
-                            <span class="wm-force-name" title="${(f.description || '').replace(/"/g, '&quot;')}">${f.name}</span>
-                            <div class="wm-force-bar"><div class="wm-force-fill tailwind" style="width: ${f.strength * 100}%"></div></div>
-                            <span class="wm-force-value">${f.strength.toFixed(2)}</span>
-                        </div>`;
-                    }
-                    html += '</div>';
+            // If closing from world model, return to category view
+            if (state.currentLevel === 'worldmodel' && state.selectedCategory) {
+                // Set level first to prevent re-entrant call
+                state.currentLevel = 'category';
+                // Cleanup animations and re-render category view
+                if (state.cleanupAnimation) {
+                    state.cleanupAnimation();
+                    state.cleanupAnimation = null;
                 }
-
-                if (forces.headwinds.length > 0) {
-                    html += `<div class="wm-force-group">
-                        <div class="wm-force-group-title headwind"><span>▼</span> Headwinds</div>`;
-                    for (const f of forces.headwinds) {
-                        html += `<div class="wm-force-item">
-                            <span class="wm-force-name" title="${(f.description || '').replace(/"/g, '&quot;')}">${f.name}</span>
-                            <div class="wm-force-bar"><div class="wm-force-fill headwind" style="width: ${f.strength * 100}%"></div></div>
-                            <span class="wm-force-value">${f.strength.toFixed(2)}</span>
-                        </div>`;
-                    }
-                    html += '</div>';
-                }
-
-                if (forces.gravitational.length > 0) {
-                    html += `<div class="wm-force-group">
-                        <div class="wm-force-group-title gravitational"><span>◉</span> Gravitational</div>`;
-                    for (const f of forces.gravitational) {
-                        html += `<div class="wm-force-item">
-                            <span class="wm-force-name" title="${(f.description || '').replace(/"/g, '&quot;')}">${f.name}</span>
-                            <div class="wm-force-bar"><div class="wm-force-fill gravitational" style="width: ${f.strength * 100}%"></div></div>
-                            <span class="wm-force-value">${f.strength.toFixed(2)}</span>
-                        </div>`;
-                    }
-                    html += '</div>';
-                }
-
-                html += '</div>';
+                updateBreadcrumb();
+                renderEntities(state.selectedCategory);
             }
-
-            // Relationships
-            const rels = [...(data.relationships.outbound || []), ...(data.relationships.inbound || [])];
-            if (rels.length > 0) {
-                const grouped = {};
-                for (const rel of rels) {
-                    const type = rel.relationshipType;
-                    if (!grouped[type]) grouped[type] = [];
-                    grouped[type].push(rel);
-                }
-
-                html += `<div class="wm-panel-section">
-                    <div class="wm-section-title">Relationships (${rels.length})</div>`;
-
-                const typeOrder = ['COMPETES_WITH', 'DEPENDS_ON', 'COMPLEMENTS', 'ENABLES', 'FORKS_FROM', 'SUPERSEDES'];
-                for (const type of typeOrder) {
-                    if (!grouped[type]) continue;
-                    const items = grouped[type].sort((a, b) => b.strength - a.strength);
-                    const cls = relTypeClass(type);
-
-                    html += `<div class="wm-rel-group">
-                        <div class="wm-rel-type-header">
-                            <span class="wm-rel-type-dot ${cls}"></span>
-                            ${relTypeLabel(type)} (${items.length})
-                        </div>`;
-
-                    for (const rel of items) {
-                        const name = rel.relatedEntity ? rel.relatedEntity.name : '?';
-                        const isInternal = rel.relatedEntity && rel.relatedEntity.id;
-                        const relColor = getRelColor(type);
-
-                        html += `<div class="wm-rel-item">
-                            <span class="wm-rel-name">${isInternal ? `<a href="#" onclick="selectEntity('${rel.relatedEntity.id}'); return false;">${name}</a>` : name}</span>
-                            <div class="wm-rel-strength-bar"><div class="wm-rel-strength-fill" style="width: ${rel.strength * 100}%; background: ${relColor};"></div></div>
-                            <span class="wm-rel-strength">${rel.strength.toFixed(2)}</span>
-                        </div>`;
-                    }
-
-                    html += '</div>';
-                }
-
-                html += '</div>';
-            }
-
-            // Empty state
-            if (!data.positioning && rels.length === 0 && (!forces || forces.counts.total === 0)) {
-                html = `<div class="wm-panel-section">
-                    <div class="empty-state" style="padding: var(--space-xl) 0;">
-                        <p style="color: var(--text-tertiary);">No world model data</p>
-                        <p style="font-size: 12px; color: var(--text-muted);">Run /research-world-model to build ecosystem positioning</p>
-                    </div>
-                </div>`;
-            }
-
-            panelContent.innerHTML = html;
-            panel.classList.add('open');
         }
 
         // =====================================================
