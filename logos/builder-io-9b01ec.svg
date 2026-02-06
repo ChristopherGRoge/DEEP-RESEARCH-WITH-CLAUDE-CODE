@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:site" content="@builderio"/><meta name="twitter:creator" content="@builderio"/><meta property="fb:app_id" content="676395883130092"/><meta property="og:image" content="https://cdn.builder.io/api/v1/image/assets%2Fc5b47d20f6a943e485717e5895739988%2F0f577ade847144f6882d681d6eb24840?width=1200"/><meta property="og:image:alt" content="Builder.io visual builder"/><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><title>Builder.io: AI Frontend Engineer</title><meta name="description" content="Builder is an AI-Powered Visual Development Platform that helps teams generate, iterate, and optimize web and mobile experiences in seconds instead of sprints."/><meta property="og:title" content="Builder.io: AI Frontend Engineer"/><meta property="og:description" content="Builder is an AI-Powered Visual Development Platform that helps teams generate, iterate, and optimize web and mobile experiences in seconds instead of sprints."/><meta property="og:url" content="https://www.builder.io/favicon.svg"/><meta property="og:type" content="website"/><meta property="og:locale" content="en_US"/><meta property="og:site_name" content="Builder.io"/><link rel="canonical" href="https://www.builder.io/favicon.svg"/><meta name="googlebot" content="noindex,nofollow"/><meta name="robots" content="noindex"/><meta name="next-head-count" content="21"/><meta charSet="UTF-8"/><meta name="theme-color" content="#f8f8f8"/><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta http-equiv="X-UA-Compatible" content="ie=edge"/><link rel="alternate" type="application/rss+xml" title="RSS Feed for the Builder.io blog" href="https://www.builder.io/blog/feed.xml"/><link rel="alternate" type="application/rss+json" title="RSS Feed for the Builder.io blog" href="https://www.builder.io/blog/feed.json"/><link rel="alternate" type="application/atom+xml" title="RSS Feed for the Builder.io blog" href="https://www.builder.io/blog/feed.atom"/><link rel="icon" type="image/png" href="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2F470aa2bd45fb4ff5b77c91a394a957e6?width=240"/><link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/cfldfgibklhmjhnkfighkbafbkbfcmij"/><script>
+                /* Redirect to www.builder.io */
+                if (location.host === 'app.builder.io') {
+                  location.href = location.href.replace('//app.builder.io', '//www.builder.io');
+                } else if (location.host === 'builder.io') {
+                  location.href = location.href.replace('//builder.io', '//www.builder.io');
+                }
+                </script> <script type="text/javascript" src="https://cdn.cookielaw.org/consent/c1ac8074-fbe7-4bc7-b3ac-8daf0e65345f/OtAutoBlock.js"></script><script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" type="text/javascript" charSet="UTF-8" data-domain-script="c1ac8074-fbe7-4bc7-b3ac-8daf0e65345f"></script><script type="text/javascript">function OptanonWrapper() {}</script> <script>
+                  (function (w, d, s, l, i) {
+                    w[l] = w[l] || [];
+                    w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+                    var f = d.getElementsByTagName(s)[0],
+                      j = d.createElement(s),
+                      dl = l != 'dataLayer' ? '&l=' + l : '';
+                    j.async = true;
+                    j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                    f.parentNode.insertBefore(j, f);
+                  })(window, document, 'script', 'dataLayer', 'GTM-N3WSTXZ');
+                  </script><link rel="preload" href="/_next/static/css/45d81c2a6b8582a3.css" as="style"/><link rel="stylesheet" href="/_next/static/css/45d81c2a6b8582a3.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/_next/static/chunks/polyfills-78c92fac7aa8fdd8.js"></script><script src="/_next/static/chunks/webpack-e6862e97c0fe9b71.js" defer=""></script><script src="/_next/static/chunks/framework-51e90279bbf5a0ec.js" defer=""></script><script src="/_next/static/chunks/main-60ecb74e732b982a.js" defer=""></script><script src="/_next/static/chunks/pages/_app-996741ddf8b94c82.js" defer=""></script><script src="/_next/static/chunks/1602-80b03f068e2cd8d8.js" defer=""></script><script src="/_next/static/chunks/pages/%5B...page%5D-a3864661aa3cae0c.js" defer=""></script><script src="/_next/static/hEC-800JaHi_nNHUHv2Pq/_buildManifest.js" defer=""></script><script src="/_next/static/hEC-800JaHi_nNHUHv2Pq/_ssgManifest.js" defer=""></script></head><body><script>
+                if (location.pathname.startsWith('/blog/') || location.pathname.startsWith('/c/')) {
+                  const setDarkModeClass = () => {
+                    const userAgent = navigator ? navigator.userAgent.toLowerCase() : '';
+                    // Hide toggle and disable darkmode for firefox on android.
+                    // We have found that there are performance issues and do
+                    // not know the root cause yet.
+                    if (userAgent.includes('android') || userAgent.includes('iphone')) {
+                      return;
+                    }
+
+                    document.documentElement.classList.add('dark-mode')
+                  };
+                  if (document.cookie.includes('builder.darkMode=true')) {
+                    setDarkModeClass()
+                  } else if (!document.cookie.includes('builder.darkMode=')) {
+                    // If no cookie set, respect OS preference
+                    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                      setDarkModeClass()
+                    }
+                  }
+                }
+              </script><noscript>
+                <iframe
+                  src="https://www.googletagmanager.com/ns.html?id=GTM-N3WSTXZ"
+                  height="0"
+                  width="0"
+                  style="display:none;visibility:hidden"
+                ></iframe>
+              </noscript><div id="__next"><style data-emotion="css-global 1df2sac">html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;box-sizing:border-box;-webkit-text-size-adjust:100%;}*,*::before,*::after{box-sizing:inherit;}strong,b{font-weight:700;}body{margin:0;color:rgba(0, 0, 0, 0.87);font-family:"Poppins","Avenir","Helvetica","Arial",sans-serif;font-weight:400;font-size:1rem;line-height:1.5;background-color:#fff;}@media print{body{background-color:#fff;}}body::backdrop{background-color:#fff;}</style><div><div><div><div class="builder-component " data-name="error-page-section" data-source="Rendered by Builder.io"><div class="builder-content" builder-model="error-page-section"><div data-builder-component="error-page-section" class="builder-no-content"></div></div></div></div></div></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"builderPage":null},"__N_SSG":true},"page":"/[...page]","query":{"page":["favicon.svg"]},"buildId":"hEC-800JaHi_nNHUHv2Pq","isFallback":false,"isExperimentalCompile":false,"gsp":true,"scriptLoader":[]}</script><script>
+              (function () {
+                var zi = document.createElement('script');
+                zi.type = 'text/javascript';
+                zi.async = true;
+                zi.src = 'https://ws.zoominfo.com/pixel/YkQV5texcwM26aYtS31R';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(zi, s);
+              })();
+              </script><noscript><img src="https://ws.zoominfo.com/pixel/YkQV5texcwM26aYtS31R" width="1" height="1" style="display:none"/></noscript><script src="//cdn.jsdelivr.net/npm/@builder.io/persist-attribution@latest/dist/persist-attribution.min.js" async="" defer=""></script></body></html>

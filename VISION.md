@@ -1,5 +1,5 @@
 # Deep Research - Repeatable and Persistent
-We seek to develop a deep research process which utilizes Claude Code subagents who will write to a local PostgreSQL database so that we might form a foundation of research facts which may grow into a comprehensive resource
+We seek to develop a deep research process which utilizes Claude Code skills and subagents who write to a local SQLite database so that we might form a foundation of research facts which may grow into a comprehensive resource, visualized through the Grove front end
 
 1. Subagents record "Assertions" and "Entities"
 2. Human researcher validates Assertions, these default to "Claim" and progress to "Evidence" only when the huamn researcher validates the claim
