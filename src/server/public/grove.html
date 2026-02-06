@@ -192,12 +192,14 @@
         }
 
         .logo-text {
+            font-family: var(--font-display);
             font-weight: 700;
             font-size: 18px;
             letter-spacing: -0.02em;
         }
 
         .logo-text span {
+            font-family: var(--font-display);
             color: var(--accent-primary);
         }
 
@@ -1011,6 +1013,389 @@
         }
 
         /* =====================================================
+           WORLD MODEL VISUALIZATION
+           ===================================================== */
+
+        /* World Model button in entity detail panel */
+        .wm-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-md);
+            background: linear-gradient(135deg, rgba(133, 153, 0, 0.08), rgba(38, 139, 210, 0.08));
+            border: 1px solid var(--border-medium);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            width: 100%;
+            justify-content: center;
+        }
+
+        .wm-btn:hover {
+            background: linear-gradient(135deg, rgba(133, 153, 0, 0.15), rgba(38, 139, 210, 0.15));
+            border-color: var(--accent-primary);
+            transform: translateY(-1px);
+        }
+
+        .wm-btn:active {
+            transform: translateY(0);
+        }
+
+        .wm-btn .wm-btn-icon {
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        /* Canvas elements */
+        .wm-center-circle {
+            fill: var(--bg-surface);
+            stroke: var(--accent-primary);
+            stroke-width: 3;
+            filter: drop-shadow(0 2px 8px rgba(133, 153, 0, 0.15));
+        }
+
+        .wm-center-label {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 14px;
+            fill: var(--text-primary);
+        }
+
+        .wm-center-sublabel {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            fill: var(--text-muted);
+        }
+
+        .wm-ring-guide {
+            fill: none;
+            stroke: var(--border-subtle);
+            stroke-width: 1;
+            stroke-dasharray: 6, 4;
+            opacity: 0.5;
+        }
+
+        .wm-node {
+            cursor: pointer;
+        }
+
+        .wm-node:hover .wm-node-circle {
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+            stroke-width: 2.5;
+        }
+
+        .wm-node-circle {
+            fill: var(--bg-surface);
+            stroke-width: 1.5;
+            transition: filter 150ms ease, stroke-width 150ms ease;
+        }
+
+        .wm-node-label {
+            font-family: var(--font-display);
+            font-size: 10px;
+            fill: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .wm-node-type-badge {
+            font-family: var(--font-mono);
+            font-size: 8px;
+            pointer-events: none;
+        }
+
+        .wm-node-initial {
+            font-family: var(--font-display);
+            font-weight: 600;
+            fill: var(--text-tertiary);
+            pointer-events: none;
+        }
+
+        /* Relationship line styles */
+        .wm-link {
+            fill: none;
+            opacity: 0.65;
+            transition: opacity 150ms ease;
+        }
+
+        .wm-link:hover {
+            opacity: 1;
+        }
+
+        .wm-link-competes { stroke: #dc322f; stroke-dasharray: 6, 4; }
+        .wm-link-depends { stroke: #268bd2; }
+        .wm-link-complements { stroke: #859900; stroke-dasharray: 3, 3; }
+        .wm-link-enables { stroke: #2aa198; }
+        .wm-link-forks { stroke: #cb4b16; stroke-dasharray: 8, 3, 2, 3; }
+        .wm-link-supersedes { stroke: #6c71c4; }
+
+        /* Legend */
+        .wm-legend {
+            font-family: var(--font-display);
+        }
+
+        .wm-legend-bg {
+            fill: var(--bg-surface);
+            stroke: var(--border-subtle);
+            rx: 8;
+            opacity: 0.92;
+        }
+
+        .wm-legend-title {
+            font-size: 10px;
+            font-weight: 600;
+            fill: var(--text-primary);
+        }
+
+        .wm-legend-item text {
+            font-size: 9px;
+            fill: var(--text-secondary);
+        }
+
+        /* Positioning pills on canvas */
+        .wm-pos-pill-bg {
+            fill: var(--bg-elevated);
+            stroke: var(--border-subtle);
+        }
+
+        .wm-pos-pill-label {
+            font-family: var(--font-mono);
+            font-size: 8px;
+            fill: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .wm-pos-pill-value {
+            font-family: var(--font-display);
+            font-size: 10px;
+            font-weight: 600;
+            fill: var(--text-primary);
+        }
+
+        /* Force field indicators on canvas */
+        .wm-force-label {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            font-weight: 600;
+        }
+
+        /* ===== World Model Panel Content ===== */
+
+        .wm-panel-section {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .wm-panel-section:last-child {
+            border-bottom: none;
+        }
+
+        .wm-section-title {
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: var(--space-sm);
+        }
+
+        .wm-statement {
+            font-family: var(--font-display);
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            padding: var(--space-sm) var(--space-md);
+            border-left: 3px solid var(--accent-primary);
+            background: var(--accent-glow);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+
+        .wm-dimensions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-sm);
+        }
+
+        .wm-dim {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: var(--space-sm);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+        }
+
+        .wm-dim-label {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .wm-dim-value {
+            font-family: var(--font-display);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-transform: capitalize;
+        }
+
+        .wm-force-group {
+            margin-bottom: var(--space-md);
+        }
+
+        .wm-force-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .wm-force-group-title {
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .wm-force-group-title.tailwind { color: #859900; }
+        .wm-force-group-title.headwind { color: #dc322f; }
+        .wm-force-group-title.gravitational { color: #268bd2; }
+
+        .wm-force-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: 6px;
+        }
+
+        .wm-force-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .wm-force-name {
+            font-size: 11px;
+            color: var(--text-secondary);
+            flex: 1;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .wm-force-bar {
+            width: 80px;
+            height: 6px;
+            background: var(--bg-elevated);
+            border-radius: 3px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .wm-force-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width var(--transition-normal);
+        }
+
+        .wm-force-fill.tailwind { background: #859900; }
+        .wm-force-fill.headwind { background: #dc322f; }
+        .wm-force-fill.gravitational { background: #268bd2; }
+
+        .wm-force-value {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            width: 28px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .wm-rel-group {
+            margin-bottom: var(--space-md);
+        }
+
+        .wm-rel-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .wm-rel-type-header {
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .wm-rel-type-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .wm-rel-type-dot.competes { background: #dc322f; }
+        .wm-rel-type-dot.depends { background: #268bd2; }
+        .wm-rel-type-dot.complements { background: #859900; }
+        .wm-rel-type-dot.enables { background: #2aa198; }
+        .wm-rel-type-dot.forks { background: #cb4b16; }
+        .wm-rel-type-dot.supersedes { background: #6c71c4; }
+
+        .wm-rel-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: 4px 0;
+            font-size: 12px;
+        }
+
+        .wm-rel-name {
+            flex: 1;
+            color: var(--text-secondary);
+        }
+
+        .wm-rel-name a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .wm-rel-name a:hover {
+            color: var(--accent-primary);
+        }
+
+        .wm-rel-strength-bar {
+            width: 40px;
+            height: 4px;
+            background: var(--bg-elevated);
+            border-radius: 2px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .wm-rel-strength-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        .wm-rel-strength {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            width: 28px;
+            text-align: right;
+        }
+
+        /* =====================================================
            RESPONSIVE
            ===================================================== */
 
@@ -1156,7 +1541,9 @@
             treeData: null,
             currentLevel: 'project', // 'project', 'category', 'entity'
             selectedCategory: null,
-            selectedEntity: null
+            selectedEntity: null,
+            worldModelData: null,
+            worldModelEntityId: null
         };
 
         const dom = {
@@ -1261,6 +1648,73 @@
             }
         }
 
+        async function loadWorldModel(entityId) {
+            showLoading();
+
+            try {
+                const res = await fetch(`/api/entities/${entityId}/world-model`);
+                const data = await res.json();
+
+                if (data.success) {
+                    // Handle potential double-wrapping from tools layer
+                    let wmData = data.data;
+                    if (wmData && wmData.success && wmData.data) {
+                        wmData = wmData.data;
+                    }
+
+                    state.worldModelData = wmData;
+                    state.worldModelEntityId = entityId;
+                    state.currentLevel = 'worldmodel';
+                    updateBreadcrumb();
+                    renderWorldModel(wmData);
+                    showWorldModelPanel(wmData);
+                }
+            } catch (err) {
+                console.error('Failed to load world model:', err);
+                showError('Failed to load world model');
+            }
+        }
+
+        // =====================================================
+        // WORLD MODEL HELPERS
+        // =====================================================
+
+        function getRelColor(type) {
+            const colors = {
+                'COMPETES_WITH': '#dc322f',
+                'DEPENDS_ON': '#268bd2',
+                'COMPLEMENTS': '#859900',
+                'ENABLES': '#2aa198',
+                'FORKS_FROM': '#cb4b16',
+                'SUPERSEDES': '#6c71c4'
+            };
+            return colors[type] || '#657b83';
+        }
+
+        function relTypeClass(type) {
+            const map = {
+                'COMPETES_WITH': 'competes',
+                'DEPENDS_ON': 'depends',
+                'COMPLEMENTS': 'complements',
+                'ENABLES': 'enables',
+                'FORKS_FROM': 'forks',
+                'SUPERSEDES': 'supersedes'
+            };
+            return map[type] || 'depends';
+        }
+
+        function relTypeLabel(type) {
+            const map = {
+                'COMPETES_WITH': 'Competes With',
+                'DEPENDS_ON': 'Depends On',
+                'COMPLEMENTS': 'Complements',
+                'ENABLES': 'Enables',
+                'FORKS_FROM': 'Forks From',
+                'SUPERSEDES': 'Supersedes'
+            };
+            return map[type] || type;
+        }
+
         // =====================================================
         // UI UPDATES
         // =====================================================
@@ -1350,6 +1804,20 @@
                 `;
             }
 
+            if (state.currentLevel === 'worldmodel' && state.worldModelData) {
+                html += `
+                    <span class="breadcrumb-separator">›</span>
+                    <button class="breadcrumb-item active">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 2a10 10 0 0 1 0 20 10 10 0 0 1 0-20"/>
+                            <path d="M2 12h4M18 12h4"/>
+                        </svg>
+                        <span>World Model: ${state.worldModelData.entity.name}</span>
+                    </button>
+                `;
+            }
+
             dom.breadcrumb.innerHTML = html;
         }
 
@@ -1391,6 +1859,16 @@
         function selectEntity(entityId, entityData) {
             state.currentLevel = 'entity';
             loadEntityDetails(entityId);
+        }
+
+        function navigateToWorldModel(entityId) {
+            // Cleanup any running animations
+            if (state.cleanupAnimation) {
+                state.cleanupAnimation();
+                state.cleanupAnimation = null;
+            }
+
+            loadWorldModel(entityId);
         }
 
         // =====================================================
@@ -1659,7 +2137,7 @@
                     return pos ? 0.3 + (pos.ringIndex / ringCount) * 0.5 : 0.3;
                 });
 
-            // Center node (category)
+            // Center node (category) - shows icon + category name
             const center = g.append('g')
                 .attr('class', 'node node-category')
                 .attr('data-category', category.key);
@@ -1668,24 +2146,23 @@
                 .attr('r', 45)
                 .style('fill-opacity', 0.15);
 
-            const catName = formatCategoryName(category.key);
-            const words = catName.split(' ');
+            // Material Icon for category
+            center.append('text')
+                .attr('class', 'category-icon')
+                .attr('text-anchor', 'middle')
+                .attr('dy', -8)
+                .style('font-family', 'Material Symbols Outlined')
+                .style('font-size', '22px')
+                .style('fill', 'var(--text-secondary)')
+                .text(category.materialIcon || 'category');
 
+            // Category name below icon
             center.append('text')
                 .attr('text-anchor', 'middle')
-                .attr('dy', words.length > 1 ? -6 : 0)
+                .attr('dy', 14)
                 .style('font-weight', '600')
-                .style('font-size', '11px')
-                .text(words[0]);
-
-            if (words.length > 1) {
-                center.append('text')
-                    .attr('text-anchor', 'middle')
-                    .attr('dy', 10)
-                    .style('font-size', '10px')
-                    .style('fill', 'var(--text-secondary)')
-                    .text(words.slice(1).join(' '));
-            }
+                .style('font-size', '10px')
+                .text(formatCategoryName(category.key));
 
             // Create defs for clip paths
             const defs = svg.append('defs');
@@ -1876,6 +2353,401 @@
         }
 
         // =====================================================
+        // VISUALIZATION - WORLD MODEL (Orbital Relationship Map)
+        // =====================================================
+
+        function renderWorldModel(data) {
+            if (!data || !data.entity) return;
+
+            dom.canvas.innerHTML = '';
+
+            const width = dom.canvas.clientWidth;
+            const height = dom.canvas.clientHeight;
+            const centerX = width / 2;
+            const centerY = height / 2;
+
+            const svg = d3.select('#grove-canvas')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            // Defs for arrowheads and gradients
+            const defs = svg.append('defs');
+
+            // Arrow markers for directed relationships
+            const arrowTypes = [
+                { type: 'depends', color: '#268bd2' },
+                { type: 'enables', color: '#2aa198' },
+                { type: 'forks', color: '#cb4b16' },
+                { type: 'supersedes', color: '#6c71c4' }
+            ];
+
+            arrowTypes.forEach(rt => {
+                defs.append('marker')
+                    .attr('id', `arrow-${rt.type}`)
+                    .attr('viewBox', '0 0 10 6')
+                    .attr('refX', 10)
+                    .attr('refY', 3)
+                    .attr('markerWidth', 8)
+                    .attr('markerHeight', 5)
+                    .attr('orient', 'auto')
+                    .append('path')
+                    .attr('d', 'M0,0 L10,3 L0,6 Z')
+                    .attr('fill', rt.color)
+                    .attr('opacity', 0.7);
+            });
+
+            // Center glow gradient
+            const glow = defs.append('radialGradient')
+                .attr('id', 'center-glow');
+            glow.append('stop').attr('offset', '0%').attr('stop-color', 'rgba(133, 153, 0, 0.1)');
+            glow.append('stop').attr('offset', '100%').attr('stop-color', 'rgba(133, 153, 0, 0)');
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${centerX}, ${centerY})`);
+
+            // All relationships combined
+            const allRels = [
+                ...(data.relationships.outbound || []).map(r => ({...r, _dir: 'out'})),
+                ...(data.relationships.inbound || []).map(r => ({...r, _dir: 'in'}))
+            ];
+
+            if (allRels.length === 0) {
+                // No relationships - show empty state on canvas
+                g.append('text')
+                    .attr('text-anchor', 'middle')
+                    .attr('dy', -20)
+                    .style('font-family', 'var(--font-display)')
+                    .style('font-size', '16px')
+                    .style('font-weight', '600')
+                    .style('fill', 'var(--text-primary)')
+                    .text(data.entity.name);
+
+                g.append('text')
+                    .attr('text-anchor', 'middle')
+                    .attr('dy', 10)
+                    .style('font-family', 'var(--font-display)')
+                    .style('font-size', '13px')
+                    .style('fill', 'var(--text-muted)')
+                    .text('No relationships mapped yet');
+
+                return;
+            }
+
+            // Ring configuration - two concentric rings
+            const innerRing = Math.min(width, height) * 0.20;
+            const outerRing = Math.min(width, height) * 0.36;
+            const centerRadius = 50;
+
+            // Split into strong/weak for inner/outer ring placement
+            const strongRels = allRels.filter(r => r.strength >= 0.7);
+            const weakRels = allRels.filter(r => r.strength < 0.7);
+
+            function assignPositions(rels, ringRadius) {
+                const angleStep = (2 * Math.PI) / Math.max(rels.length, 1);
+                rels.forEach((rel, i) => {
+                    const angle = i * angleStep - Math.PI / 2;
+                    rel._x = ringRadius * Math.cos(angle);
+                    rel._y = ringRadius * Math.sin(angle);
+                    rel._angle = angle;
+                    rel._ringRadius = ringRadius;
+                    rel._nodeRadius = 16 + rel.strength * 14;
+                });
+            }
+
+            assignPositions(strongRels, innerRing);
+            assignPositions(weakRels, outerRing);
+
+            const positionedRels = [...strongRels, ...weakRels];
+
+            // Background glow behind center
+            g.append('circle')
+                .attr('r', innerRing * 0.7)
+                .attr('fill', 'url(#center-glow)');
+
+            // Ring guides
+            g.append('circle').attr('class', 'wm-ring-guide').attr('r', innerRing);
+            g.append('circle').attr('class', 'wm-ring-guide').attr('r', outerRing);
+
+            // Ring labels
+            g.append('text')
+                .attr('x', innerRing + 5).attr('y', 4)
+                .style('font-size', '8px').style('fill', 'var(--text-muted)').style('font-style', 'italic')
+                .text('Strong');
+            g.append('text')
+                .attr('x', outerRing + 5).attr('y', 4)
+                .style('font-size', '8px').style('fill', 'var(--text-muted)').style('font-style', 'italic')
+                .text('Moderate');
+
+            // Draw relationship links
+            const links = g.selectAll('.wm-link')
+                .data(positionedRels)
+                .enter()
+                .append('line')
+                .attr('class', d => `wm-link wm-link-${relTypeClass(d.relationshipType)}`)
+                .attr('x1', 0)
+                .attr('y1', 0)
+                .attr('x2', d => d._x)
+                .attr('y2', d => d._y)
+                .attr('stroke-width', d => 1 + d.strength * 2.5)
+                .attr('marker-end', d => {
+                    const cls = relTypeClass(d.relationshipType);
+                    if (['depends', 'enables', 'forks', 'supersedes'].includes(cls)) {
+                        return `url(#arrow-${cls})`;
+                    }
+                    return null;
+                });
+
+            // Related entity nodes
+            const nodes = g.selectAll('.wm-node')
+                .data(positionedRels)
+                .enter()
+                .append('g')
+                .attr('class', 'wm-node')
+                .attr('transform', d => `translate(${d._x}, ${d._y})`)
+                .on('click', (event, d) => {
+                    if (d.relatedEntity && d.relatedEntity.id) {
+                        selectEntity(d.relatedEntity.id);
+                    }
+                })
+                .on('mouseenter', (event, d) => showTooltip(event, d, 'worldmodel'))
+                .on('mouseleave', hideTooltip);
+
+            // Node circles colored by relationship type
+            nodes.append('circle')
+                .attr('class', 'wm-node-circle')
+                .attr('r', d => d._nodeRadius)
+                .style('stroke', d => getRelColor(d.relationshipType));
+
+            // Node initials
+            nodes.append('text')
+                .attr('class', 'wm-node-initial')
+                .attr('text-anchor', 'middle')
+                .attr('dy', '0.35em')
+                .style('font-size', d => (d._nodeRadius * 0.65) + 'px')
+                .text(d => {
+                    const name = d.relatedEntity ? d.relatedEntity.name : '?';
+                    return name.charAt(0).toUpperCase();
+                });
+
+            // Node name labels (positioned radially)
+            nodes.append('text')
+                .attr('class', 'wm-node-label')
+                .attr('text-anchor', d => {
+                    return Math.cos(d._angle) > 0.2 ? 'start' : Math.cos(d._angle) < -0.2 ? 'end' : 'middle';
+                })
+                .attr('dx', d => {
+                    const r = d._nodeRadius;
+                    return Math.cos(d._angle) > 0.2 ? r + 6 : Math.cos(d._angle) < -0.2 ? -r - 6 : 0;
+                })
+                .attr('dy', d => {
+                    const r = d._nodeRadius;
+                    if (Math.abs(Math.cos(d._angle)) <= 0.2) {
+                        return Math.sin(d._angle) > 0 ? r + 14 : -r - 6;
+                    }
+                    return 4;
+                })
+                .text(d => {
+                    const name = d.relatedEntity ? d.relatedEntity.name : '?';
+                    return name.length > 20 ? name.substring(0, 17) + '...' : name;
+                });
+
+            // Relationship type badge below name
+            nodes.append('text')
+                .attr('class', 'wm-node-type-badge')
+                .attr('text-anchor', d => {
+                    return Math.cos(d._angle) > 0.2 ? 'start' : Math.cos(d._angle) < -0.2 ? 'end' : 'middle';
+                })
+                .attr('dx', d => {
+                    const r = d._nodeRadius;
+                    return Math.cos(d._angle) > 0.2 ? r + 6 : Math.cos(d._angle) < -0.2 ? -r - 6 : 0;
+                })
+                .attr('dy', d => {
+                    const r = d._nodeRadius;
+                    if (Math.abs(Math.cos(d._angle)) <= 0.2) {
+                        return Math.sin(d._angle) > 0 ? r + 25 : -r - 17;
+                    }
+                    return 16;
+                })
+                .style('fill', d => getRelColor(d.relationshipType))
+                .text(d => relTypeLabel(d.relationshipType));
+
+            // Central entity node
+            const centerNode = g.append('g').attr('class', 'wm-center');
+
+            centerNode.append('circle')
+                .attr('class', 'wm-center-circle')
+                .attr('r', centerRadius);
+
+            centerNode.append('text')
+                .attr('class', 'wm-center-label')
+                .attr('text-anchor', 'middle')
+                .attr('dy', -4)
+                .text(data.entity.name.length > 16 ? data.entity.name.substring(0, 13) + '...' : data.entity.name);
+
+            centerNode.append('text')
+                .attr('class', 'wm-center-sublabel')
+                .attr('text-anchor', 'middle')
+                .attr('dy', 12)
+                .text(data.entity.entityType || 'entity');
+
+            // Positioning pills at top
+            if (data.positioning) {
+                const pos = data.positioning;
+                const pills = [];
+                if (pos.primaryStage) pills.push({ label: 'Stage', value: pos.primaryStage });
+                if (pos.solutionScope) pills.push({ label: 'Scope', value: pos.solutionScope });
+                if (pos.maturityStage) pills.push({ label: 'Maturity', value: pos.maturityStage });
+                if (pos.businessModel) pills.push({ label: 'Model', value: pos.businessModel });
+
+                if (pills.length > 0) {
+                    const pillWidth = 100;
+                    const pillHeight = 32;
+                    const pillGap = 8;
+                    const totalWidth = pills.length * pillWidth + (pills.length - 1) * pillGap;
+                    const startX = -totalWidth / 2;
+                    const pillY = -(Math.min(width, height) * 0.43);
+
+                    const pillGroup = g.append('g')
+                        .attr('transform', `translate(0, ${pillY})`);
+
+                    pills.forEach((pill, i) => {
+                        const pg = pillGroup.append('g')
+                            .attr('transform', `translate(${startX + i * (pillWidth + pillGap)}, 0)`);
+
+                        pg.append('rect')
+                            .attr('class', 'wm-pos-pill-bg')
+                            .attr('width', pillWidth)
+                            .attr('height', pillHeight)
+                            .attr('rx', 6);
+
+                        pg.append('text')
+                            .attr('class', 'wm-pos-pill-label')
+                            .attr('x', pillWidth / 2)
+                            .attr('y', 12)
+                            .attr('text-anchor', 'middle')
+                            .text(pill.label);
+
+                        pg.append('text')
+                            .attr('class', 'wm-pos-pill-value')
+                            .attr('x', pillWidth / 2)
+                            .attr('y', 26)
+                            .attr('text-anchor', 'middle')
+                            .text(pill.value);
+                    });
+                }
+            }
+
+            // Force field indicators
+            const forces = data.forces;
+            if (forces) {
+                const indicatorBaseY = Math.min(width, height) * 0.43;
+
+                if (forces.tailwinds && forces.tailwinds.length > 0) {
+                    g.append('text')
+                        .attr('class', 'wm-force-label')
+                        .attr('x', -width * 0.36)
+                        .attr('y', indicatorBaseY)
+                        .style('fill', '#859900')
+                        .text(`▲ ${forces.tailwinds.length} Tailwinds`);
+                }
+
+                if (forces.headwinds && forces.headwinds.length > 0) {
+                    g.append('text')
+                        .attr('class', 'wm-force-label')
+                        .attr('x', width * 0.26)
+                        .attr('y', indicatorBaseY)
+                        .attr('text-anchor', 'end')
+                        .style('fill', '#dc322f')
+                        .text(`▼ ${forces.headwinds.length} Headwinds`);
+                }
+
+                // Gravitational ring around center
+                if (forces.gravitational && forces.gravitational.length > 0) {
+                    const avgStr = forces.gravitational.reduce((s, f) => s + f.strength, 0) / forces.gravitational.length;
+                    g.append('circle')
+                        .attr('r', centerRadius + 12)
+                        .style('fill', 'none')
+                        .style('stroke', 'rgba(38, 139, 210, 0.2)')
+                        .style('stroke-width', 2 + avgStr * 4)
+                        .style('stroke-dasharray', '4, 4');
+                }
+            }
+
+            // Legend (bottom-left)
+            const legendRelTypes = [...new Set(positionedRels.map(r => r.relationshipType))];
+            if (legendRelTypes.length > 0) {
+                const legendX = -width / 2 + 20;
+                const legendY = height / 2 - 24 - legendRelTypes.length * 18;
+
+                const legend = g.append('g')
+                    .attr('class', 'wm-legend')
+                    .attr('transform', `translate(${legendX}, ${legendY})`);
+
+                legend.append('rect')
+                    .attr('class', 'wm-legend-bg')
+                    .attr('x', -8)
+                    .attr('y', -16)
+                    .attr('width', 150)
+                    .attr('height', legendRelTypes.length * 18 + 26);
+
+                legend.append('text')
+                    .attr('class', 'wm-legend-title')
+                    .attr('y', -2)
+                    .text('Relationships');
+
+                legendRelTypes.forEach((type, i) => {
+                    const item = legend.append('g')
+                        .attr('class', 'wm-legend-item')
+                        .attr('transform', `translate(0, ${14 + i * 18})`);
+
+                    item.append('line')
+                        .attr('x1', 0).attr('x2', 20)
+                        .attr('y1', 0).attr('y2', 0)
+                        .attr('class', `wm-link wm-link-${relTypeClass(type)}`)
+                        .attr('stroke-width', 2);
+
+                    item.append('text')
+                        .attr('x', 26)
+                        .attr('dy', '0.35em')
+                        .text(relTypeLabel(type));
+                });
+            }
+
+            // Collision resolution simulation
+            positionedRels.forEach(rel => {
+                rel.x = rel._x;
+                rel.y = rel._y;
+                rel.targetX = rel._x;
+                rel.targetY = rel._y;
+                rel.targetRadius = rel._ringRadius;
+                rel.nodeRadius = rel._nodeRadius;
+            });
+
+            const simulation = d3.forceSimulation(positionedRels)
+                .force('collision', d3.forceCollide()
+                    .radius(d => d.nodeRadius + 6)
+                    .strength(0.8)
+                )
+                .force('radial', d3.forceRadial(d => d.targetRadius, 0, 0).strength(0.3))
+                .force('x', d3.forceX(d => d.targetX).strength(0.1))
+                .force('y', d3.forceY(d => d.targetY).strength(0.1))
+                .alphaDecay(0.025)
+                .velocityDecay(0.35)
+                .on('tick', () => {
+                    nodes.attr('transform', d => `translate(${d.x}, ${d.y})`);
+                    links.attr('x2', d => d.x).attr('y2', d => d.y);
+                });
+
+            const stopTimeout = setTimeout(() => simulation.stop(), 3000);
+
+            state.cleanupAnimation = () => {
+                simulation.stop();
+                clearTimeout(stopTimeout);
+            };
+        }
+
+        // =====================================================
         // DETAIL PANEL
         // =====================================================
 
@@ -1906,26 +2778,49 @@
                 urlEl.style.display = 'none';
             }
 
-            // Show full research link
+            // Show full research link (restore if hidden by world model view)
             const fullResearchContainer = document.getElementById('panel-full-research');
             const fullResearchLink = document.getElementById('full-research-link');
             fullResearchLink.href = `/entity/${entity.id}`;
             fullResearchContainer.style.display = 'block';
+
+            // Ensure panel stats are accessible for other functions
+            const panelStatsEl = document.getElementById('panel-stats');
+            panelStatsEl.style.display = '';
 
             // Stats
             const assertions = entity.assertions || [];
             const validated = assertions.filter(a => a.status === 'EVIDENCE').length;
             const pending = assertions.filter(a => a.status === 'CLAIM').length;
 
-            document.getElementById('stat-assertions').textContent = assertions.length;
-            document.getElementById('stat-validated').textContent = validated;
-            document.getElementById('stat-pending').textContent = pending;
+            // Restore original stat labels (may have been changed by world model view)
+            const statsEl = document.getElementById('panel-stats');
+            statsEl.innerHTML = `
+                <div class="panel-stat">
+                    <div class="value" id="stat-assertions">${assertions.length}</div>
+                    <div class="label">Assertions</div>
+                </div>
+                <div class="panel-stat accent">
+                    <div class="value" id="stat-validated">${validated}</div>
+                    <div class="label">Validated</div>
+                </div>
+                <div class="panel-stat">
+                    <div class="value" id="stat-pending">${pending}</div>
+                    <div class="label">Pending</div>
+                </div>
+            `;
 
             // Assertions grouped by category
             const panelContent = document.getElementById('panel-content');
 
             if (assertions.length === 0) {
                 panelContent.innerHTML = `
+                    <div style="padding: var(--space-sm) var(--space-lg) 0;">
+                        <button class="wm-btn" onclick="navigateToWorldModel('${entity.id}')">
+                            <span class="material-symbols-outlined wm-btn-icon">hub</span>
+                            View World Model
+                        </button>
+                    </div>
                     <div class="empty-state" style="padding: var(--space-xl) 0;">
                         <p style="color: var(--text-tertiary);">No assertions yet</p>
                         <p style="font-size: 12px; color: var(--text-muted);">Run /research-entity to gather data</p>
@@ -1940,7 +2835,17 @@
                     grouped[cat].push(assertion);
                 }
 
-                let html = '<div class="assertions-section">';
+                let html = '';
+
+                // World Model button
+                html += `<div style="padding: var(--space-sm) var(--space-lg) var(--space-md);">
+                    <button class="wm-btn" onclick="navigateToWorldModel('${entity.id}')">
+                        <span class="material-symbols-outlined wm-btn-icon">hub</span>
+                        View World Model
+                    </button>
+                </div>`;
+
+                html += '<div class="assertions-section">';
                 html += `<div class="section-header">
                     <span class="section-title">Assertions</span>
                     <span class="section-count">${assertions.length}</span>
@@ -2000,6 +2905,185 @@
             state.selectedEntity = null;
         }
 
+        function showWorldModelPanel(data) {
+            const panel = dom.detailPanel;
+            const entity = data.entity;
+
+            // Set entity header
+            const entityNameEl = document.getElementById('entity-name');
+            entityNameEl.innerHTML = `<span style="color: inherit;">${entity.name}</span> <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">World Model</span>`;
+
+            // Logo placeholder
+            const logoEl = document.getElementById('entity-logo');
+            logoEl.innerHTML = `<span class="placeholder" style="background: linear-gradient(135deg, var(--accent-primary), #268bd2); color: white;">${entity.name.charAt(0)}</span>`;
+
+            // URL
+            const urlEl = document.getElementById('entity-url');
+            if (entity.url) {
+                urlEl.href = entity.url;
+                urlEl.querySelector('span').textContent = new URL(entity.url).hostname;
+                urlEl.style.display = 'flex';
+            } else {
+                urlEl.style.display = 'none';
+            }
+
+            // Hide full research link in world model view
+            document.getElementById('panel-full-research').style.display = 'none';
+
+            // Stats - show world model stats
+            document.getElementById('stat-assertions').textContent = data.stats.relationshipCount;
+            document.getElementById('stat-validated').textContent = data.stats.forceCount;
+            document.getElementById('stat-pending').textContent = data.stats.hasPositioning ? '6/6' : '—';
+
+            // Relabel stats
+            const statsEl = document.getElementById('panel-stats');
+            statsEl.innerHTML = `
+                <div class="panel-stat">
+                    <div class="value">${data.stats.relationshipCount}</div>
+                    <div class="label">Relationships</div>
+                </div>
+                <div class="panel-stat accent">
+                    <div class="value">${data.stats.forceCount}</div>
+                    <div class="label">Forces</div>
+                </div>
+                <div class="panel-stat">
+                    <div class="value">${data.stats.hasPositioning ? '✓' : '—'}</div>
+                    <div class="label">Positioned</div>
+                </div>
+            `;
+
+            // Panel content
+            const panelContent = document.getElementById('panel-content');
+            let html = '';
+
+            // Positioning statement
+            if (data.positioning && data.positioning.positioningStatement) {
+                html += `<div class="wm-panel-section">
+                    <div class="wm-statement">${data.positioning.positioningStatement}</div>
+                </div>`;
+            }
+
+            // Positioning dimensions
+            if (data.positioning) {
+                const pos = data.positioning;
+                html += `<div class="wm-panel-section">
+                    <div class="wm-section-title">Position</div>
+                    <div class="wm-dimensions">
+                        ${pos.primaryStage ? `<div class="wm-dim"><span class="wm-dim-label">Stage</span><span class="wm-dim-value">${pos.primaryStage}</span></div>` : ''}
+                        ${pos.solutionScope ? `<div class="wm-dim"><span class="wm-dim-label">Scope</span><span class="wm-dim-value">${pos.solutionScope}</span></div>` : ''}
+                        ${pos.maturityStage ? `<div class="wm-dim"><span class="wm-dim-label">Maturity</span><span class="wm-dim-value">${pos.maturityStage}</span></div>` : ''}
+                        ${pos.adoptionCurve ? `<div class="wm-dim"><span class="wm-dim-label">Adoption</span><span class="wm-dim-value">${pos.adoptionCurve.replace(/_/g, ' ')}</span></div>` : ''}
+                        ${pos.businessModel ? `<div class="wm-dim"><span class="wm-dim-label">Model</span><span class="wm-dim-value">${pos.businessModel}</span></div>` : ''}
+                        ${pos.primaryEcosystem ? `<div class="wm-dim"><span class="wm-dim-label">Ecosystem</span><span class="wm-dim-value">${pos.primaryEcosystem}</span></div>` : ''}
+                    </div>
+                </div>`;
+            }
+
+            // Force field
+            const forces = data.forces;
+            if (forces && forces.counts.total > 0) {
+                html += `<div class="wm-panel-section">
+                    <div class="wm-section-title">Force Field</div>`;
+
+                if (forces.tailwinds.length > 0) {
+                    html += `<div class="wm-force-group">
+                        <div class="wm-force-group-title tailwind"><span>▲</span> Tailwinds</div>`;
+                    for (const f of forces.tailwinds) {
+                        html += `<div class="wm-force-item">
+                            <span class="wm-force-name" title="${(f.description || '').replace(/"/g, '&quot;')}">${f.name}</span>
+                            <div class="wm-force-bar"><div class="wm-force-fill tailwind" style="width: ${f.strength * 100}%"></div></div>
+                            <span class="wm-force-value">${f.strength.toFixed(2)}</span>
+                        </div>`;
+                    }
+                    html += '</div>';
+                }
+
+                if (forces.headwinds.length > 0) {
+                    html += `<div class="wm-force-group">
+                        <div class="wm-force-group-title headwind"><span>▼</span> Headwinds</div>`;
+                    for (const f of forces.headwinds) {
+                        html += `<div class="wm-force-item">
+                            <span class="wm-force-name" title="${(f.description || '').replace(/"/g, '&quot;')}">${f.name}</span>
+                            <div class="wm-force-bar"><div class="wm-force-fill headwind" style="width: ${f.strength * 100}%"></div></div>
+                            <span class="wm-force-value">${f.strength.toFixed(2)}</span>
+                        </div>`;
+                    }
+                    html += '</div>';
+                }
+
+                if (forces.gravitational.length > 0) {
+                    html += `<div class="wm-force-group">
+                        <div class="wm-force-group-title gravitational"><span>◉</span> Gravitational</div>`;
+                    for (const f of forces.gravitational) {
+                        html += `<div class="wm-force-item">
+                            <span class="wm-force-name" title="${(f.description || '').replace(/"/g, '&quot;')}">${f.name}</span>
+                            <div class="wm-force-bar"><div class="wm-force-fill gravitational" style="width: ${f.strength * 100}%"></div></div>
+                            <span class="wm-force-value">${f.strength.toFixed(2)}</span>
+                        </div>`;
+                    }
+                    html += '</div>';
+                }
+
+                html += '</div>';
+            }
+
+            // Relationships
+            const rels = [...(data.relationships.outbound || []), ...(data.relationships.inbound || [])];
+            if (rels.length > 0) {
+                const grouped = {};
+                for (const rel of rels) {
+                    const type = rel.relationshipType;
+                    if (!grouped[type]) grouped[type] = [];
+                    grouped[type].push(rel);
+                }
+
+                html += `<div class="wm-panel-section">
+                    <div class="wm-section-title">Relationships (${rels.length})</div>`;
+
+                const typeOrder = ['COMPETES_WITH', 'DEPENDS_ON', 'COMPLEMENTS', 'ENABLES', 'FORKS_FROM', 'SUPERSEDES'];
+                for (const type of typeOrder) {
+                    if (!grouped[type]) continue;
+                    const items = grouped[type].sort((a, b) => b.strength - a.strength);
+                    const cls = relTypeClass(type);
+
+                    html += `<div class="wm-rel-group">
+                        <div class="wm-rel-type-header">
+                            <span class="wm-rel-type-dot ${cls}"></span>
+                            ${relTypeLabel(type)} (${items.length})
+                        </div>`;
+
+                    for (const rel of items) {
+                        const name = rel.relatedEntity ? rel.relatedEntity.name : '?';
+                        const isInternal = rel.relatedEntity && rel.relatedEntity.id;
+                        const relColor = getRelColor(type);
+
+                        html += `<div class="wm-rel-item">
+                            <span class="wm-rel-name">${isInternal ? `<a href="#" onclick="selectEntity('${rel.relatedEntity.id}'); return false;">${name}</a>` : name}</span>
+                            <div class="wm-rel-strength-bar"><div class="wm-rel-strength-fill" style="width: ${rel.strength * 100}%; background: ${relColor};"></div></div>
+                            <span class="wm-rel-strength">${rel.strength.toFixed(2)}</span>
+                        </div>`;
+                    }
+
+                    html += '</div>';
+                }
+
+                html += '</div>';
+            }
+
+            // Empty state
+            if (!data.positioning && rels.length === 0 && (!forces || forces.counts.total === 0)) {
+                html = `<div class="wm-panel-section">
+                    <div class="empty-state" style="padding: var(--space-xl) 0;">
+                        <p style="color: var(--text-tertiary);">No world model data</p>
+                        <p style="font-size: 12px; color: var(--text-muted);">Run /research-world-model to build ecosystem positioning</p>
+                    </div>
+                </div>`;
+            }
+
+            panelContent.innerHTML = html;
+            panel.classList.add('open');
+        }
+
         // =====================================================
         // TOOLTIP
         // =====================================================
@@ -2045,6 +3129,18 @@
                     </div>
                     ` : ''}
                 `;
+            } else if (type === 'worldmodel') {
+                const name = data.relatedEntity ? data.relatedEntity.name : '?';
+                const strengthPct = Math.round(data.strength * 100);
+                tooltip.innerHTML = `
+                    <div class="tooltip-title">${name}</div>
+                    <div class="tooltip-meta" style="color: ${getRelColor(data.relationshipType)}">${relTypeLabel(data.relationshipType)}</div>
+                    <div class="tooltip-stats">
+                        <span class="tooltip-stat"><span class="value">${strengthPct}%</span> strength</span>
+                    </div>
+                    ${data.context ? `<div class="tooltip-meta" style="margin-top: 4px; font-size: 11px; max-width: 250px; white-space: normal; line-height: 1.4;">${data.context}</div>` : ''}
+                    ${data.relatedEntity && data.relatedEntity.id ? '<div class="tooltip-stats"><span class="tooltip-stat">Click to view</span></div>' : ''}
+                `;
             }
 
             const rect = event.target.getBoundingClientRect();
@@ -2081,6 +3177,8 @@
                     renderCategories();
                 } else if (state.currentLevel === 'category' && state.selectedCategory) {
                     renderEntities(state.selectedCategory);
+                } else if (state.currentLevel === 'worldmodel' && state.worldModelData) {
+                    renderWorldModel(state.worldModelData);
                 }
             }, 250);
         });
