@@ -1432,20 +1432,17 @@
             const categories = state.treeData.children;
             const angleStep = (2 * Math.PI) / categories.length;
 
-            // Initialize positions for each category (for drift animation)
+            // Initialize positions for each category (evenly distributed on orbit)
             categories.forEach((d, i) => {
                 const angle = i * angleStep - Math.PI / 2;
-                d.baseX = baseRadius * Math.cos(angle);
-                d.baseY = baseRadius * Math.sin(angle);
-                d.x = d.baseX;
-                d.y = d.baseY;
-                // Small random offset for initial drift variation
-                d.driftPhase = Math.random() * Math.PI * 2;
-                d.driftSpeed = 0.3 + Math.random() * 0.2;
-                d.driftAmplitude = 3 + Math.random() * 4;
+                d.targetX = baseRadius * Math.cos(angle);
+                d.targetY = baseRadius * Math.sin(angle);
+                d.x = d.targetX;
+                d.y = d.targetY;
+                d.nodeRadius = getCategoryNodeRadius(d);
             });
 
-            // Draw links (will be updated by animation)
+            // Draw links (will be updated by simulation)
             const links = g.selectAll('.link')
                 .data(categories)
                 .enter()
@@ -1492,7 +1489,7 @@
 
             // Category circles - sized by weighted blend of buzz + count
             nodes.append('circle')
-                .attr('r', d => getCategoryNodeRadius(d))
+                .attr('r', d => d.nodeRadius)
                 .style('fill-opacity', 0.15);
 
             // Material Icon (centered in circle, above count)
@@ -1515,45 +1512,37 @@
             // Category labels (below circle)
             nodes.append('text')
                 .attr('text-anchor', 'middle')
-                .attr('dy', d => getCategoryNodeRadius(d) + 18)
+                .attr('dy', d => d.nodeRadius + 18)
                 .style('font-size', '11px')
                 .style('fill', 'var(--text-secondary)')
                 .text(d => formatCategoryName(d.key));
 
-            // Gentle drift animation
-            let animationFrame;
-            let startTime = Date.now();
-
-            function animateDrift() {
-                const elapsed = (Date.now() - startTime) / 1000;
-
-                categories.forEach(d => {
-                    // Gentle sinusoidal drift around base position
-                    const driftX = Math.sin(elapsed * d.driftSpeed + d.driftPhase) * d.driftAmplitude;
-                    const driftY = Math.cos(elapsed * d.driftSpeed * 0.7 + d.driftPhase + 1) * d.driftAmplitude;
-                    d.x = d.baseX + driftX;
-                    d.y = d.baseY + driftY;
+            // Collision resolution simulation
+            // Nodes start at their target positions, bounce away if overlapping, then settle
+            const simulation = d3.forceSimulation(categories)
+                .force('collision', d3.forceCollide()
+                    .radius(d => d.nodeRadius + 8) // Add padding between nodes
+                    .strength(0.8)
+                )
+                .force('radial', d3.forceRadial(baseRadius, 0, 0).strength(0.3))
+                .force('x', d3.forceX(d => d.targetX).strength(0.1))
+                .force('y', d3.forceY(d => d.targetY).strength(0.1))
+                .alphaDecay(0.02) // Slower decay for smoother settling
+                .velocityDecay(0.3)
+                .on('tick', () => {
+                    nodes.attr('transform', d => `translate(${d.x}, ${d.y})`);
+                    links.attr('x2', d => d.x).attr('y2', d => d.y);
                 });
 
-                // Update node positions
-                nodes.attr('transform', d => `translate(${d.x}, ${d.y})`);
-
-                // Update link endpoints
-                links
-                    .attr('x2', d => d.x)
-                    .attr('y2', d => d.y);
-
-                animationFrame = requestAnimationFrame(animateDrift);
-            }
-
-            // Start drift animation
-            animateDrift();
+            // Stop simulation after 3 seconds (should be settled by then)
+            const stopTimeout = setTimeout(() => {
+                simulation.stop();
+            }, 3000);
 
             // Store cleanup function for when view changes
             state.cleanupAnimation = () => {
-                if (animationFrame) {
-                    cancelAnimationFrame(animationFrame);
-                }
+                simulation.stop();
+                clearTimeout(stopTimeout);
             };
         }
 
@@ -1654,8 +1643,8 @@
                 });
             });
 
-            // Draw links from center to each entity
-            g.selectAll('.link')
+            // Draw links from center to each entity (will be updated by simulation)
+            const entityLinks = g.selectAll('.link')
                 .data(entities)
                 .enter()
                 .append('line')
@@ -1842,62 +1831,47 @@
                 }
             });
 
-            // Gentle drift animation for entities
-            // Each entity drifts slightly along its ring circumference
-            let animationFrame;
-            let startTime = Date.now();
-
-            // Initialize drift parameters for each entity
+            // Initialize entity positions for collision simulation
             entities.forEach(entity => {
                 const pos = entityPositions.get(entity.id);
                 if (pos) {
-                    entity.baseAngle = pos.angle;
-                    entity.driftPhase = Math.random() * Math.PI * 2;
-                    entity.driftSpeed = 0.15 + Math.random() * 0.1;
-                    entity.driftAmplitude = 0.02 + Math.random() * 0.02; // Small angular drift (radians)
-                    entity.radialDrift = 1 + Math.random() * 2; // Small radial wobble
+                    entity.x = pos.x;
+                    entity.y = pos.y;
+                    entity.targetX = pos.x;
+                    entity.targetY = pos.y;
+                    entity.targetRadius = pos.radius;
+                    entity.nodeRadius = getEntityBubbleSize(entity.buzzScore, entity.assertionCount);
                 }
             });
 
-            function animateEntityDrift() {
-                const elapsed = (Date.now() - startTime) / 1000;
-
-                entities.forEach(entity => {
-                    const basePos = entityPositions.get(entity.id);
-                    if (!basePos) return;
-
-                    // Angular drift along the ring
-                    const angleDrift = Math.sin(elapsed * entity.driftSpeed + entity.driftPhase) * entity.driftAmplitude;
-                    const newAngle = entity.baseAngle + angleDrift;
-
-                    // Small radial wobble
-                    const radialDrift = Math.cos(elapsed * entity.driftSpeed * 0.7 + entity.driftPhase) * entity.radialDrift;
-                    const newRadius = basePos.radius + radialDrift;
-
-                    entity.currentX = newRadius * Math.cos(newAngle);
-                    entity.currentY = newRadius * Math.sin(newAngle);
+            // Collision resolution simulation
+            // Entities start at their ring positions, bounce if overlapping, then settle
+            const simulation = d3.forceSimulation(entities)
+                .force('collision', d3.forceCollide()
+                    .radius(d => d.nodeRadius + 4) // Add small padding
+                    .strength(0.7)
+                )
+                // Keep entities near their assigned ring radius
+                .force('radial', d3.forceRadial(d => d.targetRadius, 0, 0).strength(0.15))
+                // Gently pull entities toward their target positions
+                .force('x', d3.forceX(d => d.targetX).strength(0.05))
+                .force('y', d3.forceY(d => d.targetY).strength(0.05))
+                .alphaDecay(0.025)
+                .velocityDecay(0.35)
+                .on('tick', () => {
+                    nodes.attr('transform', d => `translate(${d.x}, ${d.y})`);
+                    entityLinks.attr('x2', d => d.x).attr('y2', d => d.y);
                 });
 
-                // Update node positions
-                nodes.attr('transform', d => {
-                    if (d.currentX !== undefined) {
-                        return `translate(${d.currentX}, ${d.currentY})`;
-                    }
-                    const pos = entityPositions.get(d.id);
-                    return pos ? `translate(${pos.x}, ${pos.y})` : 'translate(0, 0)';
-                });
-
-                animationFrame = requestAnimationFrame(animateEntityDrift);
-            }
-
-            // Start drift animation
-            animateEntityDrift();
+            // Stop simulation after 2.5 seconds (should be settled by then)
+            const stopTimeout = setTimeout(() => {
+                simulation.stop();
+            }, 2500);
 
             // Store cleanup function
             state.cleanupAnimation = () => {
-                if (animationFrame) {
-                    cancelAnimationFrame(animationFrame);
-                }
+                simulation.stop();
+                clearTimeout(stopTimeout);
             };
         }
 

@@ -1,0 +1,21 @@
+{
+  "watch": ["src/server"],
+  "ext": "ts,tsx",
+  "ignore": [
+    "src/server/public/**",
+    "generated/**",
+    "dist/**",
+    "screenshots/**",
+    "evidence/**",
+    "backups/**",
+    "research.db",
+    "research.db-journal",
+    "research.db-wal",
+    "*.log"
+  ],
+  "delay": 1500,
+  "signal": "SIGTERM",
+  "execMap": {
+    "ts": "ts-node --transpile-only"
+  }
+}
