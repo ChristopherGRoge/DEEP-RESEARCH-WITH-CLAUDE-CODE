@@ -320,6 +320,39 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get researchDomain(): Prisma.ResearchDomainDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    /**
+     * `prisma.entityRelationship`: Exposes CRUD operations for the **EntityRelationship** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more EntityRelationships
+      * const entityRelationships = await prisma.entityRelationship.findMany()
+      * ```
+      */
+    get entityRelationship(): Prisma.EntityRelationshipDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.entityPositioning`: Exposes CRUD operations for the **EntityPositioning** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more EntityPositionings
+      * const entityPositionings = await prisma.entityPositioning.findMany()
+      * ```
+      */
+    get entityPositioning(): Prisma.EntityPositioningDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.entityForce`: Exposes CRUD operations for the **EntityForce** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more EntityForces
+      * const entityForces = await prisma.entityForce.findMany()
+      * ```
+      */
+    get entityForce(): Prisma.EntityForceDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
 }
 export declare function getPrismaClientClass(): PrismaClientConstructor;
 //# sourceMappingURL=class.d.ts.map

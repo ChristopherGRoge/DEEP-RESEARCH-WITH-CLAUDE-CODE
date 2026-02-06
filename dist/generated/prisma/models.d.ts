@@ -17,5 +17,8 @@ export type * from './models/DiscoveryCrawl';
 export type * from './models/DiscoveryTrend';
 export type * from './models/DiscoveryCategory';
 export type * from './models/ResearchDomain';
+export type * from './models/EntityRelationship';
+export type * from './models/EntityPositioning';
+export type * from './models/EntityForce';
 export type * from './commonInputTypes';
 //# sourceMappingURL=models.d.ts.map

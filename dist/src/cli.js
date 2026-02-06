@@ -819,6 +819,23 @@ async function executeCommand(command, args) {
             case 'category:migrate':
                 result = await tools.migrateFromLegacyCategories({ projectId: args.projectId, dryRun: args.dryRun });
                 break;
+            // Category icon commands
+            case 'category:suggestIcon':
+                result = await tools.suggestCategoryIcon(args.categoryId || args.name);
+                break;
+            case 'category:setIcon':
+                result = await tools.setCategoryIcon(args.categoryId, args.icon);
+                break;
+            case 'category:autoAssignIcons':
+                result = await tools.autoAssignCategoryIcons();
+                break;
+            // Category weight commands
+            case 'category:weight':
+                result = await tools.calculateCategoryWeight(args.categoryId);
+                break;
+            case 'category:weights':
+                result = await tools.calculateAllCategoryWeights(args.projectId);
+                break;
             // GitHub metrics commands
             case 'github:fetch':
                 result = await tools.fetchEntityGitHubMetrics({
@@ -870,6 +887,48 @@ async function executeCommand(command, args) {
                 result = await tools.clearBuzzOverride({
                     entityId: args.entityId,
                 });
+                break;
+            // ============================================
+            // World Model commands
+            // ============================================
+            case 'worldmodel:get':
+                result = await tools.getWorldModel({ entityId: args.entityId });
+                break;
+            case 'worldmodel:summary':
+                result = await tools.getWorldModelSummary({ entityId: args.entityId });
+                break;
+            // Relationship commands
+            case 'relationship:create':
+                result = await tools.createRelationship(args);
+                break;
+            case 'relationship:list':
+                result = await tools.listRelationships({ entityId: args.entityId });
+                break;
+            case 'relationship:graph':
+                result = await tools.getRelationshipGraph({ projectId: args.projectId });
+                break;
+            case 'relationship:delete':
+                result = await tools.deleteRelationship({ relationshipId: args.relationshipId });
+                break;
+            // Positioning commands
+            case 'positioning:set':
+                result = await tools.setPositioning(args);
+                break;
+            case 'positioning:get':
+                result = await tools.getPositioning({ entityId: args.entityId });
+                break;
+            case 'positioning:compare':
+                result = await tools.comparePositioning({ entityIds: args.entityIds });
+                break;
+            // Force commands
+            case 'force:create':
+                result = await tools.createForce(args);
+                break;
+            case 'force:list':
+                result = await tools.listForces({ entityId: args.entityId });
+                break;
+            case 'force:delete':
+                result = await tools.deleteForce({ forceId: args.forceId });
                 break;
             default:
                 return { success: false, error: `Unknown command: ${command}` };
@@ -956,7 +1015,13 @@ async function main() {
                 'category:create', 'category:get', 'category:getByName', 'category:list', 'category:update', 'category:delete',
                 'category:entities', 'category:summary', 'category:updateStats', 'category:updateAllStats',
                 'category:prompt', 'category:context', 'category:apply', 'category:explain', 'category:unclassified', 'category:preview',
+                'category:suggestIcon', 'category:setIcon', 'category:autoAssignIcons', 'category:weight', 'category:weights',
                 'category:seed', 'category:migrate',
+                // World Model - Entity ecosystem positioning
+                'worldmodel:get', 'worldmodel:summary',
+                'relationship:create', 'relationship:list', 'relationship:graph', 'relationship:delete',
+                'positioning:set', 'positioning:get', 'positioning:compare',
+                'force:create', 'force:list', 'force:delete',
             ],
         }));
         process.exit(1);

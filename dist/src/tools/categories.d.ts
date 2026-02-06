@@ -52,6 +52,7 @@ export declare function createCategory(input: CreateCategoryInput): Promise<{
     displayName: string;
     exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
     antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
+    materialIcon: string | null;
 }>;
 /**
  * Get a category by ID
@@ -72,6 +73,7 @@ export declare function getCategory(categoryId: string): Promise<({
     displayName: string;
     exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
     antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
+    materialIcon: string | null;
 }) | null>;
 /**
  * Get a category by name
@@ -92,6 +94,7 @@ export declare function getCategoryByName(name: string): Promise<({
     displayName: string;
     exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
     antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
+    materialIcon: string | null;
 }) | null>;
 /**
  * List all categories
@@ -112,6 +115,7 @@ export declare function listCategories(): Promise<({
     displayName: string;
     exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
     antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
+    materialIcon: string | null;
 })[]>;
 /**
  * Update a category
@@ -128,6 +132,7 @@ export declare function updateCategory(categoryId: string, input: UpdateCategory
     displayName: string;
     exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
     antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
+    materialIcon: string | null;
 }>;
 /**
  * Delete a category
@@ -145,6 +150,7 @@ export declare function deleteCategory(categoryId: string): Promise<{
     displayName: string;
     exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
     antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
+    materialIcon: string | null;
 }>;
 /**
  * Get category with all entities
@@ -212,6 +218,7 @@ export declare function getCategoryWithEntities(categoryId: string, options?: {
     displayName: string;
     exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
     antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
+    materialIcon: string | null;
 }) | null>;
 /**
  * Get summary statistics for a category
@@ -233,6 +240,7 @@ export declare function getCategorySummary(categoryId: string): Promise<{
         displayName: string;
         exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
         antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
+        materialIcon: string | null;
     };
     statistics: {
         totalEntities: number;
@@ -259,6 +267,7 @@ export declare function updateCategoryStats(categoryId: string): Promise<{
     displayName: string;
     exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
     antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
+    materialIcon: string | null;
 }>;
 /**
  * Update stats for all categories
@@ -417,5 +426,69 @@ export declare function migrateFromLegacyCategories(options?: {
         status: string;
     }[];
     dryRun: boolean;
+}>;
+/**
+ * Suggest a Material Icon for a category based on its name and description
+ */
+export declare function suggestCategoryIcon(categoryIdOrName: string): Promise<{
+    icon: string;
+    alternatives: string[];
+    confidence: 'exact' | 'inferred';
+}>;
+/**
+ * Set the Material Icon for a category
+ */
+export declare function setCategoryIcon(categoryId: string, iconName: string): Promise<{
+    id: string;
+    name: string;
+    description: string;
+    createdAt: Date;
+    updatedAt: Date;
+    entityCount: number;
+    inclusionCriteria: string | null;
+    exclusionCriteria: string | null;
+    displayName: string;
+    exemplarEntities: import("@prisma/client/runtime/client").JsonValue | null;
+    antiExemplars: import("@prisma/client/runtime/client").JsonValue | null;
+    materialIcon: string | null;
+}>;
+/**
+ * Auto-assign icons to all categories that don't have one
+ */
+export declare function autoAssignCategoryIcons(): Promise<{
+    updated: number;
+    categories: {
+        categoryId: string;
+        name: string;
+        icon: string;
+        confidence: "exact" | "inferred";
+    }[];
+}>;
+export interface CategoryWeight {
+    categoryId: string;
+    categoryName: string;
+    displayName: string;
+    materialIcon: string | null;
+    entityCount: number;
+    totalBuzz: number;
+    avgBuzz: number;
+    weight: number;
+    normalizedWeight: number;
+}
+/**
+ * Calculate weight for a category based on entity count and cumulative buzz
+ *
+ * Formula: weight = (avgBuzz * entityCount * 0.5) + (entityCount * 0.5)
+ * This blends "quality" (avg buzz) with "quantity" (entity count)
+ */
+export declare function calculateCategoryWeight(categoryId: string): Promise<CategoryWeight | null>;
+/**
+ * Calculate weights for all categories in a project
+ * Returns weights normalized to 0-1 range for visualization sizing
+ */
+export declare function calculateAllCategoryWeights(projectId?: string): Promise<{
+    categories: CategoryWeight[];
+    maxWeight: number;
+    minWeight: number;
 }>;
 //# sourceMappingURL=categories.d.ts.map

@@ -1000,6 +1000,52 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
         });
         break;
 
+      // ============================================
+      // World Model commands
+      // ============================================
+      case 'worldmodel:get':
+        result = await tools.getWorldModel({ entityId: args.entityId as string });
+        break;
+      case 'worldmodel:summary':
+        result = await tools.getWorldModelSummary({ entityId: args.entityId as string });
+        break;
+
+      // Relationship commands
+      case 'relationship:create':
+        result = await tools.createRelationship(args as unknown as tools.CreateRelationshipInput);
+        break;
+      case 'relationship:list':
+        result = await tools.listRelationships({ entityId: args.entityId as string });
+        break;
+      case 'relationship:graph':
+        result = await tools.getRelationshipGraph({ projectId: args.projectId as string });
+        break;
+      case 'relationship:delete':
+        result = await tools.deleteRelationship({ relationshipId: args.relationshipId as string });
+        break;
+
+      // Positioning commands
+      case 'positioning:set':
+        result = await tools.setPositioning(args as unknown as tools.SetPositioningInput);
+        break;
+      case 'positioning:get':
+        result = await tools.getPositioning({ entityId: args.entityId as string });
+        break;
+      case 'positioning:compare':
+        result = await tools.comparePositioning({ entityIds: args.entityIds as string[] });
+        break;
+
+      // Force commands
+      case 'force:create':
+        result = await tools.createForce(args as unknown as tools.CreateForceInput);
+        break;
+      case 'force:list':
+        result = await tools.listForces({ entityId: args.entityId as string });
+        break;
+      case 'force:delete':
+        result = await tools.deleteForce({ forceId: args.forceId as string });
+        break;
+
       default:
         return { success: false, error: `Unknown command: ${command}` };
     }
@@ -1089,6 +1135,11 @@ async function main() {
         'category:prompt', 'category:context', 'category:apply', 'category:explain', 'category:unclassified', 'category:preview',
         'category:suggestIcon', 'category:setIcon', 'category:autoAssignIcons', 'category:weight', 'category:weights',
         'category:seed', 'category:migrate',
+        // World Model - Entity ecosystem positioning
+        'worldmodel:get', 'worldmodel:summary',
+        'relationship:create', 'relationship:list', 'relationship:graph', 'relationship:delete',
+        'positioning:set', 'positioning:get', 'positioning:compare',
+        'force:create', 'force:list', 'force:delete',
       ],
     }));
     process.exit(1);

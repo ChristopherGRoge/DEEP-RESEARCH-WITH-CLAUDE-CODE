@@ -147,6 +147,12 @@ model Entity {
   domainId    String?
   domain      ResearchDomain? @relation(fields: [domainId], references: [id])
 
+  // World Model - Entity ecosystem positioning
+  relationshipsFrom  EntityRelationship[]  @relation("RelationshipsFrom")
+  relationshipsTo    EntityRelationship[]  @relation("RelationshipsTo")
+  positioning        EntityPositioning?
+  forces             EntityForce[]
+
   // Logo/branding fields
   logoUrl        String?   // Direct URL to logo file (SVG preferred)
   logoPath       String?   // Local path to downloaded logo file
@@ -764,4 +770,104 @@ model ResearchDomain {
   entities            Entity[]
 
   @@map("research_domains")
+}
+
+// ============================================
+// WORLD MODEL - Entity Ecosystem Positioning
+// ============================================
+
+/// Entity-to-entity relationships (competitive, complementary, dependency, etc.)
+/// Supports both internal entities (FK) and external entities (name string)
+model EntityRelationship {
+  id                  String   @id @default(cuid())
+
+  // Source entity (always in our DB)
+  sourceEntityId      String
+  sourceEntity        Entity   @relation("RelationshipsFrom", fields: [sourceEntityId], references: [id], onDelete: Cascade)
+
+  // Target entity (in our DB or external)
+  targetEntityId      String?
+  targetEntity        Entity?  @relation("RelationshipsTo", fields: [targetEntityId], references: [id], onDelete: Cascade)
+  targetExternalName  String?   // For entities not in our DB
+  targetExternalUrl   String?
+
+  // Relationship classification
+  relationshipType    String    // COMPETES_WITH | COMPLEMENTS | DEPENDS_ON | ENABLES | SUPERSEDES | FORKS_FROM
+  strength            Float     @default(0.5)  // 0.0-1.0
+  direction           String    @default("SYMMETRIC")  // SYMMETRIC | ASYMMETRIC
+  context             String?   // Why this relationship exists
+
+  // Evidence (following existing protocol)
+  evidenceDescription    String?
+  evidenceScreenshotPath String?
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([sourceEntityId, targetEntityId, relationshipType])
+  @@index([sourceEntityId])
+  @@index([targetEntityId])
+  @@index([relationshipType])
+  @@map("entity_relationships")
+}
+
+/// Structural market positioning for an entity (one record per entity)
+model EntityPositioning {
+  id                    String   @id @default(cuid())
+
+  entityId              String   @unique
+  entity                Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  // SDLC Position (where in the development lifecycle)
+  sdlcStages            Json?    // [{stage: "code", coverage: "PRIMARY"}, {stage: "test", coverage: "SECONDARY"}]
+  primaryStage          String?  // The dominant stage
+
+  // Market Position
+  solutionScope         String?  // point_solution | platform | suite | framework
+  maturityStage         String?  // emerging | growth | mature | declining
+  adoptionCurve         String?  // innovator | early_adopter | early_majority | late_majority | laggard
+  businessModel         String?  // open_source | freemium | enterprise | consumption | hybrid
+  primaryEcosystem      String?  // "VS Code" | "JetBrains" | "AWS" | "GitHub" | "cloud-native" | etc.
+
+  // Positioning Statement (one-sentence synthesis)
+  positioningStatement  String?
+
+  // Evidence
+  evidenceChain         Json?    // [{screenshotPath, description, capturedAt}]
+  evidenceDescription   String?
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  assessedAt            DateTime?
+  assessedBy            String?
+
+  @@index([maturityStage])
+  @@index([solutionScope])
+  @@map("entity_positioning")
+}
+
+/// Market forces acting on an entity's trajectory
+model EntityForce {
+  id                    String   @id @default(cuid())
+
+  entityId              String
+  entity                Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  forceType             String   // TAILWIND | HEADWIND | GRAVITATIONAL
+  name                  String   // Short label: "AI-native dev demand"
+  description           String?  // Detailed explanation
+  strength              Float    @default(0.5)  // 0.0-1.0
+  timeHorizon           String?  // immediate | near_term | long_term
+
+  // Evidence
+  evidenceDescription    String?
+  evidenceScreenshotPath String?
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([entityId, name])
+  @@index([entityId])
+  @@index([forceType])
+  @@map("entity_forces")
 }

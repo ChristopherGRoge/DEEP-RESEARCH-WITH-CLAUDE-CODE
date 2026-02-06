@@ -42,6 +42,7 @@ __exportStar(require("./github"), exports);
 __exportStar(require("./buzz"), exports);
 __exportStar(require("./cite-verify"), exports);
 __exportStar(require("./validation"), exports);
+__exportStar(require("./worldmodel"), exports);
 // Re-export Prisma client for direct access if needed
 var client_1 = require("../db/client");
 Object.defineProperty(exports, "prisma", { enumerable: true, get: function () { return client_1.prisma; } });

@@ -1288,6 +1288,37 @@ api.get('/search', async (c) => {
 });
 
 // ============================================
+// World Model - Entity Ecosystem Positioning
+// ============================================
+
+api.get('/entities/:id/world-model', async (c) => {
+  try {
+    const entityId = c.req.param('id');
+    const worldModel = await tools.getWorldModel({ entityId });
+
+    if (!worldModel) {
+      return c.json({ success: false, error: 'Entity not found' }, 404);
+    }
+
+    return c.json({ success: true, data: worldModel });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Failed to get world model';
+    return c.json({ success: false, error: message }, 500);
+  }
+});
+
+api.get('/projects/:id/relationship-graph', async (c) => {
+  try {
+    const projectId = c.req.param('id');
+    const graph = await tools.getRelationshipGraph({ projectId });
+    return c.json({ success: true, data: graph });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Failed to get relationship graph';
+    return c.json({ success: false, error: message }, 500);
+  }
+});
+
+// ============================================
 // Error handling
 // ============================================
 

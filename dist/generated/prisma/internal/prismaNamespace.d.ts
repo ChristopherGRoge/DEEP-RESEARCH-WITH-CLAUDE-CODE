@@ -250,6 +250,9 @@ export declare const ModelName: {
     readonly DiscoveryTrend: "DiscoveryTrend";
     readonly DiscoveryCategory: "DiscoveryCategory";
     readonly ResearchDomain: "ResearchDomain";
+    readonly EntityRelationship: "EntityRelationship";
+    readonly EntityPositioning: "EntityPositioning";
+    readonly EntityForce: "EntityForce";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export interface TypeMapCb<GlobalOmitOptions = {}> extends runtime.Types.Utils.Fn<{
@@ -262,7 +265,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "researchProject" | "entity" | "assertion" | "reasoning" | "source" | "assertionSource" | "researchLog" | "validationResult" | "verifiedCitation" | "screenshot" | "extraction" | "researchSession" | "researchTask" | "discoverySource" | "rawDiscovery" | "discoveryCrawl" | "discoveryTrend" | "discoveryCategory" | "researchDomain";
+        modelProps: "researchProject" | "entity" | "assertion" | "reasoning" | "source" | "assertionSource" | "researchLog" | "validationResult" | "verifiedCitation" | "screenshot" | "extraction" | "researchSession" | "researchTask" | "discoverySource" | "rawDiscovery" | "discoveryCrawl" | "discoveryTrend" | "discoveryCategory" | "researchDomain" | "entityRelationship" | "entityPositioning" | "entityForce";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -1672,6 +1675,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        EntityRelationship: {
+            payload: Prisma.$EntityRelationshipPayload<ExtArgs>;
+            fields: Prisma.EntityRelationshipFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.EntityRelationshipFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityRelationshipPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.EntityRelationshipFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityRelationshipPayload>;
+                };
+                findFirst: {
+                    args: Prisma.EntityRelationshipFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityRelationshipPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.EntityRelationshipFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityRelationshipPayload>;
+                };
+                findMany: {
+                    args: Prisma.EntityRelationshipFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityRelationshipPayload>[];
+                };
+                create: {
+                    args: Prisma.EntityRelationshipCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityRelationshipPayload>;
+                };
+                createMany: {
+                    args: Prisma.EntityRelationshipCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.EntityRelationshipCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityRelationshipPayload>[];
+                };
+                delete: {
+                    args: Prisma.EntityRelationshipDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityRelationshipPayload>;
+                };
+                update: {
+                    args: Prisma.EntityRelationshipUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityRelationshipPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.EntityRelationshipDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.EntityRelationshipUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.EntityRelationshipUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityRelationshipPayload>[];
+                };
+                upsert: {
+                    args: Prisma.EntityRelationshipUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityRelationshipPayload>;
+                };
+                aggregate: {
+                    args: Prisma.EntityRelationshipAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateEntityRelationship>;
+                };
+                groupBy: {
+                    args: Prisma.EntityRelationshipGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.EntityRelationshipGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.EntityRelationshipCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.EntityRelationshipCountAggregateOutputType> | number;
+                };
+            };
+        };
+        EntityPositioning: {
+            payload: Prisma.$EntityPositioningPayload<ExtArgs>;
+            fields: Prisma.EntityPositioningFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.EntityPositioningFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityPositioningPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.EntityPositioningFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityPositioningPayload>;
+                };
+                findFirst: {
+                    args: Prisma.EntityPositioningFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityPositioningPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.EntityPositioningFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityPositioningPayload>;
+                };
+                findMany: {
+                    args: Prisma.EntityPositioningFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityPositioningPayload>[];
+                };
+                create: {
+                    args: Prisma.EntityPositioningCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityPositioningPayload>;
+                };
+                createMany: {
+                    args: Prisma.EntityPositioningCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.EntityPositioningCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityPositioningPayload>[];
+                };
+                delete: {
+                    args: Prisma.EntityPositioningDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityPositioningPayload>;
+                };
+                update: {
+                    args: Prisma.EntityPositioningUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityPositioningPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.EntityPositioningDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.EntityPositioningUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.EntityPositioningUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityPositioningPayload>[];
+                };
+                upsert: {
+                    args: Prisma.EntityPositioningUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityPositioningPayload>;
+                };
+                aggregate: {
+                    args: Prisma.EntityPositioningAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateEntityPositioning>;
+                };
+                groupBy: {
+                    args: Prisma.EntityPositioningGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.EntityPositioningGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.EntityPositioningCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.EntityPositioningCountAggregateOutputType> | number;
+                };
+            };
+        };
+        EntityForce: {
+            payload: Prisma.$EntityForcePayload<ExtArgs>;
+            fields: Prisma.EntityForceFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.EntityForceFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityForcePayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.EntityForceFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityForcePayload>;
+                };
+                findFirst: {
+                    args: Prisma.EntityForceFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityForcePayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.EntityForceFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityForcePayload>;
+                };
+                findMany: {
+                    args: Prisma.EntityForceFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityForcePayload>[];
+                };
+                create: {
+                    args: Prisma.EntityForceCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityForcePayload>;
+                };
+                createMany: {
+                    args: Prisma.EntityForceCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.EntityForceCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityForcePayload>[];
+                };
+                delete: {
+                    args: Prisma.EntityForceDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityForcePayload>;
+                };
+                update: {
+                    args: Prisma.EntityForceUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityForcePayload>;
+                };
+                deleteMany: {
+                    args: Prisma.EntityForceDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.EntityForceUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.EntityForceUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityForcePayload>[];
+                };
+                upsert: {
+                    args: Prisma.EntityForceUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$EntityForcePayload>;
+                };
+                aggregate: {
+                    args: Prisma.EntityForceAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateEntityForce>;
+                };
+                groupBy: {
+                    args: Prisma.EntityForceGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.EntityForceGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.EntityForceCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.EntityForceCountAggregateOutputType> | number;
+                };
+            };
+        };
     };
 } & {
     other: {
@@ -2024,6 +2249,7 @@ export declare const DiscoveryCategoryScalarFieldEnum: {
     readonly exclusionCriteria: "exclusionCriteria";
     readonly exemplarEntities: "exemplarEntities";
     readonly antiExemplars: "antiExemplars";
+    readonly materialIcon: "materialIcon";
     readonly entityCount: "entityCount";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
@@ -2047,6 +2273,55 @@ export declare const ResearchDomainScalarFieldEnum: {
     readonly createdBy: "createdBy";
 };
 export type ResearchDomainScalarFieldEnum = (typeof ResearchDomainScalarFieldEnum)[keyof typeof ResearchDomainScalarFieldEnum];
+export declare const EntityRelationshipScalarFieldEnum: {
+    readonly id: "id";
+    readonly sourceEntityId: "sourceEntityId";
+    readonly targetEntityId: "targetEntityId";
+    readonly targetExternalName: "targetExternalName";
+    readonly targetExternalUrl: "targetExternalUrl";
+    readonly relationshipType: "relationshipType";
+    readonly strength: "strength";
+    readonly direction: "direction";
+    readonly context: "context";
+    readonly evidenceDescription: "evidenceDescription";
+    readonly evidenceScreenshotPath: "evidenceScreenshotPath";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type EntityRelationshipScalarFieldEnum = (typeof EntityRelationshipScalarFieldEnum)[keyof typeof EntityRelationshipScalarFieldEnum];
+export declare const EntityPositioningScalarFieldEnum: {
+    readonly id: "id";
+    readonly entityId: "entityId";
+    readonly sdlcStages: "sdlcStages";
+    readonly primaryStage: "primaryStage";
+    readonly solutionScope: "solutionScope";
+    readonly maturityStage: "maturityStage";
+    readonly adoptionCurve: "adoptionCurve";
+    readonly businessModel: "businessModel";
+    readonly primaryEcosystem: "primaryEcosystem";
+    readonly positioningStatement: "positioningStatement";
+    readonly evidenceChain: "evidenceChain";
+    readonly evidenceDescription: "evidenceDescription";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly assessedAt: "assessedAt";
+    readonly assessedBy: "assessedBy";
+};
+export type EntityPositioningScalarFieldEnum = (typeof EntityPositioningScalarFieldEnum)[keyof typeof EntityPositioningScalarFieldEnum];
+export declare const EntityForceScalarFieldEnum: {
+    readonly id: "id";
+    readonly entityId: "entityId";
+    readonly forceType: "forceType";
+    readonly name: "name";
+    readonly description: "description";
+    readonly strength: "strength";
+    readonly timeHorizon: "timeHorizon";
+    readonly evidenceDescription: "evidenceDescription";
+    readonly evidenceScreenshotPath: "evidenceScreenshotPath";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type EntityForceScalarFieldEnum = (typeof EntityForceScalarFieldEnum)[keyof typeof EntityForceScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";
@@ -2273,6 +2548,9 @@ export type GlobalOmitConfig = {
     discoveryTrend?: Prisma.DiscoveryTrendOmit;
     discoveryCategory?: Prisma.DiscoveryCategoryOmit;
     researchDomain?: Prisma.ResearchDomainOmit;
+    entityRelationship?: Prisma.EntityRelationshipOmit;
+    entityPositioning?: Prisma.EntityPositioningOmit;
+    entityForce?: Prisma.EntityForceOmit;
 };
 export type LogLevel = 'info' | 'query' | 'warn' | 'error';
 export type LogDefinition = {

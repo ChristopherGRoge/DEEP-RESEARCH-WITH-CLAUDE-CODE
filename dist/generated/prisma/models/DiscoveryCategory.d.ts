@@ -26,6 +26,7 @@ export type DiscoveryCategoryMinAggregateOutputType = {
     description: string | null;
     inclusionCriteria: string | null;
     exclusionCriteria: string | null;
+    materialIcon: string | null;
     entityCount: number | null;
     createdAt: Date | null;
     updatedAt: Date | null;
@@ -37,6 +38,7 @@ export type DiscoveryCategoryMaxAggregateOutputType = {
     description: string | null;
     inclusionCriteria: string | null;
     exclusionCriteria: string | null;
+    materialIcon: string | null;
     entityCount: number | null;
     createdAt: Date | null;
     updatedAt: Date | null;
@@ -50,6 +52,7 @@ export type DiscoveryCategoryCountAggregateOutputType = {
     exclusionCriteria: number;
     exemplarEntities: number;
     antiExemplars: number;
+    materialIcon: number;
     entityCount: number;
     createdAt: number;
     updatedAt: number;
@@ -68,6 +71,7 @@ export type DiscoveryCategoryMinAggregateInputType = {
     description?: true;
     inclusionCriteria?: true;
     exclusionCriteria?: true;
+    materialIcon?: true;
     entityCount?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -79,6 +83,7 @@ export type DiscoveryCategoryMaxAggregateInputType = {
     description?: true;
     inclusionCriteria?: true;
     exclusionCriteria?: true;
+    materialIcon?: true;
     entityCount?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -92,6 +97,7 @@ export type DiscoveryCategoryCountAggregateInputType = {
     exclusionCriteria?: true;
     exemplarEntities?: true;
     antiExemplars?: true;
+    materialIcon?: true;
     entityCount?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -182,6 +188,7 @@ export type DiscoveryCategoryGroupByOutputType = {
     exclusionCriteria: string | null;
     exemplarEntities: runtime.JsonValue | null;
     antiExemplars: runtime.JsonValue | null;
+    materialIcon: string | null;
     entityCount: number;
     createdAt: Date;
     updatedAt: Date;
@@ -206,6 +213,7 @@ export type DiscoveryCategoryWhereInput = {
     exclusionCriteria?: Prisma.StringNullableFilter<"DiscoveryCategory"> | string | null;
     exemplarEntities?: Prisma.JsonNullableFilter<"DiscoveryCategory">;
     antiExemplars?: Prisma.JsonNullableFilter<"DiscoveryCategory">;
+    materialIcon?: Prisma.StringNullableFilter<"DiscoveryCategory"> | string | null;
     entityCount?: Prisma.IntFilter<"DiscoveryCategory"> | number;
     createdAt?: Prisma.DateTimeFilter<"DiscoveryCategory"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"DiscoveryCategory"> | Date | string;
@@ -220,6 +228,7 @@ export type DiscoveryCategoryOrderByWithRelationInput = {
     exclusionCriteria?: Prisma.SortOrderInput | Prisma.SortOrder;
     exemplarEntities?: Prisma.SortOrderInput | Prisma.SortOrder;
     antiExemplars?: Prisma.SortOrderInput | Prisma.SortOrder;
+    materialIcon?: Prisma.SortOrderInput | Prisma.SortOrder;
     entityCount?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -237,6 +246,7 @@ export type DiscoveryCategoryWhereUniqueInput = Prisma.AtLeast<{
     exclusionCriteria?: Prisma.StringNullableFilter<"DiscoveryCategory"> | string | null;
     exemplarEntities?: Prisma.JsonNullableFilter<"DiscoveryCategory">;
     antiExemplars?: Prisma.JsonNullableFilter<"DiscoveryCategory">;
+    materialIcon?: Prisma.StringNullableFilter<"DiscoveryCategory"> | string | null;
     entityCount?: Prisma.IntFilter<"DiscoveryCategory"> | number;
     createdAt?: Prisma.DateTimeFilter<"DiscoveryCategory"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"DiscoveryCategory"> | Date | string;
@@ -251,6 +261,7 @@ export type DiscoveryCategoryOrderByWithAggregationInput = {
     exclusionCriteria?: Prisma.SortOrderInput | Prisma.SortOrder;
     exemplarEntities?: Prisma.SortOrderInput | Prisma.SortOrder;
     antiExemplars?: Prisma.SortOrderInput | Prisma.SortOrder;
+    materialIcon?: Prisma.SortOrderInput | Prisma.SortOrder;
     entityCount?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -272,6 +283,7 @@ export type DiscoveryCategoryScalarWhereWithAggregatesInput = {
     exclusionCriteria?: Prisma.StringNullableWithAggregatesFilter<"DiscoveryCategory"> | string | null;
     exemplarEntities?: Prisma.JsonNullableWithAggregatesFilter<"DiscoveryCategory">;
     antiExemplars?: Prisma.JsonNullableWithAggregatesFilter<"DiscoveryCategory">;
+    materialIcon?: Prisma.StringNullableWithAggregatesFilter<"DiscoveryCategory"> | string | null;
     entityCount?: Prisma.IntWithAggregatesFilter<"DiscoveryCategory"> | number;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"DiscoveryCategory"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"DiscoveryCategory"> | Date | string;
@@ -285,6 +297,7 @@ export type DiscoveryCategoryCreateInput = {
     exclusionCriteria?: string | null;
     exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: string | null;
     entityCount?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -299,6 +312,7 @@ export type DiscoveryCategoryUncheckedCreateInput = {
     exclusionCriteria?: string | null;
     exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: string | null;
     entityCount?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -313,6 +327,7 @@ export type DiscoveryCategoryUpdateInput = {
     exclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -327,6 +342,7 @@ export type DiscoveryCategoryUncheckedUpdateInput = {
     exclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -341,6 +357,7 @@ export type DiscoveryCategoryCreateManyInput = {
     exclusionCriteria?: string | null;
     exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: string | null;
     entityCount?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -354,6 +371,7 @@ export type DiscoveryCategoryUpdateManyMutationInput = {
     exclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -367,6 +385,7 @@ export type DiscoveryCategoryUncheckedUpdateManyInput = {
     exclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -384,6 +403,7 @@ export type DiscoveryCategoryCountOrderByAggregateInput = {
     exclusionCriteria?: Prisma.SortOrder;
     exemplarEntities?: Prisma.SortOrder;
     antiExemplars?: Prisma.SortOrder;
+    materialIcon?: Prisma.SortOrder;
     entityCount?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -398,6 +418,7 @@ export type DiscoveryCategoryMaxOrderByAggregateInput = {
     description?: Prisma.SortOrder;
     inclusionCriteria?: Prisma.SortOrder;
     exclusionCriteria?: Prisma.SortOrder;
+    materialIcon?: Prisma.SortOrder;
     entityCount?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -409,6 +430,7 @@ export type DiscoveryCategoryMinOrderByAggregateInput = {
     description?: Prisma.SortOrder;
     inclusionCriteria?: Prisma.SortOrder;
     exclusionCriteria?: Prisma.SortOrder;
+    materialIcon?: Prisma.SortOrder;
     entityCount?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -439,6 +461,7 @@ export type DiscoveryCategoryCreateWithoutEntitiesInput = {
     exclusionCriteria?: string | null;
     exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: string | null;
     entityCount?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -452,6 +475,7 @@ export type DiscoveryCategoryUncheckedCreateWithoutEntitiesInput = {
     exclusionCriteria?: string | null;
     exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: string | null;
     entityCount?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -478,6 +502,7 @@ export type DiscoveryCategoryUpdateWithoutEntitiesInput = {
     exclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -491,6 +516,7 @@ export type DiscoveryCategoryUncheckedUpdateWithoutEntitiesInput = {
     exclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -528,6 +554,7 @@ export type DiscoveryCategorySelect<ExtArgs extends runtime.Types.Extensions.Int
     exclusionCriteria?: boolean;
     exemplarEntities?: boolean;
     antiExemplars?: boolean;
+    materialIcon?: boolean;
     entityCount?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -543,6 +570,7 @@ export type DiscoveryCategorySelectCreateManyAndReturn<ExtArgs extends runtime.T
     exclusionCriteria?: boolean;
     exemplarEntities?: boolean;
     antiExemplars?: boolean;
+    materialIcon?: boolean;
     entityCount?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -556,6 +584,7 @@ export type DiscoveryCategorySelectUpdateManyAndReturn<ExtArgs extends runtime.T
     exclusionCriteria?: boolean;
     exemplarEntities?: boolean;
     antiExemplars?: boolean;
+    materialIcon?: boolean;
     entityCount?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -569,11 +598,12 @@ export type DiscoveryCategorySelectScalar = {
     exclusionCriteria?: boolean;
     exemplarEntities?: boolean;
     antiExemplars?: boolean;
+    materialIcon?: boolean;
     entityCount?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type DiscoveryCategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "displayName" | "description" | "inclusionCriteria" | "exclusionCriteria" | "exemplarEntities" | "antiExemplars" | "entityCount" | "createdAt" | "updatedAt", ExtArgs["result"]["discoveryCategory"]>;
+export type DiscoveryCategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "displayName" | "description" | "inclusionCriteria" | "exclusionCriteria" | "exemplarEntities" | "antiExemplars" | "materialIcon" | "entityCount" | "createdAt" | "updatedAt", ExtArgs["result"]["discoveryCategory"]>;
 export type DiscoveryCategoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     entities?: boolean | Prisma.DiscoveryCategory$entitiesArgs<ExtArgs>;
     _count?: boolean | Prisma.DiscoveryCategoryCountOutputTypeDefaultArgs<ExtArgs>;
@@ -594,6 +624,7 @@ export type $DiscoveryCategoryPayload<ExtArgs extends runtime.Types.Extensions.I
         exclusionCriteria: string | null;
         exemplarEntities: runtime.JsonValue | null;
         antiExemplars: runtime.JsonValue | null;
+        materialIcon: string | null;
         entityCount: number;
         createdAt: Date;
         updatedAt: Date;
@@ -960,6 +991,7 @@ export interface DiscoveryCategoryFieldRefs {
     readonly exclusionCriteria: Prisma.FieldRef<"DiscoveryCategory", 'String'>;
     readonly exemplarEntities: Prisma.FieldRef<"DiscoveryCategory", 'Json'>;
     readonly antiExemplars: Prisma.FieldRef<"DiscoveryCategory", 'Json'>;
+    readonly materialIcon: Prisma.FieldRef<"DiscoveryCategory", 'String'>;
     readonly entityCount: Prisma.FieldRef<"DiscoveryCategory", 'Int'>;
     readonly createdAt: Prisma.FieldRef<"DiscoveryCategory", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"DiscoveryCategory", 'DateTime'>;

@@ -102,4 +102,19 @@ export type DiscoveryCategory = Prisma.DiscoveryCategoryModel;
  * A research domain defining what to discover and how to find it
  */
 export type ResearchDomain = Prisma.ResearchDomainModel;
+/**
+ * Model EntityRelationship
+ * An entity-to-entity relationship (competitive, complementary, dependency, etc.)
+ */
+export type EntityRelationship = Prisma.EntityRelationshipModel;
+/**
+ * Model EntityPositioning
+ * Structural market positioning for an entity (one per entity)
+ */
+export type EntityPositioning = Prisma.EntityPositioningModel;
+/**
+ * Model EntityForce
+ * A market force acting on an entity's trajectory
+ */
+export type EntityForce = Prisma.EntityForceModel;
 //# sourceMappingURL=browser.d.ts.map

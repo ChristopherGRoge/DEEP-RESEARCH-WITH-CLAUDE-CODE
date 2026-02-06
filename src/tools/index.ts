@@ -26,6 +26,7 @@ export * from './github';
 export * from './buzz';
 export * from './cite-verify';
 export * from './validation';
+export * from './worldmodel';
 
 // Re-export Prisma client for direct access if needed
 export { prisma } from '../db/client';

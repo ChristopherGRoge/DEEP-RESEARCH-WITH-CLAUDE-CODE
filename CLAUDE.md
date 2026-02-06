@@ -21,6 +21,7 @@ All research is driven through `/research-*` skills. These orchestrate subagents
 | `/research-discover` | Multi-agent entity discovery within a domain | `/research-discover AI-Testing-Tools` |
 | `/research-entity` | Deep 4-phase research on a single entity | `/research-entity Cursor` |
 | `/research-validation` | Adversarial validation of pillar assertions | `/research-validation Cursor` |
+| `/research-world-model` | Build ecosystem positioning map | `/research-world-model Cursor` |
 | `/research-to-deck` | Generate PowerPoint from research | "Create slides from this research" |
 
 ### Workflow
@@ -45,6 +46,12 @@ All research is driven through `/research-*` skills. These orchestrate subagents
   → Phase 2: DEEP EXTRACTION - Fetch pages, capture screenshots, extract data
   → Phase 3: SYNTHESIS - Form world-view, identify 5-10 pillar assertions
   → Phase 4: OUTPUT - Mark pillars, create validation agenda
+        │
+        ▼
+/research-world-model <entity-name>
+  → Positioning: SDLC stages, solution scope, maturity, adoption curve
+  → Relationships: Competes with, integrates with, built on, similar to
+  → Market forces: Opportunities, threats, trends, constraints
         │
         ▼
 /research-validation <entity-name>
@@ -315,6 +322,10 @@ The full CLI command reference is in **[docs/CLI-REFERENCE.md](docs/CLI-REFERENC
 | `buzz:*` | calculate, rank, override | Buzz scoring |
 | `category:*` | list, get, apply, context, explain, unclassified | Classification |
 | `domain:*` | create, get, list, entities, summary | Research domains |
+| `worldmodel:*` | get, summary | World model aggregation |
+| `relationship:*` | create, list, graph, delete | Entity relationships |
+| `positioning:*` | set, get, compare | Market positioning |
+| `force:*` | create, list, delete | Market forces |
 | `research:gaps` | - | Coverage analysis |
 | `cite:verify` | - | Citation verification |
 

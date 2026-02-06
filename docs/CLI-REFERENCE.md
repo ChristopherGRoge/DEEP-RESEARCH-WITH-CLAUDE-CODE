@@ -533,6 +533,193 @@ npm run cli -- discovery:source:seed
 
 ---
 
+## World Model Commands
+
+### World Model Aggregation
+
+```bash
+# Get complete world model for entity (positioning + relationships + forces)
+npm run cli -- worldmodel:get '{"entityId": "<id>"}'
+
+# Get positioning statement summary
+npm run cli -- worldmodel:summary '{"entityId": "<id>"}'
+```
+
+### Relationship Management
+
+```bash
+# Create relationship between entities
+npm run cli -- relationship:create '{
+  "sourceEntityId": "<id>",
+  "targetEntityId": "<id>",
+  "relationshipType": "COMPETES_WITH",
+  "strength": 0.8,
+  "direction": "SYMMETRIC",
+  "context": "Both offer AI code completion",
+  "evidenceDescription": "Comparison on screenshots/..."
+}'
+
+# Create relationship to external entity (not in database)
+npm run cli -- relationship:create '{
+  "sourceEntityId": "<id>",
+  "targetExternalName": "External Tool",
+  "targetExternalUrl": "https://example.com",
+  "relationshipType": "DEPENDS_ON",
+  "strength": 0.5,
+  "direction": "ASYMMETRIC",
+  "context": "Via API integration"
+}'
+
+# List relationships for entity
+npm run cli -- relationship:list '{"entityId": "<id>"}'
+
+# Get project relationship graph
+npm run cli -- relationship:graph '{"projectId": "<id>"}'
+
+# Delete relationship
+npm run cli -- relationship:delete '{"relationshipId": "<id>"}'
+```
+
+#### Relationship Types
+- `COMPETES_WITH` - Direct competitors
+- `COMPLEMENTS` - Complementary products/services
+- `DEPENDS_ON` - Dependency/foundation
+- `ENABLES` - Enables or powers another entity
+- `SUPERSEDES` - Replaces or succeeds another entity
+- `FORKS_FROM` - Forked from another entity
+
+#### Relationship Strength
+Float value from 0.0 to 1.0:
+- `0.8-1.0` - Strong/primary relationship
+- `0.4-0.7` - Medium/secondary relationship
+- `0.1-0.3` - Weak/tertiary relationship
+
+#### Relationship Direction
+- `SYMMETRIC` - Two-way relationship (A ↔ B)
+- `ASYMMETRIC` - One-way relationship (A → B)
+
+### Market Positioning
+
+```bash
+# Set entity positioning
+npm run cli -- positioning:set '{
+  "entityId": "<id>",
+  "sdlcStages": [
+    {"stage": "code", "coverage": "PRIMARY"},
+    {"stage": "test", "coverage": "SECONDARY"}
+  ],
+  "primaryStage": "code",
+  "solutionScope": "point_solution",
+  "maturityStage": "growth",
+  "adoptionCurve": "early_majority",
+  "businessModel": "freemium",
+  "primaryEcosystem": "VS Code",
+  "positioningStatement": "AI-powered code completion for VS Code",
+  "evidenceChain": [
+    {
+      "screenshotPath": "screenshots/2026-01/entity-pricing.png",
+      "description": "Pricing table shows freemium model with free tier",
+      "capturedAt": "2026-01-15T10:30:00Z"
+    }
+  ],
+  "evidenceDescription": "Based on screenshots/2026-01/entity-pricing.png",
+  "assessedBy": "positioning-agent-sonnet-001"
+}'
+
+# Get entity positioning
+npm run cli -- positioning:get '{"entityId": "<id>"}'
+
+# Compare positioning across entities
+npm run cli -- positioning:compare '{"entityIds": ["<id1>", "<id2>", "<id3>"]}'
+```
+
+#### SDLC Stages
+Array of objects with `stage` and `coverage` fields:
+- Stage values: `design`, `code`, `review`, `test`, `build`, `deploy`, `monitor`, `secure`, `document`
+- Coverage values: `PRIMARY`, `SECONDARY`, `MINIMAL`
+
+Example:
+```json
+[
+  {"stage": "code", "coverage": "PRIMARY"},
+  {"stage": "review", "coverage": "SECONDARY"}
+]
+```
+
+#### Solution Scope
+Free text field, common values:
+- `point_solution` - Specialized/focused solution
+- `platform` - Extensible platform
+- `suite` - Integrated suite of tools
+- `framework` - Development framework
+
+#### Maturity Stage
+Free text field, common values:
+- `emerging` - Early stage, new to market
+- `growth` - Scaling phase, gaining traction
+- `mature` - Established market presence
+- `declining` - Legacy/declining adoption
+
+#### Adoption Curve
+Free text field, common values:
+- `innovator` - Cutting edge, experimental
+- `early_adopter` - Tech-forward users
+- `early_majority` - Pragmatic adopters
+- `late_majority` - Conservative adopters
+- `laggard` - Late to adopt
+
+#### Business Model
+Free text field, common values:
+- `open_source` - Open source (no paid tiers)
+- `freemium` - Free tier + paid tiers
+- `enterprise` - Enterprise sales only
+- `consumption` - Usage-based/pay-per-use
+- `hybrid` - Multiple models
+
+#### Primary Ecosystem
+Free text field (not enum), examples:
+- `VS Code`, `JetBrains`, `GitHub`, `GitLab`, `AWS`, `Azure`, `cloud-native`, `standalone`, etc.
+
+### Market Forces
+
+```bash
+# Create market force
+npm run cli -- force:create '{
+  "entityId": "<id>",
+  "forceType": "TAILWIND",
+  "name": "Enterprise AI adoption",
+  "description": "Growing demand for AI in enterprise",
+  "strength": 0.8,
+  "timeHorizon": "near_term",
+  "evidenceDescription": "Market research shows...",
+  "evidenceScreenshotPath": "screenshots/2026-01/market-report.png"
+}'
+
+# List forces for entity
+npm run cli -- force:list '{"entityId": "<id>"}'
+
+# Delete force
+npm run cli -- force:delete '{"forceId": "<id>"}'
+```
+
+#### Force Types
+- `TAILWIND` - Favorable force driving growth or adoption
+- `HEADWIND` - Challenging force creating resistance or obstacles
+- `GRAVITATIONAL` - Fundamental force shaping the market landscape
+
+#### Force Strength
+Float value from 0.0 to 1.0:
+- `0.8-1.0` - Strong/major impact
+- `0.4-0.7` - Medium/moderate impact
+- `0.1-0.3` - Weak/minor impact
+
+#### Time Horizon
+- `immediate` - 0-6 months
+- `near_term` - 6-18 months
+- `long_term` - 18+ months
+
+---
+
 ## Orchestration Commands
 
 ```bash

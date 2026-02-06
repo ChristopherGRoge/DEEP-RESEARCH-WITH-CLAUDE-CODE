@@ -450,6 +450,10 @@ export type EntityWhereInput = {
     assertions?: Prisma.AssertionListRelationFilter;
     extractions?: Prisma.ExtractionListRelationFilter;
     researchSessions?: Prisma.ResearchSessionListRelationFilter;
+    relationshipsFrom?: Prisma.EntityRelationshipListRelationFilter;
+    relationshipsTo?: Prisma.EntityRelationshipListRelationFilter;
+    positioning?: Prisma.XOR<Prisma.EntityPositioningNullableScalarRelationFilter, Prisma.EntityPositioningWhereInput> | null;
+    forces?: Prisma.EntityForceListRelationFilter;
 };
 export type EntityOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -495,6 +499,10 @@ export type EntityOrderByWithRelationInput = {
     assertions?: Prisma.AssertionOrderByRelationAggregateInput;
     extractions?: Prisma.ExtractionOrderByRelationAggregateInput;
     researchSessions?: Prisma.ResearchSessionOrderByRelationAggregateInput;
+    relationshipsFrom?: Prisma.EntityRelationshipOrderByRelationAggregateInput;
+    relationshipsTo?: Prisma.EntityRelationshipOrderByRelationAggregateInput;
+    positioning?: Prisma.EntityPositioningOrderByWithRelationInput;
+    forces?: Prisma.EntityForceOrderByRelationAggregateInput;
 };
 export type EntityWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -544,6 +552,10 @@ export type EntityWhereUniqueInput = Prisma.AtLeast<{
     assertions?: Prisma.AssertionListRelationFilter;
     extractions?: Prisma.ExtractionListRelationFilter;
     researchSessions?: Prisma.ResearchSessionListRelationFilter;
+    relationshipsFrom?: Prisma.EntityRelationshipListRelationFilter;
+    relationshipsTo?: Prisma.EntityRelationshipListRelationFilter;
+    positioning?: Prisma.XOR<Prisma.EntityPositioningNullableScalarRelationFilter, Prisma.EntityPositioningWhereInput> | null;
+    forces?: Prisma.EntityForceListRelationFilter;
 }, "id" | "projectId_name">;
 export type EntityOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -672,6 +684,10 @@ export type EntityCreateInput = {
     assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
     extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
     researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceCreateNestedManyWithoutEntityInput;
 };
 export type EntityUncheckedCreateInput = {
     id?: string;
@@ -714,6 +730,10 @@ export type EntityUncheckedCreateInput = {
     assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
     extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
     researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningUncheckedCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceUncheckedCreateNestedManyWithoutEntityInput;
 };
 export type EntityUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -756,6 +776,10 @@ export type EntityUpdateInput = {
     assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
     extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
     researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -798,6 +822,10 @@ export type EntityUncheckedUpdateInput = {
     assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
     extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
     researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUncheckedUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUncheckedUpdateManyWithoutEntityNestedInput;
 };
 export type EntityCreateManyInput = {
     id?: string;
@@ -1062,6 +1090,10 @@ export type EntityScalarRelationFilter = {
     is?: Prisma.EntityWhereInput;
     isNot?: Prisma.EntityWhereInput;
 };
+export type EntityNullableScalarRelationFilter = {
+    is?: Prisma.EntityWhereInput | null;
+    isNot?: Prisma.EntityWhereInput | null;
+};
 export type EntityCreateNestedManyWithoutProjectInput = {
     create?: Prisma.XOR<Prisma.EntityCreateWithoutProjectInput, Prisma.EntityUncheckedCreateWithoutProjectInput> | Prisma.EntityCreateWithoutProjectInput[] | Prisma.EntityUncheckedCreateWithoutProjectInput[];
     connectOrCreate?: Prisma.EntityCreateOrConnectWithoutProjectInput | Prisma.EntityCreateOrConnectWithoutProjectInput[];
@@ -1232,6 +1264,56 @@ export type EntityUncheckedUpdateManyWithoutDomainNestedInput = {
     updateMany?: Prisma.EntityUpdateManyWithWhereWithoutDomainInput | Prisma.EntityUpdateManyWithWhereWithoutDomainInput[];
     deleteMany?: Prisma.EntityScalarWhereInput | Prisma.EntityScalarWhereInput[];
 };
+export type EntityCreateNestedOneWithoutRelationshipsFromInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutRelationshipsFromInput, Prisma.EntityUncheckedCreateWithoutRelationshipsFromInput>;
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutRelationshipsFromInput;
+    connect?: Prisma.EntityWhereUniqueInput;
+};
+export type EntityCreateNestedOneWithoutRelationshipsToInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutRelationshipsToInput, Prisma.EntityUncheckedCreateWithoutRelationshipsToInput>;
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutRelationshipsToInput;
+    connect?: Prisma.EntityWhereUniqueInput;
+};
+export type EntityUpdateOneRequiredWithoutRelationshipsFromNestedInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutRelationshipsFromInput, Prisma.EntityUncheckedCreateWithoutRelationshipsFromInput>;
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutRelationshipsFromInput;
+    upsert?: Prisma.EntityUpsertWithoutRelationshipsFromInput;
+    connect?: Prisma.EntityWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.EntityUpdateToOneWithWhereWithoutRelationshipsFromInput, Prisma.EntityUpdateWithoutRelationshipsFromInput>, Prisma.EntityUncheckedUpdateWithoutRelationshipsFromInput>;
+};
+export type EntityUpdateOneWithoutRelationshipsToNestedInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutRelationshipsToInput, Prisma.EntityUncheckedCreateWithoutRelationshipsToInput>;
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutRelationshipsToInput;
+    upsert?: Prisma.EntityUpsertWithoutRelationshipsToInput;
+    disconnect?: Prisma.EntityWhereInput | boolean;
+    delete?: Prisma.EntityWhereInput | boolean;
+    connect?: Prisma.EntityWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.EntityUpdateToOneWithWhereWithoutRelationshipsToInput, Prisma.EntityUpdateWithoutRelationshipsToInput>, Prisma.EntityUncheckedUpdateWithoutRelationshipsToInput>;
+};
+export type EntityCreateNestedOneWithoutPositioningInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutPositioningInput, Prisma.EntityUncheckedCreateWithoutPositioningInput>;
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutPositioningInput;
+    connect?: Prisma.EntityWhereUniqueInput;
+};
+export type EntityUpdateOneRequiredWithoutPositioningNestedInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutPositioningInput, Prisma.EntityUncheckedCreateWithoutPositioningInput>;
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutPositioningInput;
+    upsert?: Prisma.EntityUpsertWithoutPositioningInput;
+    connect?: Prisma.EntityWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.EntityUpdateToOneWithWhereWithoutPositioningInput, Prisma.EntityUpdateWithoutPositioningInput>, Prisma.EntityUncheckedUpdateWithoutPositioningInput>;
+};
+export type EntityCreateNestedOneWithoutForcesInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutForcesInput, Prisma.EntityUncheckedCreateWithoutForcesInput>;
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutForcesInput;
+    connect?: Prisma.EntityWhereUniqueInput;
+};
+export type EntityUpdateOneRequiredWithoutForcesNestedInput = {
+    create?: Prisma.XOR<Prisma.EntityCreateWithoutForcesInput, Prisma.EntityUncheckedCreateWithoutForcesInput>;
+    connectOrCreate?: Prisma.EntityCreateOrConnectWithoutForcesInput;
+    upsert?: Prisma.EntityUpsertWithoutForcesInput;
+    connect?: Prisma.EntityWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.EntityUpdateToOneWithWhereWithoutForcesInput, Prisma.EntityUpdateWithoutForcesInput>, Prisma.EntityUncheckedUpdateWithoutForcesInput>;
+};
 export type EntityCreateWithoutProjectInput = {
     id?: string;
     name: string;
@@ -1272,6 +1354,10 @@ export type EntityCreateWithoutProjectInput = {
     assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
     extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
     researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceCreateNestedManyWithoutEntityInput;
 };
 export type EntityUncheckedCreateWithoutProjectInput = {
     id?: string;
@@ -1313,6 +1399,10 @@ export type EntityUncheckedCreateWithoutProjectInput = {
     assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
     extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
     researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningUncheckedCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceUncheckedCreateNestedManyWithoutEntityInput;
 };
 export type EntityCreateOrConnectWithoutProjectInput = {
     where: Prisma.EntityWhereUniqueInput;
@@ -1416,6 +1506,10 @@ export type EntityCreateWithoutAssertionsInput = {
     project: Prisma.ResearchProjectCreateNestedOneWithoutEntitiesInput;
     extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
     researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceCreateNestedManyWithoutEntityInput;
 };
 export type EntityUncheckedCreateWithoutAssertionsInput = {
     id?: string;
@@ -1457,6 +1551,10 @@ export type EntityUncheckedCreateWithoutAssertionsInput = {
     projectId: string;
     extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
     researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningUncheckedCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceUncheckedCreateNestedManyWithoutEntityInput;
 };
 export type EntityCreateOrConnectWithoutAssertionsInput = {
     where: Prisma.EntityWhereUniqueInput;
@@ -1511,6 +1609,10 @@ export type EntityUpdateWithoutAssertionsInput = {
     project?: Prisma.ResearchProjectUpdateOneRequiredWithoutEntitiesNestedInput;
     extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
     researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateWithoutAssertionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1552,6 +1654,10 @@ export type EntityUncheckedUpdateWithoutAssertionsInput = {
     projectId?: Prisma.StringFieldUpdateOperationsInput | string;
     extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
     researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUncheckedUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUncheckedUpdateManyWithoutEntityNestedInput;
 };
 export type EntityCreateWithoutExtractionsInput = {
     id?: string;
@@ -1593,6 +1699,10 @@ export type EntityCreateWithoutExtractionsInput = {
     project: Prisma.ResearchProjectCreateNestedOneWithoutEntitiesInput;
     assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
     researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceCreateNestedManyWithoutEntityInput;
 };
 export type EntityUncheckedCreateWithoutExtractionsInput = {
     id?: string;
@@ -1634,6 +1744,10 @@ export type EntityUncheckedCreateWithoutExtractionsInput = {
     projectId: string;
     assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
     researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningUncheckedCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceUncheckedCreateNestedManyWithoutEntityInput;
 };
 export type EntityCreateOrConnectWithoutExtractionsInput = {
     where: Prisma.EntityWhereUniqueInput;
@@ -1688,6 +1802,10 @@ export type EntityUpdateWithoutExtractionsInput = {
     project?: Prisma.ResearchProjectUpdateOneRequiredWithoutEntitiesNestedInput;
     assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
     researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateWithoutExtractionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1729,6 +1847,10 @@ export type EntityUncheckedUpdateWithoutExtractionsInput = {
     projectId?: Prisma.StringFieldUpdateOperationsInput | string;
     assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
     researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUncheckedUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUncheckedUpdateManyWithoutEntityNestedInput;
 };
 export type EntityCreateWithoutResearchSessionsInput = {
     id?: string;
@@ -1770,6 +1892,10 @@ export type EntityCreateWithoutResearchSessionsInput = {
     project: Prisma.ResearchProjectCreateNestedOneWithoutEntitiesInput;
     assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
     extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceCreateNestedManyWithoutEntityInput;
 };
 export type EntityUncheckedCreateWithoutResearchSessionsInput = {
     id?: string;
@@ -1811,6 +1937,10 @@ export type EntityUncheckedCreateWithoutResearchSessionsInput = {
     projectId: string;
     assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
     extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningUncheckedCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceUncheckedCreateNestedManyWithoutEntityInput;
 };
 export type EntityCreateOrConnectWithoutResearchSessionsInput = {
     where: Prisma.EntityWhereUniqueInput;
@@ -1865,6 +1995,10 @@ export type EntityUpdateWithoutResearchSessionsInput = {
     project?: Prisma.ResearchProjectUpdateOneRequiredWithoutEntitiesNestedInput;
     assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
     extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateWithoutResearchSessionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -1906,6 +2040,10 @@ export type EntityUncheckedUpdateWithoutResearchSessionsInput = {
     projectId?: Prisma.StringFieldUpdateOperationsInput | string;
     assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
     extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUncheckedUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUncheckedUpdateManyWithoutEntityNestedInput;
 };
 export type EntityCreateWithoutCategoryInput = {
     id?: string;
@@ -1947,6 +2085,10 @@ export type EntityCreateWithoutCategoryInput = {
     assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
     extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
     researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceCreateNestedManyWithoutEntityInput;
 };
 export type EntityUncheckedCreateWithoutCategoryInput = {
     id?: string;
@@ -1988,6 +2130,10 @@ export type EntityUncheckedCreateWithoutCategoryInput = {
     assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
     extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
     researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningUncheckedCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceUncheckedCreateNestedManyWithoutEntityInput;
 };
 export type EntityCreateOrConnectWithoutCategoryInput = {
     where: Prisma.EntityWhereUniqueInput;
@@ -2049,6 +2195,10 @@ export type EntityCreateWithoutDomainInput = {
     assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
     extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
     researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceCreateNestedManyWithoutEntityInput;
 };
 export type EntityUncheckedCreateWithoutDomainInput = {
     id?: string;
@@ -2090,6 +2240,10 @@ export type EntityUncheckedCreateWithoutDomainInput = {
     assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
     extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
     researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningUncheckedCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceUncheckedCreateNestedManyWithoutEntityInput;
 };
 export type EntityCreateOrConnectWithoutDomainInput = {
     where: Prisma.EntityWhereUniqueInput;
@@ -2110,6 +2264,778 @@ export type EntityUpdateWithWhereUniqueWithoutDomainInput = {
 export type EntityUpdateManyWithWhereWithoutDomainInput = {
     where: Prisma.EntityScalarWhereInput;
     data: Prisma.XOR<Prisma.EntityUpdateManyMutationInput, Prisma.EntityUncheckedUpdateManyWithoutDomainInput>;
+};
+export type EntityCreateWithoutRelationshipsFromInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    category?: Prisma.DiscoveryCategoryCreateNestedOneWithoutEntitiesInput;
+    domain?: Prisma.ResearchDomainCreateNestedOneWithoutEntitiesInput;
+    project: Prisma.ResearchProjectCreateNestedOneWithoutEntitiesInput;
+    assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
+    extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceCreateNestedManyWithoutEntityInput;
+};
+export type EntityUncheckedCreateWithoutRelationshipsFromInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    categoryId?: string | null;
+    domainId?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    projectId: string;
+    assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
+    extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningUncheckedCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceUncheckedCreateNestedManyWithoutEntityInput;
+};
+export type EntityCreateOrConnectWithoutRelationshipsFromInput = {
+    where: Prisma.EntityWhereUniqueInput;
+    create: Prisma.XOR<Prisma.EntityCreateWithoutRelationshipsFromInput, Prisma.EntityUncheckedCreateWithoutRelationshipsFromInput>;
+};
+export type EntityCreateWithoutRelationshipsToInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    category?: Prisma.DiscoveryCategoryCreateNestedOneWithoutEntitiesInput;
+    domain?: Prisma.ResearchDomainCreateNestedOneWithoutEntitiesInput;
+    project: Prisma.ResearchProjectCreateNestedOneWithoutEntitiesInput;
+    assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
+    extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipCreateNestedManyWithoutSourceEntityInput;
+    positioning?: Prisma.EntityPositioningCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceCreateNestedManyWithoutEntityInput;
+};
+export type EntityUncheckedCreateWithoutRelationshipsToInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    categoryId?: string | null;
+    domainId?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    projectId: string;
+    assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
+    extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutSourceEntityInput;
+    positioning?: Prisma.EntityPositioningUncheckedCreateNestedOneWithoutEntityInput;
+    forces?: Prisma.EntityForceUncheckedCreateNestedManyWithoutEntityInput;
+};
+export type EntityCreateOrConnectWithoutRelationshipsToInput = {
+    where: Prisma.EntityWhereUniqueInput;
+    create: Prisma.XOR<Prisma.EntityCreateWithoutRelationshipsToInput, Prisma.EntityUncheckedCreateWithoutRelationshipsToInput>;
+};
+export type EntityUpsertWithoutRelationshipsFromInput = {
+    update: Prisma.XOR<Prisma.EntityUpdateWithoutRelationshipsFromInput, Prisma.EntityUncheckedUpdateWithoutRelationshipsFromInput>;
+    create: Prisma.XOR<Prisma.EntityCreateWithoutRelationshipsFromInput, Prisma.EntityUncheckedCreateWithoutRelationshipsFromInput>;
+    where?: Prisma.EntityWhereInput;
+};
+export type EntityUpdateToOneWithWhereWithoutRelationshipsFromInput = {
+    where?: Prisma.EntityWhereInput;
+    data: Prisma.XOR<Prisma.EntityUpdateWithoutRelationshipsFromInput, Prisma.EntityUncheckedUpdateWithoutRelationshipsFromInput>;
+};
+export type EntityUpdateWithoutRelationshipsFromInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.DiscoveryCategoryUpdateOneWithoutEntitiesNestedInput;
+    domain?: Prisma.ResearchDomainUpdateOneWithoutEntitiesNestedInput;
+    project?: Prisma.ResearchProjectUpdateOneRequiredWithoutEntitiesNestedInput;
+    assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
+    extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUpdateManyWithoutEntityNestedInput;
+};
+export type EntityUncheckedUpdateWithoutRelationshipsFromInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    projectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
+    extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUncheckedUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUncheckedUpdateManyWithoutEntityNestedInput;
+};
+export type EntityUpsertWithoutRelationshipsToInput = {
+    update: Prisma.XOR<Prisma.EntityUpdateWithoutRelationshipsToInput, Prisma.EntityUncheckedUpdateWithoutRelationshipsToInput>;
+    create: Prisma.XOR<Prisma.EntityCreateWithoutRelationshipsToInput, Prisma.EntityUncheckedCreateWithoutRelationshipsToInput>;
+    where?: Prisma.EntityWhereInput;
+};
+export type EntityUpdateToOneWithWhereWithoutRelationshipsToInput = {
+    where?: Prisma.EntityWhereInput;
+    data: Prisma.XOR<Prisma.EntityUpdateWithoutRelationshipsToInput, Prisma.EntityUncheckedUpdateWithoutRelationshipsToInput>;
+};
+export type EntityUpdateWithoutRelationshipsToInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.DiscoveryCategoryUpdateOneWithoutEntitiesNestedInput;
+    domain?: Prisma.ResearchDomainUpdateOneWithoutEntitiesNestedInput;
+    project?: Prisma.ResearchProjectUpdateOneRequiredWithoutEntitiesNestedInput;
+    assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
+    extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUpdateManyWithoutSourceEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUpdateManyWithoutEntityNestedInput;
+};
+export type EntityUncheckedUpdateWithoutRelationshipsToInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    projectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
+    extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutSourceEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUncheckedUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUncheckedUpdateManyWithoutEntityNestedInput;
+};
+export type EntityCreateWithoutPositioningInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    category?: Prisma.DiscoveryCategoryCreateNestedOneWithoutEntitiesInput;
+    domain?: Prisma.ResearchDomainCreateNestedOneWithoutEntitiesInput;
+    project: Prisma.ResearchProjectCreateNestedOneWithoutEntitiesInput;
+    assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
+    extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipCreateNestedManyWithoutTargetEntityInput;
+    forces?: Prisma.EntityForceCreateNestedManyWithoutEntityInput;
+};
+export type EntityUncheckedCreateWithoutPositioningInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    categoryId?: string | null;
+    domainId?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    projectId: string;
+    assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
+    extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutTargetEntityInput;
+    forces?: Prisma.EntityForceUncheckedCreateNestedManyWithoutEntityInput;
+};
+export type EntityCreateOrConnectWithoutPositioningInput = {
+    where: Prisma.EntityWhereUniqueInput;
+    create: Prisma.XOR<Prisma.EntityCreateWithoutPositioningInput, Prisma.EntityUncheckedCreateWithoutPositioningInput>;
+};
+export type EntityUpsertWithoutPositioningInput = {
+    update: Prisma.XOR<Prisma.EntityUpdateWithoutPositioningInput, Prisma.EntityUncheckedUpdateWithoutPositioningInput>;
+    create: Prisma.XOR<Prisma.EntityCreateWithoutPositioningInput, Prisma.EntityUncheckedCreateWithoutPositioningInput>;
+    where?: Prisma.EntityWhereInput;
+};
+export type EntityUpdateToOneWithWhereWithoutPositioningInput = {
+    where?: Prisma.EntityWhereInput;
+    data: Prisma.XOR<Prisma.EntityUpdateWithoutPositioningInput, Prisma.EntityUncheckedUpdateWithoutPositioningInput>;
+};
+export type EntityUpdateWithoutPositioningInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.DiscoveryCategoryUpdateOneWithoutEntitiesNestedInput;
+    domain?: Prisma.ResearchDomainUpdateOneWithoutEntitiesNestedInput;
+    project?: Prisma.ResearchProjectUpdateOneRequiredWithoutEntitiesNestedInput;
+    assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
+    extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUpdateManyWithoutTargetEntityNestedInput;
+    forces?: Prisma.EntityForceUpdateManyWithoutEntityNestedInput;
+};
+export type EntityUncheckedUpdateWithoutPositioningInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    projectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
+    extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutTargetEntityNestedInput;
+    forces?: Prisma.EntityForceUncheckedUpdateManyWithoutEntityNestedInput;
+};
+export type EntityCreateWithoutForcesInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    category?: Prisma.DiscoveryCategoryCreateNestedOneWithoutEntitiesInput;
+    domain?: Prisma.ResearchDomainCreateNestedOneWithoutEntitiesInput;
+    project: Prisma.ResearchProjectCreateNestedOneWithoutEntitiesInput;
+    assertions?: Prisma.AssertionCreateNestedManyWithoutEntityInput;
+    extractions?: Prisma.ExtractionCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningCreateNestedOneWithoutEntityInput;
+};
+export type EntityUncheckedCreateWithoutForcesInput = {
+    id?: string;
+    name: string;
+    description?: string | null;
+    entityType?: string | null;
+    url?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    discoveryCategory?: string | null;
+    categoryId?: string | null;
+    domainId?: string | null;
+    logoUrl?: string | null;
+    logoPath?: string | null;
+    logoFormat?: string | null;
+    logoSvgContent?: string | null;
+    logoSourceUrl?: string | null;
+    logoFetchedAt?: Date | string | null;
+    logoVerified?: boolean;
+    githubUrl?: string | null;
+    githubOwner?: string | null;
+    githubRepo?: string | null;
+    githubStars?: number | null;
+    githubForks?: number | null;
+    githubWatchers?: number | null;
+    githubOpenIssues?: number | null;
+    githubContributors?: number | null;
+    githubLastCommit?: Date | string | null;
+    githubLastRelease?: Date | string | null;
+    githubLanguage?: string | null;
+    githubLicense?: string | null;
+    githubCreatedAt?: Date | string | null;
+    githubMetricsAt?: Date | string | null;
+    buzzScore?: number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Date | string | null;
+    buzzOverride?: number | null;
+    buzzOverrideReason?: string | null;
+    projectId: string;
+    assertions?: Prisma.AssertionUncheckedCreateNestedManyWithoutEntityInput;
+    extractions?: Prisma.ExtractionUncheckedCreateNestedManyWithoutEntityInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedCreateNestedManyWithoutEntityInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutSourceEntityInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedCreateNestedManyWithoutTargetEntityInput;
+    positioning?: Prisma.EntityPositioningUncheckedCreateNestedOneWithoutEntityInput;
+};
+export type EntityCreateOrConnectWithoutForcesInput = {
+    where: Prisma.EntityWhereUniqueInput;
+    create: Prisma.XOR<Prisma.EntityCreateWithoutForcesInput, Prisma.EntityUncheckedCreateWithoutForcesInput>;
+};
+export type EntityUpsertWithoutForcesInput = {
+    update: Prisma.XOR<Prisma.EntityUpdateWithoutForcesInput, Prisma.EntityUncheckedUpdateWithoutForcesInput>;
+    create: Prisma.XOR<Prisma.EntityCreateWithoutForcesInput, Prisma.EntityUncheckedCreateWithoutForcesInput>;
+    where?: Prisma.EntityWhereInput;
+};
+export type EntityUpdateToOneWithWhereWithoutForcesInput = {
+    where?: Prisma.EntityWhereInput;
+    data: Prisma.XOR<Prisma.EntityUpdateWithoutForcesInput, Prisma.EntityUncheckedUpdateWithoutForcesInput>;
+};
+export type EntityUpdateWithoutForcesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.DiscoveryCategoryUpdateOneWithoutEntitiesNestedInput;
+    domain?: Prisma.ResearchDomainUpdateOneWithoutEntitiesNestedInput;
+    project?: Prisma.ResearchProjectUpdateOneRequiredWithoutEntitiesNestedInput;
+    assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
+    extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUpdateOneWithoutEntityNestedInput;
+};
+export type EntityUncheckedUpdateWithoutForcesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    discoveryCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    domainId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFormat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSvgContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoSourceUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    logoFetchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    logoVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    githubUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubRepo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubStars?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubForks?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubWatchers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubOpenIssues?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubContributors?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    githubLastCommit?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLastRelease?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubLicense?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    githubCreatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    githubMetricsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzComponents?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    buzzCalculatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+    buzzOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null;
+    buzzOverrideReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    projectId?: Prisma.StringFieldUpdateOperationsInput | string;
+    assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
+    extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
+    researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUncheckedUpdateOneWithoutEntityNestedInput;
 };
 export type EntityCreateManyProjectInput = {
     id?: string;
@@ -2189,6 +3115,10 @@ export type EntityUpdateWithoutProjectInput = {
     assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
     extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
     researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateWithoutProjectInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2230,6 +3160,10 @@ export type EntityUncheckedUpdateWithoutProjectInput = {
     assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
     extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
     researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUncheckedUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUncheckedUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateManyWithoutProjectInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2347,6 +3281,10 @@ export type EntityUpdateWithoutCategoryInput = {
     assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
     extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
     researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateWithoutCategoryInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2388,6 +3326,10 @@ export type EntityUncheckedUpdateWithoutCategoryInput = {
     assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
     extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
     researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUncheckedUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUncheckedUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateManyWithoutCategoryInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2505,6 +3447,10 @@ export type EntityUpdateWithoutDomainInput = {
     assertions?: Prisma.AssertionUpdateManyWithoutEntityNestedInput;
     extractions?: Prisma.ExtractionUpdateManyWithoutEntityNestedInput;
     researchSessions?: Prisma.ResearchSessionUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateWithoutDomainInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2546,6 +3492,10 @@ export type EntityUncheckedUpdateWithoutDomainInput = {
     assertions?: Prisma.AssertionUncheckedUpdateManyWithoutEntityNestedInput;
     extractions?: Prisma.ExtractionUncheckedUpdateManyWithoutEntityNestedInput;
     researchSessions?: Prisma.ResearchSessionUncheckedUpdateManyWithoutEntityNestedInput;
+    relationshipsFrom?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutSourceEntityNestedInput;
+    relationshipsTo?: Prisma.EntityRelationshipUncheckedUpdateManyWithoutTargetEntityNestedInput;
+    positioning?: Prisma.EntityPositioningUncheckedUpdateOneWithoutEntityNestedInput;
+    forces?: Prisma.EntityForceUncheckedUpdateManyWithoutEntityNestedInput;
 };
 export type EntityUncheckedUpdateManyWithoutDomainInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -2592,11 +3542,17 @@ export type EntityCountOutputType = {
     assertions: number;
     extractions: number;
     researchSessions: number;
+    relationshipsFrom: number;
+    relationshipsTo: number;
+    forces: number;
 };
 export type EntityCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     assertions?: boolean | EntityCountOutputTypeCountAssertionsArgs;
     extractions?: boolean | EntityCountOutputTypeCountExtractionsArgs;
     researchSessions?: boolean | EntityCountOutputTypeCountResearchSessionsArgs;
+    relationshipsFrom?: boolean | EntityCountOutputTypeCountRelationshipsFromArgs;
+    relationshipsTo?: boolean | EntityCountOutputTypeCountRelationshipsToArgs;
+    forces?: boolean | EntityCountOutputTypeCountForcesArgs;
 };
 /**
  * EntityCountOutputType without action
@@ -2624,6 +3580,24 @@ export type EntityCountOutputTypeCountExtractionsArgs<ExtArgs extends runtime.Ty
  */
 export type EntityCountOutputTypeCountResearchSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.ResearchSessionWhereInput;
+};
+/**
+ * EntityCountOutputType without action
+ */
+export type EntityCountOutputTypeCountRelationshipsFromArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.EntityRelationshipWhereInput;
+};
+/**
+ * EntityCountOutputType without action
+ */
+export type EntityCountOutputTypeCountRelationshipsToArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.EntityRelationshipWhereInput;
+};
+/**
+ * EntityCountOutputType without action
+ */
+export type EntityCountOutputTypeCountForcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.EntityForceWhereInput;
 };
 export type EntitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -2669,6 +3643,10 @@ export type EntitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     assertions?: boolean | Prisma.Entity$assertionsArgs<ExtArgs>;
     extractions?: boolean | Prisma.Entity$extractionsArgs<ExtArgs>;
     researchSessions?: boolean | Prisma.Entity$researchSessionsArgs<ExtArgs>;
+    relationshipsFrom?: boolean | Prisma.Entity$relationshipsFromArgs<ExtArgs>;
+    relationshipsTo?: boolean | Prisma.Entity$relationshipsToArgs<ExtArgs>;
+    positioning?: boolean | Prisma.Entity$positioningArgs<ExtArgs>;
+    forces?: boolean | Prisma.Entity$forcesArgs<ExtArgs>;
     _count?: boolean | Prisma.EntityCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["entity"]>;
 export type EntitySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2802,6 +3780,10 @@ export type EntityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     assertions?: boolean | Prisma.Entity$assertionsArgs<ExtArgs>;
     extractions?: boolean | Prisma.Entity$extractionsArgs<ExtArgs>;
     researchSessions?: boolean | Prisma.Entity$researchSessionsArgs<ExtArgs>;
+    relationshipsFrom?: boolean | Prisma.Entity$relationshipsFromArgs<ExtArgs>;
+    relationshipsTo?: boolean | Prisma.Entity$relationshipsToArgs<ExtArgs>;
+    positioning?: boolean | Prisma.Entity$positioningArgs<ExtArgs>;
+    forces?: boolean | Prisma.Entity$forcesArgs<ExtArgs>;
     _count?: boolean | Prisma.EntityCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type EntityIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2823,6 +3805,10 @@ export type $EntityPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
         assertions: Prisma.$AssertionPayload<ExtArgs>[];
         extractions: Prisma.$ExtractionPayload<ExtArgs>[];
         researchSessions: Prisma.$ResearchSessionPayload<ExtArgs>[];
+        relationshipsFrom: Prisma.$EntityRelationshipPayload<ExtArgs>[];
+        relationshipsTo: Prisma.$EntityRelationshipPayload<ExtArgs>[];
+        positioning: Prisma.$EntityPositioningPayload<ExtArgs> | null;
+        forces: Prisma.$EntityForcePayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -3197,6 +4183,10 @@ export interface Prisma__EntityClient<T, Null = never, ExtArgs extends runtime.T
     assertions<T extends Prisma.Entity$assertionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Entity$assertionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssertionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     extractions<T extends Prisma.Entity$extractionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Entity$extractionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExtractionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     researchSessions<T extends Prisma.Entity$researchSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Entity$researchSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ResearchSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    relationshipsFrom<T extends Prisma.Entity$relationshipsFromArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Entity$relationshipsFromArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EntityRelationshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    relationshipsTo<T extends Prisma.Entity$relationshipsToArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Entity$relationshipsToArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EntityRelationshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    positioning<T extends Prisma.Entity$positioningArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Entity$positioningArgs<ExtArgs>>): Prisma.Prisma__EntityPositioningClient<runtime.Types.Result.GetResult<Prisma.$EntityPositioningPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    forces<T extends Prisma.Entity$forcesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Entity$forcesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EntityForcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3739,6 +4729,93 @@ export type Entity$researchSessionsArgs<ExtArgs extends runtime.Types.Extensions
     take?: number;
     skip?: number;
     distinct?: Prisma.ResearchSessionScalarFieldEnum | Prisma.ResearchSessionScalarFieldEnum[];
+};
+/**
+ * Entity.relationshipsFrom
+ */
+export type Entity$relationshipsFromArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EntityRelationship
+     */
+    select?: Prisma.EntityRelationshipSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EntityRelationship
+     */
+    omit?: Prisma.EntityRelationshipOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EntityRelationshipInclude<ExtArgs> | null;
+    where?: Prisma.EntityRelationshipWhereInput;
+    orderBy?: Prisma.EntityRelationshipOrderByWithRelationInput | Prisma.EntityRelationshipOrderByWithRelationInput[];
+    cursor?: Prisma.EntityRelationshipWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.EntityRelationshipScalarFieldEnum | Prisma.EntityRelationshipScalarFieldEnum[];
+};
+/**
+ * Entity.relationshipsTo
+ */
+export type Entity$relationshipsToArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EntityRelationship
+     */
+    select?: Prisma.EntityRelationshipSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EntityRelationship
+     */
+    omit?: Prisma.EntityRelationshipOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EntityRelationshipInclude<ExtArgs> | null;
+    where?: Prisma.EntityRelationshipWhereInput;
+    orderBy?: Prisma.EntityRelationshipOrderByWithRelationInput | Prisma.EntityRelationshipOrderByWithRelationInput[];
+    cursor?: Prisma.EntityRelationshipWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.EntityRelationshipScalarFieldEnum | Prisma.EntityRelationshipScalarFieldEnum[];
+};
+/**
+ * Entity.positioning
+ */
+export type Entity$positioningArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EntityPositioning
+     */
+    select?: Prisma.EntityPositioningSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EntityPositioning
+     */
+    omit?: Prisma.EntityPositioningOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EntityPositioningInclude<ExtArgs> | null;
+    where?: Prisma.EntityPositioningWhereInput;
+};
+/**
+ * Entity.forces
+ */
+export type Entity$forcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EntityForce
+     */
+    select?: Prisma.EntityForceSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the EntityForce
+     */
+    omit?: Prisma.EntityForceOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.EntityForceInclude<ExtArgs> | null;
+    where?: Prisma.EntityForceWhereInput;
+    orderBy?: Prisma.EntityForceOrderByWithRelationInput | Prisma.EntityForceOrderByWithRelationInput[];
+    cursor?: Prisma.EntityForceWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.EntityForceScalarFieldEnum | Prisma.EntityForceScalarFieldEnum[];
 };
 /**
  * Entity without action

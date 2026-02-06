@@ -783,20 +783,38 @@ api.get('/entities/tree/:projectId', async (c) => {
             },
         },
     });
+    // Get category metadata (icons, weights) from database
+    const dbCategories = await tools.prisma.discoveryCategory.findMany({
+        select: {
+            name: true,
+            displayName: true,
+            materialIcon: true,
+        },
+    });
+    // Build lookup maps for category metadata
+    const categoryDisplayNames = {};
+    const categoryIcons = {};
+    for (const cat of dbCategories) {
+        categoryDisplayNames[cat.name] = cat.displayName;
+        if (cat.materialIcon) {
+            categoryIcons[cat.name] = cat.materialIcon;
+        }
+    }
+    // Default icons for categories (fallback)
+    const defaultCategoryIcons = {
+        ai_code_assistants: 'smart_toy',
+        ai_code_review: 'rate_review',
+        ai_debugging: 'bug_report',
+        ai_testing: 'science',
+        ai_documentation: 'description',
+        ai_security: 'security',
+        ai_devops: 'settings_suggest',
+        ai_analytics: 'insights',
+        genai_concepts: 'psychology',
+        uncategorized: 'category',
+    };
     // Group by the specified field (default: discoveryCategory)
     const grouped = new Map();
-    // Define nice display names for discovery categories
-    const categoryDisplayNames = {
-        ai_code_assistants: 'Code Assistants',
-        ai_code_review: 'Code Review',
-        ai_debugging: 'Debugging',
-        ai_testing: 'Testing',
-        ai_documentation: 'Documentation',
-        ai_security: 'Security',
-        ai_devops: 'DevOps',
-        ai_analytics: 'Analytics',
-        genai_concepts: 'GenAI Concepts',
-    };
     for (const entity of entities) {
         const groupKey = groupBy === 'entityType'
             ? (entity.entityType || 'uncategorized')
@@ -825,6 +843,28 @@ api.get('/entities/tree/:projectId', async (c) => {
             githubStars: entity.githubStars,
         });
     }
+    // Calculate category weights based on entity count + cumulative buzz
+    const categoryWeights = {};
+    let maxWeight = 0;
+    let minWeight = Infinity;
+    for (const [key, categoryEntities] of grouped.entries()) {
+        const entityCount = categoryEntities.length;
+        const buzzScores = categoryEntities.map((e) => e.buzzScore || 0);
+        const totalBuzz = buzzScores.reduce((sum, b) => sum + b, 0);
+        const avgBuzz = entityCount > 0 ? totalBuzz / entityCount : 0;
+        // Weight formula: blend of buzz quality and entity volume
+        const buzzComponent = avgBuzz * Math.log10(entityCount + 1);
+        const countComponent = Math.log10(entityCount + 1);
+        const weight = (buzzComponent * 0.5) + (countComponent * 0.5);
+        categoryWeights[key] = { weight, normalizedWeight: 0, totalBuzz, avgBuzz };
+        maxWeight = Math.max(maxWeight, weight);
+        minWeight = Math.min(minWeight, weight);
+    }
+    // Normalize weights to 0-1 range
+    const weightRange = maxWeight - minWeight || 1;
+    for (const key of Object.keys(categoryWeights)) {
+        categoryWeights[key].normalizedWeight = (categoryWeights[key].weight - minWeight) / weightRange;
+    }
     // Sort categories by a logical order (discovery categories first, then alphabetically)
     const categoryOrder = [
         'ai_code_assistants', 'ai_code_review', 'ai_debugging', 'ai_testing',
@@ -845,14 +885,20 @@ api.get('/entities/tree/:projectId', async (c) => {
     const treeData = {
         name: project.name,
         type: 'project',
-        children: sortedEntries.map(([key, entities]) => ({
+        children: sortedEntries.map(([key, catEntities]) => ({
             name: categoryDisplayNames[key] || key,
             key: key, // Original key for filtering
+            // Category visual metadata
+            materialIcon: categoryIcons[key] || defaultCategoryIcons[key] || 'category',
+            weight: categoryWeights[key]?.weight || 0,
+            normalizedWeight: categoryWeights[key]?.normalizedWeight || 0,
+            totalBuzz: categoryWeights[key]?.totalBuzz || 0,
+            avgBuzz: categoryWeights[key]?.avgBuzz || 0,
             type: 'category',
-            children: entities
+            children: catEntities
                 // Sort entities by buzz score (highest first)
                 .sort((a, b) => (b.buzzScore || 0) - (a.buzzScore || 0))
-                .map(e => ({
+                .map((e) => ({
                 name: e.name,
                 type: 'entity',
                 id: e.id,
@@ -1110,6 +1156,34 @@ api.get('/search', async (c) => {
     }
     const results = await tools.globalSearch({ query, projectId });
     return c.json({ success: true, data: results });
+});
+// ============================================
+// World Model - Entity Ecosystem Positioning
+// ============================================
+api.get('/entities/:id/world-model', async (c) => {
+    try {
+        const entityId = c.req.param('id');
+        const worldModel = await tools.getWorldModel({ entityId });
+        if (!worldModel) {
+            return c.json({ success: false, error: 'Entity not found' }, 404);
+        }
+        return c.json({ success: true, data: worldModel });
+    }
+    catch (err) {
+        const message = err instanceof Error ? err.message : 'Failed to get world model';
+        return c.json({ success: false, error: message }, 500);
+    }
+});
+api.get('/projects/:id/relationship-graph', async (c) => {
+    try {
+        const projectId = c.req.param('id');
+        const graph = await tools.getRelationshipGraph({ projectId });
+        return c.json({ success: true, data: graph });
+    }
+    catch (err) {
+        const message = err instanceof Error ? err.message : 'Failed to get relationship graph';
+        return c.json({ success: false, error: message }, 500);
+    }
 });
 // ============================================
 // Error handling

@@ -45,6 +45,9 @@ export declare const ModelName: {
     readonly DiscoveryTrend: "DiscoveryTrend";
     readonly DiscoveryCategory: "DiscoveryCategory";
     readonly ResearchDomain: "ResearchDomain";
+    readonly EntityRelationship: "EntityRelationship";
+    readonly EntityPositioning: "EntityPositioning";
+    readonly EntityForce: "EntityForce";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -372,6 +375,7 @@ export declare const DiscoveryCategoryScalarFieldEnum: {
     readonly exclusionCriteria: "exclusionCriteria";
     readonly exemplarEntities: "exemplarEntities";
     readonly antiExemplars: "antiExemplars";
+    readonly materialIcon: "materialIcon";
     readonly entityCount: "entityCount";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
@@ -395,6 +399,55 @@ export declare const ResearchDomainScalarFieldEnum: {
     readonly createdBy: "createdBy";
 };
 export type ResearchDomainScalarFieldEnum = (typeof ResearchDomainScalarFieldEnum)[keyof typeof ResearchDomainScalarFieldEnum];
+export declare const EntityRelationshipScalarFieldEnum: {
+    readonly id: "id";
+    readonly sourceEntityId: "sourceEntityId";
+    readonly targetEntityId: "targetEntityId";
+    readonly targetExternalName: "targetExternalName";
+    readonly targetExternalUrl: "targetExternalUrl";
+    readonly relationshipType: "relationshipType";
+    readonly strength: "strength";
+    readonly direction: "direction";
+    readonly context: "context";
+    readonly evidenceDescription: "evidenceDescription";
+    readonly evidenceScreenshotPath: "evidenceScreenshotPath";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type EntityRelationshipScalarFieldEnum = (typeof EntityRelationshipScalarFieldEnum)[keyof typeof EntityRelationshipScalarFieldEnum];
+export declare const EntityPositioningScalarFieldEnum: {
+    readonly id: "id";
+    readonly entityId: "entityId";
+    readonly sdlcStages: "sdlcStages";
+    readonly primaryStage: "primaryStage";
+    readonly solutionScope: "solutionScope";
+    readonly maturityStage: "maturityStage";
+    readonly adoptionCurve: "adoptionCurve";
+    readonly businessModel: "businessModel";
+    readonly primaryEcosystem: "primaryEcosystem";
+    readonly positioningStatement: "positioningStatement";
+    readonly evidenceChain: "evidenceChain";
+    readonly evidenceDescription: "evidenceDescription";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly assessedAt: "assessedAt";
+    readonly assessedBy: "assessedBy";
+};
+export type EntityPositioningScalarFieldEnum = (typeof EntityPositioningScalarFieldEnum)[keyof typeof EntityPositioningScalarFieldEnum];
+export declare const EntityForceScalarFieldEnum: {
+    readonly id: "id";
+    readonly entityId: "entityId";
+    readonly forceType: "forceType";
+    readonly name: "name";
+    readonly description: "description";
+    readonly strength: "strength";
+    readonly timeHorizon: "timeHorizon";
+    readonly evidenceDescription: "evidenceDescription";
+    readonly evidenceScreenshotPath: "evidenceScreenshotPath";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type EntityForceScalarFieldEnum = (typeof EntityForceScalarFieldEnum)[keyof typeof EntityForceScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";
