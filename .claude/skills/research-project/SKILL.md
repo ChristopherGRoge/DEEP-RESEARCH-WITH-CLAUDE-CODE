@@ -42,6 +42,12 @@ Research skills need to know which project to operate on. The **active project**
 
 ---
 
+## Execution Constraints
+
+**CRITICAL: Execute all operations DIRECTLY in the current process.** Do NOT use the Task tool to spawn subagent processes. All CLI commands and project management must be performed inline by you.
+
+---
+
 ## EXECUTION PROTOCOL
 
 ### MODE: `help`

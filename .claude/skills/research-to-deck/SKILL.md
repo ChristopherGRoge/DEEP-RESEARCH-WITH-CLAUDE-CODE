@@ -9,6 +9,12 @@ Create professional, consistent PowerPoint presentations from research documents
 
 **IMPORTANT:** Deck generation is a REQUIRED deliverable for all research phases. Every completed research phase must produce a PPTX following the template at `docs/RESEARCH-TEMPLATES/DECK-TEMPLATE.md`.
 
+## Execution Constraints
+
+**CRITICAL: Execute all operations DIRECTLY in the current process.** Do NOT use the Task tool to spawn subagent processes. All data loading, slide generation, and file writing must be performed inline by you.
+
+---
+
 ## When to Use
 
 This skill should be invoked when:

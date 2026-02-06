@@ -55,6 +55,12 @@ RESEARCH/Agentic-SDLC/
 
 ---
 
+## Execution Constraints
+
+**CRITICAL: Execute all phases DIRECTLY in the current process.** Do NOT use the Task tool to spawn subagent processes. All web searches, CLI commands, analysis, and data persistence must be performed inline by you -- not delegated to background agents. This applies to both single-entity and batch/multi-entity operations. Process entities sequentially in a loop within your current context.
+
+---
+
 ## Workflow Overview
 
 ```

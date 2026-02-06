@@ -27,6 +27,12 @@ A research domain defines:
 
 ---
 
+## Execution Constraints
+
+**CRITICAL: Execute all operations DIRECTLY in the current process.** Do NOT use the Task tool to spawn subagent processes. All CLI commands and domain management must be performed inline by you.
+
+---
+
 ## EXECUTION PROTOCOL
 
 ### MODE: `help`

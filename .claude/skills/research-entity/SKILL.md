@@ -9,6 +9,12 @@ Performs deep, discerning research on a single entity to form a comprehensive "w
 
 **Key Principle**: Quality over quantity. Not exhaustive fact-checking, but identifying the 5-10 assertions that MUST be validated by humans before any conclusions can be drawn.
 
+## Execution Constraints
+
+**CRITICAL: Execute all phases DIRECTLY in the current process.** Do NOT use the Task tool to spawn subagent processes. All web searches, screenshot fetches, CLI commands, and data persistence must be performed inline by you -- not delegated to background agents. For batch processing of multiple entities, process them sequentially in a loop within your current context.
+
+---
+
 ## Architecture Overview
 
 ```

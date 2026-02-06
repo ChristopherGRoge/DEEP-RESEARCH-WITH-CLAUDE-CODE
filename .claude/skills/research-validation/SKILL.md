@@ -66,6 +66,12 @@ Critically assesses pillar assertions identified by `/research-entity` using an 
 
 ---
 
+## Execution Constraints
+
+**CRITICAL: Execute all phases DIRECTLY in the current process.** Do NOT use the Task tool to spawn subagent processes. All web searches, CLI commands, adversarial analysis, and verdict persistence must be performed inline by you -- not delegated to background agents. For batch validation of multiple entities, process them sequentially in a loop within your current context.
+
+---
+
 ## EXECUTION PROTOCOL
 
 ### MODE: `help`

@@ -116,6 +116,14 @@ World model NEVER WRITES to assertions, extractions, or scores.
 
 ---
 
+## EXECUTION CONSTRAINTS
+
+**CRITICAL: Execute all phases DIRECTLY in the current process.** Do NOT use the Task tool to spawn subagent processes. All web searches, CLI commands, and data persistence must be performed inline by you -- not delegated to background agents. This applies to both single-entity and batch modes.
+
+For **batch mode**, process entities sequentially in a loop within your current context. Do NOT parallelize by spawning separate Claude Code processes. The overhead of subprocess creation far exceeds any time savings from parallelization.
+
+---
+
 ## EXECUTION PROTOCOL
 
 ### MODE: `help`
@@ -775,7 +783,7 @@ npm run cli -- worldmodel:summary '{"entityId": "ENTITY_ID"}'
 
 ## MODE: `batch <n>`
 
-Process multiple entities sequentially.
+Process multiple entities **sequentially in a single process**. Do NOT spawn Task subagents.
 
 **Step 0: Get unmodeled entities**
 
@@ -786,10 +794,12 @@ npm run cli -- entity:list '{"projectId": "PROJECT_ID"}'
 
 Filter to entities that have research data (assertions > 0) but no world model yet.
 
-**For each entity (sequentially):**
-1. Run full Phase 1-4 workflow
+**For each entity (sequentially, in this process):**
+1. Run full Phase 1-4 workflow directly (WebSearch, Bash CLI calls, analysis)
 2. Save progress after each entity
 3. Report progress: `[n/total] Completed world model for [ENTITY_NAME]`
+
+**IMPORTANT**: Execute each entity's 4 phases inline. Do NOT use the Task tool to delegate to subagents. The CLI commands are lightweight and the web searches are fast -- sequential execution in a single process is the correct approach.
 
 **Batch size recommendation**: 5-10 entities per batch. World model construction is lighter than entity research (mostly derives from existing data + targeted searches).
 

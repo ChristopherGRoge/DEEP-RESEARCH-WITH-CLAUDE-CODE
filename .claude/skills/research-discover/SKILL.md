@@ -72,6 +72,12 @@ Intelligent web-based discovery driven by **research domain definitions**. Unlik
 
 ---
 
+## Execution Constraints
+
+**CRITICAL: Execute all phases DIRECTLY in the current process.** Do NOT use the Task tool to spawn subagent processes. All web searches, CLI commands, deduplication, and entity persistence must be performed inline by you -- not delegated to background agents. The "Sonnet/Haiku/Opus" labels in the architecture diagram describe ROLES, not separate processes. You perform all roles sequentially within a single session.
+
+---
+
 ## EXECUTION PROTOCOL
 
 ### MODE: `help`
