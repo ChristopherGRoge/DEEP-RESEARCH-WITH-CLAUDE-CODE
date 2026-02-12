@@ -1102,13 +1102,22 @@ api.get('/entities/:id/full', async (c) => {
     }
   }
 
-  // Collect all evidence screenshots
+  // Collect all evidence screenshots (deduplicated)
   const evidenceGallery: { path: string; description?: string; assertionId?: string; claim?: string }[] = [];
+  const seenPaths = new Set<string>();
+
+  function addToGallery(item: typeof evidenceGallery[0]) {
+    const normalizedPath = item.path.replace(/^\/+/, '');
+    if (!seenPaths.has(normalizedPath)) {
+      seenPaths.add(normalizedPath);
+      evidenceGallery.push({ ...item, path: normalizedPath });
+    }
+  }
 
   for (const assertion of entity.assertions) {
     // Primary evidence screenshot
     if (assertion.evidenceScreenshotPath) {
-      evidenceGallery.push({
+      addToGallery({
         path: assertion.evidenceScreenshotPath,
         description: assertion.evidenceDescription || undefined,
         assertionId: assertion.id,
@@ -1120,7 +1129,7 @@ api.get('/entities/:id/full', async (c) => {
     if (assertion.evidenceChain && Array.isArray(assertion.evidenceChain)) {
       for (const item of assertion.evidenceChain as any[]) {
         if (item.screenshotPath) {
-          evidenceGallery.push({
+          addToGallery({
             path: item.screenshotPath,
             description: item.description,
             assertionId: assertion.id,
@@ -1133,7 +1142,7 @@ api.get('/entities/:id/full', async (c) => {
     // Legacy validation screenshots
     if (assertion.evidenceScreenshots && Array.isArray(assertion.evidenceScreenshots)) {
       for (const screenshotPath of assertion.evidenceScreenshots as string[]) {
-        evidenceGallery.push({
+        addToGallery({
           path: screenshotPath,
           assertionId: assertion.id,
           claim: assertion.claim,
@@ -1145,7 +1154,7 @@ api.get('/entities/:id/full', async (c) => {
   // Add extraction screenshots
   for (const extraction of entity.extractions) {
     if (extraction.screenshot?.filePath) {
-      evidenceGallery.push({
+      addToGallery({
         path: extraction.screenshot.filePath,
         description: `${extraction.schemaType} extraction from ${extraction.source?.url || 'unknown source'}`,
       });
@@ -1175,6 +1184,13 @@ api.get('/entities/:id/full', async (c) => {
     medium: entity.assertions.filter(a => a.criticality === 'MEDIUM').length,
     low: entity.assertions.filter(a => a.criticality === 'LOW').length,
   };
+
+  // Calculate pillar validation rate
+  const pillarAssertions = entity.assertions.filter(a =>
+      a.criticality === 'CRITICAL' || a.criticality === 'HIGH');
+  const pillarValidated = pillarAssertions.filter(a => a.status === 'EVIDENCE').length;
+  const pillarValidationRate = pillarAssertions.length > 0
+      ? Math.round((pillarValidated / pillarAssertions.length) * 100) : 0;
 
   return c.json({
     success: true,
@@ -1251,6 +1267,9 @@ api.get('/entities/:id/full', async (c) => {
         evidenceCount: evidenceGallery.length,
         sessionsCount: entity.researchSessions.length,
         criticalityBreakdown,
+        pillarValidationRate,
+        pillarTotal: pillarAssertions.length,
+        pillarValidated,
       },
     },
   });
@@ -1314,6 +1333,60 @@ api.get('/projects/:id/relationship-graph', async (c) => {
     return c.json({ success: true, data: graph });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Failed to get relationship graph';
+    return c.json({ success: false, error: message }, 500);
+  }
+});
+
+// ============================================
+// Compliance Batch Lookup
+// ============================================
+
+api.get('/entities/compliance-batch', async (c) => {
+  try {
+    const idsParam = c.req.query('ids');
+    if (!idsParam) {
+      return c.json({ success: false, error: 'ids query parameter required' }, 400);
+    }
+
+    const ids = idsParam.split(',').map(id => id.trim()).filter(Boolean);
+    if (ids.length === 0) {
+      return c.json({ success: true, data: {} });
+    }
+
+    const extractions = await tools.prisma.extraction.findMany({
+      where: {
+        schemaType: 'compliance',
+        status: 'COMPLETED',
+        entityId: { in: ids },
+      },
+      orderBy: { extractedAt: 'desc' },
+    });
+
+    // Deduplicate by entity (keep latest)
+    const latestByEntity = new Map<string, typeof extractions[0]>();
+    for (const ext of extractions) {
+      if (!latestByEntity.has(ext.entityId)) {
+        latestByEntity.set(ext.entityId, ext);
+      }
+    }
+
+    const result: Record<string, any> = {};
+    for (const [entityId, ext] of latestByEntity) {
+      const data = ext.data as any;
+      if (data) {
+        result[entityId] = {
+          soc2: data.soc2 || false,
+          fedRampStatus: data.fedRampStatus || null,
+          gdprCompliant: data.gdprCompliant || false,
+          hipaaCompliant: data.hipaaCompliant || false,
+          certifications: data.certifications || [],
+        };
+      }
+    }
+
+    return c.json({ success: true, data: result });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Failed to fetch compliance data';
     return c.json({ success: false, error: message }, 500);
   }
 });

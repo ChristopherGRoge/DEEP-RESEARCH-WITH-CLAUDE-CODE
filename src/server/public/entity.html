@@ -191,6 +191,12 @@
             margin-top: var(--space-xs);
         }
 
+        .entity-stat-detail {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
         /* Tabs */
         .entity-tabs-container {
             max-width: 1200px;
@@ -1151,6 +1157,55 @@
             margin-left: var(--space-xs);
         }
 
+        /* Differentiators */
+        .differentiators-grid {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+        .diff-section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-xs);
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .diff-section-title.unique { color: var(--accent); background: rgba(45, 212, 191, 0.1); }
+        .diff-section-title.leading { color: var(--criticality-high); background: rgba(59, 130, 246, 0.1); }
+        .diff-section-title.tablestakes { color: var(--text-secondary); background: var(--bg-tertiary); }
+        .diff-section-title.lagging { color: var(--criticality-medium); background: rgba(245, 158, 11, 0.1); }
+        .diff-section-title.missing { color: var(--criticality-critical); background: rgba(239, 68, 68, 0.1); }
+        .diff-item {
+            padding: var(--space-xs) var(--space-sm);
+            border-left: 3px solid var(--border-light);
+            margin-bottom: 4px;
+        }
+        .diff-item.unique { border-left-color: var(--accent); }
+        .diff-item.leading { border-left-color: var(--criticality-high); }
+        .diff-item.lagging { border-left-color: var(--criticality-medium); }
+        .diff-item.missing { border-left-color: var(--criticality-critical); }
+        .diff-name { font-size: 0.875rem; font-weight: 500; }
+        .diff-desc { font-size: 0.8rem; color: var(--text-secondary); display: block; margin-top: 2px; }
+
+        /* Pricing/Features fallbacks */
+        .pricing-simple, .features-simple { padding: var(--space-sm); }
+        .pricing-meta { display: flex; flex-wrap: wrap; gap: var(--space-md); }
+        .pricing-meta-item { font-size: 0.875rem; color: var(--text-secondary); }
+        .features-fields { display: flex; flex-direction: column; gap: var(--space-xs); }
+        .feature-field { display: flex; gap: var(--space-sm); font-size: 0.875rem; }
+        .feature-field-label { font-weight: 500; text-transform: capitalize; min-width: 120px; color: var(--text-secondary); }
+
+        /* JSON fallback note */
+        .extraction-fallback-note {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: var(--space-xs);
+        }
+
         /* Loading */
         .loading-container {
             display: flex;
@@ -1251,7 +1306,10 @@
                             <template x-if="!entity.logoSvgContent && entity.logoUrl">
                                 <img :src="entity.logoUrl" :alt="entity.name + ' logo'">
                             </template>
-                            <template x-if="!entity.logoSvgContent && !entity.logoUrl">
+                            <template x-if="!entity.logoSvgContent && !entity.logoUrl && entity.logoPath">
+                                <img :src="'/' + entity.logoPath" :alt="entity.name + ' logo'">
+                            </template>
+                            <template x-if="!entity.logoSvgContent && !entity.logoUrl && !entity.logoPath">
                                 <span class="placeholder" x-text="entity.name.charAt(0)"></span>
                             </template>
                         </div>
@@ -1276,8 +1334,14 @@
                                     <div class="entity-stat-label">Assertions</div>
                                 </div>
                                 <div class="entity-stat-card accent">
+                                    <div class="entity-stat-value" x-text="stats.pillarValidationRate + '%'"></div>
+                                    <div class="entity-stat-label">Pillars Validated</div>
+                                    <div class="entity-stat-detail" x-text="stats.pillarValidated + '/' + stats.pillarTotal + ' pillar assertions'"></div>
+                                </div>
+                                <div class="entity-stat-card">
                                     <div class="entity-stat-value" x-text="stats.validationRate + '%'"></div>
-                                    <div class="entity-stat-label">Validated</div>
+                                    <div class="entity-stat-label">All Validated</div>
+                                    <div class="entity-stat-detail" x-text="stats.validatedAssertions + '/' + stats.totalAssertions + ' total assertions'"></div>
                                 </div>
                                 <div class="entity-stat-card">
                                     <div class="entity-stat-value" x-text="stats.totalExtractions"></div>
@@ -1486,6 +1550,29 @@
                                             </div>
                                         </template>
 
+                                        <!-- Pricing fallback (no tiers) -->
+                                        <template x-if="type === 'pricing' && !extraction.data?.tiers && extraction.data">
+                                            <div class="pricing-simple">
+                                                <div class="pricing-meta">
+                                                    <span class="pricing-meta-item" x-show="extraction.data.hasFreeTier !== undefined">
+                                                        <strong>Free Tier:</strong> <span x-text="extraction.data.hasFreeTier ? 'Yes' : 'No'"></span>
+                                                    </span>
+                                                    <span class="pricing-meta-item" x-show="extraction.data.hasEnterprise !== undefined">
+                                                        <strong>Enterprise:</strong> <span x-text="extraction.data.hasEnterprise ? 'Yes' : 'No'"></span>
+                                                    </span>
+                                                    <span class="pricing-meta-item" x-show="extraction.data.pricingModel">
+                                                        <strong>Model:</strong> <span x-text="extraction.data.pricingModel"></span>
+                                                    </span>
+                                                    <span class="pricing-meta-item" x-show="extraction.data.startingPrice">
+                                                        <strong>Starting at:</strong> <span x-text="extraction.data.startingPrice"></span>
+                                                    </span>
+                                                </div>
+                                                <template x-if="extraction.data.notes">
+                                                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: var(--space-sm);" x-text="extraction.data.notes"></p>
+                                                </template>
+                                            </div>
+                                        </template>
+
                                         <!-- Features rendering -->
                                         <template x-if="type === 'features' && extraction.data?.categories">
                                             <div class="features-grid">
@@ -1500,6 +1587,32 @@
                                                                 </div>
                                                             </template>
                                                         </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+
+                                        <!-- Features fallback (no categories) -->
+                                        <template x-if="type === 'features' && !extraction.data?.categories && extraction.data">
+                                            <div class="features-simple">
+                                                <template x-if="extraction.data.highlights?.length">
+                                                    <div class="feature-list">
+                                                        <template x-for="highlight in extraction.data.highlights" :key="highlight">
+                                                            <div class="feature-item highlight">
+                                                                <span class="feature-name" x-text="typeof highlight === 'string' ? highlight : highlight.name"></span>
+                                                                <span class="feature-desc" x-text="typeof highlight === 'object' ? highlight.description : ''" x-show="typeof highlight === 'object' && highlight.description"></span>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </template>
+                                                <template x-if="!extraction.data.highlights?.length">
+                                                    <div class="features-fields">
+                                                        <template x-for="key in Object.keys(extraction.data).filter(k => !['schemaType', 'version'].includes(k))" :key="key">
+                                                            <div class="feature-field" x-show="extraction.data[key]">
+                                                                <span class="feature-field-label" x-text="key.replace(/([A-Z])/g, ' $1').trim()"></span>
+                                                                <span class="feature-field-value" x-text="Array.isArray(extraction.data[key]) ? extraction.data[key].join(', ') : extraction.data[key]"></span>
+                                                            </div>
+                                                        </template>
                                                     </div>
                                                 </template>
                                             </div>
@@ -1667,14 +1780,72 @@
                                             </div>
                                         </template>
 
+                                        <!-- Differentiators rendering -->
+                                        <template x-if="type === 'differentiators' && extraction.data">
+                                            <div class="differentiators-grid">
+                                                <template x-if="extraction.data.uniqueFeatures?.length">
+                                                    <div class="diff-section">
+                                                        <div class="diff-section-title unique">Unique Differentiators</div>
+                                                        <template x-for="feature in extraction.data.uniqueFeatures" :key="feature.feature || feature">
+                                                            <div class="diff-item unique">
+                                                                <span class="diff-name" x-text="typeof feature === 'string' ? feature : feature.feature"></span>
+                                                                <span class="diff-desc" x-text="typeof feature === 'object' ? feature.description : ''" x-show="typeof feature === 'object' && feature.description"></span>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </template>
+                                                <template x-if="extraction.data.leadingFeatures?.length">
+                                                    <div class="diff-section">
+                                                        <div class="diff-section-title leading">Market Leading</div>
+                                                        <template x-for="feature in extraction.data.leadingFeatures" :key="feature.feature || feature">
+                                                            <div class="diff-item leading">
+                                                                <span class="diff-name" x-text="typeof feature === 'string' ? feature : feature.feature"></span>
+                                                                <span class="diff-desc" x-text="typeof feature === 'object' ? feature.description : ''" x-show="typeof feature === 'object' && feature.description"></span>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </template>
+                                                <template x-if="extraction.data.tableStakes?.length">
+                                                    <div class="diff-section">
+                                                        <div class="diff-section-title tablestakes">Table Stakes</div>
+                                                        <template x-for="feature in extraction.data.tableStakes" :key="feature.feature || feature">
+                                                            <div class="diff-item tablestakes">
+                                                                <span class="diff-name" x-text="typeof feature === 'string' ? feature : feature.feature"></span>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </template>
+                                                <template x-if="extraction.data.laggingFeatures?.length">
+                                                    <div class="diff-section">
+                                                        <div class="diff-section-title lagging">Lagging</div>
+                                                        <template x-for="feature in extraction.data.laggingFeatures" :key="feature.feature || feature">
+                                                            <div class="diff-item lagging">
+                                                                <span class="diff-name" x-text="typeof feature === 'string' ? feature : feature.feature"></span>
+                                                                <span class="diff-desc" x-text="typeof feature === 'object' ? feature.description : ''" x-show="typeof feature === 'object' && feature.description"></span>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </template>
+                                                <template x-if="extraction.data.missingFeatures?.length">
+                                                    <div class="diff-section">
+                                                        <div class="diff-section-title missing">Missing Features</div>
+                                                        <template x-for="feature in extraction.data.missingFeatures" :key="feature.feature || feature">
+                                                            <div class="diff-item missing">
+                                                                <span class="diff-name" x-text="typeof feature === 'string' ? feature : feature.feature"></span>
+                                                                <span class="diff-desc" x-text="typeof feature === 'object' ? feature.description : ''" x-show="typeof feature === 'object' && feature.description"></span>
+                                                            </div>
+                                                        </template>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+
                                         <!-- Default JSON rendering for unknown types -->
-                                        <template x-if="!['pricing', 'features', 'company', 'compliance', 'integrations'].includes(type) ||
-                                                        (type === 'pricing' && !extraction.data?.tiers) ||
-                                                        (type === 'features' && !extraction.data?.categories) ||
-                                                        (type === 'company' && !extraction.data) ||
-                                                        (type === 'compliance' && !extraction.data) ||
-                                                        (type === 'integrations' && !extraction.data)">
-                                            <pre class="extraction-data" x-text="JSON.stringify(extraction.data, null, 2)"></pre>
+                                        <template x-if="!['pricing', 'features', 'company', 'compliance', 'integrations', 'differentiators'].includes(type)">
+                                            <div>
+                                                <div class="extraction-fallback-note">Structured rendering unavailable</div>
+                                                <pre class="extraction-data" x-text="JSON.stringify(extraction.data, null, 2)"></pre>
+                                            </div>
                                         </template>
 
                                         <div class="extraction-source" x-show="extraction.source?.url">
