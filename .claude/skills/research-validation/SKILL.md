@@ -60,6 +60,8 @@ Critically assesses pillar assertions identified by `/research-entity` using an 
 /research-validation --id <entity-id>        # Validate entity by ID
 /research-validation --assertion <id>        # Validate single assertion
 /research-validation --quick <entity-name>   # Quick validation (no web search)
+/research-validation batch <n>               # Validate next N entities with unvalidated pillars
+/research-validation batch --continue        # Resume batch from last position
 /research-validation help                    # Verbose overview
 /research-validation commands                # CLI command reference
 ```
@@ -69,6 +71,44 @@ Critically assesses pillar assertions identified by `/research-entity` using an 
 ## Execution Constraints
 
 **CRITICAL: Execute all phases DIRECTLY in the current process.** Do NOT use the Task tool to spawn subagent processes. All web searches, CLI commands, adversarial analysis, and verdict persistence must be performed inline by you -- not delegated to background agents. For batch validation of multiple entities, process them sequentially in a loop within your current context.
+
+---
+
+## Compute Budget & Model Tier Guidance
+
+Balance inference quality against compute cost. Not every assertion needs the same depth of analysis.
+
+### Model Tier Assignment
+
+| Operation | Model Tier | Rationale |
+|-----------|-----------|-----------|
+| Adversarial analysis of CRITICAL assertions | **Opus/Sonnet** | High-stakes claims need rigorous reasoning |
+| Counter-evidence web searches | **Sonnet** | Good at query formulation and result interpretation |
+| Evidence gap analysis (screenshot review) | **Sonnet** | Visual analysis needs capable model |
+| Logical flaw detection | **Sonnet** | Reasoning about reasoning quality |
+| DB persistence (validation:create) | **Haiku** | Structured data writes are mechanical |
+| Scope limitation identification | **Sonnet** | Pattern matching against known limitation types |
+| Report generation | **Haiku/Sonnet** | Template-based output |
+
+### Assertion Triage (Compute Allocation)
+
+Before running full adversarial validation, triage assertions by compute need:
+
+| Assertion Profile | Validation Depth | Web Searches | Estimated Cost |
+|---|---|---|---|
+| **CRITICAL + no screenshot evidence** | FULL adversarial (all 5 vectors) | 3-5 queries | High |
+| **CRITICAL + has screenshot** | Standard (4 vectors, skip counter-search if evidence is strong) | 1-2 queries | Medium |
+| **HIGH + has evidence** | Quick adversarial (evidence gap + scope only) | 0-1 queries | Low |
+| **HIGH + no evidence** | Standard (all 5 vectors) | 2-3 queries | Medium |
+| **MEDIUM/LOW** | Quick mode (no web search) | 0 queries | Minimal |
+
+### Batch Optimization
+
+When processing multiple entities:
+- **Group by category**: Entities in same category share competitive context; reuse search results
+- **Cache competitor knowledge**: If you searched "X vs Y" for entity X, reuse findings when validating entity Y
+- **Skip redundant searches**: If the same claim type appears across entities (e.g., "no FedRAMP"), validate once and apply pattern
+- **Quick-first**: Run --quick on all entities first, then do full adversarial only on assertions that remain ambiguous
 
 ---
 
@@ -436,9 +476,11 @@ Based on attack results, assign verdict:
 - Stale evidence (6+ months old)
 
 **REFUTED** - Assign when:
-- Counter-evidence directly contradicts claim
+- Counter-evidence directly contradicts claim **from 2+ independent sources**
 - Screenshot contradicts assertion text
-- Authoritative source says opposite
+- Authoritative source says opposite AND a second source corroborates
+
+> **CRITICAL: Single-source counter-evidence is NOT sufficient for REFUTED.** A single contradicting source may itself be wrong (outdated, erroneous, or context-dependent). If only one source contradicts the claim, assign **CONDITIONAL** with the counter-evidence noted, not REFUTED. The Bolt.new pricing false-refutation (later corrected to ROBUST with 5+ confirming sources) demonstrated this risk.
 
 **UNVERIFIABLE** - Assign when:
 - No evidence for OR against
@@ -862,6 +904,51 @@ Created 2 refined assertions for CONDITIONAL verdicts.
 
 ---
 
+## KNOWN VALIDATION PATTERNS
+
+These patterns have been consistently observed across validation sessions and can be used to optimize compute allocation:
+
+### Pattern: Marketing Superlatives → WEAK
+
+Claims containing superlatives ("best-in-class", "leading", "most advanced", "industry-first") consistently validate as WEAK. These are marketing language, not verifiable technical claims.
+
+**Action**: Fast-track superlative claims to WEAK without full adversarial analysis. Entity researchers should avoid creating pillar assertions from marketing language.
+
+### Pattern: Open-Source Tools → Strong Validation
+
+Entities with open-source codebases have the most verifiable claims. Code is inspectable, community discussions are public, and pricing is transparent.
+
+**Action**: Allocate less compute to open-source entity validation. Allocate more to closed-source entities where marketing claims are harder to verify.
+
+### Pattern: Pricing Staleness → Re-extract Before Validating
+
+Pricing pages change frequently (weeks, not months). Pricing assertions based on extractions >30 days old are unreliable.
+
+**Action**: Check `extract:latest` timestamp for pricing data. If >30 days old, flag as CONDITIONAL with "pricing may have changed" caveat. Recommend re-extraction for critical pricing claims.
+
+### Pattern: FedRAMP Claims → Scope Platform vs Product
+
+Recurring issue: entities claiming "FedRAMP authorized" or "FedRAMP compliant" when the authorization belongs to their cloud provider, not their product.
+
+**Action**: For every FedRAMP claim, determine:
+1. **Direct authorization**: Does the product itself hold a FedRAMP ATO? (Check FedRAMP Marketplace)
+2. **Inherited authorization**: Does the product deploy on FedRAMP-authorized infrastructure (AWS GovCloud, Azure Gov)?
+3. **No authorization**: Is this marketing language suggesting compliance without substance?
+
+Scope the validation verdict accordingly:
+- Direct ATO → ROBUST
+- Inherited via cloud provider → CONDITIONAL ("via [provider] infrastructure, not direct authorization")
+- Marketing language only → WEAK or REFUTED
+
+### Pattern: Idle Validators → Proactive Re-validation
+
+When the validation queue is empty but researchers are still working:
+1. Re-validate WEAK assertions with additional sources (may upgrade to CONDITIONAL)
+2. Re-examine REFUTED verdicts with more sources (catch false refutations)
+3. Cross-validate assertions that share common patterns across entities
+
+---
+
 ## RELATED SKILLS
 
 - `/research-entity` - **REQUIRED FIRST** - Identifies pillar assertions
@@ -920,3 +1007,73 @@ Skip web search for faster validation (evidence review only):
 - Cannot find counter-evidence
 - ROBUST verdict less certain
 - May miss recent changes
+
+---
+
+## BATCH MODE (`batch <n>`)
+
+Process multiple entities sequentially **in a single process**. Do NOT spawn Task subagents.
+
+```
+/research-validation batch 10              # Validate next 10 entities
+/research-validation batch --continue      # Resume from last position
+/research-validation batch --quick 20      # Quick mode for all
+```
+
+### Batch Execution Protocol
+
+**Step 0: Identify entities needing validation**
+
+```bash
+# Get entities with unvalidated pillar assertions
+npm run cli -- validation:unvalidated '{"projectId": "PROJECT_ID"}'
+```
+
+Filter to entities that have pillar assertions (`citedInConclusion: true` or `criticality: CRITICAL`) but no validation records.
+
+**Step 1: Triage and sort**
+
+Sort entities by validation priority:
+1. High-buzz entities first (most important for research conclusions)
+2. Entities with CRITICAL assertions over HIGH
+3. Entities with screenshot evidence (faster to validate)
+
+**Step 2: Process each entity sequentially**
+
+For each entity in the batch:
+
+1. Load pillar assertions
+2. Triage each assertion by compute need (see Compute Budget section)
+3. For CRITICAL assertions without evidence: Full adversarial (5 vectors + web search)
+4. For CRITICAL assertions with evidence: Standard adversarial (evidence review + 1-2 searches)
+5. For HIGH assertions: Quick adversarial (evidence gap + scope check, no web search)
+6. Persist all validation results
+7. Report progress: `[n/total] Validated [ENTITY_NAME]: [verdict distribution]`
+
+**Step 3: Cross-entity optimization**
+
+- If multiple entities share a category, batch their counter-evidence searches
+- Reuse competitive analysis from world model relationships
+- Skip redundant "no FedRAMP" searches after confirming pattern
+
+**Batch size recommendation**: 10-20 entities per batch. Each entity takes 2-5 pillar validations, making batch runs manageable within a single context.
+
+### Progress Tracking
+
+After each entity, output a one-line summary:
+```
+[3/19] Datadog: 3 pillars → 2 ROBUST, 1 CONDITIONAL
+[4/19] Theneo: 3 pillars → 1 ROBUST, 1 CONDITIONAL, 1 WEAK
+```
+
+### Batch Report
+
+After completing the batch, output aggregate statistics:
+```
+=== BATCH VALIDATION COMPLETE ===
+Entities validated: 19
+Assertions validated: 52
+Verdicts: 30 ROBUST, 15 CONDITIONAL, 5 WEAK, 2 REFUTED, 0 UNVERIFIABLE
+Quality score: 0.87
+Web searches performed: 24
+```

@@ -116,6 +116,7 @@ npm run cli -- extract:fetch '{"url": "https://example.com/pricing", "entityId":
 # 2. ANALYZE - Claude reads the screenshot visually, extracts structured data
 
 # 3. SAVE - Persist structured extraction with evidence chain
+# CRITICAL: Use "url", NOT "sourceUrl" — sourceUrl causes silent failure
 npm run cli -- extract:save '{
   "entityId": "<id>",
   "schemaType": "pricing",
@@ -192,6 +193,16 @@ Pillar assertions are the 5-10 claims per entity that foundational conclusions d
 | WEAK | Insufficient evidence | Stays CLAIM |
 | REFUTED | Counter-evidence disproves | REJECTED |
 | UNVERIFIABLE | Cannot be confirmed or refuted | Stays CLAIM |
+
+### Known Validation Patterns
+
+| Pattern | Expected Verdict | Action |
+|---------|------------------|--------|
+| Marketing superlatives ("best", "leading") | WEAK | Fast-track, don't waste compute |
+| Open-source tool claims | Usually ROBUST | Less compute needed (code is inspectable) |
+| Pricing claims >30 days old | CONDITIONAL at best | Re-extract before validating |
+| FedRAMP claims | Check platform vs product scoping | Direct ATO = ROBUST, inherited = CONDITIONAL |
+| Single counter-source | CONDITIONAL, not REFUTED | REFUTED requires 2+ independent sources |
 
 ---
 

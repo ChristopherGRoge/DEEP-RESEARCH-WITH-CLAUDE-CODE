@@ -46,6 +46,18 @@ Performs deep, discerning research on a single entity to form a comprehensive "w
 
 **Batch Processing**: Process multiple entities in one session for efficiency.
 
+### Team-Based Execution (Alternative for Large-Scale Work)
+
+For projects with 50+ entities, a multi-agent team can be ~2-3x faster than sequential batch processing. When using teams:
+
+1. **Split by entity, not by phase** — each researcher owns a set of entities (e.g., A-K, L-Z) end-to-end
+2. **No overlapping file edits** — researchers must not work on the same entity simultaneously
+3. **Message-based handoffs** — notify downstream agents (validators, world model) as entities complete
+4. **Batch notifications** — hand off 5-10 completed entities at a time, not one-by-one, to avoid overwhelming downstream agents
+5. **Pipeline balancing** — researchers generate pillar assertions during extraction (don't defer to Phase 3 only) to keep validators fed
+
+**Key constraint**: The `extract:save` and `assertion:create` CLI commands are safe for concurrent use by multiple agents, as they create new records. Avoid concurrent `entity:update` calls on the same entity.
+
 ## What is a Pillar Assertion?
 
 A **pillar assertion** is a claim where:
@@ -569,13 +581,15 @@ For efficiency, focus on these schemas per entity:
 |----------|--------|-----|
 | **HIGH** | pricing | Budget decisions |
 | **HIGH** | features | Core capabilities |
+| **HIGH** | differentiators | Competitive positioning — drives world model and procurement decisions |
 | **MEDIUM** | compliance | Federal viability |
 | **MEDIUM** | company | Background context |
-| **LOW** | integrations | Nice-to-have |
-| **LOW** | differentiators | Competitive analysis |
+| **MEDIUM** | integrations | Relationship mapping — drives world model ecosystem connections |
 
-**Minimum viable research**: pricing + features (2 extractions)
+**Minimum viable research**: pricing + features + differentiators (3 extractions)
 **Full research**: All 6 schemas
+
+> **Lesson learned**: Differentiators and integrations were historically under-researched when classified as LOW priority (1% and 9% coverage respectively). Differentiators are critical for world model positioning and competitive analysis. Integrations drive relationship mapping. Both are now elevated.
 
 #### Error Handling in Batch
 
@@ -1005,6 +1019,21 @@ For each extraction, Claude:
 ### Step 2.3: Save Extractions
 
 ```bash
+## CRITICAL: `extract:save` Parameter Name
+
+The `extract:save` CLI command expects the parameter `url`, NOT `sourceUrl`. Using `sourceUrl` will cause a **silent failure** — the extraction saves but the URL is not persisted. Always use `url`:
+
+```bash
+# CORRECT
+npm run cli -- extract:save '{"entityId": "...", "url": "https://...", ...}'
+
+# WRONG — silent failure, URL not saved
+npm run cli -- extract:save '{"entityId": "...", "sourceUrl": "https://...", ...}'
+```
+
+---
+
+```bash
 npm run cli -- extract:save '{
   "entityId": "ENTITY_ID",
   "schemaType": "pricing",
@@ -1170,6 +1199,29 @@ npm run cli -- entity:update '{
 | 0.5-0.8 | MEDIUM | Standard icon |
 | 0.3-0.5 | LOW | Smaller icon |
 | <0.3 | MINIMAL | Minimal visual weight |
+
+### Step 2.9: Pricing Staleness Check
+
+**Pricing data goes stale quickly** — pricing pages change within weeks, not months. Before creating pricing assertions:
+
+1. Check if existing pricing extraction is >30 days old:
+   ```bash
+   npm run cli -- extract:latest '{"entityId": "ENTITY_ID", "schemaType": "pricing"}'
+   ```
+2. If stale, re-extract before creating assertions
+3. Tag pricing assertions with capture date in `evidenceDescription`:
+   ```
+   "As of 2026-02-10, pricing page shows Pro tier at $20/mo"
+   ```
+4. Do NOT create pillar assertions from pricing data >60 days old without re-verification
+
+### Step 2.10: Pillar Assertion Generation
+
+**CRITICAL for pipeline throughput**: When working in a multi-agent team, downstream validators consume pillar assertions faster than researchers create them. To prevent validator idle time:
+
+- Generate pillar assertions **during extraction** (don't defer to Phase 3 only)
+- After completing each entity, immediately notify downstream validators
+- When batch processing, hand off entities in groups of 5-10 rather than waiting for the entire batch
 
 **Output of Phase 2**: Filled extractions + differentiators + targeted assertions + logo + buzz score
 

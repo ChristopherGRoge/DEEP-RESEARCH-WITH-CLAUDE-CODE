@@ -679,14 +679,18 @@ This returns all relationships, positioning, and forces.
 
 Verify minimum thresholds:
 
-| Dimension | Minimum | Ideal |
-|---|---|---|
-| Relationships | 3 | 8-12 |
-| COMPETES_WITH | 1 | 2-4 |
-| DEPENDS_ON | 1 | 1-3 |
-| Positioning fields filled | 4/6 | 6/6 |
-| Positioning statement | Present | Present |
-| Forces | 2 | 4-6 |
+| Dimension | Minimum | Ideal | Blocking? |
+|---|---|---|---|
+| Relationships | 3 | 8-12 | Yes |
+| COMPETES_WITH | 1 | 2-4 | Yes |
+| DEPENDS_ON | 1 | 1-3 | No |
+| Positioning fields filled | 4/6 | 6/6 | Yes |
+| Positioning statement | Present | Present | Yes |
+| Forces | 2 | 4-6 | **Yes — CRITICAL** |
+
+> **CRITICAL: Force field analysis is NOT optional.** A world model without force field analysis is incomplete. In prior sessions, force fields were systematically skipped (0% coverage across 98 entities) because they are Phase 3 and agents deprioritized them under time pressure. Forces (tailwinds, headwinds, gravitational) are essential for understanding WHY an entity's trajectory matters — not just WHERE it sits.
+
+**0 forces = BLOCKING gap.** Do NOT mark a world model as complete without at least 2 forces. Return to Phase 3 and complete force field analysis before proceeding to synthesis.
 
 If below minimums:
 ```
@@ -694,6 +698,14 @@ WARNING: World model for [ENTITY_NAME] is thin.
 Missing: [list of gaps]
 
 Consider running with --deep flag for extended search.
+```
+
+If forces = 0:
+```
+BLOCKING: World model for [ENTITY_NAME] has no force field analysis.
+Forces are REQUIRED for a complete world model.
+
+Returning to Phase 3 to complete force field analysis...
 ```
 
 ### Step 4.3: Generate World Model Document
@@ -800,6 +812,8 @@ Filter to entities that have research data (assertions > 0) but no world model y
 3. Report progress: `[n/total] Completed world model for [ENTITY_NAME]`
 
 **IMPORTANT**: Execute each entity's 4 phases inline. Do NOT use the Task tool to delegate to subagents. The CLI commands are lightweight and the web searches are fast -- sequential execution in a single process is the correct approach.
+
+**CRITICAL**: Complete ALL 4 phases for each entity before moving to the next. Do NOT batch Phase 1-2 across all entities and then return for Phase 3 (forces). This leads to force field analysis being systematically skipped. Each entity must have positioning + relationships + forces before marking as complete.
 
 **Batch size recommendation**: 5-10 entities per batch. World model construction is lighter than entity research (mostly derives from existing data + targeted searches).
 
