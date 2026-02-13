@@ -147,6 +147,46 @@
             flex-shrink: 0;
             position: relative;
             z-index: 100;
+            transition: margin-top 0.3s ease, opacity 0.3s ease;
+        }
+
+        .grove-header.collapsed {
+            margin-top: calc(-1 * var(--header-height));
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .header-reveal-btn {
+            position: fixed;
+            top: 6px;
+            right: 16px;
+            z-index: 101;
+            background: var(--bg-deep);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 4px 8px;
+            cursor: pointer;
+            font-family: 'Material Symbols Outlined';
+            font-size: 18px;
+            color: var(--text-muted);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            line-height: 1;
+        }
+
+        .header-reveal-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-surface);
+        }
+
+        .header-reveal-btn.visible {
+            opacity: 0.6;
+            pointer-events: auto;
+        }
+
+        .header-reveal-btn.visible:hover {
+            opacity: 1;
         }
 
         .grove-header::after {
@@ -359,11 +399,48 @@
         #grove-canvas {
             width: 100%;
             height: 100%;
+            position: relative;
         }
 
         #grove-canvas svg {
             width: 100%;
             height: 100%;
+        }
+
+        /* Category info badge — upper-left overlay in category view */
+        .category-info-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 10px 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .category-info-badge .badge-icon {
+            font-family: 'Material Symbols Outlined';
+            font-size: 22px;
+            color: var(--text-secondary);
+        }
+
+        .category-info-badge .badge-name {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .category-info-badge .badge-count {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
         }
 
         /* =====================================================
@@ -1685,6 +1762,8 @@
             </div>
         </header>
 
+        <button class="header-reveal-btn" id="header-reveal-btn" title="Show header">expand_less</button>
+
         <!-- Breadcrumb -->
         <nav class="breadcrumb" id="breadcrumb">
             <button class="breadcrumb-item active" data-level="project">
@@ -1807,6 +1886,8 @@
         };
 
         const dom = {
+            header: document.querySelector('.grove-header'),
+            headerRevealBtn: document.getElementById('header-reveal-btn'),
             projectSelect: document.getElementById('project-select'),
             headerStats: document.getElementById('header-stats'),
             coverageValue: document.getElementById('coverage-value'),
@@ -1822,6 +1903,22 @@
             wmComplianceBar: document.getElementById('wm-compliance-bar'),
             wmComplianceFilters: document.getElementById('wm-compliance-filters')
         };
+
+        // =====================================================
+        // HEADER COLLAPSE / EXPAND
+        // =====================================================
+
+        function collapseHeader() {
+            dom.header.classList.add('collapsed');
+            dom.headerRevealBtn.classList.add('visible');
+        }
+
+        function expandHeader() {
+            dom.header.classList.remove('collapsed');
+            dom.headerRevealBtn.classList.remove('visible');
+        }
+
+        dom.headerRevealBtn.addEventListener('click', () => expandHeader());
 
         // =====================================================
         // INITIALIZATION
@@ -2077,6 +2174,7 @@
             }
 
             hideWorldModelFilters();
+            expandHeader();
             state.activeConcepts.clear();
             state.currentLevel = 'project';
             state.selectedCategory = null;
@@ -2093,6 +2191,7 @@
             }
 
             hideWorldModelFilters();
+            collapseHeader();
             const category = state.treeData.children.find(c => c.key === categoryKey);
             if (category) {
                 state.currentLevel = 'category';
@@ -2534,32 +2633,20 @@
                     return pos ? 0.3 + (pos.ringIndex / ringCount) * 0.5 : 0.3;
                 });
 
-            // Center node (category) - shows icon + category name
-            const center = g.append('g')
-                .attr('class', 'node node-category')
-                .attr('data-category', category.key);
+            // Category info badge — HTML overlay in upper-left corner
+            const existingBadge = dom.canvas.querySelector('.category-info-badge');
+            if (existingBadge) existingBadge.remove();
 
-            center.append('circle')
-                .attr('r', 45)
-                .style('fill-opacity', 0.15);
-
-            // Material Icon for category
-            center.append('text')
-                .attr('class', 'category-icon')
-                .attr('text-anchor', 'middle')
-                .attr('dy', -8)
-                .style('font-family', 'Material Symbols Outlined')
-                .style('font-size', '22px')
-                .style('fill', 'var(--text-secondary)')
-                .text(category.materialIcon || 'category');
-
-            // Category name below icon
-            center.append('text')
-                .attr('text-anchor', 'middle')
-                .attr('dy', 14)
-                .style('font-weight', '600')
-                .style('font-size', '10px')
-                .text(formatCategoryName(category.key));
+            const badge = document.createElement('div');
+            badge.className = 'category-info-badge';
+            badge.innerHTML = `
+                <span class="badge-icon">${category.materialIcon || 'category'}</span>
+                <div>
+                    <div class="badge-name">${formatCategoryName(category.key)}</div>
+                    <div class="badge-count">${entities.length} entities</div>
+                </div>
+            `;
+            dom.canvas.appendChild(badge);
 
             // Create defs for clip paths
             const defs = svg.append('defs');
