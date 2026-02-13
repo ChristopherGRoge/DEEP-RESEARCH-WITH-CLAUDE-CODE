@@ -1297,6 +1297,255 @@
             flex-shrink: 0;
         }
 
+        /* ===== Concept Chips in Detail Panel ===== */
+
+        .concept-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .concept-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-family: var(--font-mono);
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-surface);
+            color: var(--text-secondary);
+            cursor: default;
+        }
+
+        .concept-chip .concept-type-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .concept-type-dot.METHODOLOGY { background: #6c71c4; }
+        .concept-type-dot.TECHNOLOGY { background: #2aa198; }
+        .concept-type-dot.STANDARD { background: #b58900; }
+        .concept-type-dot.PATTERN { background: #d33682; }
+
+        .concept-chip .strength-bar {
+            width: 30px;
+            height: 4px;
+            background: var(--bg-elevated);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .concept-chip .strength-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: var(--accent-primary);
+        }
+
+        .concept-type-group {
+            margin-bottom: var(--space-sm);
+        }
+
+        .concept-type-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .concept-type-label {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        /* ===== Concept Pills in Category View ===== */
+
+        .concept-pill {
+            font-family: var(--font-mono);
+            font-size: 8px;
+            fill: var(--text-muted);
+            pointer-events: all;
+            cursor: default;
+        }
+
+        .concept-pill-bg {
+            fill: var(--bg-surface);
+            stroke: var(--border-subtle);
+            stroke-width: 0.5;
+            rx: 8;
+            ry: 8;
+        }
+
+        .concept-link-line {
+            stroke-dasharray: 3,3;
+            pointer-events: none;
+        }
+
+        /* World Model Filter Bar (top) */
+        .wm-filter-bar {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(253, 246, 227, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            flex-wrap: wrap;
+        }
+
+        .wm-filter-bar.hidden { display: none; }
+
+        .wm-filter-search {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            padding: 4px 8px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            outline: none;
+            width: 150px;
+            flex-shrink: 0;
+        }
+
+        .wm-filter-search:focus {
+            border-color: var(--accent);
+        }
+
+        .wm-filter-search::placeholder {
+            color: var(--text-muted);
+        }
+
+        .wm-filter-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--border-subtle);
+            flex-shrink: 0;
+        }
+
+        .wm-filter-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            background: var(--bg-primary);
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .wm-filter-toggle:hover {
+            border-color: var(--text-muted);
+        }
+
+        .wm-filter-toggle.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .wm-filter-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Compliance Slicer Bar (bottom) */
+        .wm-compliance-bar {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            right: 8px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(253, 246, 227, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            flex-wrap: wrap;
+        }
+
+        .wm-compliance-bar.hidden { display: none; }
+
+        .wm-compliance-label {
+            font-family: var(--font-display);
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .wm-compliance-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            background: var(--bg-primary);
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .wm-compliance-toggle:hover {
+            border-color: #268bd2;
+        }
+
+        .wm-compliance-toggle.active {
+            background: #268bd2;
+            border-color: #268bd2;
+            color: #fff;
+        }
+
+        .wm-compliance-count {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            background: var(--bg-elevated);
+            padding: 0 5px;
+            border-radius: 8px;
+            color: var(--text-muted);
+        }
+
+        .wm-compliance-toggle.active .wm-compliance-count {
+            background: rgba(255, 255, 255, 0.25);
+            color: #fff;
+        }
+
+        /* Compliance badge below world model nodes */
+        .wm-node-compliance {
+            font-family: var(--font-mono);
+            font-size: 8px;
+            fill: #268bd2;
+            letter-spacing: 0.5px;
+        }
+
         .wm-rel-group {
             margin-bottom: var(--space-md);
         }
@@ -1439,6 +1688,20 @@
         <!-- Main Workspace -->
         <main class="workspace">
             <div class="canvas-container">
+                <!-- World Model Filter Bar (top) -->
+                <div class="wm-filter-bar hidden" id="wm-filter-bar">
+                    <input type="text" class="wm-filter-search" id="wm-name-search"
+                           placeholder="Filter by name..." autocomplete="off">
+                    <div class="wm-filter-divider"></div>
+                    <div id="wm-rel-filters" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+                </div>
+
+                <!-- Compliance Slicer Bar (bottom) -->
+                <div class="wm-compliance-bar hidden" id="wm-compliance-bar">
+                    <span class="wm-compliance-label">Compliance</span>
+                    <div id="wm-compliance-filters" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+                </div>
+
                 <div id="grove-canvas">
                     <div class="loading-state" id="loading-state">
                         <div class="spinner"></div>
@@ -1522,7 +1785,13 @@
             selectedCategory: null,
             selectedEntity: null,
             worldModelData: null,
-            worldModelEntityId: null
+            worldModelEntityId: null,
+            wmFilters: {
+                relTypes: new Set(),
+                nameSearch: '',
+                complianceTypes: new Set()
+            },
+            wmComplianceData: {}
         };
 
         const dom = {
@@ -1534,7 +1803,12 @@
             loadingState: document.getElementById('loading-state'),
             detailPanel: document.getElementById('detail-panel'),
             panelClose: document.getElementById('panel-close'),
-            tooltip: document.getElementById('tooltip')
+            tooltip: document.getElementById('tooltip'),
+            wmFilterBar: document.getElementById('wm-filter-bar'),
+            wmNameSearch: document.getElementById('wm-name-search'),
+            wmRelFilters: document.getElementById('wm-rel-filters'),
+            wmComplianceBar: document.getElementById('wm-compliance-bar'),
+            wmComplianceFilters: document.getElementById('wm-compliance-filters')
         };
 
         // =====================================================
@@ -1790,6 +2064,7 @@
                 state.cleanupAnimation = null;
             }
 
+            hideWorldModelFilters();
             state.currentLevel = 'project';
             state.selectedCategory = null;
             closeDetailPanel();
@@ -1804,6 +2079,7 @@
                 state.cleanupAnimation = null;
             }
 
+            hideWorldModelFilters();
             const category = state.treeData.children.find(c => c.key === categoryKey);
             if (category) {
                 state.currentLevel = 'category';
@@ -1860,9 +2136,31 @@
                 state.currentLevel = 'worldmodel';
                 updateBreadcrumb();
 
+                // Reset filter state for new entity
+                state.wmFilters = { relTypes: new Set(), nameSearch: '', complianceTypes: new Set() };
+                state.wmComplianceData = {};
+
                 if (wmData) {
                     renderWorldModel(wmData, !fromWorldModel);
+
+                    // Fetch compliance data for related entities (non-blocking)
+                    const allRels = [
+                        ...(wmData.relationships.outbound || []),
+                        ...(wmData.relationships.inbound || [])
+                    ];
+                    const relEntityIds = allRels
+                        .map(r => r.relatedEntity?.id)
+                        .filter(Boolean);
+                    if (relEntityIds.length > 0) {
+                        fetchComplianceForEntities(relEntityIds).then(compData => {
+                            state.wmComplianceData = compData;
+                            setupWorldModelFilters(wmData);
+                        });
+                    } else {
+                        hideWorldModelFilters();
+                    }
                 } else {
+                    hideWorldModelFilters();
                     // No world model data - show centered entity name
                     dom.canvas.innerHTML = '';
                     const width = dom.canvas.clientWidth;
@@ -2394,6 +2692,9 @@
                 }
             });
 
+            // Fetch and render concept pills around outer edge (async, non-blocking)
+            fetchAndRenderConceptPills(g, category, maxRadius, entities, entityPositions);
+
             // Initialize entity positions for collision simulation
             entities.forEach(entity => {
                 const pos = entityPositions.get(entity.id);
@@ -2436,6 +2737,524 @@
                 simulation.stop();
                 clearTimeout(stopTimeout);
             };
+        }
+
+        // =====================================================
+        // CONCEPT PILLS (Category View Overlay)
+        // =====================================================
+
+        async function fetchAndRenderConceptPills(g, category, maxRadius, entities, entityPositions) {
+            // Look up category ID from database categories
+            const dbCat = (state.treeData?.children || []).find(c => c.key === category.key);
+            if (!dbCat || !dbCat.conceptCount) return;
+
+            // Need to find categoryId - fetch from categories API
+            try {
+                const res = await fetch(`/api/categories/${category.key}/concept-map`);
+                let data = await res.json();
+
+                // Try by name if key-based lookup fails
+                if (!data.success) {
+                    // Fetch category list to find ID
+                    const catRes = await fetch('/api/categories/' + category.key + '/concepts');
+                    data = await catRes.json();
+                    if (!data.success) return;
+                }
+
+                const conceptMap = data.data;
+                if (!conceptMap || !conceptMap.concepts || conceptMap.concepts.length === 0) return;
+
+                const concepts = conceptMap.concepts;
+                const pillRadius = maxRadius + 40;
+                const angleStep = (2 * Math.PI) / concepts.length;
+
+                // Concept connection lines group (render below pills)
+                const lineGroup = g.append('g')
+                    .attr('class', 'concept-lines-group')
+                    .style('opacity', 0);
+
+                // Concept pills group
+                const pillGroup = g.append('g')
+                    .attr('class', 'concept-pills-group');
+
+                const typeColors = {
+                    METHODOLOGY: '#6c71c4',
+                    TECHNOLOGY: '#2aa198',
+                    STANDARD: '#b58900',
+                    PATTERN: '#d33682'
+                };
+
+                concepts.forEach((concept, i) => {
+                    const angle = i * angleStep - Math.PI / 2;
+                    const px = pillRadius * Math.cos(angle);
+                    const py = pillRadius * Math.sin(angle);
+                    const textLen = concept.displayName.length * 5.5 + 16;
+
+                    const pill = pillGroup.append('g')
+                        .attr('class', 'concept-pill')
+                        .attr('transform', `translate(${px}, ${py})`)
+                        .attr('data-concept-id', concept.id);
+
+                    // Pill background
+                    pill.append('rect')
+                        .attr('class', 'concept-pill-bg')
+                        .attr('x', -textLen / 2)
+                        .attr('y', -9)
+                        .attr('width', textLen)
+                        .attr('height', 18);
+
+                    // Type dot
+                    pill.append('circle')
+                        .attr('cx', -textLen / 2 + 8)
+                        .attr('cy', 0)
+                        .attr('r', 3)
+                        .attr('fill', typeColors[concept.conceptType] || '#657b83');
+
+                    // Label
+                    pill.append('text')
+                        .attr('x', -textLen / 2 + 16)
+                        .attr('y', 3)
+                        .style('font-size', '9px')
+                        .style('fill', 'var(--text-secondary)')
+                        .text(concept.displayName.length > 20 ? concept.displayName.substring(0, 17) + '...' : concept.displayName);
+
+                    // Hover: show connection lines to linked entities
+                    pill.on('mouseenter', () => {
+                        lineGroup.selectAll('*').remove();
+                        lineGroup.style('opacity', 1);
+
+                        (concept.entities || []).forEach(linked => {
+                            // Find entity position
+                            const entityNode = entities.find(e => e.id === linked.id);
+                            if (!entityNode) return;
+
+                            const ex = entityNode.x || 0;
+                            const ey = entityNode.y || 0;
+                            const opacity = Math.max(0.15, linked.strength);
+                            const color = typeColors[concept.conceptType] || '#657b83';
+
+                            lineGroup.append('line')
+                                .attr('class', 'concept-link-line')
+                                .attr('x1', px)
+                                .attr('y1', py)
+                                .attr('x2', ex)
+                                .attr('y2', ey)
+                                .attr('stroke', color)
+                                .attr('stroke-width', 1.5)
+                                .attr('opacity', opacity);
+                        });
+                    });
+
+                    pill.on('mouseleave', () => {
+                        lineGroup.style('opacity', 0);
+                        lineGroup.selectAll('*').remove();
+                    });
+                });
+
+            } catch (err) {
+                console.error('Failed to load concept pills:', err);
+            }
+        }
+
+        // =====================================================
+        // WORLD MODEL FILTERS & COMPLIANCE
+        // =====================================================
+
+        async function fetchComplianceForEntities(entityIds) {
+            try {
+                const res = await fetch(`/api/entities/compliance-batch?ids=${entityIds.join(',')}`);
+                const data = await res.json();
+                return data.success ? data.data : {};
+            } catch (err) {
+                console.error('Failed to fetch compliance data:', err);
+                return {};
+            }
+        }
+
+        function hideWorldModelFilters() {
+            dom.wmFilterBar.classList.add('hidden');
+            dom.wmComplianceBar.classList.add('hidden');
+        }
+
+        function setupWorldModelFilters(wmData) {
+            if (!wmData) return;
+
+            const allRels = [
+                ...(wmData.relationships.outbound || []).map(r => ({...r, _dir: 'out'})),
+                ...(wmData.relationships.inbound || []).map(r => ({...r, _dir: 'in'}))
+            ];
+
+            if (allRels.length === 0) {
+                hideWorldModelFilters();
+                return;
+            }
+
+            // --- Relationship type filter buttons ---
+            const relTypes = [...new Set(allRels.map(r => r.relationshipType))];
+            dom.wmRelFilters.innerHTML = '';
+
+            relTypes.forEach(type => {
+                const btn = document.createElement('button');
+                btn.className = 'wm-filter-toggle';
+                // Set tracks hidden types: if in set, type is hidden (button shows struck state)
+                const isHidden = state.wmFilters.relTypes.has(type);
+                if (!isHidden) btn.classList.add('active');
+                btn.innerHTML = `<span class="wm-filter-dot" style="background:${getRelColor(type)}"></span>${relTypeLabel(type)}`;
+                btn.addEventListener('click', () => {
+                    if (state.wmFilters.relTypes.has(type)) {
+                        // Currently hidden → show it
+                        state.wmFilters.relTypes.delete(type);
+                        btn.classList.add('active');
+                    } else {
+                        // Currently visible → hide it
+                        state.wmFilters.relTypes.add(type);
+                        btn.classList.remove('active');
+                    }
+                    applyWorldModelFilters();
+                });
+                dom.wmRelFilters.appendChild(btn);
+            });
+
+            // --- Name search ---
+            dom.wmNameSearch.value = state.wmFilters.nameSearch;
+            dom.wmNameSearch.oninput = () => {
+                state.wmFilters.nameSearch = dom.wmNameSearch.value;
+                applyWorldModelFilters();
+            };
+
+            // --- Compliance slicer buttons ---
+            dom.wmComplianceFilters.innerHTML = '';
+            const complianceTypes = [
+                { key: 'soc2', label: 'SOC 2', abbr: 'S2' },
+                { key: 'fedRampStatus', label: 'FedRAMP', abbr: 'FR' },
+                { key: 'hipaaCompliant', label: 'HIPAA', abbr: 'HI' },
+                { key: 'gdprCompliant', label: 'GDPR', abbr: 'GD' },
+                { key: 'iso27001', label: 'ISO 27001', abbr: 'ISO' }
+            ];
+
+            const compData = state.wmComplianceData;
+            let hasAnyCompliance = false;
+
+            complianceTypes.forEach(ct => {
+                // Count entities with this compliance
+                let count = 0;
+                for (const [eid, cd] of Object.entries(compData)) {
+                    if (ct.key === 'iso27001') {
+                        if (cd.certifications && cd.certifications.some(c => /iso.?27001/i.test(c))) count++;
+                    } else if (ct.key === 'fedRampStatus') {
+                        if (cd.fedRampStatus && cd.fedRampStatus !== 'None' && cd.fedRampStatus !== 'none') count++;
+                    } else {
+                        if (cd[ct.key]) count++;
+                    }
+                }
+
+                if (count > 0) hasAnyCompliance = true;
+
+                const btn = document.createElement('button');
+                btn.className = 'wm-compliance-toggle';
+                if (state.wmFilters.complianceTypes.has(ct.key)) btn.classList.add('active');
+                btn.innerHTML = `${ct.label} <span class="wm-compliance-count">${count}</span>`;
+                btn.addEventListener('click', () => {
+                    if (state.wmFilters.complianceTypes.has(ct.key)) {
+                        state.wmFilters.complianceTypes.delete(ct.key);
+                        btn.classList.remove('active');
+                    } else {
+                        state.wmFilters.complianceTypes.add(ct.key);
+                        btn.classList.add('active');
+                    }
+                    applyWorldModelFilters();
+                });
+                dom.wmComplianceFilters.appendChild(btn);
+            });
+
+            // Show/hide bars
+            dom.wmFilterBar.classList.remove('hidden');
+            if (hasAnyCompliance || Object.keys(compData).length > 0) {
+                dom.wmComplianceBar.classList.remove('hidden');
+            } else {
+                dom.wmComplianceBar.classList.add('hidden');
+            }
+
+            // Add compliance badges to existing nodes and re-apply any segment layout
+            addComplianceBadges();
+            applyComplianceSegment(wmData);
+        }
+
+        function entityMatchesCompliance(entityId) {
+            const cd = state.wmComplianceData[entityId];
+            if (!cd) return false;
+            const active = state.wmFilters.complianceTypes;
+            if (active.size === 0) return true;
+            for (const key of active) {
+                if (key === 'iso27001') {
+                    if (cd.certifications && cd.certifications.some(c => /iso.?27001/i.test(c))) return true;
+                } else if (key === 'fedRampStatus') {
+                    if (cd.fedRampStatus && cd.fedRampStatus !== 'None' && cd.fedRampStatus !== 'none') return true;
+                } else {
+                    if (cd[key]) return true;
+                }
+            }
+            return false;
+        }
+
+        function entityHasAnyCompliance(entityId) {
+            const cd = state.wmComplianceData[entityId];
+            if (!cd) return false;
+            if (cd.soc2) return true;
+            if (cd.fedRampStatus && cd.fedRampStatus !== 'None' && cd.fedRampStatus !== 'none') return true;
+            if (cd.hipaaCompliant) return true;
+            if (cd.gdprCompliant) return true;
+            if (cd.certifications && cd.certifications.length > 0) return true;
+            return false;
+        }
+
+        function applyWorldModelFilters() {
+            const svg = d3.select('#grove-canvas svg');
+            if (svg.empty()) return;
+
+            const { relTypes, nameSearch, complianceTypes } = state.wmFilters;
+            const hasNameFilter = nameSearch.trim().length > 0;
+            const hasCompFilter = complianceTypes.size > 0;
+            const searchLower = nameSearch.trim().toLowerCase();
+
+            svg.selectAll('.wm-node').each(function(d) {
+                const node = d3.select(this);
+                const entityId = d.relatedEntity?.id;
+                const name = (d.relatedEntity?.name || '').toLowerCase();
+
+                let visible = true;
+
+                // Check 1: Relationship type filter (Set tracks hidden types)
+                if (relTypes.has(d.relationshipType)) {
+                    visible = false;
+                }
+
+                // Check 2: Name search
+                if (visible && hasNameFilter && !name.includes(searchLower)) {
+                    visible = false;
+                }
+
+                // Check 3: Compliance filter
+                if (visible && hasCompFilter && entityId) {
+                    if (!entityMatchesCompliance(entityId)) {
+                        visible = false;
+                    }
+                }
+
+                node.transition().duration(200)
+                    .style('opacity', visible ? 1 : 0.08)
+                    .style('pointer-events', visible ? 'all' : 'none');
+            });
+
+            // Fade links to match their node visibility
+            svg.selectAll('.wm-link').each(function(d) {
+                const link = d3.select(this);
+                const entityId = d.relatedEntity?.id;
+                const name = (d.relatedEntity?.name || '').toLowerCase();
+
+                let visible = true;
+                if (relTypes.has(d.relationshipType)) visible = false;
+                if (visible && hasNameFilter && !name.includes(searchLower)) visible = false;
+                if (visible && hasCompFilter && entityId && !entityMatchesCompliance(entityId)) visible = false;
+
+                link.transition().duration(200)
+                    .style('opacity', visible ? null : 0.06);
+            });
+        }
+
+        function addComplianceBadges() {
+            const svg = d3.select('#grove-canvas svg');
+            if (svg.empty()) return;
+
+            // Remove existing compliance badges first
+            svg.selectAll('.wm-node-compliance').remove();
+
+            svg.selectAll('.wm-node').each(function(d) {
+                const node = d3.select(this);
+                const entityId = d.relatedEntity?.id;
+                if (!entityId) return;
+
+                const cd = state.wmComplianceData[entityId];
+                if (!cd) return;
+
+                const abbrs = [];
+                if (cd.soc2) abbrs.push('S2');
+                if (cd.fedRampStatus && cd.fedRampStatus !== 'None' && cd.fedRampStatus !== 'none') abbrs.push('FR');
+                if (cd.hipaaCompliant) abbrs.push('HI');
+                if (cd.gdprCompliant) abbrs.push('GD');
+                if (cd.certifications) {
+                    if (cd.certifications.some(c => /iso.?27001/i.test(c))) abbrs.push('ISO');
+                }
+
+                if (abbrs.length === 0) return;
+
+                // Position below the relationship type badge
+                const r = d._nodeRadius || 16;
+                const cosA = Math.cos(d._angle || 0);
+                let anchor, dx;
+                if (cosA > 0.2) { anchor = 'start'; dx = r + 6; }
+                else if (cosA < -0.2) { anchor = 'end'; dx = -r - 6; }
+                else { anchor = 'middle'; dx = 0; }
+
+                const sinA = Math.sin(d._angle || 0);
+                let dy;
+                if (Math.abs(cosA) <= 0.2) {
+                    dy = sinA > 0 ? r + 36 : -r - 28;
+                } else {
+                    dy = 27;
+                }
+
+                node.append('text')
+                    .attr('class', 'wm-node-compliance')
+                    .attr('text-anchor', anchor)
+                    .attr('dx', dx)
+                    .attr('dy', dy)
+                    .text(abbrs.join(' · '));
+            });
+        }
+
+        function applyComplianceSegment(wmData) {
+            if (!wmData || Object.keys(state.wmComplianceData).length === 0) return;
+
+            const svg = d3.select('#grove-canvas svg g');
+            if (svg.empty()) return;
+
+            // Remove any existing compliance segment indicator
+            svg.selectAll('.wm-compliance-segment').remove();
+
+            const allRels = [
+                ...(wmData.relationships.outbound || []).map(r => ({...r, _dir: 'out'})),
+                ...(wmData.relationships.inbound || []).map(r => ({...r, _dir: 'in'}))
+            ];
+
+            // Check if any related entities have compliance data
+            const compliantIds = new Set();
+            allRels.forEach(r => {
+                const eid = r.relatedEntity?.id;
+                if (eid && entityHasAnyCompliance(eid)) compliantIds.add(eid);
+            });
+
+            if (compliantIds.size === 0) return;
+
+            // Get ring radii from the existing layout
+            const width = dom.canvas.clientWidth;
+            const height = dom.canvas.clientHeight;
+            const outerRing = Math.min(width, height) * 0.36;
+
+            // Draw compliance segment arc (right quadrant: -PI/4 to PI/4)
+            const segStart = -Math.PI / 4;
+            const segEnd = Math.PI / 4;
+
+            const arcGen = d3.arc()
+                .innerRadius(0)
+                .outerRadius(outerRing + 30)
+                .startAngle(segStart + Math.PI / 2)
+                .endAngle(segEnd + Math.PI / 2);
+
+            const segGroup = svg.insert('g', ':first-child')
+                .attr('class', 'wm-compliance-segment');
+
+            segGroup.append('path')
+                .attr('d', arcGen())
+                .style('fill', 'rgba(38, 139, 210, 0.04)')
+                .style('stroke', '#268bd2')
+                .style('stroke-width', 1)
+                .style('stroke-dasharray', '4, 4')
+                .style('stroke-opacity', 0.3);
+
+            // Label at the midpoint of the arc
+            const midAngle = 0; // right side
+            const labelR = outerRing + 42;
+            segGroup.append('text')
+                .attr('x', labelR * Math.cos(midAngle))
+                .attr('y', labelR * Math.sin(midAngle))
+                .attr('text-anchor', 'start')
+                .style('font-family', 'var(--font-display)')
+                .style('font-size', '8px')
+                .style('font-weight', '700')
+                .style('text-transform', 'uppercase')
+                .style('letter-spacing', '0.08em')
+                .style('fill', '#268bd2')
+                .style('opacity', 0.5)
+                .text('COMPLIANCE');
+
+            // Re-position compliant entities into the compliance sector
+            const strongRels = allRels.filter(r => r.strength >= 0.7);
+            const weakRels = allRels.filter(r => r.strength < 0.7);
+            const innerRing = Math.min(width, height) * 0.20;
+
+            function reposition(rels, ringRadius) {
+                const compliant = rels.filter(r => compliantIds.has(r.relatedEntity?.id));
+                const nonCompliant = rels.filter(r => !compliantIds.has(r.relatedEntity?.id));
+
+                // Compliance sector: -PI/4 to PI/4 (right quadrant, 90 degrees)
+                if (compliant.length > 0) {
+                    const sectorRange = Math.PI / 2; // 90 degrees
+                    const step = sectorRange / Math.max(compliant.length + 1, 2);
+                    compliant.forEach((rel, i) => {
+                        const angle = segStart + step * (i + 1);
+                        rel._x = ringRadius * Math.cos(angle);
+                        rel._y = ringRadius * Math.sin(angle);
+                        rel._angle = angle;
+                        rel.targetX = rel._x;
+                        rel.targetY = rel._y;
+                    });
+                }
+
+                // General sector: PI/4 to 7*PI/4 (remaining 270 degrees)
+                if (nonCompliant.length > 0) {
+                    const sectorStart = segEnd;
+                    const sectorRange = 2 * Math.PI - Math.PI / 2;
+                    const step = sectorRange / Math.max(nonCompliant.length + 1, 2);
+                    nonCompliant.forEach((rel, i) => {
+                        const angle = sectorStart + step * (i + 1);
+                        rel._x = ringRadius * Math.cos(angle);
+                        rel._y = ringRadius * Math.sin(angle);
+                        rel._angle = angle;
+                        rel.targetX = rel._x;
+                        rel.targetY = rel._y;
+                    });
+                }
+            }
+
+            reposition(strongRels, innerRing);
+            reposition(weakRels, outerRing);
+
+            // Animate nodes and links to new positions
+            const allPositioned = [...strongRels, ...weakRels];
+
+            svg.selectAll('.wm-node')
+                .data(allPositioned)
+                .transition().duration(600).ease(d3.easeCubicInOut)
+                .attr('transform', d => `translate(${d._x}, ${d._y})`);
+
+            svg.selectAll('.wm-link')
+                .data(allPositioned)
+                .transition().duration(600).ease(d3.easeCubicInOut)
+                .attr('x2', d => d._x)
+                .attr('y2', d => d._y);
+
+            // Update compliance badge positions after transition
+            setTimeout(() => addComplianceBadges(), 650);
+        }
+
+        function getComplianceTooltipHtml(entityId) {
+            const cd = state.wmComplianceData[entityId];
+            if (!cd) return '';
+
+            const items = [];
+            if (cd.soc2) items.push('SOC 2');
+            if (cd.fedRampStatus && cd.fedRampStatus !== 'None' && cd.fedRampStatus !== 'none')
+                items.push(`FedRAMP: ${cd.fedRampStatus}`);
+            if (cd.hipaaCompliant) items.push('HIPAA');
+            if (cd.gdprCompliant) items.push('GDPR');
+            if (cd.certifications && cd.certifications.length > 0)
+                items.push(...cd.certifications.slice(0, 3));
+
+            if (items.length === 0) return '';
+            return `<div class="tooltip-meta" style="margin-top:4px;color:#268bd2;font-size:10px;">
+                <span style="font-weight:600;">Compliance:</span> ${items.join(', ')}
+            </div>`;
         }
 
         // =====================================================
@@ -2936,8 +3755,42 @@
                 }
             }
 
+            // Build concepts section if world model data has concepts
+            let conceptsHtml = '';
+            if (state.worldModelData && state.worldModelData.concepts && state.worldModelData.concepts.count > 0) {
+                const conceptData = state.worldModelData.concepts;
+                const typeOrder = ['METHODOLOGY', 'TECHNOLOGY', 'STANDARD', 'PATTERN'];
+                const typeLabels = { METHODOLOGY: 'Methodologies', TECHNOLOGY: 'Technologies', STANDARD: 'Standards', PATTERN: 'Patterns' };
+
+                conceptsHtml = `<div class="wm-panel-section">
+                    <div class="wm-section-title">Concepts</div>`;
+
+                for (const type of typeOrder) {
+                    const links = (conceptData.byType || {})[type] || [];
+                    if (links.length === 0) continue;
+
+                    conceptsHtml += `<div class="concept-type-group">
+                        <div class="concept-type-label">${typeLabels[type] || type}</div>
+                        <div class="concept-chips">`;
+
+                    for (const link of links) {
+                        const strengthPct = Math.round(link.strength * 100);
+                        conceptsHtml += `
+                            <div class="concept-chip" title="${link.concept.displayName} (${link.linkType}, ${strengthPct}%)${link.context ? ' - ' + link.context : ''}">
+                                <span class="concept-type-dot ${type}"></span>
+                                <span>${link.concept.displayName}</span>
+                                <span class="strength-bar"><span class="strength-fill" style="width: ${strengthPct}%"></span></span>
+                            </div>`;
+                    }
+
+                    conceptsHtml += `</div></div>`;
+                }
+
+                conceptsHtml += `</div>`;
+            }
+
             if (assertions.length === 0) {
-                panelContent.innerHTML = positioningHtml + `
+                panelContent.innerHTML = positioningHtml + conceptsHtml + `
                     <div class="empty-state" style="padding: var(--space-xl) 0;">
                         <p style="color: var(--text-tertiary);">No assertions yet</p>
                         <p style="font-size: 12px; color: var(--text-muted);">Run /research-entity to gather data</p>
@@ -2952,7 +3805,7 @@
                     grouped[cat].push(assertion);
                 }
 
-                let html = positioningHtml;
+                let html = positioningHtml + conceptsHtml;
 
                 html += '<div class="assertions-section">';
                 html += `<div class="section-header">
@@ -3074,6 +3927,7 @@
             } else if (type === 'worldmodel') {
                 const name = data.relatedEntity ? data.relatedEntity.name : '?';
                 const strengthPct = Math.round(data.strength * 100);
+                const compHtml = data.relatedEntity?.id ? getComplianceTooltipHtml(data.relatedEntity.id) : '';
                 tooltip.innerHTML = `
                     <div class="tooltip-title">${name}</div>
                     <div class="tooltip-meta" style="color: ${getRelColor(data.relationshipType)}">${relTypeLabel(data.relationshipType)}</div>
@@ -3081,6 +3935,7 @@
                         <span class="tooltip-stat"><span class="value">${strengthPct}%</span> strength</span>
                     </div>
                     ${data.context ? `<div class="tooltip-meta" style="margin-top: 4px; font-size: 11px; max-width: 250px; white-space: normal; line-height: 1.4;">${data.context}</div>` : ''}
+                    ${compHtml}
                     ${data.relatedEntity && data.relatedEntity.id ? '<div class="tooltip-stats"><span class="tooltip-stat">Click to view</span></div>' : ''}
                 `;
             }
@@ -3121,6 +3976,7 @@
                     renderEntities(state.selectedCategory);
                 } else if (state.currentLevel === 'worldmodel' && state.worldModelData) {
                     renderWorldModel(state.worldModelData);
+                    setupWorldModelFilters(state.worldModelData);
                 }
             }, 250);
         });

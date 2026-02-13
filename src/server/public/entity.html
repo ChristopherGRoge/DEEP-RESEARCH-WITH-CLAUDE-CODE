@@ -535,6 +535,301 @@
         .badge-status.CLAIM { background: rgba(181, 137, 0, 0.15); color: var(--status-pending); }
         .badge-status.REJECTED { background: var(--status-rejected-bg); color: var(--status-rejected); }
 
+        /* Validations Tab */
+        .validation-conversation {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: var(--space-md);
+        }
+
+        .validation-prompt {
+            padding: var(--space-lg);
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .validation-prompt-claim {
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .validation-prompt-badges {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .validation-response {
+            padding: var(--space-lg);
+        }
+
+        .validation-response-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        .verdict-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .verdict-ROBUST {
+            background: rgba(133, 153, 0, 0.15);
+            color: #859900;
+        }
+
+        .verdict-CONDITIONAL {
+            background: rgba(38, 139, 210, 0.15);
+            color: #268bd2;
+        }
+
+        .verdict-WEAK {
+            background: rgba(181, 137, 0, 0.15);
+            color: #b58900;
+        }
+
+        .verdict-REFUTED {
+            background: rgba(220, 50, 47, 0.15);
+            color: #dc322f;
+        }
+
+        .verdict-UNVERIFIABLE {
+            background: rgba(131, 148, 150, 0.15);
+            color: #839496;
+        }
+
+        .validation-confidence {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: var(--bg-tertiary);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .validation-summary {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--space-md);
+        }
+
+        .attack-vectors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-md);
+        }
+
+        .attack-vector {
+            font-size: 0.6875rem;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            border: 1px solid var(--border-light);
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            cursor: default;
+            transition: all var(--transition-fast);
+        }
+
+        .attack-vector.pass {
+            background: rgba(133, 153, 0, 0.08);
+            border-color: rgba(133, 153, 0, 0.3);
+            color: #859900;
+        }
+
+        .attack-vector.fail {
+            background: rgba(220, 50, 47, 0.08);
+            border-color: rgba(220, 50, 47, 0.3);
+            color: #dc322f;
+        }
+
+        .attack-vector-icon {
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .refined-claim {
+            background: rgba(38, 139, 210, 0.08);
+            border: 1px solid rgba(38, 139, 210, 0.2);
+            border-radius: 8px;
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .refined-claim-label {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: #268bd2;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-xs);
+        }
+
+        .refined-claim-text {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .conditions-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 var(--space-md);
+        }
+
+        .conditions-list li {
+            padding: var(--space-sm) var(--space-md);
+            border-left: 3px solid #268bd2;
+            margin-bottom: var(--space-xs);
+            background: rgba(38, 139, 210, 0.05);
+            border-radius: 0 6px 6px 0;
+        }
+
+        .condition-text {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .condition-implication {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .validation-recommendations {
+            background: rgba(181, 137, 0, 0.08);
+            border: 1px solid rgba(181, 137, 0, 0.2);
+            border-radius: 8px;
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .validation-recommendations-label {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: #b58900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-xs);
+        }
+
+        .validation-recommendations-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .unvalidated-section {
+            border: 2px dashed var(--border-light);
+            border-radius: 10px;
+            padding: var(--space-lg);
+            opacity: 0.6;
+            margin-top: var(--space-xl);
+        }
+
+        .unvalidated-section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-md);
+        }
+
+        .unvalidated-item {
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .unvalidated-item:last-child {
+            border-bottom: none;
+        }
+
+        .ruling-badge {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .ruling-AFFIRM {
+            background: rgba(133, 153, 0, 0.15);
+            color: #859900;
+        }
+
+        .ruling-REVISE {
+            background: rgba(38, 139, 210, 0.15);
+            color: #268bd2;
+        }
+
+        .ruling-OVERTURN {
+            background: rgba(220, 50, 47, 0.15);
+            color: #dc322f;
+        }
+
+        .validation-stats-bar {
+            display: flex;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            margin-bottom: var(--space-lg);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .validation-stats-bar-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 0.8125rem;
+        }
+
+        .validation-stats-bar-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .validation-stats-bar-count {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .validation-stats-bar-label {
+            color: var(--text-secondary);
+        }
+
+        .validation-divider {
+            border: none;
+            border-top: 1px solid var(--border-light);
+            margin: var(--space-md) 0;
+        }
+
         .assertion-full-evidence {
             margin-top: var(--space-md);
             padding: var(--space-md);
@@ -1386,6 +1681,10 @@
                             Evidence
                             <span class="entity-tab-badge" x-text="stats.evidenceCount"></span>
                         </button>
+                        <button class="entity-tab" :class="{ active: activeTab === 'validations' }" @click="activeTab = 'validations'">
+                            Validations
+                            <span class="entity-tab-badge" x-text="stats.validationStats?.totalValidations || 0"></span>
+                        </button>
                         <button class="entity-tab" :class="{ active: activeTab === 'history' }" @click="activeTab = 'history'">
                             History
                             <span class="entity-tab-badge" x-text="stats.sessionsCount"></span>
@@ -1509,6 +1808,30 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Concepts Card -->
+                        <template x-if="conceptLinks.length > 0">
+                            <div class="overview-card">
+                                <div class="overview-card-header">
+                                    <span class="overview-card-title">Concepts</span>
+                                    <span style="font-size: 0.75rem; color: var(--text-muted);" x-text="conceptLinks.length + ' linked'"></span>
+                                </div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 6px; padding: var(--space-sm) 0;">
+                                    <template x-for="link in conceptLinks" :key="link.id">
+                                        <div style="display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-family: var(--font-mono); border: 1px solid var(--border-light); background: var(--bg-secondary);"
+                                             :title="link.concept.displayName + ' (' + link.linkType + ', ' + Math.round(link.strength * 100) + '%)' + (link.context ? ' - ' + link.context : '')">
+                                            <span style="width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;"
+                                                  :style="{background: link.concept.conceptType === 'METHODOLOGY' ? '#6c71c4' : link.concept.conceptType === 'TECHNOLOGY' ? '#2aa198' : link.concept.conceptType === 'STANDARD' ? '#b58900' : '#d33682'}"></span>
+                                            <span x-text="link.concept.displayName"></span>
+                                            <span style="width: 24px; height: 4px; background: var(--bg-elevated); border-radius: 2px; overflow: hidden;">
+                                                <span style="display: block; height: 100%; border-radius: 2px; background: var(--accent-primary);"
+                                                      :style="{width: Math.round(link.strength * 100) + '%'}"></span>
+                                            </span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
                     </div>
 
                     <!-- Extractions Tab -->
@@ -1964,6 +2287,146 @@
                         </div>
                     </div>
 
+                    <!-- Validations Tab -->
+                    <div class="tab-panel" x-show="activeTab === 'validations'">
+                        <!-- Stats bar -->
+                        <template x-if="validationPairs.some(p => p.validations?.length > 0)">
+                            <div class="validation-stats-bar">
+                                <div class="validation-stats-bar-item">
+                                    <div class="validation-stats-bar-dot" style="background: #859900;"></div>
+                                    <span class="validation-stats-bar-count" x-text="validationPairs.reduce((n, p) => n + (p.validations || []).filter(v => v.verdict === 'ROBUST').length, 0)"></span>
+                                    <span class="validation-stats-bar-label">Robust</span>
+                                </div>
+                                <div class="validation-stats-bar-item">
+                                    <div class="validation-stats-bar-dot" style="background: #268bd2;"></div>
+                                    <span class="validation-stats-bar-count" x-text="validationPairs.reduce((n, p) => n + (p.validations || []).filter(v => v.verdict === 'CONDITIONAL').length, 0)"></span>
+                                    <span class="validation-stats-bar-label">Conditional</span>
+                                </div>
+                                <div class="validation-stats-bar-item">
+                                    <div class="validation-stats-bar-dot" style="background: #b58900;"></div>
+                                    <span class="validation-stats-bar-count" x-text="validationPairs.reduce((n, p) => n + (p.validations || []).filter(v => v.verdict === 'WEAK').length, 0)"></span>
+                                    <span class="validation-stats-bar-label">Weak</span>
+                                </div>
+                                <div class="validation-stats-bar-item">
+                                    <div class="validation-stats-bar-dot" style="background: #dc322f;"></div>
+                                    <span class="validation-stats-bar-count" x-text="validationPairs.reduce((n, p) => n + (p.validations || []).filter(v => v.verdict === 'REFUTED').length, 0)"></span>
+                                    <span class="validation-stats-bar-label">Refuted</span>
+                                </div>
+                                <div class="validation-stats-bar-item">
+                                    <div class="validation-stats-bar-dot" style="background: #839496;"></div>
+                                    <span class="validation-stats-bar-count" x-text="validationPairs.reduce((n, p) => n + (p.validations || []).filter(v => v.verdict === 'UNVERIFIABLE').length, 0)"></span>
+                                    <span class="validation-stats-bar-label">Unverifiable</span>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- Empty state -->
+                        <template x-if="!validationPairs.some(p => p.validations?.length > 0)">
+                            <div class="empty-tab">
+                                <svg class="empty-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                                <div class="empty-tab-title">No validations yet</div>
+                                <p>Run <code>/research-validation</code> to adversarially challenge assertions.</p>
+                            </div>
+                        </template>
+
+                        <!-- Validated assertion-validation pairs -->
+                        <template x-for="pair in validationPairs.filter(p => p.validations?.length > 0)" :key="pair.id">
+                            <div class="validation-conversation">
+                                <!-- Prompt: the assertion -->
+                                <div class="validation-prompt">
+                                    <div class="validation-prompt-claim" x-text="pair.claim"></div>
+                                    <div class="validation-prompt-badges">
+                                        <span class="assertion-badge badge-criticality" :class="pair.criticality" x-text="pair.criticality" x-show="pair.criticality"></span>
+                                        <span class="assertion-badge badge-status" :class="pair.status" x-text="pair.status" x-show="pair.status"></span>
+                                        <span class="assertion-badge badge-category" x-text="pair.category || 'general'" x-show="pair.category"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Response: each validation -->
+                                <template x-for="validation in pair.validations" :key="validation.id">
+                                    <div class="validation-response">
+                                        <div class="validation-response-header">
+                                            <span class="verdict-badge" :class="'verdict-' + validation.verdict" x-text="validation.verdict"></span>
+                                            <span class="validation-confidence" x-text="'Confidence: ' + (validation.confidence || 'N/A')"></span>
+                                            <!-- Ruling badge if exists -->
+                                            <template x-if="validation.rulings && validation.rulings.length > 0">
+                                                <span class="ruling-badge" :class="'ruling-' + validation.rulings[0].verdict"
+                                                    x-text="'Ruling: ' + validation.rulings[0].verdict"></span>
+                                            </template>
+                                        </div>
+
+                                        <div class="validation-summary" x-text="validation.summary"></div>
+
+                                        <!-- Attack vectors -->
+                                        <template x-if="validation.attackResults">
+                                            <div class="attack-vectors">
+                                                <template x-for="av in getAttackVectors(validation.attackResults)" :key="av.key">
+                                                    <span class="attack-vector" :class="av.challenged ? 'fail' : 'pass'"
+                                                        :title="av.finding || ''">
+                                                        <span class="attack-vector-icon" x-text="av.challenged ? '✗' : '✓'"></span>
+                                                        <span x-text="av.label"></span>
+                                                    </span>
+                                                </template>
+                                            </div>
+                                        </template>
+
+                                        <!-- Refined claim -->
+                                        <template x-if="validation.refinedClaim">
+                                            <div class="refined-claim">
+                                                <div class="refined-claim-label">Refined Claim</div>
+                                                <div class="refined-claim-text" x-text="validation.refinedClaim"></div>
+                                            </div>
+                                        </template>
+
+                                        <!-- Conditions -->
+                                        <template x-if="validation.conditions && validation.conditions.length > 0">
+                                            <ul class="conditions-list">
+                                                <template x-for="(cond, cidx) in validation.conditions" :key="cidx">
+                                                    <li>
+                                                        <div class="condition-text" x-text="cond.condition"></div>
+                                                        <div class="condition-implication" x-text="cond.implication" x-show="cond.implication"></div>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </template>
+
+                                        <!-- Recommendations -->
+                                        <template x-if="validation.recommendations">
+                                            <div class="validation-recommendations">
+                                                <div class="validation-recommendations-label">Recommendations</div>
+                                                <div class="validation-recommendations-text" x-text="validation.recommendations"></div>
+                                            </div>
+                                        </template>
+
+                                        <!-- Separator between multiple validations -->
+                                        <template x-if="pair.validations.indexOf(validation) < pair.validations.length - 1">
+                                            <hr class="validation-divider">
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+                        <!-- Awaiting Validation section -->
+                        <template x-if="validationPairs.filter(p => !p.validations || p.validations.length === 0).length > 0">
+                            <div class="unvalidated-section">
+                                <div class="unvalidated-section-title">
+                                    Awaiting Validation
+                                    (<span x-text="validationPairs.filter(p => !p.validations || p.validations.length === 0).length"></span>)
+                                </div>
+                                <template x-for="pair in validationPairs.filter(p => !p.validations || p.validations.length === 0)" :key="pair.id">
+                                    <div class="unvalidated-item">
+                                        <span x-text="pair.claim"></span>
+                                        <span class="assertion-badge badge-criticality" :class="pair.criticality" x-text="pair.criticality"
+                                            style="margin-left: var(--space-sm);" x-show="pair.criticality"></span>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+
                     <!-- History Tab -->
                     <div class="tab-panel" x-show="activeTab === 'history'">
                         <template x-if="researchSessions.length === 0">
@@ -2041,6 +2504,8 @@
                 assertions: [],
                 evidenceGallery: [],
                 researchSessions: [],
+                validationPairs: [],
+                conceptLinks: [],
                 activeTab: 'overview',
                 lightboxImage: null,
 
@@ -2069,9 +2534,20 @@
                         this.assertions = data.data.assertions || [];
                         this.evidenceGallery = data.data.evidenceGallery || [];
                         this.researchSessions = data.data.researchSessions || [];
+                        this.validationPairs = data.data.validationPairs || [];
 
                         // Update page title
                         document.title = `${this.entity.name} | Deep Research`;
+
+                        // Fetch concept links (non-blocking)
+                        fetch(`/api/entities/${entityId}/concepts`)
+                            .then(r => r.json())
+                            .then(d => {
+                                if (d.success && d.data && d.data.links) {
+                                    this.conceptLinks = d.data.links;
+                                }
+                            })
+                            .catch(() => {});
 
                     } catch (err) {
                         console.error('Failed to load entity:', err);
@@ -2127,6 +2603,64 @@
 
                 openLightbox(src) {
                     this.lightboxImage = src;
+                },
+
+                getVerdictColor(verdict) {
+                    const colors = {
+                        'ROBUST': '#859900',
+                        'CONDITIONAL': '#268bd2',
+                        'WEAK': '#b58900',
+                        'REFUTED': '#dc322f',
+                        'UNVERIFIABLE': '#839496'
+                    };
+                    return colors[verdict] || '#839496';
+                },
+
+                getVerdictBg(verdict) {
+                    const bgs = {
+                        'ROBUST': 'rgba(133, 153, 0, 0.12)',
+                        'CONDITIONAL': 'rgba(38, 139, 210, 0.12)',
+                        'WEAK': 'rgba(181, 137, 0, 0.12)',
+                        'REFUTED': 'rgba(220, 50, 47, 0.12)',
+                        'UNVERIFIABLE': 'rgba(131, 148, 150, 0.12)'
+                    };
+                    return bgs[verdict] || 'rgba(131, 148, 150, 0.12)';
+                },
+
+                getAttackVectors(attackResults) {
+                    if (!attackResults) return [];
+                    const labels = {
+                        counterEvidence: 'Counter-Evidence',
+                        evidenceGap: 'Evidence Gap',
+                        logicalFlaw: 'Logical Flaw',
+                        scopeLimitation: 'Scope Limitation',
+                        alternativeExplanation: 'Alt. Explanation'
+                    };
+                    return Object.entries(labels).map(([key, label]) => ({
+                        key,
+                        label,
+                        challenged: attackResults[key]?.challenged || false,
+                        finding: attackResults[key]?.finding || null,
+                        severity: attackResults[key]?.severity || null
+                    }));
+                },
+
+                getRulingColor(verdict) {
+                    const colors = {
+                        'AFFIRM': '#859900',
+                        'REVISE': '#268bd2',
+                        'OVERTURN': '#dc322f'
+                    };
+                    return colors[verdict] || '#839496';
+                },
+
+                getRulingBg(verdict) {
+                    const bgs = {
+                        'AFFIRM': 'rgba(133, 153, 0, 0.12)',
+                        'REVISE': 'rgba(38, 139, 210, 0.12)',
+                        'OVERTURN': 'rgba(220, 50, 47, 0.12)'
+                    };
+                    return bgs[verdict] || 'rgba(131, 148, 150, 0.12)';
                 }
             };
         }

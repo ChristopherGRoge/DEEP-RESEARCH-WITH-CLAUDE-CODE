@@ -104,6 +104,12 @@ enum ValidationMethod {
   HYBRID        // Combination of automated and manual
 }
 
+enum RulingVerdict {
+  AFFIRM     // Assertion stands as-is
+  REVISE     // Adopt refined claim from validation
+  OVERTURN   // Reject the assertion
+}
+
 // ============================================
 // CORE MODELS
 // ============================================
@@ -191,6 +197,7 @@ model Entity {
   assertions       Assertion[]
   extractions      Extraction[]
   researchSessions ResearchSession[]
+  conceptLinks     ConceptEntityLink[]
 
   @@unique([projectId, name])
   @@index([domainId])
@@ -245,6 +252,7 @@ model Assertion {
   reasoning   Reasoning[]
   sources     AssertionSource[]
   validations ValidationResult[]
+  rulings     Ruling[]
 
   @@index([criticality, status])
   @@index([citedInConclusion])
@@ -382,6 +390,7 @@ model ValidationResult {
 
   // Related citations verified during this validation
   citations       VerifiedCitation[]
+  rulings         Ruling[]
 
   @@index([assertionId])
   @@index([verdict])
@@ -411,6 +420,25 @@ model VerifiedCitation {
   @@index([url])
   @@index([validationResultId])
   @@map("verified_citations")
+}
+
+/// A ruling that closes the validation loop for an assertion-validation pair
+model Ruling {
+  id               String        @id @default(cuid())
+  assertionId      String
+  assertion        Assertion     @relation(fields: [assertionId], references: [id], onDelete: Cascade)
+  validationId     String
+  validation       ValidationResult @relation(fields: [validationId], references: [id], onDelete: Cascade)
+  verdict          RulingVerdict
+  tensionAnalysis  String
+  reasoning        String
+  actionTaken      String?
+  ruledBy          String
+  ruledAt          DateTime      @default(now())
+
+  @@index([assertionId])
+  @@index([validationId])
+  @@map("rulings")
 }
 
 // ============================================
@@ -731,6 +759,7 @@ model DiscoveryCategory {
 
   // Relations
   entities    Entity[]
+  concepts    CategoryConcept[]
 
   @@map("discovery_categories")
 }
@@ -844,6 +873,64 @@ model EntityPositioning {
   @@index([maturityStage])
   @@index([solutionScope])
   @@map("entity_positioning")
+}
+
+// ============================================
+// CATEGORY CONCEPTS - Building blocks within categories
+// ============================================
+
+/// A concept (methodology, technology, standard, or pattern) within a category
+/// Concepts are the building blocks that explain WHY entities cluster
+model CategoryConcept {
+  id                String   @id @default(cuid())
+
+  categoryId        String
+  category          DiscoveryCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  name              String   // Kebab-case identifier: "device-farms", "record-and-replay"
+  displayName       String   // Human-readable: "Device Farms", "Record & Replay"
+  description       String?  // Rich description of the concept
+
+  conceptType       String   // METHODOLOGY | TECHNOLOGY | STANDARD | PATTERN
+  url               String?  // Optional reference URL (e.g., W3C spec, Wikipedia)
+  maturity          String   @default("established") // emerging | established | legacy
+
+  discoveredBy      String?  // Agent or researcher who identified this concept
+  evidenceDescription String? // How/why this concept was identified
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  entityLinks       ConceptEntityLink[]
+
+  @@unique([categoryId, name])
+  @@index([categoryId])
+  @@index([conceptType])
+  @@map("category_concepts")
+}
+
+/// Junction table linking concepts to entities with correlation strength
+model ConceptEntityLink {
+  id                String   @id @default(cuid())
+
+  conceptId         String
+  concept           CategoryConcept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  entityId          String
+  entity            Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  linkType          String   @default("IMPLEMENTS") // IMPLEMENTS | BUILT_ON | CONTRIBUTES_TO
+  strength          Float    @default(0.5)          // 0.0-1.0 correlation strength
+  context           String?  // Why this entity links to this concept
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([conceptId, entityId])
+  @@index([conceptId])
+  @@index([entityId])
+  @@map("concept_entity_links")
 }
 
 /// Market forces acting on an entity's trajectory

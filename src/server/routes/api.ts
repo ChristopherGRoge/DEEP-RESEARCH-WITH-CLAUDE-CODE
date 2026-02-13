@@ -867,23 +867,26 @@ api.get('/entities/tree/:projectId', async (c) => {
     },
   });
 
-  // Get category metadata (icons, weights) from database
+  // Get category metadata (icons, weights, concept counts) from database
   const dbCategories = await tools.prisma.discoveryCategory.findMany({
     select: {
       name: true,
       displayName: true,
       materialIcon: true,
+      _count: { select: { concepts: true } },
     },
   });
 
   // Build lookup maps for category metadata
   const categoryDisplayNames: Record<string, string> = {};
   const categoryIcons: Record<string, string> = {};
+  const categoryConceptCounts: Record<string, number> = {};
   for (const cat of dbCategories) {
     categoryDisplayNames[cat.name] = cat.displayName;
     if (cat.materialIcon) {
       categoryIcons[cat.name] = cat.materialIcon;
     }
+    categoryConceptCounts[cat.name] = cat._count.concepts;
   }
 
   // Default icons for categories (fallback)
@@ -990,6 +993,7 @@ api.get('/entities/tree/:projectId', async (c) => {
       normalizedWeight: categoryWeights[key]?.normalizedWeight || 0,
       totalBuzz: categoryWeights[key]?.totalBuzz || 0,
       avgBuzz: categoryWeights[key]?.avgBuzz || 0,
+      conceptCount: categoryConceptCounts[key] || 0,
       type: 'category' as const,
       children: catEntities
         // Sort entities by buzz score (highest first)
@@ -1061,6 +1065,13 @@ api.get('/entities/:id/full', async (c) => {
             },
           },
           reasoning: true,
+          validations: {
+            include: { citations: true, rulings: true },
+            orderBy: { validatedAt: 'desc' },
+          },
+          rulings: {
+            orderBy: { ruledAt: 'desc' },
+          },
         },
         orderBy: [
           { criticality: 'asc' },
@@ -1185,6 +1196,66 @@ api.get('/entities/:id/full', async (c) => {
     low: entity.assertions.filter(a => a.criticality === 'LOW').length,
   };
 
+  // Validation stats
+  const validationStats = {
+    totalValidations: 0,
+    byVerdict: { ROBUST: 0, CONDITIONAL: 0, WEAK: 0, REFUTED: 0, UNVERIFIABLE: 0 } as Record<string, number>,
+    assertionsWithValidations: 0,
+    assertionsWithoutValidations: 0,
+    totalRulings: 0,
+    byRulingVerdict: { AFFIRM: 0, REVISE: 0, OVERTURN: 0 } as Record<string, number>,
+  };
+
+  for (const assertion of entity.assertions) {
+    const validations = (assertion as any).validations || [];
+    if (validations.length > 0) {
+      validationStats.assertionsWithValidations++;
+      for (const v of validations) {
+        validationStats.totalValidations++;
+        if (validationStats.byVerdict[v.verdict] !== undefined) {
+          validationStats.byVerdict[v.verdict]++;
+        }
+        const rulings = v.rulings || [];
+        for (const r of rulings) {
+          validationStats.totalRulings++;
+          if (validationStats.byRulingVerdict[r.verdict] !== undefined) {
+            validationStats.byRulingVerdict[r.verdict]++;
+          }
+        }
+      }
+    } else {
+      validationStats.assertionsWithoutValidations++;
+    }
+    // Also count assertion-level rulings
+    const assertionRulings = (assertion as any).rulings || [];
+    for (const r of assertionRulings) {
+      // Only count if not already counted via validation rulings
+      // (they reference the same records, so avoid double counting)
+    }
+  }
+
+  // Build validationPairs - assertions sorted by validation status
+  const validationPairs = [...entity.assertions].sort((a, b) => {
+    const aValidations = (a as any).validations || [];
+    const bValidations = (b as any).validations || [];
+    const aHasValidation = aValidations.length > 0;
+    const bHasValidation = bValidations.length > 0;
+
+    // Validated first
+    if (aHasValidation && !bHasValidation) return -1;
+    if (!aHasValidation && bHasValidation) return 1;
+
+    // Among validated, sort by most recent validation date
+    if (aHasValidation && bHasValidation) {
+      const aDate = new Date(aValidations[0].validatedAt).getTime();
+      const bDate = new Date(bValidations[0].validatedAt).getTime();
+      return bDate - aDate;
+    }
+
+    // Among unvalidated, sort by criticality
+    return 0;
+  });
+
   // Calculate pillar validation rate
   const pillarAssertions = entity.assertions.filter(a =>
       a.criticality === 'CRITICAL' || a.criticality === 'HIGH');
@@ -1249,6 +1320,9 @@ api.get('/entities/:id/full', async (c) => {
       assertions: entity.assertions,
       assertionsByCategory,
 
+      // Validation pairs (assertions sorted by validation status)
+      validationPairs,
+
       // Evidence
       evidenceGallery,
 
@@ -1267,6 +1341,7 @@ api.get('/entities/:id/full', async (c) => {
         evidenceCount: evidenceGallery.length,
         sessionsCount: entity.researchSessions.length,
         criticalityBreakdown,
+        validationStats,
         pillarValidationRate,
         pillarTotal: pillarAssertions.length,
         pillarValidated,
@@ -1319,7 +1394,11 @@ api.get('/entities/:id/world-model', async (c) => {
       return c.json({ success: false, error: 'Entity not found' }, 404);
     }
 
-    return c.json({ success: true, data: worldModel });
+    // Include concept links in world model response
+    const conceptResult = await tools.getEntityConcepts(entityId);
+    const concepts = conceptResult.success ? conceptResult.data : null;
+
+    return c.json({ success: true, data: { ...worldModel, concepts } });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Failed to get world model';
     return c.json({ success: false, error: message }, 500);
@@ -1333,6 +1412,69 @@ api.get('/projects/:id/relationship-graph', async (c) => {
     return c.json({ success: true, data: graph });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Failed to get relationship graph';
+    return c.json({ success: false, error: message }, 500);
+  }
+});
+
+// ============================================
+// Category Concepts - Building blocks within categories
+// ============================================
+
+api.get('/categories/:id/concepts', async (c) => {
+  try {
+    const categoryId = c.req.param('id');
+    const conceptType = c.req.query('conceptType') as string | undefined;
+    const result = await tools.listConcepts({ categoryId, conceptType: conceptType as any });
+    return c.json(result);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Failed to list concepts';
+    return c.json({ success: false, error: message }, 500);
+  }
+});
+
+api.get('/categories/:id/concept-map', async (c) => {
+  try {
+    let categoryId = c.req.param('id');
+
+    // If id doesn't look like a cuid, try to resolve by name
+    if (!categoryId.match(/^c[a-z0-9]{24}/)) {
+      const cat = await tools.getCategoryByName(categoryId);
+      if (cat) {
+        categoryId = cat.id;
+      } else {
+        return c.json({ success: false, error: `Category not found: ${categoryId}` }, 404);
+      }
+    }
+
+    const result = await tools.getCategoryConceptMap(categoryId);
+    return c.json(result);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Failed to get concept map';
+    return c.json({ success: false, error: message }, 500);
+  }
+});
+
+api.get('/concepts/:id', async (c) => {
+  try {
+    const conceptId = c.req.param('id');
+    const result = await tools.getConcept(conceptId);
+    if (!result.success) {
+      return c.json(result, 404);
+    }
+    return c.json(result);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Failed to get concept';
+    return c.json({ success: false, error: message }, 500);
+  }
+});
+
+api.get('/entities/:id/concepts', async (c) => {
+  try {
+    const entityId = c.req.param('id');
+    const result = await tools.getEntityConcepts(entityId);
+    return c.json(result);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Failed to get entity concepts';
     return c.json({ success: false, error: message }, 500);
   }
 });

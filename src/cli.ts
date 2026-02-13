@@ -497,6 +497,19 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
         result = await tools.getPillarAssertions({ entityId: args.entityId as string });
         break;
 
+      // ============================================
+      // RULINGS - Close the validation loop
+      // ============================================
+      case 'ruling:create':
+        result = await tools.createRuling(args as unknown as tools.RulingCreateInput);
+        break;
+      case 'ruling:get':
+        result = await tools.getRuling(args as unknown as tools.RulingGetInput);
+        break;
+      case 'ruling:list':
+        result = await tools.listRulings(args as unknown as tools.RulingListInput);
+        break;
+
       // Verified citations (from cite:verify, persisted)
       case 'citation:create':
         result = await tools.createCitation(args as unknown as tools.CitationCreateInput);
@@ -1046,6 +1059,42 @@ async function executeCommand(command: string, args: Record<string, unknown>): P
         result = await tools.deleteForce({ forceId: args.forceId as string });
         break;
 
+      // ============================================
+      // Category Concept commands
+      // ============================================
+      case 'concept:create':
+        result = await tools.createConcept(args as unknown as tools.CreateConceptInput);
+        break;
+      case 'concept:get':
+        result = await tools.getConcept(args.conceptId as string);
+        break;
+      case 'concept:list':
+        result = await tools.listConcepts(args as unknown as tools.ListConceptsInput);
+        break;
+      case 'concept:update': {
+        const { conceptId: cid, ...conceptUpdateData } = args;
+        result = await tools.updateConcept(cid as string, conceptUpdateData as unknown as tools.UpdateConceptInput);
+        break;
+      }
+      case 'concept:delete':
+        result = await tools.deleteConcept(args.conceptId as string);
+        break;
+      case 'concept:link':
+        result = await tools.linkConcept(args as unknown as tools.LinkConceptInput);
+        break;
+      case 'concept:unlink':
+        result = await tools.unlinkConcept(args.conceptId as string, args.entityId as string);
+        break;
+      case 'concept:byEntity':
+        result = await tools.getEntityConcepts(args.entityId as string);
+        break;
+      case 'concept:entities':
+        result = await tools.getConceptEntities(args.conceptId as string);
+        break;
+      case 'concept:map':
+        result = await tools.getCategoryConceptMap(args.categoryId as string);
+        break;
+
       default:
         return { success: false, error: `Unknown command: ${command}` };
     }
@@ -1078,6 +1127,8 @@ async function main() {
         // Adversarial validation - structured storage
         'validation:create', 'validation:get', 'validation:list', 'validation:summary', 'validation:latest', 'validation:history',
         'validation:unvalidated', 'validation:pillars',
+        // Rulings - close validation loop
+        'ruling:create', 'ruling:get', 'ruling:list',
         // Verified citations (persisted)
         'citation:create', 'citation:list', 'citation:find',
         // Standard commands
@@ -1140,6 +1191,9 @@ async function main() {
         'relationship:create', 'relationship:list', 'relationship:graph', 'relationship:delete',
         'positioning:set', 'positioning:get', 'positioning:compare',
         'force:create', 'force:list', 'force:delete',
+        // Category Concepts - Building blocks within categories
+        'concept:create', 'concept:get', 'concept:list', 'concept:update', 'concept:delete',
+        'concept:link', 'concept:unlink', 'concept:byEntity', 'concept:entities', 'concept:map',
       ],
     }));
     process.exit(1);

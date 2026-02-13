@@ -22,6 +22,7 @@ All research is driven through `/research-*` skills. These orchestrate subagents
 | `/research-entity` | Deep 4-phase research on a single entity | `/research-entity Cursor` |
 | `/research-validation` | Adversarial validation of pillar assertions | `/research-validation Cursor` |
 | `/research-world-model` | Build ecosystem positioning map | `/research-world-model Cursor` |
+| `/research-concepts` | Identify category building blocks | `/research-concepts ai_testing` |
 | `/research-to-deck` | Generate PowerPoint from research | "Create slides from this research" |
 
 ### Workflow
@@ -52,6 +53,12 @@ All research is driven through `/research-*` skills. These orchestrate subagents
   → Positioning: SDLC stages, solution scope, maturity, adoption curve
   → Relationships: Competes with, integrates with, built on, similar to
   → Market forces: Opportunities, threats, trends, constraints
+        │
+        ▼
+/research-concepts <category-name>
+  → Identify 5-15 concepts per category (methodologies, technologies, standards, patterns)
+  → Link entities to concepts with correlation strength (0.0-1.0)
+  → Visualize in Grove category view as concept pills
         │
         ▼
 /research-validation <entity-name>
@@ -334,6 +341,7 @@ The full CLI command reference is in **[docs/CLI-REFERENCE.md](docs/CLI-REFERENC
 | `category:*` | list, get, apply, context, explain, unclassified | Classification |
 | `domain:*` | create, get, list, entities, summary | Research domains |
 | `worldmodel:*` | get, summary | World model aggregation |
+| `concept:*` | create, get, list, update, delete, link, unlink, byEntity, entities, map | Category concepts |
 | `relationship:*` | create, list, graph, delete | Entity relationships |
 | `positioning:*` | set, get, compare | Market positioning |
 | `force:*` | create, list, delete | Market forces |

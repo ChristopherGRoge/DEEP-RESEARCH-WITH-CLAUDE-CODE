@@ -720,6 +720,93 @@ Float value from 0.0 to 1.0:
 
 ---
 
+## Category Concept Commands
+
+Concepts are the building blocks within discovery categories: methodologies, technologies, standards, and patterns.
+
+### Concept CRUD
+
+```bash
+# Create concept (upserts by [categoryId, name])
+npm run cli -- concept:create '{
+  "categoryId": "<id>",
+  "name": "device-farms",
+  "displayName": "Device Farms",
+  "conceptType": "METHODOLOGY",
+  "description": "Cloud-based device lab infrastructure for cross-device testing",
+  "maturity": "established",
+  "discoveredBy": "research-concepts-agent"
+}'
+
+# Get concept with linked entities
+npm run cli -- concept:get '{"conceptId": "<id>"}'
+
+# List concepts for a category (optionally filter by type)
+npm run cli -- concept:list '{"categoryId": "<id>"}'
+npm run cli -- concept:list '{"categoryId": "<id>", "conceptType": "TECHNOLOGY"}'
+
+# Update concept
+npm run cli -- concept:update '{"conceptId": "<id>", "description": "Updated", "maturity": "legacy"}'
+
+# Delete concept (cascades entity links)
+npm run cli -- concept:delete '{"conceptId": "<id>"}'
+```
+
+### Concept-Entity Linking
+
+```bash
+# Link entity to concept (upserts by [conceptId, entityId])
+npm run cli -- concept:link '{
+  "conceptId": "<id>",
+  "entityId": "<id>",
+  "linkType": "IMPLEMENTS",
+  "strength": 0.9,
+  "context": "BrowserStack is a leading device farm provider"
+}'
+
+# Unlink entity from concept
+npm run cli -- concept:unlink '{"conceptId": "<id>", "entityId": "<id>"}'
+```
+
+### Concept Queries
+
+```bash
+# Get all concepts linked to an entity
+npm run cli -- concept:byEntity '{"entityId": "<id>"}'
+
+# Get all entities linked to a concept
+npm run cli -- concept:entities '{"conceptId": "<id>"}'
+
+# Get full concept map for a category (for visualization)
+npm run cli -- concept:map '{"categoryId": "<id>"}'
+```
+
+#### Concept Types
+- `METHODOLOGY` - Architectural approaches (Device Farms, Record & Replay)
+- `TECHNOLOGY` - Core technologies (Selenium, Playwright, WebDriver)
+- `STANDARD` - Industry standards (W3C WebDriver, ISO 25010)
+- `PATTERN` - Design/practice patterns (Shift-Left Testing, Continuous Testing)
+
+#### Concept Maturity
+- `emerging` - New, gaining traction
+- `established` - Widely recognized and used
+- `legacy` - Older approach being superseded
+
+#### Link Types
+- `IMPLEMENTS` - Entity directly implements this concept
+- `BUILT_ON` - Entity is architecturally built on this technology
+- `CONTRIBUTES_TO` - Entity contributes to the concept's ecosystem
+
+#### Strength
+Float value from 0.0 to 1.0:
+- `0.9-1.0` - Entity's primary approach IS this concept
+- `0.7-0.8` - Entity heavily relies on this concept
+- `0.5-0.6` - One of several approaches
+- `0.3-0.4` - Minor connection
+- `0.1-0.2` - Tangential relation
+
+---
+
 ## Orchestration Commands
 
 ```bash
