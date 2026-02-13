@@ -107,12 +107,12 @@ export declare function createRelationship(input: CreateRelationshipInput): Prom
         evidenceDescription: string | null;
         evidenceScreenshotPath: string | null;
         context: string | null;
+        strength: number;
         sourceEntityId: string;
         targetEntityId: string | null;
         targetExternalName: string | null;
         targetExternalUrl: string | null;
         relationshipType: string;
-        strength: number;
         direction: string;
     };
     error?: undefined;

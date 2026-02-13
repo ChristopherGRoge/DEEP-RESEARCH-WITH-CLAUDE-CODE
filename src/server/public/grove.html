@@ -6,7 +6,7 @@
     <title>Research Grove | Deep Research Observatory</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600&family=Fira+Code:wght@400;500&family=Libre+Baskerville:wght@400;700&family=Comfortaa:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
@@ -1362,27 +1362,37 @@
             margin-bottom: 4px;
         }
 
-        /* ===== Concept Pills in Category View ===== */
+        /* ===== Concept Bubbles in Category View ===== */
 
-        .concept-pill {
-            font-family: var(--font-mono);
-            font-size: 8px;
-            fill: var(--text-muted);
+        .concept-bubble {
+            cursor: pointer;
             pointer-events: all;
-            cursor: default;
         }
 
-        .concept-pill-bg {
-            fill: var(--bg-surface);
-            stroke: var(--border-subtle);
-            stroke-width: 0.5;
-            rx: 8;
-            ry: 8;
+        .concept-bubble circle {
+            transition: opacity 0.3s, stroke-width 0.3s;
+        }
+
+        .concept-bubble.active circle {
+            stroke: white;
+            stroke-width: 2.5px;
+            filter: drop-shadow(0 0 4px rgba(0,0,0,0.3));
+        }
+
+        .concept-bubble text {
+            font-family: var(--font-mono);
+            pointer-events: none;
         }
 
         .concept-link-line {
-            stroke-dasharray: 3,3;
+            stroke-dasharray: none;
             pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .entity-faded {
+            opacity: 0.15 !important;
+            transition: opacity 0.3s;
         }
 
         /* World Model Filter Bar (top) */
@@ -1791,7 +1801,9 @@
                 nameSearch: '',
                 complianceTypes: new Set()
             },
-            wmComplianceData: {}
+            wmComplianceData: {},
+            activeConcepts: new Set(),
+            conceptData: []
         };
 
         const dom = {
@@ -2065,6 +2077,7 @@
             }
 
             hideWorldModelFilters();
+            state.activeConcepts.clear();
             state.currentLevel = 'project';
             state.selectedCategory = null;
             closeDetailPanel();
@@ -2692,8 +2705,8 @@
                 }
             });
 
-            // Fetch and render concept pills around outer edge (async, non-blocking)
-            fetchAndRenderConceptPills(g, category, maxRadius, entities, entityPositions);
+            // Fetch and render concept bubbles around outer edge (async, non-blocking)
+            fetchAndRenderConceptBubbles(g, category, maxRadius, entities, entityPositions, nodes, entityLinks);
 
             // Initialize entity positions for collision simulation
             entities.forEach(entity => {
@@ -2740,22 +2753,97 @@
         }
 
         // =====================================================
-        // CONCEPT PILLS (Category View Overlay)
+        // CONCEPT BUBBLES (Category View Overlay)
         // =====================================================
 
-        async function fetchAndRenderConceptPills(g, category, maxRadius, entities, entityPositions) {
+        function abbreviateConcept(name) {
+            if (name.length <= 3) return name.toUpperCase();
+            const words = name.split(/[\s-]+/);
+            if (words.length >= 2) return words.map(w => w[0]).join('').toUpperCase().substring(0, 3);
+            return name.substring(0, 3).toUpperCase();
+        }
+
+        function getConceptBubbleSize(entityCount, maxCount) {
+            // Scale from 10px (0 connections) to 22px (max connections)
+            const t = maxCount > 0 ? entityCount / maxCount : 0;
+            return 10 + t * 12;
+        }
+
+        function updateConceptFilter(g, concepts, entities, nodes, entityLinks, lineGroup) {
+            lineGroup.selectAll('*').remove();
+
+            const typeColors = {
+                METHODOLOGY: '#6c71c4',
+                TECHNOLOGY: '#2aa198',
+                STANDARD: '#b58900',
+                PATTERN: '#d33682'
+            };
+
+            if (state.activeConcepts.size === 0) {
+                // No concepts active → restore all entities
+                nodes.classed('entity-faded', false).style('opacity', null);
+                entityLinks.style('opacity', null);
+                return;
+            }
+
+            // Find intersection: entities connected to ALL active concepts
+            const activeConcepts = concepts.filter(c => state.activeConcepts.has(c.id));
+            const entitySets = activeConcepts.map(c => new Set((c.entities || []).map(e => e.id)));
+            const intersectionIds = [...entitySets[0]].filter(id => entitySets.every(s => s.has(id)));
+            const intersectionSet = new Set(intersectionIds);
+
+            // Fade non-matching entities
+            nodes.classed('entity-faded', d => !intersectionSet.has(d.id))
+                 .style('opacity', d => intersectionSet.has(d.id) ? null : 0.15);
+            entityLinks.style('opacity', d => intersectionSet.has(d.id) ? null : 0.05);
+
+            // Draw connection lines for active concepts → intersection entities only
+            activeConcepts.forEach(concept => {
+                const color = typeColors[concept.conceptType] || '#657b83';
+                const bubbleEl = g.select(`[data-concept-id="${concept.id}"]`);
+                const bx = parseFloat(bubbleEl.attr('data-x'));
+                const by = parseFloat(bubbleEl.attr('data-y'));
+
+                (concept.entities || []).forEach(linked => {
+                    if (!intersectionSet.has(linked.id)) return;
+                    const entity = entities.find(e => e.id === linked.id);
+                    if (!entity) return;
+                    const ex = entity.x || 0;
+                    const ey = entity.y || 0;
+                    // Terminate line at entity circle edge, not center
+                    const entityR = getEntityBubbleSize(entity.buzzScore, entity.assertionCount);
+                    const dx = ex - bx;
+                    const dy = ey - by;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const stopX = dist > 0 ? ex - (dx / dist) * entityR : ex;
+                    const stopY = dist > 0 ? ey - (dy / dist) * entityR : ey;
+                    lineGroup.append('line')
+                        .attr('class', 'concept-link-line')
+                        .attr('x1', bx).attr('y1', by)
+                        .attr('x2', stopX).attr('y2', stopY)
+                        .attr('stroke', color)
+                        .attr('stroke-width', 1.5)
+                        .attr('opacity', Math.max(0.3, linked.strength));
+                });
+            });
+            lineGroup.style('opacity', 1);
+        }
+
+        async function fetchAndRenderConceptBubbles(g, category, maxRadius, entities, entityPositions, nodes, entityLinks) {
+            // Reset active concepts for fresh category render
+            state.activeConcepts.clear();
+            state.conceptData = [];
+
             // Look up category ID from database categories
             const dbCat = (state.treeData?.children || []).find(c => c.key === category.key);
             if (!dbCat || !dbCat.conceptCount) return;
 
-            // Need to find categoryId - fetch from categories API
             try {
                 const res = await fetch(`/api/categories/${category.key}/concept-map`);
                 let data = await res.json();
 
                 // Try by name if key-based lookup fails
                 if (!data.success) {
-                    // Fetch category list to find ID
                     const catRes = await fetch('/api/categories/' + category.key + '/concepts');
                     data = await catRes.json();
                     if (!data.success) return;
@@ -2765,17 +2853,9 @@
                 if (!conceptMap || !conceptMap.concepts || conceptMap.concepts.length === 0) return;
 
                 const concepts = conceptMap.concepts;
-                const pillRadius = maxRadius + 40;
+                state.conceptData = concepts;
+                const maxEntityCount = Math.max(1, ...concepts.map(c => (c.entities || []).length));
                 const angleStep = (2 * Math.PI) / concepts.length;
-
-                // Concept connection lines group (render below pills)
-                const lineGroup = g.append('g')
-                    .attr('class', 'concept-lines-group')
-                    .style('opacity', 0);
-
-                // Concept pills group
-                const pillGroup = g.append('g')
-                    .attr('class', 'concept-pills-group');
 
                 const typeColors = {
                     METHODOLOGY: '#6c71c4',
@@ -2784,75 +2864,118 @@
                     PATTERN: '#d33682'
                 };
 
+                // Per-type Google Fonts — each concept type gets its own typographic voice
+                const typeFonts = {
+                    METHODOLOGY: "'Archivo', sans-serif",         // sturdy, structured — process & framework
+                    TECHNOLOGY: "'Fira Code', monospace",         // technical, precise — code & infra
+                    STANDARD: "'Libre Baskerville', serif",       // authoritative, formal — specs & compliance
+                    PATTERN: "'Comfortaa', sans-serif"            // rounded, organic — recurring shapes
+                };
+
+                // Concept connection lines group (render below bubbles)
+                const lineGroup = g.append('g')
+                    .attr('class', 'concept-lines-group');
+
+                // Concept bubbles group
+                const bubbleGroup = g.append('g')
+                    .attr('class', 'concept-bubbles-group');
+
+                // Find the largest entity bubble radius to set tight clearance
+                const maxEntityBubbleR = Math.max(12, ...entities
+                    .map(e => getEntityBubbleSize(e.buzzScore, e.assertionCount)));
+
                 concepts.forEach((concept, i) => {
                     const angle = i * angleStep - Math.PI / 2;
-                    const px = pillRadius * Math.cos(angle);
-                    const py = pillRadius * Math.sin(angle);
-                    const textLen = concept.displayName.length * 5.5 + 16;
+                    const entityCount = (concept.entities || []).length;
+                    const r = getConceptBubbleSize(entityCount, maxEntityCount);
+                    // Tight ring: just past the outermost entity edge + small gap
+                    const bubbleOrbit = maxRadius + maxEntityBubbleR + 6 + r;
+                    const bx = bubbleOrbit * Math.cos(angle);
+                    const by = bubbleOrbit * Math.sin(angle);
+                    const color = typeColors[concept.conceptType] || '#657b83';
+                    const font = typeFonts[concept.conceptType] || "'Space Grotesk', sans-serif";
 
-                    const pill = pillGroup.append('g')
-                        .attr('class', 'concept-pill')
-                        .attr('transform', `translate(${px}, ${py})`)
-                        .attr('data-concept-id', concept.id);
+                    const bubble = bubbleGroup.append('g')
+                        .attr('class', 'concept-bubble')
+                        .attr('transform', `translate(${bx}, ${by})`)
+                        .attr('data-concept-id', concept.id)
+                        .attr('data-x', bx)
+                        .attr('data-y', by);
 
-                    // Pill background
-                    pill.append('rect')
-                        .attr('class', 'concept-pill-bg')
-                        .attr('x', -textLen / 2)
-                        .attr('y', -9)
-                        .attr('width', textLen)
-                        .attr('height', 18);
+                    // Circle background — sized by connection count
+                    bubble.append('circle')
+                        .attr('r', r)
+                        .attr('fill', color)
+                        .attr('opacity', 0.7);
 
-                    // Type dot
-                    pill.append('circle')
-                        .attr('cx', -textLen / 2 + 8)
-                        .attr('cy', 0)
-                        .attr('r', 3)
-                        .attr('fill', typeColors[concept.conceptType] || '#657b83');
+                    // Abbreviated label inside bubble
+                    const fontSize = r >= 16 ? '8px' : '7px';
+                    bubble.append('text')
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', '0.35em')
+                        .style('fill', 'white')
+                        .style('font-size', fontSize)
+                        .style('font-weight', '600')
+                        .text(abbreviateConcept(concept.displayName));
 
-                    // Label
-                    pill.append('text')
-                        .attr('x', -textLen / 2 + 16)
-                        .attr('y', 3)
+                    // Full name label — placed tangentially so top/bottom labels stay on-screen
+                    // For bubbles near top or bottom (vertical), label goes left or right
+                    // For bubbles near left or right (horizontal), label goes above or below
+                    const cosA = Math.cos(angle);
+                    const sinA = Math.sin(angle);
+                    const absCos = Math.abs(cosA);
+                    const absSin = Math.abs(sinA);
+                    let labelDx, labelDy, anchor;
+
+                    if (absCos >= absSin) {
+                        // Bubble is more left/right — label radially outward (horizontal)
+                        const outward = r + 6;
+                        labelDx = outward * cosA;
+                        labelDy = outward * sinA;
+                        anchor = cosA >= 0 ? 'start' : 'end';
+                    } else {
+                        // Bubble is more top/bottom — label tangentially (to the side)
+                        const tangent = r + 6;
+                        // Place label to whichever side has more room (prefer right)
+                        const side = cosA >= 0 ? 1 : -1;
+                        labelDx = tangent * side;
+                        labelDy = 0;
+                        anchor = side > 0 ? 'start' : 'end';
+                    }
+
+                    bubble.append('text')
+                        .attr('class', 'concept-label')
+                        .attr('x', labelDx)
+                        .attr('y', labelDy)
+                        .attr('text-anchor', anchor)
+                        .attr('dy', '0.35em')
+                        .style('fill', color)
                         .style('font-size', '9px')
-                        .style('fill', 'var(--text-secondary)')
-                        .text(concept.displayName.length > 20 ? concept.displayName.substring(0, 17) + '...' : concept.displayName);
+                        .style('font-family', font)
+                        .text(concept.displayName);
 
-                    // Hover: show connection lines to linked entities
-                    pill.on('mouseenter', () => {
-                        lineGroup.selectAll('*').remove();
-                        lineGroup.style('opacity', 1);
+                    // Tooltip on hover
+                    bubble.append('title')
+                        .text(`${concept.displayName}\nType: ${concept.conceptType}\nMaturity: ${concept.maturity || 'N/A'}\nLinked entities: ${entityCount}`);
 
-                        (concept.entities || []).forEach(linked => {
-                            // Find entity position
-                            const entityNode = entities.find(e => e.id === linked.id);
-                            if (!entityNode) return;
-
-                            const ex = entityNode.x || 0;
-                            const ey = entityNode.y || 0;
-                            const opacity = Math.max(0.15, linked.strength);
-                            const color = typeColors[concept.conceptType] || '#657b83';
-
-                            lineGroup.append('line')
-                                .attr('class', 'concept-link-line')
-                                .attr('x1', px)
-                                .attr('y1', py)
-                                .attr('x2', ex)
-                                .attr('y2', ey)
-                                .attr('stroke', color)
-                                .attr('stroke-width', 1.5)
-                                .attr('opacity', opacity);
-                        });
-                    });
-
-                    pill.on('mouseleave', () => {
-                        lineGroup.style('opacity', 0);
-                        lineGroup.selectAll('*').remove();
+                    // Click to toggle
+                    bubble.on('click', () => {
+                        const isActive = state.activeConcepts.has(concept.id);
+                        if (isActive) {
+                            state.activeConcepts.delete(concept.id);
+                            bubble.classed('active', false);
+                            bubble.select('circle').attr('opacity', 0.7);
+                        } else {
+                            state.activeConcepts.add(concept.id);
+                            bubble.classed('active', true);
+                            bubble.select('circle').attr('opacity', 1);
+                        }
+                        updateConceptFilter(g, concepts, entities, nodes, entityLinks, lineGroup);
                     });
                 });
 
             } catch (err) {
-                console.error('Failed to load concept pills:', err);
+                console.error('Failed to load concept bubbles:', err);
             }
         }
 

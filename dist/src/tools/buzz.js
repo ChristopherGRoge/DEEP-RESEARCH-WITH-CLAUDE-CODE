@@ -3,13 +3,17 @@
  * Buzz Score Calculator - Compute composite buzz score for entities
  *
  * Formula:
- * BuzzScore = (
+ * BaseScore = (
  *   MarketPresence   * 0.30 +
  *   DeveloperActivity * 0.25 +
  *   FundingSignal     * 0.20 +
  *   MentionVelocity   * 0.15 +
  *   ResearchDepth     * 0.10
  * )
+ * BuzzScore = BaseScore * 0.75 + ConceptCoverage * 0.25
+ *
+ * ConceptCoverage = sum(link strengths) / totalConceptsInCategory
+ * Concept-connected tools surface higher for hands-on evaluation priority.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.calculateBuzzScore = calculateBuzzScore;
@@ -388,6 +392,40 @@ async function calculateResearchDepth(entityId) {
     const avg = signals.reduce((a, b) => a + b, 0) / signals.length;
     return { score: avg, missing };
 }
+/**
+ * Calculate Concept Coverage component (25% weight)
+ * Strength-weighted ratio: sum(link strengths) / totalConceptsInCategory
+ * Entities connected to more concepts with higher strength score higher.
+ */
+async function calculateConceptCoverage(entityId, categoryId) {
+    const missing = [];
+    if (!categoryId) {
+        missing.push('categoryId');
+        return { score: 0, missing };
+    }
+    // Count total concepts in this category
+    const totalConcepts = await client_1.prisma.categoryConcept.count({
+        where: { categoryId },
+    });
+    if (totalConcepts === 0) {
+        // No concepts mapped yet for this category - not missing data, just not available
+        return { score: 0, missing };
+    }
+    // Get all concept links for this entity within its category
+    const links = await client_1.prisma.conceptEntityLink.findMany({
+        where: {
+            entityId,
+            concept: { categoryId },
+        },
+        select: { strength: true },
+    });
+    if (links.length === 0) {
+        return { score: 0, missing };
+    }
+    const strengthSum = links.reduce((sum, l) => sum + l.strength, 0);
+    const score = Math.min(1.0, strengthSum / totalConcepts);
+    return { score, missing };
+}
 // ============================================
 // MAIN CALCULATOR
 // ============================================
@@ -415,6 +453,7 @@ async function calculateBuzzScore(input) {
                 fundingSignal: 0,
                 mentionVelocity: 0,
                 researchDepth: 0,
+                conceptCoverage: 0,
             },
             dataQuality: 'low',
             missingData: ['entity'],
@@ -433,6 +472,7 @@ async function calculateBuzzScore(input) {
                 fundingSignal: 0,
                 mentionVelocity: 0,
                 researchDepth: 0,
+                conceptCoverage: 0,
             },
             dataQuality: 'high',
             missingData: [],
@@ -453,19 +493,27 @@ async function calculateBuzzScore(input) {
     allMissing.push(...mentionVelocity.missing);
     const researchDepth = await calculateResearchDepth(entityId);
     allMissing.push(...researchDepth.missing);
+    const conceptCoverage = await calculateConceptCoverage(entityId, entity.categoryId);
+    allMissing.push(...conceptCoverage.missing);
     // Calculate composite score with weights
+    // Base score (5 original components) blended with concept coverage
+    // Formula: baseScore * 0.75 + conceptCoverage * 0.25
+    // Concept-connected tools surface higher for hands-on evaluation
     const components = {
         marketPresence: marketPresence.score,
         developerActivity: developerActivity.score,
         fundingSignal: fundingSignal.score,
         mentionVelocity: mentionVelocity.score,
         researchDepth: researchDepth.score,
+        conceptCoverage: conceptCoverage.score,
     };
-    const buzzScore = components.marketPresence * 0.30 +
+    const baseScore = components.marketPresence * 0.30 +
         components.developerActivity * 0.25 +
         components.fundingSignal * 0.20 +
         components.mentionVelocity * 0.15 +
         components.researchDepth * 0.10;
+    // Blend: 75% base signals + 25% concept connectedness
+    const buzzScore = baseScore * 0.75 + components.conceptCoverage * 0.25;
     // Determine data quality
     const uniqueMissing = [...new Set(allMissing)];
     let dataQuality;

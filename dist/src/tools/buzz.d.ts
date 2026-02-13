@@ -2,13 +2,17 @@
  * Buzz Score Calculator - Compute composite buzz score for entities
  *
  * Formula:
- * BuzzScore = (
+ * BaseScore = (
  *   MarketPresence   * 0.30 +
  *   DeveloperActivity * 0.25 +
  *   FundingSignal     * 0.20 +
  *   MentionVelocity   * 0.15 +
  *   ResearchDepth     * 0.10
  * )
+ * BuzzScore = BaseScore * 0.75 + ConceptCoverage * 0.25
+ *
+ * ConceptCoverage = sum(link strengths) / totalConceptsInCategory
+ * Concept-connected tools surface higher for hands-on evaluation priority.
  */
 export interface BuzzComponents {
     marketPresence: number;
@@ -16,6 +20,7 @@ export interface BuzzComponents {
     fundingSignal: number;
     mentionVelocity: number;
     researchDepth: number;
+    conceptCoverage: number;
 }
 export interface BuzzCalculationResult {
     success: boolean;

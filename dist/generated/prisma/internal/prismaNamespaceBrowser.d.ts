@@ -35,6 +35,7 @@ export declare const ModelName: {
     readonly ResearchLog: "ResearchLog";
     readonly ValidationResult: "ValidationResult";
     readonly VerifiedCitation: "VerifiedCitation";
+    readonly Ruling: "Ruling";
     readonly Screenshot: "Screenshot";
     readonly Extraction: "Extraction";
     readonly ResearchSession: "ResearchSession";
@@ -47,6 +48,8 @@ export declare const ModelName: {
     readonly ResearchDomain: "ResearchDomain";
     readonly EntityRelationship: "EntityRelationship";
     readonly EntityPositioning: "EntityPositioning";
+    readonly CategoryConcept: "CategoryConcept";
+    readonly ConceptEntityLink: "ConceptEntityLink";
     readonly EntityForce: "EntityForce";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -217,6 +220,18 @@ export declare const VerifiedCitationScalarFieldEnum: {
     readonly validationResultId: "validationResultId";
 };
 export type VerifiedCitationScalarFieldEnum = (typeof VerifiedCitationScalarFieldEnum)[keyof typeof VerifiedCitationScalarFieldEnum];
+export declare const RulingScalarFieldEnum: {
+    readonly id: "id";
+    readonly assertionId: "assertionId";
+    readonly validationId: "validationId";
+    readonly verdict: "verdict";
+    readonly tensionAnalysis: "tensionAnalysis";
+    readonly reasoning: "reasoning";
+    readonly actionTaken: "actionTaken";
+    readonly ruledBy: "ruledBy";
+    readonly ruledAt: "ruledAt";
+};
+export type RulingScalarFieldEnum = (typeof RulingScalarFieldEnum)[keyof typeof RulingScalarFieldEnum];
 export declare const ScreenshotScalarFieldEnum: {
     readonly id: "id";
     readonly filePath: "filePath";
@@ -434,6 +449,32 @@ export declare const EntityPositioningScalarFieldEnum: {
     readonly assessedBy: "assessedBy";
 };
 export type EntityPositioningScalarFieldEnum = (typeof EntityPositioningScalarFieldEnum)[keyof typeof EntityPositioningScalarFieldEnum];
+export declare const CategoryConceptScalarFieldEnum: {
+    readonly id: "id";
+    readonly categoryId: "categoryId";
+    readonly name: "name";
+    readonly displayName: "displayName";
+    readonly description: "description";
+    readonly conceptType: "conceptType";
+    readonly url: "url";
+    readonly maturity: "maturity";
+    readonly discoveredBy: "discoveredBy";
+    readonly evidenceDescription: "evidenceDescription";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type CategoryConceptScalarFieldEnum = (typeof CategoryConceptScalarFieldEnum)[keyof typeof CategoryConceptScalarFieldEnum];
+export declare const ConceptEntityLinkScalarFieldEnum: {
+    readonly id: "id";
+    readonly conceptId: "conceptId";
+    readonly entityId: "entityId";
+    readonly linkType: "linkType";
+    readonly strength: "strength";
+    readonly context: "context";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type ConceptEntityLinkScalarFieldEnum = (typeof ConceptEntityLinkScalarFieldEnum)[keyof typeof ConceptEntityLinkScalarFieldEnum];
 export declare const EntityForceScalarFieldEnum: {
     readonly id: "id";
     readonly entityId: "entityId";

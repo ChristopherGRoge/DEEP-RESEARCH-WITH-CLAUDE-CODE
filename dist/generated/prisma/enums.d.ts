@@ -84,6 +84,12 @@ export declare const ValidationMethod: {
     readonly HYBRID: "HYBRID";
 };
 export type ValidationMethod = (typeof ValidationMethod)[keyof typeof ValidationMethod];
+export declare const RulingVerdict: {
+    readonly AFFIRM: "AFFIRM";
+    readonly REVISE: "REVISE";
+    readonly OVERTURN: "OVERTURN";
+};
+export type RulingVerdict = (typeof RulingVerdict)[keyof typeof RulingVerdict];
 export declare const ResearchSessionStatus: {
     readonly INITIALIZING: "INITIALIZING";
     readonly PLANNING: "PLANNING";

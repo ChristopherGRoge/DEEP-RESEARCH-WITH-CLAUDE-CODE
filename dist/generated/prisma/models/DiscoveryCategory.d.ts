@@ -218,6 +218,7 @@ export type DiscoveryCategoryWhereInput = {
     createdAt?: Prisma.DateTimeFilter<"DiscoveryCategory"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"DiscoveryCategory"> | Date | string;
     entities?: Prisma.EntityListRelationFilter;
+    concepts?: Prisma.CategoryConceptListRelationFilter;
 };
 export type DiscoveryCategoryOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -233,6 +234,7 @@ export type DiscoveryCategoryOrderByWithRelationInput = {
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     entities?: Prisma.EntityOrderByRelationAggregateInput;
+    concepts?: Prisma.CategoryConceptOrderByRelationAggregateInput;
 };
 export type DiscoveryCategoryWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -251,6 +253,7 @@ export type DiscoveryCategoryWhereUniqueInput = Prisma.AtLeast<{
     createdAt?: Prisma.DateTimeFilter<"DiscoveryCategory"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"DiscoveryCategory"> | Date | string;
     entities?: Prisma.EntityListRelationFilter;
+    concepts?: Prisma.CategoryConceptListRelationFilter;
 }, "id" | "name">;
 export type DiscoveryCategoryOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -302,6 +305,7 @@ export type DiscoveryCategoryCreateInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     entities?: Prisma.EntityCreateNestedManyWithoutCategoryInput;
+    concepts?: Prisma.CategoryConceptCreateNestedManyWithoutCategoryInput;
 };
 export type DiscoveryCategoryUncheckedCreateInput = {
     id?: string;
@@ -317,6 +321,7 @@ export type DiscoveryCategoryUncheckedCreateInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     entities?: Prisma.EntityUncheckedCreateNestedManyWithoutCategoryInput;
+    concepts?: Prisma.CategoryConceptUncheckedCreateNestedManyWithoutCategoryInput;
 };
 export type DiscoveryCategoryUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -332,6 +337,7 @@ export type DiscoveryCategoryUpdateInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     entities?: Prisma.EntityUpdateManyWithoutCategoryNestedInput;
+    concepts?: Prisma.CategoryConceptUpdateManyWithoutCategoryNestedInput;
 };
 export type DiscoveryCategoryUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -347,6 +353,7 @@ export type DiscoveryCategoryUncheckedUpdateInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     entities?: Prisma.EntityUncheckedUpdateManyWithoutCategoryNestedInput;
+    concepts?: Prisma.CategoryConceptUncheckedUpdateManyWithoutCategoryNestedInput;
 };
 export type DiscoveryCategoryCreateManyInput = {
     id?: string;
@@ -438,6 +445,10 @@ export type DiscoveryCategoryMinOrderByAggregateInput = {
 export type DiscoveryCategorySumOrderByAggregateInput = {
     entityCount?: Prisma.SortOrder;
 };
+export type DiscoveryCategoryScalarRelationFilter = {
+    is?: Prisma.DiscoveryCategoryWhereInput;
+    isNot?: Prisma.DiscoveryCategoryWhereInput;
+};
 export type DiscoveryCategoryCreateNestedOneWithoutEntitiesInput = {
     create?: Prisma.XOR<Prisma.DiscoveryCategoryCreateWithoutEntitiesInput, Prisma.DiscoveryCategoryUncheckedCreateWithoutEntitiesInput>;
     connectOrCreate?: Prisma.DiscoveryCategoryCreateOrConnectWithoutEntitiesInput;
@@ -452,6 +463,18 @@ export type DiscoveryCategoryUpdateOneWithoutEntitiesNestedInput = {
     connect?: Prisma.DiscoveryCategoryWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.DiscoveryCategoryUpdateToOneWithWhereWithoutEntitiesInput, Prisma.DiscoveryCategoryUpdateWithoutEntitiesInput>, Prisma.DiscoveryCategoryUncheckedUpdateWithoutEntitiesInput>;
 };
+export type DiscoveryCategoryCreateNestedOneWithoutConceptsInput = {
+    create?: Prisma.XOR<Prisma.DiscoveryCategoryCreateWithoutConceptsInput, Prisma.DiscoveryCategoryUncheckedCreateWithoutConceptsInput>;
+    connectOrCreate?: Prisma.DiscoveryCategoryCreateOrConnectWithoutConceptsInput;
+    connect?: Prisma.DiscoveryCategoryWhereUniqueInput;
+};
+export type DiscoveryCategoryUpdateOneRequiredWithoutConceptsNestedInput = {
+    create?: Prisma.XOR<Prisma.DiscoveryCategoryCreateWithoutConceptsInput, Prisma.DiscoveryCategoryUncheckedCreateWithoutConceptsInput>;
+    connectOrCreate?: Prisma.DiscoveryCategoryCreateOrConnectWithoutConceptsInput;
+    upsert?: Prisma.DiscoveryCategoryUpsertWithoutConceptsInput;
+    connect?: Prisma.DiscoveryCategoryWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.DiscoveryCategoryUpdateToOneWithWhereWithoutConceptsInput, Prisma.DiscoveryCategoryUpdateWithoutConceptsInput>, Prisma.DiscoveryCategoryUncheckedUpdateWithoutConceptsInput>;
+};
 export type DiscoveryCategoryCreateWithoutEntitiesInput = {
     id?: string;
     name: string;
@@ -465,6 +488,7 @@ export type DiscoveryCategoryCreateWithoutEntitiesInput = {
     entityCount?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    concepts?: Prisma.CategoryConceptCreateNestedManyWithoutCategoryInput;
 };
 export type DiscoveryCategoryUncheckedCreateWithoutEntitiesInput = {
     id?: string;
@@ -479,6 +503,7 @@ export type DiscoveryCategoryUncheckedCreateWithoutEntitiesInput = {
     entityCount?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    concepts?: Prisma.CategoryConceptUncheckedCreateNestedManyWithoutCategoryInput;
 };
 export type DiscoveryCategoryCreateOrConnectWithoutEntitiesInput = {
     where: Prisma.DiscoveryCategoryWhereUniqueInput;
@@ -506,6 +531,7 @@ export type DiscoveryCategoryUpdateWithoutEntitiesInput = {
     entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    concepts?: Prisma.CategoryConceptUpdateManyWithoutCategoryNestedInput;
 };
 export type DiscoveryCategoryUncheckedUpdateWithoutEntitiesInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -520,15 +546,91 @@ export type DiscoveryCategoryUncheckedUpdateWithoutEntitiesInput = {
     entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    concepts?: Prisma.CategoryConceptUncheckedUpdateManyWithoutCategoryNestedInput;
+};
+export type DiscoveryCategoryCreateWithoutConceptsInput = {
+    id?: string;
+    name: string;
+    displayName: string;
+    description: string;
+    inclusionCriteria?: string | null;
+    exclusionCriteria?: string | null;
+    exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: string | null;
+    entityCount?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    entities?: Prisma.EntityCreateNestedManyWithoutCategoryInput;
+};
+export type DiscoveryCategoryUncheckedCreateWithoutConceptsInput = {
+    id?: string;
+    name: string;
+    displayName: string;
+    description: string;
+    inclusionCriteria?: string | null;
+    exclusionCriteria?: string | null;
+    exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: string | null;
+    entityCount?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    entities?: Prisma.EntityUncheckedCreateNestedManyWithoutCategoryInput;
+};
+export type DiscoveryCategoryCreateOrConnectWithoutConceptsInput = {
+    where: Prisma.DiscoveryCategoryWhereUniqueInput;
+    create: Prisma.XOR<Prisma.DiscoveryCategoryCreateWithoutConceptsInput, Prisma.DiscoveryCategoryUncheckedCreateWithoutConceptsInput>;
+};
+export type DiscoveryCategoryUpsertWithoutConceptsInput = {
+    update: Prisma.XOR<Prisma.DiscoveryCategoryUpdateWithoutConceptsInput, Prisma.DiscoveryCategoryUncheckedUpdateWithoutConceptsInput>;
+    create: Prisma.XOR<Prisma.DiscoveryCategoryCreateWithoutConceptsInput, Prisma.DiscoveryCategoryUncheckedCreateWithoutConceptsInput>;
+    where?: Prisma.DiscoveryCategoryWhereInput;
+};
+export type DiscoveryCategoryUpdateToOneWithWhereWithoutConceptsInput = {
+    where?: Prisma.DiscoveryCategoryWhereInput;
+    data: Prisma.XOR<Prisma.DiscoveryCategoryUpdateWithoutConceptsInput, Prisma.DiscoveryCategoryUncheckedUpdateWithoutConceptsInput>;
+};
+export type DiscoveryCategoryUpdateWithoutConceptsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    displayName?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    inclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    exclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    entities?: Prisma.EntityUpdateManyWithoutCategoryNestedInput;
+};
+export type DiscoveryCategoryUncheckedUpdateWithoutConceptsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    displayName?: Prisma.StringFieldUpdateOperationsInput | string;
+    description?: Prisma.StringFieldUpdateOperationsInput | string;
+    inclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    exclusionCriteria?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    exemplarEntities?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    antiExemplars?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    materialIcon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    entityCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    entities?: Prisma.EntityUncheckedUpdateManyWithoutCategoryNestedInput;
 };
 /**
  * Count Type DiscoveryCategoryCountOutputType
  */
 export type DiscoveryCategoryCountOutputType = {
     entities: number;
+    concepts: number;
 };
 export type DiscoveryCategoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     entities?: boolean | DiscoveryCategoryCountOutputTypeCountEntitiesArgs;
+    concepts?: boolean | DiscoveryCategoryCountOutputTypeCountConceptsArgs;
 };
 /**
  * DiscoveryCategoryCountOutputType without action
@@ -545,6 +647,12 @@ export type DiscoveryCategoryCountOutputTypeDefaultArgs<ExtArgs extends runtime.
 export type DiscoveryCategoryCountOutputTypeCountEntitiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.EntityWhereInput;
 };
+/**
+ * DiscoveryCategoryCountOutputType without action
+ */
+export type DiscoveryCategoryCountOutputTypeCountConceptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.CategoryConceptWhereInput;
+};
 export type DiscoveryCategorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     name?: boolean;
@@ -559,6 +667,7 @@ export type DiscoveryCategorySelect<ExtArgs extends runtime.Types.Extensions.Int
     createdAt?: boolean;
     updatedAt?: boolean;
     entities?: boolean | Prisma.DiscoveryCategory$entitiesArgs<ExtArgs>;
+    concepts?: boolean | Prisma.DiscoveryCategory$conceptsArgs<ExtArgs>;
     _count?: boolean | Prisma.DiscoveryCategoryCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["discoveryCategory"]>;
 export type DiscoveryCategorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -606,6 +715,7 @@ export type DiscoveryCategorySelectScalar = {
 export type DiscoveryCategoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "displayName" | "description" | "inclusionCriteria" | "exclusionCriteria" | "exemplarEntities" | "antiExemplars" | "materialIcon" | "entityCount" | "createdAt" | "updatedAt", ExtArgs["result"]["discoveryCategory"]>;
 export type DiscoveryCategoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     entities?: boolean | Prisma.DiscoveryCategory$entitiesArgs<ExtArgs>;
+    concepts?: boolean | Prisma.DiscoveryCategory$conceptsArgs<ExtArgs>;
     _count?: boolean | Prisma.DiscoveryCategoryCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type DiscoveryCategoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -614,6 +724,7 @@ export type $DiscoveryCategoryPayload<ExtArgs extends runtime.Types.Extensions.I
     name: "DiscoveryCategory";
     objects: {
         entities: Prisma.$EntityPayload<ExtArgs>[];
+        concepts: Prisma.$CategoryConceptPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -958,6 +1069,7 @@ export interface DiscoveryCategoryDelegate<ExtArgs extends runtime.Types.Extensi
 export interface Prisma__DiscoveryCategoryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
     entities<T extends Prisma.DiscoveryCategory$entitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DiscoveryCategory$entitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EntityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    concepts<T extends Prisma.DiscoveryCategory$conceptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DiscoveryCategory$conceptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CategoryConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1385,6 +1497,29 @@ export type DiscoveryCategory$entitiesArgs<ExtArgs extends runtime.Types.Extensi
     take?: number;
     skip?: number;
     distinct?: Prisma.EntityScalarFieldEnum | Prisma.EntityScalarFieldEnum[];
+};
+/**
+ * DiscoveryCategory.concepts
+ */
+export type DiscoveryCategory$conceptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CategoryConcept
+     */
+    select?: Prisma.CategoryConceptSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the CategoryConcept
+     */
+    omit?: Prisma.CategoryConceptOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.CategoryConceptInclude<ExtArgs> | null;
+    where?: Prisma.CategoryConceptWhereInput;
+    orderBy?: Prisma.CategoryConceptOrderByWithRelationInput | Prisma.CategoryConceptOrderByWithRelationInput[];
+    cursor?: Prisma.CategoryConceptWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.CategoryConceptScalarFieldEnum | Prisma.CategoryConceptScalarFieldEnum[];
 };
 /**
  * DiscoveryCategory without action

@@ -7,6 +7,7 @@ export type * from './models/AssertionSource';
 export type * from './models/ResearchLog';
 export type * from './models/ValidationResult';
 export type * from './models/VerifiedCitation';
+export type * from './models/Ruling';
 export type * from './models/Screenshot';
 export type * from './models/Extraction';
 export type * from './models/ResearchSession';
@@ -19,6 +20,8 @@ export type * from './models/DiscoveryCategory';
 export type * from './models/ResearchDomain';
 export type * from './models/EntityRelationship';
 export type * from './models/EntityPositioning';
+export type * from './models/CategoryConcept';
+export type * from './models/ConceptEntityLink';
 export type * from './models/EntityForce';
 export type * from './commonInputTypes';
 //# sourceMappingURL=models.d.ts.map

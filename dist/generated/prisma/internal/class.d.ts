@@ -211,6 +211,17 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.ruling`: Exposes CRUD operations for the **Ruling** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Rulings
+      * const rulings = await prisma.ruling.findMany()
+      * ```
+      */
+    get ruling(): Prisma.RulingDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.screenshot`: Exposes CRUD operations for the **Screenshot** model.
       * Example usage:
       * ```ts
@@ -340,6 +351,28 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
       * ```
       */
     get entityPositioning(): Prisma.EntityPositioningDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.categoryConcept`: Exposes CRUD operations for the **CategoryConcept** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more CategoryConcepts
+      * const categoryConcepts = await prisma.categoryConcept.findMany()
+      * ```
+      */
+    get categoryConcept(): Prisma.CategoryConceptDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.conceptEntityLink`: Exposes CRUD operations for the **ConceptEntityLink** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ConceptEntityLinks
+      * const conceptEntityLinks = await prisma.conceptEntityLink.findMany()
+      * ```
+      */
+    get conceptEntityLink(): Prisma.ConceptEntityLinkDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
     /**

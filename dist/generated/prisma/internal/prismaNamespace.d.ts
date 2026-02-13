@@ -240,6 +240,7 @@ export declare const ModelName: {
     readonly ResearchLog: "ResearchLog";
     readonly ValidationResult: "ValidationResult";
     readonly VerifiedCitation: "VerifiedCitation";
+    readonly Ruling: "Ruling";
     readonly Screenshot: "Screenshot";
     readonly Extraction: "Extraction";
     readonly ResearchSession: "ResearchSession";
@@ -252,6 +253,8 @@ export declare const ModelName: {
     readonly ResearchDomain: "ResearchDomain";
     readonly EntityRelationship: "EntityRelationship";
     readonly EntityPositioning: "EntityPositioning";
+    readonly CategoryConcept: "CategoryConcept";
+    readonly ConceptEntityLink: "ConceptEntityLink";
     readonly EntityForce: "EntityForce";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -265,7 +268,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "researchProject" | "entity" | "assertion" | "reasoning" | "source" | "assertionSource" | "researchLog" | "validationResult" | "verifiedCitation" | "screenshot" | "extraction" | "researchSession" | "researchTask" | "discoverySource" | "rawDiscovery" | "discoveryCrawl" | "discoveryTrend" | "discoveryCategory" | "researchDomain" | "entityRelationship" | "entityPositioning" | "entityForce";
+        modelProps: "researchProject" | "entity" | "assertion" | "reasoning" | "source" | "assertionSource" | "researchLog" | "validationResult" | "verifiedCitation" | "ruling" | "screenshot" | "extraction" | "researchSession" | "researchTask" | "discoverySource" | "rawDiscovery" | "discoveryCrawl" | "discoveryTrend" | "discoveryCategory" | "researchDomain" | "entityRelationship" | "entityPositioning" | "categoryConcept" | "conceptEntityLink" | "entityForce";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -932,6 +935,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 count: {
                     args: Prisma.VerifiedCitationCountArgs<ExtArgs>;
                     result: runtime.Types.Utils.Optional<Prisma.VerifiedCitationCountAggregateOutputType> | number;
+                };
+            };
+        };
+        Ruling: {
+            payload: Prisma.$RulingPayload<ExtArgs>;
+            fields: Prisma.RulingFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.RulingFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RulingPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.RulingFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RulingPayload>;
+                };
+                findFirst: {
+                    args: Prisma.RulingFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RulingPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.RulingFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RulingPayload>;
+                };
+                findMany: {
+                    args: Prisma.RulingFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RulingPayload>[];
+                };
+                create: {
+                    args: Prisma.RulingCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RulingPayload>;
+                };
+                createMany: {
+                    args: Prisma.RulingCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.RulingCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RulingPayload>[];
+                };
+                delete: {
+                    args: Prisma.RulingDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RulingPayload>;
+                };
+                update: {
+                    args: Prisma.RulingUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RulingPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.RulingDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.RulingUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.RulingUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RulingPayload>[];
+                };
+                upsert: {
+                    args: Prisma.RulingUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RulingPayload>;
+                };
+                aggregate: {
+                    args: Prisma.RulingAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateRuling>;
+                };
+                groupBy: {
+                    args: Prisma.RulingGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.RulingGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.RulingCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.RulingCountAggregateOutputType> | number;
                 };
             };
         };
@@ -1823,6 +1900,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        CategoryConcept: {
+            payload: Prisma.$CategoryConceptPayload<ExtArgs>;
+            fields: Prisma.CategoryConceptFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.CategoryConceptFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryConceptPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.CategoryConceptFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryConceptPayload>;
+                };
+                findFirst: {
+                    args: Prisma.CategoryConceptFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryConceptPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.CategoryConceptFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryConceptPayload>;
+                };
+                findMany: {
+                    args: Prisma.CategoryConceptFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryConceptPayload>[];
+                };
+                create: {
+                    args: Prisma.CategoryConceptCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryConceptPayload>;
+                };
+                createMany: {
+                    args: Prisma.CategoryConceptCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.CategoryConceptCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryConceptPayload>[];
+                };
+                delete: {
+                    args: Prisma.CategoryConceptDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryConceptPayload>;
+                };
+                update: {
+                    args: Prisma.CategoryConceptUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryConceptPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.CategoryConceptDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.CategoryConceptUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.CategoryConceptUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryConceptPayload>[];
+                };
+                upsert: {
+                    args: Prisma.CategoryConceptUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryConceptPayload>;
+                };
+                aggregate: {
+                    args: Prisma.CategoryConceptAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateCategoryConcept>;
+                };
+                groupBy: {
+                    args: Prisma.CategoryConceptGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.CategoryConceptGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.CategoryConceptCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.CategoryConceptCountAggregateOutputType> | number;
+                };
+            };
+        };
+        ConceptEntityLink: {
+            payload: Prisma.$ConceptEntityLinkPayload<ExtArgs>;
+            fields: Prisma.ConceptEntityLinkFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.ConceptEntityLinkFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ConceptEntityLinkPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.ConceptEntityLinkFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ConceptEntityLinkPayload>;
+                };
+                findFirst: {
+                    args: Prisma.ConceptEntityLinkFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ConceptEntityLinkPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.ConceptEntityLinkFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ConceptEntityLinkPayload>;
+                };
+                findMany: {
+                    args: Prisma.ConceptEntityLinkFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ConceptEntityLinkPayload>[];
+                };
+                create: {
+                    args: Prisma.ConceptEntityLinkCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ConceptEntityLinkPayload>;
+                };
+                createMany: {
+                    args: Prisma.ConceptEntityLinkCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.ConceptEntityLinkCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ConceptEntityLinkPayload>[];
+                };
+                delete: {
+                    args: Prisma.ConceptEntityLinkDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ConceptEntityLinkPayload>;
+                };
+                update: {
+                    args: Prisma.ConceptEntityLinkUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ConceptEntityLinkPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.ConceptEntityLinkDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.ConceptEntityLinkUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.ConceptEntityLinkUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ConceptEntityLinkPayload>[];
+                };
+                upsert: {
+                    args: Prisma.ConceptEntityLinkUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ConceptEntityLinkPayload>;
+                };
+                aggregate: {
+                    args: Prisma.ConceptEntityLinkAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateConceptEntityLink>;
+                };
+                groupBy: {
+                    args: Prisma.ConceptEntityLinkGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.ConceptEntityLinkGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.ConceptEntityLinkCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.ConceptEntityLinkCountAggregateOutputType> | number;
+                };
+            };
+        };
         EntityForce: {
             payload: Prisma.$EntityForcePayload<ExtArgs>;
             fields: Prisma.EntityForceFieldRefs;
@@ -2091,6 +2316,18 @@ export declare const VerifiedCitationScalarFieldEnum: {
     readonly validationResultId: "validationResultId";
 };
 export type VerifiedCitationScalarFieldEnum = (typeof VerifiedCitationScalarFieldEnum)[keyof typeof VerifiedCitationScalarFieldEnum];
+export declare const RulingScalarFieldEnum: {
+    readonly id: "id";
+    readonly assertionId: "assertionId";
+    readonly validationId: "validationId";
+    readonly verdict: "verdict";
+    readonly tensionAnalysis: "tensionAnalysis";
+    readonly reasoning: "reasoning";
+    readonly actionTaken: "actionTaken";
+    readonly ruledBy: "ruledBy";
+    readonly ruledAt: "ruledAt";
+};
+export type RulingScalarFieldEnum = (typeof RulingScalarFieldEnum)[keyof typeof RulingScalarFieldEnum];
 export declare const ScreenshotScalarFieldEnum: {
     readonly id: "id";
     readonly filePath: "filePath";
@@ -2308,6 +2545,32 @@ export declare const EntityPositioningScalarFieldEnum: {
     readonly assessedBy: "assessedBy";
 };
 export type EntityPositioningScalarFieldEnum = (typeof EntityPositioningScalarFieldEnum)[keyof typeof EntityPositioningScalarFieldEnum];
+export declare const CategoryConceptScalarFieldEnum: {
+    readonly id: "id";
+    readonly categoryId: "categoryId";
+    readonly name: "name";
+    readonly displayName: "displayName";
+    readonly description: "description";
+    readonly conceptType: "conceptType";
+    readonly url: "url";
+    readonly maturity: "maturity";
+    readonly discoveredBy: "discoveredBy";
+    readonly evidenceDescription: "evidenceDescription";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type CategoryConceptScalarFieldEnum = (typeof CategoryConceptScalarFieldEnum)[keyof typeof CategoryConceptScalarFieldEnum];
+export declare const ConceptEntityLinkScalarFieldEnum: {
+    readonly id: "id";
+    readonly conceptId: "conceptId";
+    readonly entityId: "entityId";
+    readonly linkType: "linkType";
+    readonly strength: "strength";
+    readonly context: "context";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type ConceptEntityLinkScalarFieldEnum = (typeof ConceptEntityLinkScalarFieldEnum)[keyof typeof ConceptEntityLinkScalarFieldEnum];
 export declare const EntityForceScalarFieldEnum: {
     readonly id: "id";
     readonly entityId: "entityId";
@@ -2415,6 +2678,10 @@ export type EnumValidationConfidenceFieldRefInput<$PrismaModel> = FieldRefInputT
  * Reference to a field of type 'ValidationMethod'
  */
 export type EnumValidationMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ValidationMethod'>;
+/**
+ * Reference to a field of type 'RulingVerdict'
+ */
+export type EnumRulingVerdictFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RulingVerdict'>;
 /**
  * Reference to a field of type 'ExtractionStatus'
  */
@@ -2538,6 +2805,7 @@ export type GlobalOmitConfig = {
     researchLog?: Prisma.ResearchLogOmit;
     validationResult?: Prisma.ValidationResultOmit;
     verifiedCitation?: Prisma.VerifiedCitationOmit;
+    ruling?: Prisma.RulingOmit;
     screenshot?: Prisma.ScreenshotOmit;
     extraction?: Prisma.ExtractionOmit;
     researchSession?: Prisma.ResearchSessionOmit;
@@ -2550,6 +2818,8 @@ export type GlobalOmitConfig = {
     researchDomain?: Prisma.ResearchDomainOmit;
     entityRelationship?: Prisma.EntityRelationshipOmit;
     entityPositioning?: Prisma.EntityPositioningOmit;
+    categoryConcept?: Prisma.CategoryConceptOmit;
+    conceptEntityLink?: Prisma.ConceptEntityLinkOmit;
     entityForce?: Prisma.EntityForceOmit;
 };
 export type LogLevel = 'info' | 'query' | 'warn' | 'error';

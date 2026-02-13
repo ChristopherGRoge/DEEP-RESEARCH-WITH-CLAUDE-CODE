@@ -2,7 +2,7 @@ import type * as runtime from "@prisma/client/runtime/client";
 import type * as Prisma from "../internal/prismaNamespace";
 /**
  * Model EntityForce
- * A market force acting on an entity's trajectory
+ * Market forces acting on an entity's trajectory
  */
 export type EntityForceModel = runtime.Types.Result.DefaultSelection<Prisma.$EntityForcePayload>;
 export type AggregateEntityForce = {

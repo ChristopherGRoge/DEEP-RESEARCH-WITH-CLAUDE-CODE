@@ -9,7 +9,7 @@
 * 🟢 You can import this file directly.
 */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ResearchTaskStatus = exports.ResearchSessionStatus = exports.ValidationMethod = exports.ValidationConfidence = exports.ValidationVerdict = exports.CrawlStatus = exports.SourceType = exports.SourceRelevance = exports.AssertionCriticality = exports.ExtractionStatus = exports.ResearchWorkflow = exports.SourceStatus = exports.AssertionStatus = void 0;
+exports.ResearchTaskStatus = exports.ResearchSessionStatus = exports.RulingVerdict = exports.ValidationMethod = exports.ValidationConfidence = exports.ValidationVerdict = exports.CrawlStatus = exports.SourceType = exports.SourceRelevance = exports.AssertionCriticality = exports.ExtractionStatus = exports.ResearchWorkflow = exports.SourceStatus = exports.AssertionStatus = void 0;
 exports.AssertionStatus = {
     CLAIM: 'CLAIM',
     EVIDENCE: 'EVIDENCE',
@@ -84,6 +84,11 @@ exports.ValidationMethod = {
     MANUAL: 'MANUAL',
     AUTOMATED: 'AUTOMATED',
     HYBRID: 'HYBRID'
+};
+exports.RulingVerdict = {
+    AFFIRM: 'AFFIRM',
+    REVISE: 'REVISE',
+    OVERTURN: 'OVERTURN'
 };
 exports.ResearchSessionStatus = {
     INITIALIZING: 'INITIALIZING',

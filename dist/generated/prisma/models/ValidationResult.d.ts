@@ -236,6 +236,7 @@ export type ValidationResultWhereInput = {
     rawOutput?: Prisma.JsonNullableFilter<"ValidationResult">;
     assertion?: Prisma.XOR<Prisma.AssertionScalarRelationFilter, Prisma.AssertionWhereInput>;
     citations?: Prisma.VerifiedCitationListRelationFilter;
+    rulings?: Prisma.RulingListRelationFilter;
 };
 export type ValidationResultOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -255,6 +256,7 @@ export type ValidationResultOrderByWithRelationInput = {
     rawOutput?: Prisma.SortOrderInput | Prisma.SortOrder;
     assertion?: Prisma.AssertionOrderByWithRelationInput;
     citations?: Prisma.VerifiedCitationOrderByRelationAggregateInput;
+    rulings?: Prisma.RulingOrderByRelationAggregateInput;
 };
 export type ValidationResultWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -277,6 +279,7 @@ export type ValidationResultWhereUniqueInput = Prisma.AtLeast<{
     rawOutput?: Prisma.JsonNullableFilter<"ValidationResult">;
     assertion?: Prisma.XOR<Prisma.AssertionScalarRelationFilter, Prisma.AssertionWhereInput>;
     citations?: Prisma.VerifiedCitationListRelationFilter;
+    rulings?: Prisma.RulingListRelationFilter;
 }, "id">;
 export type ValidationResultOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -337,6 +340,7 @@ export type ValidationResultCreateInput = {
     rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     assertion: Prisma.AssertionCreateNestedOneWithoutValidationsInput;
     citations?: Prisma.VerifiedCitationCreateNestedManyWithoutValidationResultInput;
+    rulings?: Prisma.RulingCreateNestedManyWithoutValidationInput;
 };
 export type ValidationResultUncheckedCreateInput = {
     id?: string;
@@ -355,6 +359,7 @@ export type ValidationResultUncheckedCreateInput = {
     durationMs?: number | null;
     rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     citations?: Prisma.VerifiedCitationUncheckedCreateNestedManyWithoutValidationResultInput;
+    rulings?: Prisma.RulingUncheckedCreateNestedManyWithoutValidationInput;
 };
 export type ValidationResultUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -373,6 +378,7 @@ export type ValidationResultUpdateInput = {
     rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     assertion?: Prisma.AssertionUpdateOneRequiredWithoutValidationsNestedInput;
     citations?: Prisma.VerifiedCitationUpdateManyWithoutValidationResultNestedInput;
+    rulings?: Prisma.RulingUpdateManyWithoutValidationNestedInput;
 };
 export type ValidationResultUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -391,6 +397,7 @@ export type ValidationResultUncheckedUpdateInput = {
     durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     citations?: Prisma.VerifiedCitationUncheckedUpdateManyWithoutValidationResultNestedInput;
+    rulings?: Prisma.RulingUncheckedUpdateManyWithoutValidationNestedInput;
 };
 export type ValidationResultCreateManyInput = {
     id?: string;
@@ -503,6 +510,10 @@ export type ValidationResultNullableScalarRelationFilter = {
     is?: Prisma.ValidationResultWhereInput | null;
     isNot?: Prisma.ValidationResultWhereInput | null;
 };
+export type ValidationResultScalarRelationFilter = {
+    is?: Prisma.ValidationResultWhereInput;
+    isNot?: Prisma.ValidationResultWhereInput;
+};
 export type ValidationResultCreateNestedManyWithoutAssertionInput = {
     create?: Prisma.XOR<Prisma.ValidationResultCreateWithoutAssertionInput, Prisma.ValidationResultUncheckedCreateWithoutAssertionInput> | Prisma.ValidationResultCreateWithoutAssertionInput[] | Prisma.ValidationResultUncheckedCreateWithoutAssertionInput[];
     connectOrCreate?: Prisma.ValidationResultCreateOrConnectWithoutAssertionInput | Prisma.ValidationResultCreateOrConnectWithoutAssertionInput[];
@@ -564,6 +575,18 @@ export type ValidationResultUpdateOneWithoutCitationsNestedInput = {
     connect?: Prisma.ValidationResultWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ValidationResultUpdateToOneWithWhereWithoutCitationsInput, Prisma.ValidationResultUpdateWithoutCitationsInput>, Prisma.ValidationResultUncheckedUpdateWithoutCitationsInput>;
 };
+export type ValidationResultCreateNestedOneWithoutRulingsInput = {
+    create?: Prisma.XOR<Prisma.ValidationResultCreateWithoutRulingsInput, Prisma.ValidationResultUncheckedCreateWithoutRulingsInput>;
+    connectOrCreate?: Prisma.ValidationResultCreateOrConnectWithoutRulingsInput;
+    connect?: Prisma.ValidationResultWhereUniqueInput;
+};
+export type ValidationResultUpdateOneRequiredWithoutRulingsNestedInput = {
+    create?: Prisma.XOR<Prisma.ValidationResultCreateWithoutRulingsInput, Prisma.ValidationResultUncheckedCreateWithoutRulingsInput>;
+    connectOrCreate?: Prisma.ValidationResultCreateOrConnectWithoutRulingsInput;
+    upsert?: Prisma.ValidationResultUpsertWithoutRulingsInput;
+    connect?: Prisma.ValidationResultWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ValidationResultUpdateToOneWithWhereWithoutRulingsInput, Prisma.ValidationResultUpdateWithoutRulingsInput>, Prisma.ValidationResultUncheckedUpdateWithoutRulingsInput>;
+};
 export type ValidationResultCreateWithoutAssertionInput = {
     id?: string;
     verdict: $Enums.ValidationVerdict;
@@ -580,6 +603,7 @@ export type ValidationResultCreateWithoutAssertionInput = {
     durationMs?: number | null;
     rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     citations?: Prisma.VerifiedCitationCreateNestedManyWithoutValidationResultInput;
+    rulings?: Prisma.RulingCreateNestedManyWithoutValidationInput;
 };
 export type ValidationResultUncheckedCreateWithoutAssertionInput = {
     id?: string;
@@ -597,6 +621,7 @@ export type ValidationResultUncheckedCreateWithoutAssertionInput = {
     durationMs?: number | null;
     rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     citations?: Prisma.VerifiedCitationUncheckedCreateNestedManyWithoutValidationResultInput;
+    rulings?: Prisma.RulingUncheckedCreateNestedManyWithoutValidationInput;
 };
 export type ValidationResultCreateOrConnectWithoutAssertionInput = {
     where: Prisma.ValidationResultWhereUniqueInput;
@@ -654,6 +679,7 @@ export type ValidationResultCreateWithoutCitationsInput = {
     durationMs?: number | null;
     rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     assertion: Prisma.AssertionCreateNestedOneWithoutValidationsInput;
+    rulings?: Prisma.RulingCreateNestedManyWithoutValidationInput;
 };
 export type ValidationResultUncheckedCreateWithoutCitationsInput = {
     id?: string;
@@ -671,6 +697,7 @@ export type ValidationResultUncheckedCreateWithoutCitationsInput = {
     validatedAt?: Date | string;
     durationMs?: number | null;
     rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    rulings?: Prisma.RulingUncheckedCreateNestedManyWithoutValidationInput;
 };
 export type ValidationResultCreateOrConnectWithoutCitationsInput = {
     where: Prisma.ValidationResultWhereUniqueInput;
@@ -701,6 +728,7 @@ export type ValidationResultUpdateWithoutCitationsInput = {
     durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     assertion?: Prisma.AssertionUpdateOneRequiredWithoutValidationsNestedInput;
+    rulings?: Prisma.RulingUpdateManyWithoutValidationNestedInput;
 };
 export type ValidationResultUncheckedUpdateWithoutCitationsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -718,6 +746,92 @@ export type ValidationResultUncheckedUpdateWithoutCitationsInput = {
     validatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    rulings?: Prisma.RulingUncheckedUpdateManyWithoutValidationNestedInput;
+};
+export type ValidationResultCreateWithoutRulingsInput = {
+    id?: string;
+    verdict: $Enums.ValidationVerdict;
+    confidence: $Enums.ValidationConfidence;
+    method: $Enums.ValidationMethod;
+    refinedClaim?: string | null;
+    attackResults?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    counterEvidence?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    conditions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    summary?: string | null;
+    recommendations?: string | null;
+    validatorId: string;
+    validatedAt?: Date | string;
+    durationMs?: number | null;
+    rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    assertion: Prisma.AssertionCreateNestedOneWithoutValidationsInput;
+    citations?: Prisma.VerifiedCitationCreateNestedManyWithoutValidationResultInput;
+};
+export type ValidationResultUncheckedCreateWithoutRulingsInput = {
+    id?: string;
+    assertionId: string;
+    verdict: $Enums.ValidationVerdict;
+    confidence: $Enums.ValidationConfidence;
+    method: $Enums.ValidationMethod;
+    refinedClaim?: string | null;
+    attackResults?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    counterEvidence?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    conditions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    summary?: string | null;
+    recommendations?: string | null;
+    validatorId: string;
+    validatedAt?: Date | string;
+    durationMs?: number | null;
+    rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    citations?: Prisma.VerifiedCitationUncheckedCreateNestedManyWithoutValidationResultInput;
+};
+export type ValidationResultCreateOrConnectWithoutRulingsInput = {
+    where: Prisma.ValidationResultWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ValidationResultCreateWithoutRulingsInput, Prisma.ValidationResultUncheckedCreateWithoutRulingsInput>;
+};
+export type ValidationResultUpsertWithoutRulingsInput = {
+    update: Prisma.XOR<Prisma.ValidationResultUpdateWithoutRulingsInput, Prisma.ValidationResultUncheckedUpdateWithoutRulingsInput>;
+    create: Prisma.XOR<Prisma.ValidationResultCreateWithoutRulingsInput, Prisma.ValidationResultUncheckedCreateWithoutRulingsInput>;
+    where?: Prisma.ValidationResultWhereInput;
+};
+export type ValidationResultUpdateToOneWithWhereWithoutRulingsInput = {
+    where?: Prisma.ValidationResultWhereInput;
+    data: Prisma.XOR<Prisma.ValidationResultUpdateWithoutRulingsInput, Prisma.ValidationResultUncheckedUpdateWithoutRulingsInput>;
+};
+export type ValidationResultUpdateWithoutRulingsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    verdict?: Prisma.EnumValidationVerdictFieldUpdateOperationsInput | $Enums.ValidationVerdict;
+    confidence?: Prisma.EnumValidationConfidenceFieldUpdateOperationsInput | $Enums.ValidationConfidence;
+    method?: Prisma.EnumValidationMethodFieldUpdateOperationsInput | $Enums.ValidationMethod;
+    refinedClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    attackResults?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    counterEvidence?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    conditions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    recommendations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    validatorId?: Prisma.StringFieldUpdateOperationsInput | string;
+    validatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    assertion?: Prisma.AssertionUpdateOneRequiredWithoutValidationsNestedInput;
+    citations?: Prisma.VerifiedCitationUpdateManyWithoutValidationResultNestedInput;
+};
+export type ValidationResultUncheckedUpdateWithoutRulingsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    assertionId?: Prisma.StringFieldUpdateOperationsInput | string;
+    verdict?: Prisma.EnumValidationVerdictFieldUpdateOperationsInput | $Enums.ValidationVerdict;
+    confidence?: Prisma.EnumValidationConfidenceFieldUpdateOperationsInput | $Enums.ValidationConfidence;
+    method?: Prisma.EnumValidationMethodFieldUpdateOperationsInput | $Enums.ValidationMethod;
+    refinedClaim?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    attackResults?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    counterEvidence?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    conditions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    recommendations?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    validatorId?: Prisma.StringFieldUpdateOperationsInput | string;
+    validatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
+    citations?: Prisma.VerifiedCitationUncheckedUpdateManyWithoutValidationResultNestedInput;
 };
 export type ValidationResultCreateManyAssertionInput = {
     id?: string;
@@ -751,6 +865,7 @@ export type ValidationResultUpdateWithoutAssertionInput = {
     durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     citations?: Prisma.VerifiedCitationUpdateManyWithoutValidationResultNestedInput;
+    rulings?: Prisma.RulingUpdateManyWithoutValidationNestedInput;
 };
 export type ValidationResultUncheckedUpdateWithoutAssertionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -768,6 +883,7 @@ export type ValidationResultUncheckedUpdateWithoutAssertionInput = {
     durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     rawOutput?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue;
     citations?: Prisma.VerifiedCitationUncheckedUpdateManyWithoutValidationResultNestedInput;
+    rulings?: Prisma.RulingUncheckedUpdateManyWithoutValidationNestedInput;
 };
 export type ValidationResultUncheckedUpdateManyWithoutAssertionInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -790,9 +906,11 @@ export type ValidationResultUncheckedUpdateManyWithoutAssertionInput = {
  */
 export type ValidationResultCountOutputType = {
     citations: number;
+    rulings: number;
 };
 export type ValidationResultCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     citations?: boolean | ValidationResultCountOutputTypeCountCitationsArgs;
+    rulings?: boolean | ValidationResultCountOutputTypeCountRulingsArgs;
 };
 /**
  * ValidationResultCountOutputType without action
@@ -808,6 +926,12 @@ export type ValidationResultCountOutputTypeDefaultArgs<ExtArgs extends runtime.T
  */
 export type ValidationResultCountOutputTypeCountCitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.VerifiedCitationWhereInput;
+};
+/**
+ * ValidationResultCountOutputType without action
+ */
+export type ValidationResultCountOutputTypeCountRulingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.RulingWhereInput;
 };
 export type ValidationResultSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -827,6 +951,7 @@ export type ValidationResultSelect<ExtArgs extends runtime.Types.Extensions.Inte
     rawOutput?: boolean;
     assertion?: boolean | Prisma.AssertionDefaultArgs<ExtArgs>;
     citations?: boolean | Prisma.ValidationResult$citationsArgs<ExtArgs>;
+    rulings?: boolean | Prisma.ValidationResult$rulingsArgs<ExtArgs>;
     _count?: boolean | Prisma.ValidationResultCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["validationResult"]>;
 export type ValidationResultSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -886,6 +1011,7 @@ export type ValidationResultOmit<ExtArgs extends runtime.Types.Extensions.Intern
 export type ValidationResultInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     assertion?: boolean | Prisma.AssertionDefaultArgs<ExtArgs>;
     citations?: boolean | Prisma.ValidationResult$citationsArgs<ExtArgs>;
+    rulings?: boolean | Prisma.ValidationResult$rulingsArgs<ExtArgs>;
     _count?: boolean | Prisma.ValidationResultCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type ValidationResultIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -899,6 +1025,7 @@ export type $ValidationResultPayload<ExtArgs extends runtime.Types.Extensions.In
     objects: {
         assertion: Prisma.$AssertionPayload<ExtArgs>;
         citations: Prisma.$VerifiedCitationPayload<ExtArgs>[];
+        rulings: Prisma.$RulingPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -1247,6 +1374,7 @@ export interface Prisma__ValidationResultClient<T, Null = never, ExtArgs extends
     readonly [Symbol.toStringTag]: "PrismaPromise";
     assertion<T extends Prisma.AssertionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssertionDefaultArgs<ExtArgs>>): Prisma.Prisma__AssertionClient<runtime.Types.Result.GetResult<Prisma.$AssertionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     citations<T extends Prisma.ValidationResult$citationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ValidationResult$citationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VerifiedCitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    rulings<T extends Prisma.ValidationResult$rulingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ValidationResult$rulingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RulingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1685,6 +1813,29 @@ export type ValidationResult$citationsArgs<ExtArgs extends runtime.Types.Extensi
     take?: number;
     skip?: number;
     distinct?: Prisma.VerifiedCitationScalarFieldEnum | Prisma.VerifiedCitationScalarFieldEnum[];
+};
+/**
+ * ValidationResult.rulings
+ */
+export type ValidationResult$rulingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Ruling
+     */
+    select?: Prisma.RulingSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Ruling
+     */
+    omit?: Prisma.RulingOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.RulingInclude<ExtArgs> | null;
+    where?: Prisma.RulingWhereInput;
+    orderBy?: Prisma.RulingOrderByWithRelationInput | Prisma.RulingOrderByWithRelationInput[];
+    cursor?: Prisma.RulingWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.RulingScalarFieldEnum | Prisma.RulingScalarFieldEnum[];
 };
 /**
  * ValidationResult without action

@@ -2,7 +2,8 @@ import type * as runtime from "@prisma/client/runtime/client";
 import type * as Prisma from "../internal/prismaNamespace";
 /**
  * Model EntityRelationship
- * An entity-to-entity relationship (competitive, complementary, dependency, etc.)
+ * Entity-to-entity relationships (competitive, complementary, dependency, etc.)
+ * Supports both internal entities (FK) and external entities (name string)
  */
 export type EntityRelationshipModel = runtime.Types.Result.DefaultSelection<Prisma.$EntityRelationshipPayload>;
 export type AggregateEntityRelationship = {

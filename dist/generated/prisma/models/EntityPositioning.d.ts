@@ -2,7 +2,7 @@ import type * as runtime from "@prisma/client/runtime/client";
 import type * as Prisma from "../internal/prismaNamespace";
 /**
  * Model EntityPositioning
- * Structural market positioning for an entity (one per entity)
+ * Structural market positioning for an entity (one record per entity)
  */
 export type EntityPositioningModel = runtime.Types.Result.DefaultSelection<Prisma.$EntityPositioningPayload>;
 export type AggregateEntityPositioning = {

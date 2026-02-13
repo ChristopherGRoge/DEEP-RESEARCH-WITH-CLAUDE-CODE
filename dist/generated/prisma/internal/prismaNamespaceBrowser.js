@@ -48,7 +48,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.QueryMode = exports.JsonNullValueFilter = exports.NullsOrder = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.EntityForceScalarFieldEnum = exports.EntityPositioningScalarFieldEnum = exports.EntityRelationshipScalarFieldEnum = exports.ResearchDomainScalarFieldEnum = exports.DiscoveryCategoryScalarFieldEnum = exports.DiscoveryTrendScalarFieldEnum = exports.DiscoveryCrawlScalarFieldEnum = exports.RawDiscoveryScalarFieldEnum = exports.DiscoverySourceScalarFieldEnum = exports.ResearchTaskScalarFieldEnum = exports.ResearchSessionScalarFieldEnum = exports.ExtractionScalarFieldEnum = exports.ScreenshotScalarFieldEnum = exports.VerifiedCitationScalarFieldEnum = exports.ValidationResultScalarFieldEnum = exports.ResearchLogScalarFieldEnum = exports.AssertionSourceScalarFieldEnum = exports.SourceScalarFieldEnum = exports.ReasoningScalarFieldEnum = exports.AssertionScalarFieldEnum = exports.EntityScalarFieldEnum = exports.ResearchProjectScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.QueryMode = exports.JsonNullValueFilter = exports.NullsOrder = exports.JsonNullValueInput = exports.NullableJsonNullValueInput = exports.SortOrder = exports.EntityForceScalarFieldEnum = exports.ConceptEntityLinkScalarFieldEnum = exports.CategoryConceptScalarFieldEnum = exports.EntityPositioningScalarFieldEnum = exports.EntityRelationshipScalarFieldEnum = exports.ResearchDomainScalarFieldEnum = exports.DiscoveryCategoryScalarFieldEnum = exports.DiscoveryTrendScalarFieldEnum = exports.DiscoveryCrawlScalarFieldEnum = exports.RawDiscoveryScalarFieldEnum = exports.DiscoverySourceScalarFieldEnum = exports.ResearchTaskScalarFieldEnum = exports.ResearchSessionScalarFieldEnum = exports.ExtractionScalarFieldEnum = exports.ScreenshotScalarFieldEnum = exports.RulingScalarFieldEnum = exports.VerifiedCitationScalarFieldEnum = exports.ValidationResultScalarFieldEnum = exports.ResearchLogScalarFieldEnum = exports.AssertionSourceScalarFieldEnum = exports.SourceScalarFieldEnum = exports.ReasoningScalarFieldEnum = exports.AssertionScalarFieldEnum = exports.EntityScalarFieldEnum = exports.ResearchProjectScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -84,6 +84,7 @@ exports.ModelName = {
     ResearchLog: 'ResearchLog',
     ValidationResult: 'ValidationResult',
     VerifiedCitation: 'VerifiedCitation',
+    Ruling: 'Ruling',
     Screenshot: 'Screenshot',
     Extraction: 'Extraction',
     ResearchSession: 'ResearchSession',
@@ -96,6 +97,8 @@ exports.ModelName = {
     ResearchDomain: 'ResearchDomain',
     EntityRelationship: 'EntityRelationship',
     EntityPositioning: 'EntityPositioning',
+    CategoryConcept: 'CategoryConcept',
+    ConceptEntityLink: 'ConceptEntityLink',
     EntityForce: 'EntityForce'
 };
 /*
@@ -257,6 +260,17 @@ exports.VerifiedCitationScalarFieldEnum = {
     reasoning: 'reasoning',
     verifiedAt: 'verifiedAt',
     validationResultId: 'validationResultId'
+};
+exports.RulingScalarFieldEnum = {
+    id: 'id',
+    assertionId: 'assertionId',
+    validationId: 'validationId',
+    verdict: 'verdict',
+    tensionAnalysis: 'tensionAnalysis',
+    reasoning: 'reasoning',
+    actionTaken: 'actionTaken',
+    ruledBy: 'ruledBy',
+    ruledAt: 'ruledAt'
 };
 exports.ScreenshotScalarFieldEnum = {
     id: 'id',
@@ -462,6 +476,30 @@ exports.EntityPositioningScalarFieldEnum = {
     updatedAt: 'updatedAt',
     assessedAt: 'assessedAt',
     assessedBy: 'assessedBy'
+};
+exports.CategoryConceptScalarFieldEnum = {
+    id: 'id',
+    categoryId: 'categoryId',
+    name: 'name',
+    displayName: 'displayName',
+    description: 'description',
+    conceptType: 'conceptType',
+    url: 'url',
+    maturity: 'maturity',
+    discoveredBy: 'discoveredBy',
+    evidenceDescription: 'evidenceDescription',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.ConceptEntityLinkScalarFieldEnum = {
+    id: 'id',
+    conceptId: 'conceptId',
+    entityId: 'entityId',
+    linkType: 'linkType',
+    strength: 'strength',
+    context: 'context',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 };
 exports.EntityForceScalarFieldEnum = {
     id: 'id',

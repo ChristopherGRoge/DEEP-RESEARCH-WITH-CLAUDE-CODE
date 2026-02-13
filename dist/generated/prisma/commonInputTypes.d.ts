@@ -342,6 +342,21 @@ export type EnumValidationMethodWithAggregatesFilter<$PrismaModel = never> = {
     _min?: Prisma.NestedEnumValidationMethodFilter<$PrismaModel>;
     _max?: Prisma.NestedEnumValidationMethodFilter<$PrismaModel>;
 };
+export type EnumRulingVerdictFilter<$PrismaModel = never> = {
+    equals?: $Enums.RulingVerdict | Prisma.EnumRulingVerdictFieldRefInput<$PrismaModel>;
+    in?: $Enums.RulingVerdict[];
+    notIn?: $Enums.RulingVerdict[];
+    not?: Prisma.NestedEnumRulingVerdictFilter<$PrismaModel> | $Enums.RulingVerdict;
+};
+export type EnumRulingVerdictWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RulingVerdict | Prisma.EnumRulingVerdictFieldRefInput<$PrismaModel>;
+    in?: $Enums.RulingVerdict[];
+    notIn?: $Enums.RulingVerdict[];
+    not?: Prisma.NestedEnumRulingVerdictWithAggregatesFilter<$PrismaModel> | $Enums.RulingVerdict;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumRulingVerdictFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumRulingVerdictFilter<$PrismaModel>;
+};
 export type JsonFilter<$PrismaModel = never> = Prisma.PatchUndefined<Prisma.Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>, Required<JsonFilterBase<$PrismaModel>>> | Prisma.OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>;
 export type JsonFilterBase<$PrismaModel = never> = {
     equals?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter;
@@ -800,6 +815,21 @@ export type NestedEnumValidationMethodWithAggregatesFilter<$PrismaModel = never>
     _count?: Prisma.NestedIntFilter<$PrismaModel>;
     _min?: Prisma.NestedEnumValidationMethodFilter<$PrismaModel>;
     _max?: Prisma.NestedEnumValidationMethodFilter<$PrismaModel>;
+};
+export type NestedEnumRulingVerdictFilter<$PrismaModel = never> = {
+    equals?: $Enums.RulingVerdict | Prisma.EnumRulingVerdictFieldRefInput<$PrismaModel>;
+    in?: $Enums.RulingVerdict[];
+    notIn?: $Enums.RulingVerdict[];
+    not?: Prisma.NestedEnumRulingVerdictFilter<$PrismaModel> | $Enums.RulingVerdict;
+};
+export type NestedEnumRulingVerdictWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RulingVerdict | Prisma.EnumRulingVerdictFieldRefInput<$PrismaModel>;
+    in?: $Enums.RulingVerdict[];
+    notIn?: $Enums.RulingVerdict[];
+    not?: Prisma.NestedEnumRulingVerdictWithAggregatesFilter<$PrismaModel> | $Enums.RulingVerdict;
+    _count?: Prisma.NestedIntFilter<$PrismaModel>;
+    _min?: Prisma.NestedEnumRulingVerdictFilter<$PrismaModel>;
+    _max?: Prisma.NestedEnumRulingVerdictFilter<$PrismaModel>;
 };
 export type NestedEnumExtractionStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.ExtractionStatus | Prisma.EnumExtractionStatusFieldRefInput<$PrismaModel>;

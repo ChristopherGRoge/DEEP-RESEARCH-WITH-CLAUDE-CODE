@@ -653,6 +653,8 @@ async function generateDifferentiatorAssertions(entityId, differentiators, sourc
     const ids = [];
     // Create assertions for unique features (true differentiators)
     for (const feature of differentiators.uniqueFeatures || []) {
+        if (!feature?.name || !feature?.description)
+            continue;
         const comparison = feature.comparedTo?.length
             ? ` (competitors: ${feature.comparedTo.join('; ')})`
             : '';
@@ -667,6 +669,8 @@ async function generateDifferentiatorAssertions(entityId, differentiators, sourc
     }
     // Create assertions for leading features (best-in-class)
     for (const feature of differentiators.leadingFeatures || []) {
+        if (!feature?.name || !feature?.description)
+            continue;
         const comparison = feature.comparedTo?.length
             ? ` (vs ${feature.comparedTo.join('; ')})`
             : '';
@@ -681,6 +685,8 @@ async function generateDifferentiatorAssertions(entityId, differentiators, sourc
     }
     // Create assertions for lagging features (competitive weakness)
     for (const feature of differentiators.laggingFeatures || []) {
+        if (!feature?.name || !feature?.reason)
+            continue;
         const competitors = feature.competitors?.length
             ? ` (better at: ${feature.competitors.join(', ')})`
             : '';
@@ -695,6 +701,8 @@ async function generateDifferentiatorAssertions(entityId, differentiators, sourc
     }
     // Create assertions for missing features
     for (const feature of differentiators.missingFeatures || []) {
+        if (!feature?.name || !feature?.competitors?.length)
+            continue;
         const importance = feature.importance ? ` [${feature.importance}]` : '';
         const assertion = await (0, assertions_1.createAssertion)({
             entityId,

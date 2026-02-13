@@ -51,6 +51,11 @@ export type ValidationResult = Prisma.ValidationResultModel;
  */
 export type VerifiedCitation = Prisma.VerifiedCitationModel;
 /**
+ * Model Ruling
+ * A ruling that closes the validation loop for an assertion-validation pair
+ */
+export type Ruling = Prisma.RulingModel;
+/**
  * Model Screenshot
  * Screenshot evidence captured during extraction
  */
@@ -104,17 +109,29 @@ export type DiscoveryCategory = Prisma.DiscoveryCategoryModel;
 export type ResearchDomain = Prisma.ResearchDomainModel;
 /**
  * Model EntityRelationship
- * An entity-to-entity relationship (competitive, complementary, dependency, etc.)
+ * Entity-to-entity relationships (competitive, complementary, dependency, etc.)
+ * Supports both internal entities (FK) and external entities (name string)
  */
 export type EntityRelationship = Prisma.EntityRelationshipModel;
 /**
  * Model EntityPositioning
- * Structural market positioning for an entity (one per entity)
+ * Structural market positioning for an entity (one record per entity)
  */
 export type EntityPositioning = Prisma.EntityPositioningModel;
 /**
+ * Model CategoryConcept
+ * A concept (methodology, technology, standard, or pattern) within a category
+ * Concepts are the building blocks that explain WHY entities cluster
+ */
+export type CategoryConcept = Prisma.CategoryConceptModel;
+/**
+ * Model ConceptEntityLink
+ * Junction table linking concepts to entities with correlation strength
+ */
+export type ConceptEntityLink = Prisma.ConceptEntityLinkModel;
+/**
  * Model EntityForce
- * A market force acting on an entity's trajectory
+ * Market forces acting on an entity's trajectory
  */
 export type EntityForce = Prisma.EntityForceModel;
 //# sourceMappingURL=browser.d.ts.map
