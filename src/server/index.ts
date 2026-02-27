@@ -53,6 +53,15 @@ app.use(
   })
 );
 
+// Serve logos directory
+app.use(
+  '/logos/*',
+  serveStatic({
+    root: './',
+    rewriteRequestPath: (path) => path,
+  })
+);
+
 // ============================================
 // Explicit routes (MUST come before static handlers)
 // ============================================

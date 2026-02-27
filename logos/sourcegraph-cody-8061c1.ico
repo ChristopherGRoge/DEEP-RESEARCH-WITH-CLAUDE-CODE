@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" class="base">
+
+<head>
+	
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="google" content="notranslate">
+	<meta http-equiv="Content-Language" content="en">
+	<meta name="viewport" content="width=device-width, viewport-fit=cover" />
+	<meta name="referrer" content="strict-origin-when-cross-origin"/>
+	<meta name="color-scheme" content="light dark"/>
+    
+	<meta name='description' content="Search across 2 million&#43; open source repositories for free. Powered by Sourcegraph Code Search." />
+    
+    <title>404 Not Found - Sourcegraph</title>
+
+    <style ignore-csp>
+         
+        @layer uikit, webapp, wildcard;
+    </style>
+
+    
+
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/entry/start.BzveRfeI.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/8Ygs0D0W.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/D8_9Y7x-.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/BnUZznEk.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/zImHEY6i.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/BJc0lym-.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/C8v0nhqc.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/CiiBlKkj.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/y_k8mVbq.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/BrJ7YPQ0.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/entry/app.e6yDIys8.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/CuubtzcI.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/Dpb2rF1Q.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/D9NbaFtm.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/Ce4VafDt.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/CffjGO2h.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/Cm9PB-7n.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/B2vToGZt.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/BiQ4fRic.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/BszLoIeq.js">
+		<link rel="modulepreload" href="/.assets/_sk/_app/immutable/chunks/-fzQF_0B.js">
+
+    <script ignore-csp>
+        const userPreference = localStorage.getItem('sourcegraph-theme') || 'System'
+        const theme =
+            (userPreference === 'System' && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+            userPreference === 'Dark'
+                ? 'theme-dark'
+                : 'theme-light'
+        document.documentElement.classList.add(theme)
+    </script>
+
+	<link id='sourcegraph-chrome-webstore-item' rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/dgjhfomjieaadpoljlnidmbgkdffpack">
+	<link rel="search" href="/opensearch.xml" type="application/opensearchdescription+xml" title="Sourcegraph Search">
+	
+	
+	<link rel="preload" href="/.assets/img/sourcegraph-mark.svg?v3" as="image" />
+	
+	
+	
+	
+	<script ignore-csp>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.defer=true;j.src=
+	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-TB4NLS7');</script>
+	
+	
+	<script src='https://js.sentry-cdn.com/ae2f74442b154faf90b5ff0f7cd1c618.min.js' crossorigin="anonymous"></script>
+	
+	
+	<script ignore-csp>
+		window.context = {"externalURL":"https://sourcegraph.com","xhrHeaders":{"X-Requested-With":"Sourcegraph","x-sourcegraph-client":"https://sourcegraph.com"},"userAgentIsBot":false,"assetsRoot":"/.assets","version":"354728_2026-02-04_6.12-6ae5b6e07658","isAuthenticatedUser":false,"currentUser":null,"temporarySettings":{"__typename":"TemporarySettings","contents":"{}"},"sentryDSN":"https://1603afe0cbf07123cfdef2286d1b98d3@o19358.ingest.sentry.io/1391511","openTelemetry":{"endpoint":"/-/debug/otlp"},"siteID":"d5867919-9dcf-4e49-9931-cc86b826fd85","siteGQLID":"U2l0ZToic2l0ZSI=","debug":false,"needsSiteInit":false,"emailEnabled":true,"site":{"update.channel":"release"},"deployType":"helm","sourcegraphDotComMode":true,"isCloud":true,"accessTokensAllow":"all-users-create","accessTokensAllowNoExpiration":true,"accessTokensExpirationDaysDefault":90,"accessTokensExpirationDaysOptions":[7,14,30,60,90],"allowSignup":false,"resetPasswordEnabled":false,"authMinPasswordLength":12,"authPasswordPolicy":{"enabled":false,"numberOfSpecialCharacters":0,"requireAtLeastOneNumber":false,"requireUpperAndLowerCase":false},"authProviders":[{"isBuiltin":false,"noSignIn":false,"displayName":"Sourcegraph Accounts","displayPrefix":null,"serviceType":"openidconnect","authenticationURL":"/.auth/openidconnect/login?pc=sams","serviceID":"https://accounts.sourcegraph.com","clientID":"sams_cid_018d5780-6b5e-7df4-a3a0-f8afe81bcd9b","requiredForAuthz":false},{"isBuiltin":false,"noSignIn":false,"displayName":"Sourcegraph Operators","displayPrefix":null,"serviceType":"sourcegraph-operator","authenticationURL":"/.auth/sourcegraph-operator/login?pc=sourcegraph-operator","serviceID":"https://sourcegraph-cloud.okta.com","clientID":"0oaq7vm1irI6p2vRH697","requiredForAuthz":false}],"primaryLoginProvidersCount":1,"authAccessRequest":null,"branding":{"brandName":"Sourcegraph"},"batchChangesEnabled":false,"batchChangesDisableWebhooksWarning":false,"batchChangesWebhookLogsEnabled":true,"batchChangesTemplateLibraryDisplayLimit":0,"codyEnabledOnInstance":false,"codyEnabledForCurrentUser":false,"codeSearchEnabledOnInstance":true,"executorsEnabled":true,"codeIntelAutoIndexingEnabled":true,"codeIntelAutoIndexingAllowGlobalPolicies":true,"codeIntelAutoIndexingPolicyManagementEnabled":false,"codeInsightsEnabled":false,"codeIntelligenceEnabled":true,"searchContextsEnabled":true,"notebooksEnabled":false,"codeMonitoringEnabled":false,"searchAggregationEnabled":true,"ownEnabled":true,"searchJobsEnabled":false,"deepSearchEnabled":false,"deepSearchModel":"anthropic::2024-10-22::claude-sonnet-4-5-thinking-latest","deepSearchSharingEnabled":false,"RedirectUnsupportedBrowser":false,"experimentalFeatures":{"pagure":"enabled"},"licenseInfo":{"batchChanges":null},"outboundRequestLogLimit":0,"disableFeedbackSurvey":false,"changelog":{"baseURL":"https://sourcegraph.com/changelog"},"needsRepositoryConfiguration":false,"extsvcConfigFileExists":false,"extsvcConfigAllowEdits":false,"runningOnMacOS":false,"svelteKit":{"knownRoutes":["^/robots\\.txt[/]?$","^/favicon\\.ico[/]?$","^/opensearch\\.xml[/]?$","^/-/logout[/]?$","^/-/sign-up[/]?$","^/-/request-access[/]?$","^/-/site-init[/]?$","^/-/verify-email[/]?$","^/-/sign-in[/]?$","^/-/sign-out[/]?$","^/-/unlock-account[/]?$","^/-/unlock-user-account[/]?$","^/-/reset-password-init[/]?$","^/-/reset-password-code[/]?$","^/-/check-username-taken/(?:[^/]+)[/]?$","^/-/editor[/]?$","^/-/debug","^/gophercon[/]?$","^/(?:(?:(?:(?:[^@/-]|(?:[^/@]{2,}))/)*(?:[^@/-]|(?:[^/@]{2,}))))(?:(?:@(?:(?:[^@=/.-]|(?:[^=/@.]{2,}))/)*(?:[^@=/.-]|(?:[^=/@.]{2,})))?)/\\.tree(?:.*)[/]?$","^/tools[/]?$","^/site-admin/usage-statistics/archive[/]?$","^/site-admin/data-export/archive[/]?$","^/site-admin/pings/latest[/]?$","^[/]?$","^/sign-in[/]?$","^/ping-from-self-hosted[/]?$","^/githubapp/","^/githubapp/state[/]?$","^/githubapp/new-app-state[/]?$","^/githubapp/redirect[/]?$","^/githubapp/setup[/]?$","^/deepsearch/(?:[a-f0-9-]+)\\.md[/]?$","^/insights","^/search-jobs","^/batch-changes","^/code-monitoring","^/notebooks","^/request-access","^/api/console[/]?$","^/api/openapi/public[/]?$","^/api/openapi/internal[/]?$","^/sign-up[/]?$","^/organizations","^/teams","^/settings","^/site-admin/init[/]?$","^/site-admin","^/contexts","^/saved-searches","^/prompts","^/agents","^/deepsearch","^/cody/dashboard[/]?$","^/cody/manage[/]?$","^/cody/subscription[/]?$","^/cody/chat[/]?$","^/cody/chat/(?:[^/]+)[/]?$","^/unlock-account/(?:[^/]+)[/]?$","^/password-reset[/]?$","^/survey[/]?$","^/survey/(?:[^/]+)[/]?$","^/auth/device[/]?$","^/auth/consent/(?:[^/]+)[/]?$","^/embed","^/users/(?:[^/]+)/settings","^/user","^/users/(?:[^/]+)","^/search[/]?$","^/search/stream[/]?$","^/search/badge[/]?$","^/(?:(?:about|blog|contact|customers|docs|handbook|help/terms|jobs|news|plan|pricing|privacy|security|terms))[/]?$","^/(?:(?:kubernetes|stanford|stackstorm|temporal|o3de|chakraui|julia|backstage))[/]?$","^/cncf[/]?$","^/devtooltime","^/login[/]?$","^/careers[/]?$","^/extensions","^/help"]},"workspaces":{"showWorkspaceSwitcher":true,"showWorkspaceManagement":false,"workspacesWebURL":"https://workspaces.sourcegraph.com","analyticsURL":"https://analytics.sourcegraph.com/overview?dateRange=LAST_30_DAYS"},"homepage":"/search"}
+		window.pageError = {"statusCode":404,"statusText":"Not Found","error":"","errorID":"xv2Dl7"}
+	</script>
+	
+</head>
+
+<body data-sveltekit-preload-data data-sveltekit-preload-code="hover">
+	
+
+    
+
+    <div ignore-csp style="display: contents">
+
+			<script>
+				{
+					__sveltekit_6mwye6 = {
+						base: ""
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("/.assets/_sk/_app/immutable/entry/start.BzveRfeI.js"),
+						import("/.assets/_sk/_app/immutable/entry/app.e6yDIys8.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element);
+					});
+				}
+			</script>
+		
+</div>
+
+	<noscript>
+        
+        
+        <iframe ignore-csp src="https://www.googletagmanager.com/ns.html?id=GTM-TB4NLS7" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        
+        
+
+		<p>Sourcegraph is a web-based code search and navigation tool for dev teams. Search, navigate, and review code. Find answers.</p>
+		<br><br><br>
+        You need to enable JavaScript to run this app.
+	</noscript>
+
+	
+</body>
+
+</html>

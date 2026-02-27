@@ -1595,18 +1595,10 @@
                 <section class="entity-hero">
                     <div class="entity-hero-inner">
                         <div class="entity-hero-logo">
-                            <template x-if="entity.logoSvgContent">
-                                <div x-html="entity.logoSvgContent"></div>
+                            <template x-if="entity.logoUrl">
+                                <img :src="entity.logoUrl" :alt="entity.name + ' logo'" style="object-fit:contain;max-width:100%;max-height:100%;" @error="$el.style.display='none'; $el.parentElement.querySelector('.placeholder')?.style.removeProperty('display')" >
                             </template>
-                            <template x-if="!entity.logoSvgContent && entity.logoUrl">
-                                <img :src="entity.logoUrl" :alt="entity.name + ' logo'">
-                            </template>
-                            <template x-if="!entity.logoSvgContent && !entity.logoUrl && entity.logoPath">
-                                <img :src="'/' + entity.logoPath" :alt="entity.name + ' logo'">
-                            </template>
-                            <template x-if="!entity.logoSvgContent && !entity.logoUrl && !entity.logoPath">
-                                <span class="placeholder" x-text="entity.name.charAt(0)"></span>
-                            </template>
+                            <span class="placeholder" x-text="entity.name?.charAt(0)" :style="entity.logoUrl ? 'display:none' : ''"></span>
                         </div>
                         <div class="entity-hero-info">
                             <h1 class="entity-hero-name">
